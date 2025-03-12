@@ -1,8 +1,9 @@
 
 import React from 'react';
-import { ResourceType, useGame } from '@/context/GameContext';
+import { useGame } from '@/context/GameContext';
 import { Progress } from '@/components/ui/progress';
 import { formatNumber } from '@/lib/utils';
+import { ResourceType } from '@/store/types';
 
 export const ResourceDisplay: React.FC = () => {
   const { state } = useGame();
@@ -39,8 +40,7 @@ export const ResourceDisplay: React.FC = () => {
               <div className="flex items-center gap-3">
                 <Progress 
                   value={percentFull} 
-                  className="progress-bar flex-grow h-2"
-                  indicatorClassName={`bg-${resource.color}-500 progress-bar-fill`}
+                  className={`progress-bar flex-grow h-2 bg-${resource.color}-500/20`}
                 />
                 <div className="text-xs font-mono min-w-[90px] text-right">
                   {formatNumber(resource.amount)} / {formatNumber(resource.capacity)}

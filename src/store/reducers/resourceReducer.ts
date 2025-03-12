@@ -1,10 +1,8 @@
-
 import { GameAction } from '../actions';
 import { ResourceType, ResourceData } from '../types';
 
-export interface ResourcesState {
-  [key in ResourceType]: ResourceData;
-}
+// Define ResourcesState as a type rather than an interface with mapped type
+export type ResourcesState = Record<ResourceType, ResourceData>;
 
 // Calculate resource changes based on production/consumption rates and time delta
 export const calculateResourceChanges = (
@@ -52,7 +50,7 @@ export const resetProductionCounters = (resources: ResourcesState): ResourcesSta
 // Update resource based on cost
 export const applyResourceCost = (
   resources: ResourcesState,
-  costs: { [key in ResourceType]?: number }
+  costs: Partial<Record<ResourceType, number>>
 ): ResourcesState => {
   const newResources = { ...resources };
   
@@ -72,7 +70,7 @@ export const applyResourceCost = (
 // Check if resources are sufficient for costs
 export const canAffordCost = (
   resources: ResourcesState,
-  costs: { [key in ResourceType]?: number }
+  costs: Partial<Record<ResourceType, number>>
 ): boolean => {
   let canAfford = true;
   

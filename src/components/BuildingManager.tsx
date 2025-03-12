@@ -13,9 +13,10 @@ import {
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
-import { BuildingType, useGame } from '@/context/GameContext';
+import { useGame } from '@/context/GameContext';
 import { formatNumber } from '@/lib/utils';
 import { toast } from '@/components/ui/use-toast';
+import { BuildingType } from '@/store/types';
 
 export const BuildingManager: React.FC = () => {
   const { state, dispatch } = useGame();
