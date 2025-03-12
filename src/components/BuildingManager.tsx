@@ -744,9 +744,7 @@ export const BuildingManager: React.FC = () => {
                               canAffordBuilding(type) ? "default" : "secondary"
                             }
                           >
-                            <span className="truncate">
-                              Construct ({count}/{template.maxInstances})
-                            </span>
+                            <span className="truncate">Construct</span>
                           </Button>
                         </CardFooter>
                       </Card>
