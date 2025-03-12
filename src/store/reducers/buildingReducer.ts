@@ -6,10 +6,33 @@ import { generateId, initialBuildings } from '../initialData';
 import { canAffordCost, applyResourceCost } from './resourceReducer';
 import { ResourcesState } from './resourceReducer';
 
-// Calculate building efficiency based on worker assignment
-export const calculateBuildingEfficiency = (buildings: BuildingData[]): BuildingData[] => {
+// Calculate building efficiency based on worker assignment and resource requirements
+export const calculateBuildingEfficiency = (
+  buildings: BuildingData[],
+  resources: ResourcesState
+): BuildingData[] => {
   return buildings.map(building => {
-    const efficiency = Math.min(1, building.assignedWorkers / building.workerCapacity);
+    // First calculate worker efficiency
+    let workerEfficiency = Math.min(1, building.assignedWorkers / building.workerCapacity);
+    
+    // Then check resource requirements
+    let resourceEfficiency = 1;
+    
+    if (building.requirements) {
+      // Check if all required resources are available
+      for (const [resourceKey, amount] of Object.entries(building.requirements)) {
+        const resource = resources[resourceKey as ResourceType];
+        if (resource && resource.amount < amount) {
+          // Building can't operate at full capacity due to resource shortage
+          const availableRatio = resource.amount / amount;
+          resourceEfficiency = Math.min(resourceEfficiency, availableRatio);
+        }
+      }
+    }
+    
+    // Final efficiency is the minimum of both
+    const efficiency = Math.min(workerEfficiency, resourceEfficiency);
+    
     return { ...building, efficiency };
   });
 };
@@ -22,6 +45,8 @@ export const applyBuildingEffects = (
   const newResources = { ...resources };
   
   buildings.forEach(building => {
+    if (building.efficiency <= 0) return; // Skip inactive buildings
+    
     // Apply production effects
     Object.entries(building.baseProduction).forEach(([resource, amount]) => {
       const resourceKey = resource as ResourceType;
@@ -37,6 +62,17 @@ export const applyBuildingEffects = (
         newResources[resourceKey].consumption += amount * building.level * building.efficiency;
       }
     });
+    
+    // Apply resource requirements
+    if (building.requirements && building.efficiency > 0) {
+      Object.entries(building.requirements).forEach(([resource, amount]) => {
+        const resourceKey = resource as ResourceType;
+        if (newResources[resourceKey]) {
+          // Requirements are ongoing consumption
+          newResources[resourceKey].consumption += amount * building.level;
+        }
+      });
+    }
   });
   
   return newResources;

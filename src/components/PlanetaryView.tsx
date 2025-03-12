@@ -1,7 +1,7 @@
-import React, { useRef, useEffect, useState } from 'react';
+import React, { useRef, useEffect, useState, memo } from 'react';
 import { useGame } from '@/context/GameContext';
 
-export const PlanetaryView: React.FC = () => {
+export const PlanetaryView: React.FC = memo(() => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const { state } = useGame();
   const [isLoaded, setIsLoaded] = useState(false);
@@ -10,7 +10,11 @@ export const PlanetaryView: React.FC = () => {
   const width = 400;
   const height = 400;
   
-  // Animation control
+  // Animation control - using useRef to avoid recalculations
+  const rotationAngleRef = useRef(0);
+  const frameIdRef = useRef<number>();
+  const lastTimeRef = useRef(0);
+  
   useEffect(() => {
     const canvas = canvasRef.current;
     if (!canvas) return;
@@ -28,7 +32,7 @@ export const PlanetaryView: React.FC = () => {
     const centerX = width / 2;
     const centerY = height / 2;
     
-    // Stars
+    // Generate stars once to improve performance
     const stars: { x: number; y: number; size: number; opacity: number }[] = [];
     for (let i = 0; i < 100; i++) {
       stars.push({
@@ -38,25 +42,6 @@ export const PlanetaryView: React.FC = () => {
         opacity: 0.3 + Math.random() * 0.7
       });
     }
-    
-    // Building indicators
-    const buildings = state.buildings;
-    const buildingPositions: { x: number; y: number; type: string; size: number }[] = [];
-    
-    // Place buildings on the planet
-    buildings.forEach((building, index) => {
-      const angle = (index / buildings.length) * Math.PI * 2;
-      const distance = planetRadius * 0.6 + Math.random() * (planetRadius * 0.3);
-      const x = centerX + Math.cos(angle) * distance;
-      const y = centerY + Math.sin(angle) * distance;
-      
-      buildingPositions.push({
-        x,
-        y,
-        type: building.type,
-        size: 3 + building.level * 1.5
-      });
-    });
     
     // Colors for building types
     const buildingColors: Record<string, string> = {
@@ -68,10 +53,17 @@ export const PlanetaryView: React.FC = () => {
       housing: '#60a5fa'
     };
     
-    let frameId: number;
-    let rotationAngle = 0;
-    
-    const renderFrame = () => {
+    // Use requestAnimationFrame with timestamp for smooth animation
+    const renderFrame = (timestamp: number) => {
+      // Control FPS for performance
+      const elapsed = timestamp - lastTimeRef.current;
+      if (elapsed < 16) { // Limit to ~60fps
+        frameIdRef.current = requestAnimationFrame(renderFrame);
+        return;
+      }
+      
+      lastTimeRef.current = timestamp;
+      
       // Clear canvas
       ctx.clearRect(0, 0, width, height);
       
@@ -112,15 +104,24 @@ export const PlanetaryView: React.FC = () => {
       ctx.lineWidth = 10;
       ctx.stroke();
       
-      // Draw buildings with rotation
+      // Calculate building positions only when needed
+      const buildingPositions = state.buildings.map((building, index) => {
+        const angle = (index / state.buildings.length) * Math.PI * 2;
+        const distance = planetRadius * 0.6 + (building.id.charCodeAt(0) % 30) / 100 * (planetRadius * 0.3);
+        return {
+          angle,
+          distance,
+          type: building.type,
+          size: 3 + building.level * 1.5
+        };
+      });
+      
+      // Draw buildings with improved performance
       buildingPositions.forEach(building => {
-        // Rotate position around center
-        const adjustedAngle = rotationAngle;
-        const offsetX = building.x - centerX;
-        const offsetY = building.y - centerY;
-        
-        const rotatedX = centerX + offsetX * Math.cos(adjustedAngle) - offsetY * Math.sin(adjustedAngle);
-        const rotatedY = centerY + offsetX * Math.sin(adjustedAngle) + offsetY * Math.cos(adjustedAngle);
+        // Rotate position around center (with optimized rotation calculation)
+        const adjustedAngle = building.angle + rotationAngleRef.current;
+        const rotatedX = centerX + Math.cos(adjustedAngle) * building.distance;
+        const rotatedY = centerY + Math.sin(adjustedAngle) * building.distance;
         
         // Draw building
         ctx.fillStyle = buildingColors[building.type] || '#ffffff';
@@ -138,11 +139,11 @@ export const PlanetaryView: React.FC = () => {
         ctx.stroke();
       });
       
-      // Very slowly rotate the buildings
-      rotationAngle += 0.0005;
+      // Very slowly rotate the buildings - with better performance
+      rotationAngleRef.current += 0.0003;
       
       // Keep animating
-      frameId = requestAnimationFrame(renderFrame);
+      frameIdRef.current = requestAnimationFrame(renderFrame);
       
       // Mark as loaded after first render
       if (!isLoaded) {
@@ -150,10 +151,12 @@ export const PlanetaryView: React.FC = () => {
       }
     };
     
-    renderFrame();
+    frameIdRef.current = requestAnimationFrame(renderFrame);
     
     return () => {
-      cancelAnimationFrame(frameId);
+      if (frameIdRef.current) {
+        cancelAnimationFrame(frameIdRef.current);
+      }
     };
   }, [state.buildings, isLoaded]);
   
@@ -184,4 +187,6 @@ export const PlanetaryView: React.FC = () => {
       </div>
     </div>
   );
-};
+});
+
+PlanetaryView.displayName = 'PlanetaryView';

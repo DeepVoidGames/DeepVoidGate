@@ -18,6 +18,207 @@ import { formatNumber } from '@/lib/utils';
 import { toast } from '@/components/ui/use-toast';
 import { BuildingType } from '@/store/types';
 
+// Extract BuildingCard component to improve maintainability and scalability
+const BuildingCard = ({ building, onUpgrade, onAdjustWorkers, onToggleExpand, isExpanded, resources, canUpgrade, getUpgradeCosts }) => {
+  const buildingIcons = {
+    oxygenGenerator: <Droplets className="h-5 w-5 text-cyan-400" />,
+    hydroponicFarm: <Leaf className="h-5 w-5 text-green-400" />,
+    solarPanel: <Zap className="h-5 w-5 text-yellow-400" />,
+    metalMine: <Pickaxe className="h-5 w-5 text-zinc-400" />,
+    researchLab: <FlaskConical className="h-5 w-5 text-purple-400" />,
+    housing: <Home className="h-5 w-5 text-blue-400" />,
+  };
+
+  const costs = getUpgradeCosts(building);
+  
+  return (
+    <Card 
+      key={building.id} 
+      className={`neo-panel overflow-hidden transition-all duration-300 ${
+        isExpanded ? 'border-primary/30' : 'border-border/10'
+      }`}
+    >
+      <CardHeader className="p-4 pb-0">
+        <div className="flex items-center justify-between">
+          <div className="flex items-center space-x-3">
+            {buildingIcons[building.type]}
+            <CardTitle className="text-base">{building.name}</CardTitle>
+          </div>
+          <div className="text-sm font-medium">
+            Lvl {building.level}
+          </div>
+        </div>
+        <CardDescription className="mt-1 text-xs">
+          {building.description}
+        </CardDescription>
+      </CardHeader>
+      
+      <CardContent className="p-4 pt-2">
+        <div className="flex items-center justify-between text-sm mb-2">
+          <div className="flex items-center space-x-1">
+            <Users className="h-4 w-4 text-blue-400" />
+            <span>{building.assignedWorkers} / {building.workerCapacity} workers</span>
+          </div>
+          <div className={`
+            ${building.efficiency >= 0.9 ? 'text-green-400' : 
+              building.efficiency >= 0.5 ? 'text-yellow-400' : 'text-red-400'}
+          `}>
+            {Math.round(building.efficiency * 100)}% Efficiency
+          </div>
+        </div>
+        
+        <div className="flex justify-between gap-2 mt-3">
+          <Button
+            size="sm"
+            variant="outline"
+            onClick={() => onAdjustWorkers(building.id, 1)}
+            className="flex-1 border-green-800/30 bg-green-950/30 hover:bg-green-900/20"
+          >
+            <ArrowUp className="h-4 w-4 mr-1" /> Assign
+          </Button>
+          <Button
+            size="sm"
+            variant="outline"
+            onClick={() => onAdjustWorkers(building.id, -1)}
+            className="flex-1 border-red-800/30 bg-red-950/30 hover:bg-red-900/20"
+          >
+            <ArrowDown className="h-4 w-4 mr-1" /> Remove
+          </Button>
+          <Button
+            size="sm"
+            variant="outline"
+            onClick={() => onToggleExpand(building.id)}
+            className="border-blue-800/30 bg-blue-950/30 hover:bg-blue-900/20"
+          >
+            {isExpanded ? 'Less' : 'More'}
+          </Button>
+        </div>
+        
+        {isExpanded && (
+          <div className="mt-4 space-y-3 animate-fade-in">
+            <div className="space-y-1">
+              <h4 className="text-xs text-foreground/70">Production & Consumption:</h4>
+              <div className="grid grid-cols-2 gap-2 text-xs">
+                {Object.entries(building.baseProduction).map(([resource, amount]) => (
+                  <div key={resource} className="flex items-center space-x-1">
+                    <span className={`resource-badge resource-badge-${resource}`}>
+                      {resources[resource]?.icon}
+                    </span>
+                    <span className="text-green-400">
+                      +{formatNumber(amount * building.level * building.efficiency)}/s
+                    </span>
+                  </div>
+                ))}
+                {Object.entries(building.baseConsumption).map(([resource, amount]) => (
+                  <div key={resource} className="flex items-center space-x-1">
+                    <span className={`resource-badge resource-badge-${resource}`}>
+                      {resources[resource]?.icon}
+                    </span>
+                    <span className="text-red-400">
+                      -{formatNumber(amount * building.level * building.efficiency)}/s
+                    </span>
+                  </div>
+                ))}
+              </div>
+            </div>
+            
+            {building.requirements && (
+              <div className="space-y-1">
+                <h4 className="text-xs text-foreground/70">Resource Requirements:</h4>
+                <div className="grid grid-cols-2 gap-2 text-xs">
+                  {Object.entries(building.requirements).map(([resource, amount]) => {
+                    const hasEnough = resources[resource]?.amount >= amount;
+                    return (
+                      <div key={`req-${resource}`} className="flex items-center space-x-1">
+                        <span className={`resource-badge resource-badge-${resource}`}>
+                          {resources[resource]?.icon}
+                        </span>
+                        <span className={hasEnough ? "text-foreground/70" : "text-red-400"}>
+                          Needs {formatNumber(amount * building.level)}
+                        </span>
+                      </div>
+                    );
+                  })}
+                </div>
+              </div>
+            )}
+            
+            <div className="pt-2">
+              <Button
+                size="sm"
+                onClick={() => onUpgrade(building.id)}
+                disabled={!canUpgrade(building)}
+                className="w-full button-primary"
+              >
+                Upgrade to Level {building.level + 1}
+              </Button>
+              
+              <div className="grid grid-cols-2 gap-2 mt-2 text-xs">
+                {Object.entries(costs).map(([resource, cost]) => (
+                  <div 
+                    key={resource} 
+                    className={`flex items-center space-x-1 ${
+                      resources[resource].amount < cost 
+                        ? 'text-red-400' : 'text-foreground/70'
+                    }`}
+                  >
+                    <span>{resource}:</span>
+                    <span>{formatNumber(cost)}</span>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
+        )}
+      </CardContent>
+    </Card>
+  );
+};
+
+// Extract ConstructionCard component
+const ConstructionCard = ({ buildingType, count, costs, canAfford, onConstruct, buildingName, buildingIcon }) => {
+  return (
+    <Card key={buildingType} className="neo-panel border-border/10">
+      <CardHeader className="p-3 pb-2">
+        <div className="flex items-center justify-between">
+          <div className="flex items-center space-x-2">
+            {buildingIcon}
+            <CardTitle className="text-sm">{buildingName}</CardTitle>
+          </div>
+          <div className="text-xs text-muted-foreground">Owned: {count}</div>
+        </div>
+      </CardHeader>
+      
+      <CardContent className="p-3 pt-1">
+        <div className="grid grid-cols-2 gap-1 text-xs mb-3">
+          {Object.entries(costs).map(([resource, cost]) => (
+            <div 
+              key={resource} 
+              className={`flex items-center space-x-1 ${
+                !canAfford(resource, cost) ? 'text-red-400' : 'text-foreground/70'
+              }`}
+            >
+              <span>{resource}:</span>
+              <span>{formatNumber(cost)}</span>
+            </div>
+          ))}
+        </div>
+      </CardContent>
+      
+      <CardFooter className="p-3 pt-0">
+        <Button
+          size="sm"
+          onClick={() => onConstruct(buildingType)}
+          disabled={!canAfford()}
+          className="w-full button-primary text-xs py-1"
+        >
+          Construct
+        </Button>
+      </CardFooter>
+    </Card>
+  );
+};
+
 export const BuildingManager: React.FC = () => {
   const { state, dispatch } = useGame();
   const { buildings, resources, population } = state;
@@ -156,134 +357,19 @@ export const BuildingManager: React.FC = () => {
         </div>
         
         <div className="grid grid-cols-1 gap-4">
-          {sortedBuildings.map(building => {
-            const isExpanded = expandedBuilding === building.id;
-            const costs = getUpgradeCosts(building);
-            
-            return (
-              <Card 
-                key={building.id} 
-                className={`neo-panel overflow-hidden transition-all duration-300 ${
-                  isExpanded ? 'border-primary/30' : 'border-border/10'
-                }`}
-              >
-                <CardHeader className="p-4 pb-0">
-                  <div className="flex items-center justify-between">
-                    <div className="flex items-center space-x-3">
-                      {buildingIcons[building.type]}
-                      <CardTitle className="text-base">{building.name}</CardTitle>
-                    </div>
-                    <div className="text-sm font-medium">
-                      Lvl {building.level}
-                    </div>
-                  </div>
-                  <CardDescription className="mt-1 text-xs">
-                    {building.description}
-                  </CardDescription>
-                </CardHeader>
-                
-                <CardContent className="p-4 pt-2">
-                  <div className="flex items-center justify-between text-sm mb-2">
-                    <div className="flex items-center space-x-1">
-                      <Users className="h-4 w-4 text-blue-400" />
-                      <span>{building.assignedWorkers} / {building.workerCapacity} workers</span>
-                    </div>
-                    <div className={`
-                      ${building.efficiency >= 0.9 ? 'text-green-400' : 
-                        building.efficiency >= 0.5 ? 'text-yellow-400' : 'text-red-400'}
-                    `}>
-                      {Math.round(building.efficiency * 100)}% Efficiency
-                    </div>
-                  </div>
-                  
-                  <div className="flex justify-between gap-2 mt-3">
-                    <Button
-                      size="sm"
-                      variant="outline"
-                      onClick={() => adjustWorkers(building.id, 1)}
-                      disabled={population.available <= 0}
-                      className="flex-1 border-green-800/30 bg-green-950/30 hover:bg-green-900/20"
-                    >
-                      <ArrowUp className="h-4 w-4 mr-1" /> Assign
-                    </Button>
-                    <Button
-                      size="sm"
-                      variant="outline"
-                      onClick={() => adjustWorkers(building.id, -1)}
-                      disabled={building.assignedWorkers <= 0}
-                      className="flex-1 border-red-800/30 bg-red-950/30 hover:bg-red-900/20"
-                    >
-                      <ArrowDown className="h-4 w-4 mr-1" /> Remove
-                    </Button>
-                    <Button
-                      size="sm"
-                      variant="outline"
-                      onClick={() => setExpandedBuilding(isExpanded ? null : building.id)}
-                      className="border-blue-800/30 bg-blue-950/30 hover:bg-blue-900/20"
-                    >
-                      {isExpanded ? 'Less' : 'More'}
-                    </Button>
-                  </div>
-                  
-                  {isExpanded && (
-                    <div className="mt-4 space-y-3 animate-fade-in">
-                      <div className="space-y-1">
-                        <h4 className="text-xs text-foreground/70">Production per level:</h4>
-                        <div className="grid grid-cols-2 gap-2 text-xs">
-                          {Object.entries(building.baseProduction).map(([resource, amount]) => (
-                            <div key={resource} className="flex items-center space-x-1">
-                              <span className={`resource-badge resource-badge-${resource}`}>
-                                {resources[resource as keyof typeof resources]?.icon}
-                              </span>
-                              <span className="text-green-400">
-                                +{formatNumber(amount * building.level * building.efficiency)}/s
-                              </span>
-                            </div>
-                          ))}
-                          {Object.entries(building.baseConsumption).map(([resource, amount]) => (
-                            <div key={resource} className="flex items-center space-x-1">
-                              <span className={`resource-badge resource-badge-${resource}`}>
-                                {resources[resource as keyof typeof resources]?.icon}
-                              </span>
-                              <span className="text-red-400">
-                                -{formatNumber(amount * building.level * building.efficiency)}/s
-                              </span>
-                            </div>
-                          ))}
-                        </div>
-                      </div>
-                      
-                      <div className="pt-2">
-                        <Button
-                          size="sm"
-                          onClick={() => upgradeBuilding(building.id)}
-                          disabled={!canUpgrade(building)}
-                          className="w-full button-primary"
-                        >
-                          Upgrade to Level {building.level + 1}
-                        </Button>
-                        
-                        <div className="grid grid-cols-2 gap-2 mt-2 text-xs">
-                          {Object.entries(costs).map(([resource, cost]) => (
-                            <div 
-                              key={resource} 
-                              className={`flex items-center space-x-1 ${
-                                resources[resource as keyof typeof resources].amount < cost 
-                                  ? 'text-red-400' : 'text-foreground/70'
-                              }`}
-                            >
-                              <span>{resource}:</span>
-                              <span>{formatNumber(cost)}</span>
-                            </div>
-                          ))}
-                        </div>
-                      </div>
-                    </div>
-                  )}
-                </CardContent>
-              </Card>
-            );
-          })}
+          {sortedBuildings.map(building => (
+            <BuildingCard 
+              key={building.id}
+              building={building}
+              isExpanded={expandedBuilding === building.id}
+              onUpgrade={upgradeBuilding}
+              onAdjustWorkers={adjustWorkers}
+              onToggleExpand={(id) => setExpandedBuilding(id === expandedBuilding ? null : id)}
+              resources={resources}
+              canUpgrade={canUpgrade}
+              getUpgradeCosts={getUpgradeCosts}
+            />
+          ))}
         </div>
         
         {buildings.length === 0 && (
@@ -302,45 +388,16 @@ export const BuildingManager: React.FC = () => {
             const costs = getConstructionCosts(buildingType);
             
             return (
-              <Card key={buildingType} className="neo-panel border-border/10">
-                <CardHeader className="p-3 pb-2">
-                  <div className="flex items-center justify-between">
-                    <div className="flex items-center space-x-2">
-                      {buildingIcons[buildingType]}
-                      <CardTitle className="text-sm">{buildingNames[buildingType]}</CardTitle>
-                    </div>
-                    <div className="text-xs text-muted-foreground">Owned: {count}</div>
-                  </div>
-                </CardHeader>
-                
-                <CardContent className="p-3 pt-1">
-                  <div className="grid grid-cols-2 gap-1 text-xs mb-3">
-                    {Object.entries(costs).map(([resource, cost]) => (
-                      <div 
-                        key={resource} 
-                        className={`flex items-center space-x-1 ${
-                          resources[resource as keyof typeof resources].amount < cost 
-                            ? 'text-red-400' : 'text-foreground/70'
-                        }`}
-                      >
-                        <span>{resource}:</span>
-                        <span>{formatNumber(cost)}</span>
-                      </div>
-                    ))}
-                  </div>
-                </CardContent>
-                
-                <CardFooter className="p-3 pt-0">
-                  <Button
-                    size="sm"
-                    onClick={() => constructBuilding(buildingType)}
-                    disabled={!canAffordBuilding(buildingType)}
-                    className="w-full button-primary text-xs py-1"
-                  >
-                    Construct
-                  </Button>
-                </CardFooter>
-              </Card>
+              <ConstructionCard 
+                key={buildingType}
+                buildingType={buildingType}
+                buildingName={buildingNames[buildingType]}
+                buildingIcon={buildingIcons[buildingType]}
+                count={count}
+                costs={costs}
+                canAfford={() => canAffordBuilding(buildingType)}
+                onConstruct={constructBuilding}
+              />
             );
           })}
         </div>

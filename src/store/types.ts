@@ -34,8 +34,19 @@ export interface BuildingData {
   baseConsumption: {
     [key in ResourceType]?: number;
   };
+  requirements?: {
+    [key in ResourceType]?: number;
+  };
   costMultiplier: number;
   productionMultiplier: number;
+}
+
+// Alert thresholds
+export interface ResourceAlertThresholds {
+  [key in ResourceType]?: {
+    low: number;
+    critical: number;
+  };
 }
 
 // Game state interface

@@ -1,0 +1,128 @@
+
+[
+  {
+    "type": "oxygenGenerator",
+    "name": "Oxygen Generator",
+    "description": "Produces oxygen from the planet's thin atmosphere",
+    "workerCapacity": 2,
+    "baseCost": {
+      "metals": 50,
+      "energy": 20
+    },
+    "baseProduction": {
+      "oxygen": 1
+    },
+    "baseConsumption": {
+      "energy": 0.5
+    },
+    "requirements": {
+      "energy": 0.1
+    },
+    "costMultiplier": 1.5,
+    "productionMultiplier": 1.2
+  },
+  {
+    "type": "hydroponicFarm",
+    "name": "Hydroponic Farm",
+    "description": "Grows nutritious food in controlled environments",
+    "workerCapacity": 3,
+    "baseCost": {
+      "metals": 40,
+      "energy": 15,
+      "oxygen": 10
+    },
+    "baseProduction": {
+      "food": 1
+    },
+    "baseConsumption": {
+      "oxygen": 0.2,
+      "energy": 0.3
+    },
+    "requirements": {
+      "oxygen": 0.1,
+      "energy": 0.1
+    },
+    "costMultiplier": 1.4,
+    "productionMultiplier": 1.2
+  },
+  {
+    "type": "solarPanel",
+    "name": "Solar Array",
+    "description": "Captures energy from the nearby star",
+    "workerCapacity": 1,
+    "baseCost": {
+      "metals": 60
+    },
+    "baseProduction": {
+      "energy": 2
+    },
+    "baseConsumption": {},
+    "requirements": {},
+    "costMultiplier": 1.6,
+    "productionMultiplier": 1.3
+  },
+  {
+    "type": "metalMine",
+    "name": "Metal Extractor",
+    "description": "Extracts metal ores from the planetary crust",
+    "workerCapacity": 4,
+    "baseCost": {
+      "energy": 30
+    },
+    "baseProduction": {
+      "metals": 0.8
+    },
+    "baseConsumption": {
+      "energy": 0.8,
+      "oxygen": 0.1
+    },
+    "requirements": {
+      "energy": 0.2
+    },
+    "costMultiplier": 1.5,
+    "productionMultiplier": 1.2
+  },
+  {
+    "type": "researchLab",
+    "name": "Research Lab",
+    "description": "Scientists work to advance colony technology",
+    "workerCapacity": 2,
+    "baseCost": {
+      "metals": 80,
+      "energy": 40
+    },
+    "baseProduction": {
+      "science": 0.5
+    },
+    "baseConsumption": {
+      "energy": 1,
+      "oxygen": 0.3
+    },
+    "requirements": {
+      "energy": 0.3,
+      "oxygen": 0.1
+    },
+    "costMultiplier": 1.7,
+    "productionMultiplier": 1.3
+  },
+  {
+    "type": "housing",
+    "name": "Habitat Dome",
+    "description": "Living quarters for the colony's population",
+    "workerCapacity": 1,
+    "baseCost": {
+      "metals": 100,
+      "energy": 20
+    },
+    "baseProduction": {},
+    "baseConsumption": {
+      "oxygen": 0.2,
+      "energy": 0.3
+    },
+    "requirements": {
+      "oxygen": 0.2
+    },
+    "costMultiplier": 1.6,
+    "productionMultiplier": 1
+  }
+]

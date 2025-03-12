@@ -2,7 +2,7 @@
 import { toast } from '@/components/ui/use-toast';
 import { GameAction } from '../actions';
 import { GameState } from '../types';
-import { initialResourcesState, initialPopulationState, initialBuildings } from '../initialData';
+import { initialResourcesState, initialPopulationState, initialBuildings, resourceAlertThresholds } from '../initialData';
 import { generateId } from '../initialData';
 import { 
   resetProductionCounters, 
@@ -28,6 +28,13 @@ export const initialState: GameState = {
   paused: false,
 };
 
+// Track resource warnings to avoid spamming
+const resourceWarnings = {
+  oxygen: { lastWarned: 0 },
+  food: { lastWarned: 0 },
+  energy: { lastWarned: 0 }
+};
+
 // Game reducer function
 export const gameReducer = (state: GameState, action: GameAction): GameState => {
   switch (action.type) {
@@ -41,7 +48,7 @@ export const gameReducer = (state: GameState, action: GameAction): GameState => 
       let newResources = resetProductionCounters(state.resources);
       
       // Calculate efficiency for each building
-      const buildings = calculateBuildingEfficiency(state.buildings);
+      const buildings = calculateBuildingEfficiency(state.buildings, newResources);
       
       // Apply building effects to resources
       newResources = applyBuildingEffects(buildings, newResources);
@@ -52,24 +59,86 @@ export const gameReducer = (state: GameState, action: GameAction): GameState => 
       // Calculate resource changes based on production/consumption
       newResources = calculateResourceChanges(newResources, deltaTime);
       
-      // Check for critical resource shortages
-      const oxygenNet = newResources.oxygen.production - newResources.oxygen.consumption;
-      const foodNet = newResources.food.production - newResources.food.consumption;
+      // Check for critical resource shortages (with cooldown to prevent spam)
+      const currentTime_ms = Date.now();
+      const warningCooldown = 60000; // 1 minute cooldown
       
-      if (newResources.oxygen.amount <= 0 && oxygenNet < 0) {
-        toast({
-          title: "Critical Oxygen Shortage!",
-          description: "Your colony is suffocating. Build more oxygen generators immediately!",
-          variant: "destructive"
-        });
+      // Check oxygen levels
+      if (resourceAlertThresholds.oxygen) {
+        const oxygenLevel = newResources.oxygen.amount;
+        const oxygenNet = newResources.oxygen.production - newResources.oxygen.consumption;
+        
+        if (oxygenLevel <= resourceAlertThresholds.oxygen.critical && oxygenNet < 0) {
+          if (currentTime_ms - resourceWarnings.oxygen.lastWarned > warningCooldown) {
+            toast({
+              title: "CRITICAL: Oxygen Shortage!",
+              description: "Your colony is suffocating. Build more oxygen generators immediately!",
+              variant: "destructive"
+            });
+            resourceWarnings.oxygen.lastWarned = currentTime_ms;
+          }
+        } else if (oxygenLevel <= resourceAlertThresholds.oxygen.low && oxygenNet < 0) {
+          if (currentTime_ms - resourceWarnings.oxygen.lastWarned > warningCooldown) {
+            toast({
+              title: "Warning: Low Oxygen",
+              description: "Oxygen levels are dangerously low. Increase production.",
+              variant: "destructive"
+            });
+            resourceWarnings.oxygen.lastWarned = currentTime_ms;
+          }
+        }
       }
       
-      if (newResources.food.amount <= 0 && foodNet < 0) {
-        toast({
-          title: "Critical Food Shortage!",
-          description: "Your colonists are starving. Increase food production immediately!",
-          variant: "destructive"
-        });
+      // Check food levels
+      if (resourceAlertThresholds.food) {
+        const foodLevel = newResources.food.amount;
+        const foodNet = newResources.food.production - newResources.food.consumption;
+        
+        if (foodLevel <= resourceAlertThresholds.food.critical && foodNet < 0) {
+          if (currentTime_ms - resourceWarnings.food.lastWarned > warningCooldown) {
+            toast({
+              title: "CRITICAL: Food Shortage!",
+              description: "Your colonists are starving. Increase food production immediately!",
+              variant: "destructive"
+            });
+            resourceWarnings.food.lastWarned = currentTime_ms;
+          }
+        } else if (foodLevel <= resourceAlertThresholds.food.low && foodNet < 0) {
+          if (currentTime_ms - resourceWarnings.food.lastWarned > warningCooldown) {
+            toast({
+              title: "Warning: Low Food",
+              description: "Food supplies are running low. Increase production.",
+              variant: "destructive"
+            });
+            resourceWarnings.food.lastWarned = currentTime_ms;
+          }
+        }
+      }
+      
+      // Check energy levels
+      if (resourceAlertThresholds.energy) {
+        const energyLevel = newResources.energy.amount;
+        const energyNet = newResources.energy.production - newResources.energy.consumption;
+        
+        if (energyLevel <= resourceAlertThresholds.energy.critical && energyNet < 0) {
+          if (currentTime_ms - resourceWarnings.energy.lastWarned > warningCooldown) {
+            toast({
+              title: "CRITICAL: Energy Shortage!",
+              description: "Your colony is losing power. Build more energy generators!",
+              variant: "destructive"
+            });
+            resourceWarnings.energy.lastWarned = currentTime_ms;
+          }
+        } else if (energyLevel <= resourceAlertThresholds.energy.low && energyNet < 0) {
+          if (currentTime_ms - resourceWarnings.energy.lastWarned > warningCooldown) {
+            toast({
+              title: "Warning: Low Energy",
+              description: "Energy reserves are running low. Increase production.",
+              variant: "destructive"
+            });
+            resourceWarnings.energy.lastWarned = currentTime_ms;
+          }
+        }
       }
       
       return {
