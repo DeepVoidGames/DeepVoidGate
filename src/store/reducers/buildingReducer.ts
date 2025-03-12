@@ -1,3 +1,4 @@
+
 import { toast } from "@/components/ui/use-toast";
 import { GameAction } from "../actions";
 import { BuildingData, BuildingType, ResourceType } from "../types";
@@ -117,15 +118,20 @@ export const constructBuilding = (
     (b) => b.type === buildingType
   );
   if (!buildingTemplate) {
+    toast({
+      title: "Building error",
+      description: `Could not find template for ${buildingType}.`,
+      variant: "destructive",
+    });
     return { buildings, resources, success: false };
   }
 
-  // Sprawdź limit instancji
+  // Check instance limit
   const existingCount = buildings.filter((b) => b.type === buildingType).length;
   if (existingCount >= buildingTemplate.maxInstances) {
     toast({
-      title: "Limit osiągnięty",
-      description: `Możesz zbudować maksymalnie ${buildingTemplate.maxInstances} ${buildingTemplate.name}.`,
+      title: "Maximum reached",
+      description: `You can build a maximum of ${buildingTemplate.maxInstances} ${buildingTemplate.name}.`,
       variant: "destructive",
     });
     return { buildings, resources, success: false };

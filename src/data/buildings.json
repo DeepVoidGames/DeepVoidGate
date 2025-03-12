@@ -2,6 +2,7 @@
 [
   {
     "type": "oxygenGenerator",
+    "category": "production",
     "name": "Oxygen Generator",
     "description": "Produces oxygen from the planet's thin atmosphere",
     "workerCapacity": 2,
@@ -19,10 +20,12 @@
       "energy": 0.1
     },
     "costMultiplier": 1.5,
-    "productionMultiplier": 1.2
+    "productionMultiplier": 1.2,
+    "maxInstances": 3
   },
   {
     "type": "hydroponicFarm",
+    "category": "production",
     "name": "Hydroponic Farm",
     "description": "Grows nutritious food in controlled environments",
     "workerCapacity": 3,
@@ -43,10 +46,12 @@
       "energy": 0.1
     },
     "costMultiplier": 1.4,
-    "productionMultiplier": 1.2
+    "productionMultiplier": 1.2,
+    "maxInstances": 3
   },
   {
     "type": "solarPanel",
+    "category": "production",
     "name": "Solar Array",
     "description": "Captures energy from the nearby star",
     "workerCapacity": 1,
@@ -59,15 +64,18 @@
     "baseConsumption": {},
     "requirements": {},
     "costMultiplier": 1.6,
-    "productionMultiplier": 1.3
+    "productionMultiplier": 1.3,
+    "maxInstances": 5
   },
   {
     "type": "metalMine",
+    "category": "production",
     "name": "Metal Extractor",
     "description": "Extracts metal ores from the planetary crust",
     "workerCapacity": 4,
     "baseCost": {
-      "energy": 30
+      "energy": 30,
+      "metals": 20
     },
     "baseProduction": {
       "metals": 0.8
@@ -80,10 +88,12 @@
       "energy": 0.2
     },
     "costMultiplier": 1.5,
-    "productionMultiplier": 1.2
+    "productionMultiplier": 1.2,
+    "maxInstances": 3
   },
   {
     "type": "researchLab",
+    "category": "research",
     "name": "Research Lab",
     "description": "Scientists work to advance colony technology",
     "workerCapacity": 2,
@@ -103,10 +113,12 @@
       "oxygen": 0.1
     },
     "costMultiplier": 1.7,
-    "productionMultiplier": 1.3
+    "productionMultiplier": 1.3,
+    "maxInstances": 2
   },
   {
     "type": "housing",
+    "category": "housing",
     "name": "Habitat Dome",
     "description": "Living quarters for the colony's population",
     "workerCapacity": 1,
@@ -123,6 +135,7 @@
       "oxygen": 0.2
     },
     "costMultiplier": 1.6,
-    "productionMultiplier": 1
+    "productionMultiplier": 1,
+    "maxInstances": 5
   }
 ]

@@ -1,3 +1,4 @@
+
 import React, { useState } from "react";
 import {
   Home,
@@ -12,6 +13,10 @@ import {
   AlertTriangle,
   X,
   Clock,
+  Lightbulb,
+  Factory,
+  Microscope,
+  Building,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
@@ -25,8 +30,9 @@ import {
 import { useGame } from "@/context/GameContext";
 import { formatNumber } from "@/lib/utils";
 import { toast } from "@/components/ui/use-toast";
-import { BuildingType } from "@/store/types";
+import { BuildingType, BuildingCategory } from "@/store/types";
 import { initialBuildings } from "@/store/initialData";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 
 const ResourcesIcon = ({ resource }) => {
   if (resource === "oxygen") {
@@ -353,10 +359,23 @@ const ConstructionCard = ({
   );
 };
 
+// Category icon mapping
+const CategoryIcon = ({ category }: { category: BuildingCategory }) => {
+  const icons = {
+    production: <Factory className="h-4 w-4" />,
+    housing: <Home className="h-4 w-4" />,
+    research: <Microscope className="h-4 w-4" />,
+    utility: <Building className="h-4 w-4" />,
+  };
+
+  return icons[category] || <Building className="h-4 w-4" />;
+};
+
 export const BuildingManager: React.FC = () => {
   const { state, dispatch } = useGame();
   const { buildings, resources, population } = state;
   const [expandedBuilding, setExpandedBuilding] = useState<string | null>(null);
+  const [activeTab, setActiveTab] = useState<string>("all");
 
   // Building icons mapping
   const buildingIcons: Record<BuildingType, React.ReactNode> = {
@@ -385,13 +404,14 @@ export const BuildingManager: React.FC = () => {
 
   // Check if we can afford to build a new building
   const canAffordBuilding = (buildingType: BuildingType) => {
-    const template = buildings.find(
-      (b) => b.type === buildingType && b.level === 1
+    const buildingTemplate = initialBuildings.find(
+      (b) => b.type === buildingType
     );
+    
+    if (!buildingTemplate) return false;
 
-    if (!template) return false;
-
-    for (const [resource, cost] of Object.entries(template.baseCost)) {
+    // Check each resource cost
+    for (const [resource, cost] of Object.entries(buildingTemplate.baseCost)) {
       if (resources[resource as keyof typeof resources].amount < Number(cost)) {
         return false;
       }
@@ -400,15 +420,19 @@ export const BuildingManager: React.FC = () => {
     return true;
   };
 
+  // Check if resource is affordable
+  const canAffordResource = (resourceType: string, amount: number) => {
+    return resources[resourceType as keyof typeof resources].amount >= amount;
+  };
+
   // Get construction costs for display
   const getConstructionCosts = (buildingType: BuildingType) => {
-    // Find a level 1 building of this type to use as a template
-    const template = buildings.find(
-      (b) => b.type === buildingType && b.level === 1
+    const buildingTemplate = initialBuildings.find(
+      (b) => b.type === buildingType
     );
-    if (!template) return {};
+    if (!buildingTemplate) return {};
 
-    return template.baseCost;
+    return buildingTemplate.baseCost;
   };
 
   // Get upgrade costs for a building
@@ -462,9 +486,23 @@ export const BuildingManager: React.FC = () => {
     housing: [],
   };
 
+  // Group buildings by category
+  const buildingsByCategory: Record<BuildingCategory, typeof buildings> = {
+    production: [],
+    housing: [],
+    research: [],
+    utility: [],
+  };
+
   sortedBuildings.forEach((building) => {
     buildingsByType[building.type].push(building);
+    buildingsByCategory[building.category].push(building);
   });
+
+  // Filter buildings based on active tab
+  const filteredBuildings = activeTab === "all" 
+    ? sortedBuildings 
+    : sortedBuildings.filter(building => building.category === activeTab);
 
   // Building types to display in construction menu
   const buildingTypes: BuildingType[] = [
@@ -484,6 +522,14 @@ export const BuildingManager: React.FC = () => {
     metalMine: "Metal Extractor",
     researchLab: "Research Lab",
     housing: "Habitat Dome",
+  };
+
+  // Category friendly names
+  const categoryNames: Record<BuildingCategory, string> = {
+    production: "Production",
+    housing: "Housing",
+    research: "Research",
+    utility: "Utility",
   };
 
   return (
@@ -507,23 +553,103 @@ export const BuildingManager: React.FC = () => {
           </div>
         </div>
 
-        <div className="grid grid-cols-1 gap-4">
-          {sortedBuildings.map((building) => (
-            <BuildingCard
-              key={building.id}
-              building={building}
-              isExpanded={expandedBuilding === building.id}
-              onUpgrade={upgradeBuilding}
-              onAdjustWorkers={adjustWorkers}
-              onToggleExpand={(id) =>
-                setExpandedBuilding(id === expandedBuilding ? null : id)
-              }
-              resources={resources}
-              canUpgrade={canUpgrade}
-              getUpgradeCosts={getUpgradeCosts}
-            />
-          ))}
-        </div>
+        <Tabs defaultValue="all" value={activeTab} onValueChange={setActiveTab}>
+          <TabsList className="mb-4">
+            <TabsTrigger value="all">All Buildings</TabsTrigger>
+            <TabsTrigger value="production">
+              <Factory className="h-4 w-4 mr-1" />
+              Production
+            </TabsTrigger>
+            <TabsTrigger value="research">
+              <Microscope className="h-4 w-4 mr-1" />
+              Research
+            </TabsTrigger>
+            <TabsTrigger value="housing">
+              <Home className="h-4 w-4 mr-1" />
+              Housing
+            </TabsTrigger>
+          </TabsList>
+
+          <TabsContent value="all" className="m-0">
+            <div className="grid grid-cols-1 gap-4">
+              {filteredBuildings.map((building) => (
+                <BuildingCard
+                  key={building.id}
+                  building={building}
+                  isExpanded={expandedBuilding === building.id}
+                  onUpgrade={upgradeBuilding}
+                  onAdjustWorkers={adjustWorkers}
+                  onToggleExpand={(id) =>
+                    setExpandedBuilding(id === expandedBuilding ? null : id)
+                  }
+                  resources={resources}
+                  canUpgrade={canUpgrade}
+                  getUpgradeCosts={getUpgradeCosts}
+                />
+              ))}
+            </div>
+          </TabsContent>
+          
+          <TabsContent value="production" className="m-0">
+            <div className="grid grid-cols-1 gap-4">
+              {filteredBuildings.map((building) => (
+                <BuildingCard
+                  key={building.id}
+                  building={building}
+                  isExpanded={expandedBuilding === building.id}
+                  onUpgrade={upgradeBuilding}
+                  onAdjustWorkers={adjustWorkers}
+                  onToggleExpand={(id) =>
+                    setExpandedBuilding(id === expandedBuilding ? null : id)
+                  }
+                  resources={resources}
+                  canUpgrade={canUpgrade}
+                  getUpgradeCosts={getUpgradeCosts}
+                />
+              ))}
+            </div>
+          </TabsContent>
+
+          <TabsContent value="research" className="m-0">
+            <div className="grid grid-cols-1 gap-4">
+              {filteredBuildings.map((building) => (
+                <BuildingCard
+                  key={building.id}
+                  building={building}
+                  isExpanded={expandedBuilding === building.id}
+                  onUpgrade={upgradeBuilding}
+                  onAdjustWorkers={adjustWorkers}
+                  onToggleExpand={(id) =>
+                    setExpandedBuilding(id === expandedBuilding ? null : id)
+                  }
+                  resources={resources}
+                  canUpgrade={canUpgrade}
+                  getUpgradeCosts={getUpgradeCosts}
+                />
+              ))}
+            </div>
+          </TabsContent>
+
+          <TabsContent value="housing" className="m-0">
+            <div className="grid grid-cols-1 gap-4">
+              {filteredBuildings.map((building) => (
+                <BuildingCard
+                  key={building.id}
+                  building={building}
+                  isExpanded={expandedBuilding === building.id}
+                  onUpgrade={upgradeBuilding}
+                  onAdjustWorkers={adjustWorkers}
+                  onToggleExpand={(id) =>
+                    setExpandedBuilding(id === expandedBuilding ? null : id)
+                  }
+                  resources={resources}
+                  canUpgrade={canUpgrade}
+                  getUpgradeCosts={getUpgradeCosts}
+                />
+              ))}
+            </div>
+          </TabsContent>
+        </Tabs>
 
         {buildings.length === 0 && (
           <div className="text-center text-muted-foreground py-6">
@@ -537,31 +663,89 @@ export const BuildingManager: React.FC = () => {
           Construct New Buildings
         </h2>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-          {buildingTypes.map((buildingType) => {
-            const count = buildingsByType[buildingType].length;
-            const costs = getConstructionCosts(buildingType);
-            const template = initialBuildings.find(
-              (b) => b.type === buildingType
-            );
-            if (!template) return null;
-            const currentCount = buildingsByType[buildingType].length;
-            if (currentCount >= template.maxInstances) return null;
+        <Tabs defaultValue="all">
+          <TabsList className="mb-4">
+            <TabsTrigger value="all">All</TabsTrigger>
+            <TabsTrigger value="production">
+              <Factory className="h-4 w-4 mr-1" />
+              Production
+            </TabsTrigger>
+            <TabsTrigger value="research">
+              <Microscope className="h-4 w-4 mr-1" />
+              Research
+            </TabsTrigger>
+            <TabsTrigger value="housing">
+              <Home className="h-4 w-4 mr-1" />
+              Housing
+            </TabsTrigger>
+          </TabsList>
 
-            return (
-              <ConstructionCard
-                key={buildingType}
-                buildingType={buildingType}
-                buildingName={buildingNames[buildingType]}
-                buildingIcon={buildingIcons[buildingType]}
-                count={count}
-                costs={costs}
-                canAfford={() => canAffordBuilding(buildingType)}
-                onConstruct={constructBuilding}
-              />
-            );
-          })}
-        </div>
+          <TabsContent value="all" className="m-0">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              {buildingTypes.map((buildingType) => {
+                const buildingTemplate = initialBuildings.find(
+                  (b) => b.type === buildingType
+                );
+                if (!buildingTemplate) return null;
+                
+                const count = buildingsByType[buildingType].length;
+                const costs = getConstructionCosts(buildingType);
+                
+                if (count >= buildingTemplate.maxInstances) return null;
+
+                return (
+                  <ConstructionCard
+                    key={buildingType}
+                    buildingType={buildingType}
+                    buildingName={buildingNames[buildingType]}
+                    buildingIcon={buildingIcons[buildingType]}
+                    count={count}
+                    costs={costs}
+                    canAfford={(resource, cost) => 
+                      resource ? canAffordResource(resource, cost) : canAffordBuilding(buildingType)
+                    }
+                    onConstruct={constructBuilding}
+                  />
+                );
+              })}
+            </div>
+          </TabsContent>
+
+          {(["production", "research", "housing"] as BuildingCategory[]).map((category) => (
+            <TabsContent key={category} value={category} className="m-0">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                {buildingTypes
+                  .map((buildingType) => {
+                    const buildingTemplate = initialBuildings.find(
+                      (b) => b.type === buildingType && b.category === category
+                    );
+                    if (!buildingTemplate) return null;
+                    
+                    const count = buildingsByType[buildingType].length;
+                    const costs = getConstructionCosts(buildingType);
+                    
+                    if (count >= buildingTemplate.maxInstances) return null;
+
+                    return (
+                      <ConstructionCard
+                        key={buildingType}
+                        buildingType={buildingType}
+                        buildingName={buildingNames[buildingType]}
+                        buildingIcon={buildingIcons[buildingType]}
+                        count={count}
+                        costs={costs}
+                        canAfford={(resource, cost) => 
+                          resource ? canAffordResource(resource, cost) : canAffordBuilding(buildingType)
+                        }
+                        onConstruct={constructBuilding}
+                      />
+                    );
+                  })
+                  .filter(Boolean)}
+              </div>
+            </TabsContent>
+          ))}
+        </Tabs>
       </div>
     </div>
   );

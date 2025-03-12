@@ -1,5 +1,9 @@
+
 // Resource types
 export type ResourceType = "oxygen" | "food" | "energy" | "metals" | "science";
+
+// Building category types
+export type BuildingCategory = "production" | "housing" | "research" | "utility";
 
 // Building types
 export type BuildingType =
@@ -24,6 +28,7 @@ export interface ResourceData {
 export interface BuildingData {
   id: string;
   type: BuildingType;
+  category: BuildingCategory;
   name: string;
   description: string;
   level: number;
@@ -45,7 +50,7 @@ export interface BuildingData {
   };
   costMultiplier: number;
   productionMultiplier: number;
-  functioning?: boolean; // New property to track if building is functioning
+  functioning?: boolean;
 }
 
 // Alert thresholds
@@ -74,7 +79,7 @@ export interface GameState {
     total: number;
     available: number;
     maxCapacity: number;
-    deathTimer?: number; // New property to track time until colonist death
+    deathTimer?: number;
   };
   lastUpdate: number;
   paused: boolean;

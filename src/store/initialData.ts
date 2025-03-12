@@ -1,8 +1,10 @@
+
 import {
   BuildingData,
   ResourceType,
   ResourceAlertThresholds,
   BuildingType,
+  BuildingCategory,
 } from "./types";
 import buildingData from "../data/buildings.json";
 
@@ -15,10 +17,10 @@ export const generateId = (): string => {
 export const initialBuildings: Omit<BuildingData, "id">[] = buildingData.map(
   (building) => ({
     ...building,
-    type: building.type as BuildingType, // Ensure proper type casting
+    type: building.type as BuildingType,
+    category: building.category as BuildingCategory,
     level: 0,
     assignedWorkers: 0,
-    maxInstances: 1,
     efficiency: 0,
     functioning: true,
   })
