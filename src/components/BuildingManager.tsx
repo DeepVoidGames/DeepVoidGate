@@ -1,4 +1,3 @@
-
 import React, { useState } from "react";
 import {
   Home,
@@ -17,6 +16,7 @@ import {
   Factory,
   Microscope,
   Building,
+  Search,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
@@ -34,22 +34,80 @@ import { BuildingType, BuildingCategory } from "@/store/types";
 import { initialBuildings } from "@/store/initialData";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 
+// Centralna konfiguracja budynków
+//TODO Przenisnie tego do osobnego pliku najlepiej data/buildings.json
+const buildingConfig = [
+  {
+    type: "oxygenGenerator" as BuildingType,
+    name: "Oxygen Generator",
+    category: "production" as BuildingCategory,
+    icon: <Droplets className="h-5 w-5 text-cyan-400" />,
+  },
+  {
+    type: "hydroponicFarm" as BuildingType,
+    name: "Hydroponic Farm",
+    category: "production" as BuildingCategory,
+    icon: <Leaf className="h-5 w-5 text-green-400" />,
+  },
+  {
+    type: "solarPanel" as BuildingType,
+    name: "Solar Panel",
+    category: "production" as BuildingCategory,
+    icon: <Zap className="h-5 w-5 text-yellow-400" />,
+  },
+  {
+    type: "metalMine" as BuildingType,
+    name: "Metal Mine",
+    category: "production" as BuildingCategory,
+    icon: <Pickaxe className="h-5 w-5 text-zinc-400" />,
+  },
+  {
+    type: "researchLab" as BuildingType,
+    name: "Research Lab",
+    category: "research" as BuildingCategory,
+    icon: <FlaskConical className="h-5 w-5 text-purple-400" />,
+  },
+  {
+    type: "housing" as BuildingType,
+    name: "Basic House",
+    category: "housing" as BuildingCategory,
+    icon: <Home className="h-5 w-5 text-blue-400" />,
+  },
+];
+
+// Konfiguracja kategorii
+const categories = [
+  {
+    id: "all" as BuildingCategory | "all",
+    name: "All",
+    icon: <Building className="h-4 w-4" />,
+  },
+  {
+    id: "production" as BuildingCategory,
+    name: "Production",
+    icon: <Factory className="h-4 w-4" />,
+  },
+  {
+    id: "research" as BuildingCategory,
+    name: "Reasearch",
+    icon: <Microscope className="h-4 w-4" />,
+  },
+  {
+    id: "housing" as BuildingCategory,
+    name: "Housing",
+    icon: <Home className="h-4 w-4" />,
+  },
+];
+
 const ResourcesIcon = ({ resource }) => {
-  if (resource === "oxygen") {
-    return "O₂";
-  }
-  if (resource === "food") {
-    return "🌱";
-  }
-  if (resource === "energy") {
-    return "⚡";
-  }
-  if (resource === "metals") {
-    return "⛏️";
-  }
-  if (resource === "science") {
-    return "🔬";
-  }
+  const icons = {
+    oxygen: "O₂",
+    food: "🌱",
+    energy: "⚡",
+    metals: "⛏️",
+    science: "🔬",
+  };
+  return icons[resource] || "?";
 };
 
 // Extract BuildingCard component to improve maintainability and scalability
@@ -359,23 +417,12 @@ const ConstructionCard = ({
   );
 };
 
-// Category icon mapping
-const CategoryIcon = ({ category }: { category: BuildingCategory }) => {
-  const icons = {
-    production: <Factory className="h-4 w-4" />,
-    housing: <Home className="h-4 w-4" />,
-    research: <Microscope className="h-4 w-4" />,
-    utility: <Building className="h-4 w-4" />,
-  };
-
-  return icons[category] || <Building className="h-4 w-4" />;
-};
-
 export const BuildingManager: React.FC = () => {
   const { state, dispatch } = useGame();
   const { buildings, resources, population } = state;
   const [expandedBuilding, setExpandedBuilding] = useState<string | null>(null);
   const [activeTab, setActiveTab] = useState<string>("all");
+  const [searchQuery, setSearchQuery] = useState("");
 
   // Building icons mapping
   const buildingIcons: Record<BuildingType, React.ReactNode> = {
@@ -407,7 +454,7 @@ export const BuildingManager: React.FC = () => {
     const buildingTemplate = initialBuildings.find(
       (b) => b.type === buildingType
     );
-    
+
     if (!buildingTemplate) return false;
 
     // Check each resource cost
@@ -499,249 +546,212 @@ export const BuildingManager: React.FC = () => {
     buildingsByCategory[building.category].push(building);
   });
 
-  // Filter buildings based on active tab
-  const filteredBuildings = activeTab === "all" 
-    ? sortedBuildings 
-    : sortedBuildings.filter(building => building.category === activeTab);
+  // Filtrowanie budynków
+  const filteredBuildings = buildings
+    .filter(
+      (building) =>
+        activeTab === "all" ||
+        buildingConfig.find((b) => b.type === building.type)?.category ===
+          activeTab
+    )
+    .filter((building) => {
+      const search = searchQuery.toLowerCase();
+      return (
+        building.name.toLowerCase().includes(search) ||
+        building.description.toLowerCase().includes(search)
+      );
+    })
+    .sort((a, b) => a.type.localeCompare(b.type));
 
-  // Building types to display in construction menu
-  const buildingTypes: BuildingType[] = [
-    "oxygenGenerator",
-    "hydroponicFarm",
-    "solarPanel",
-    "metalMine",
-    "researchLab",
-    "housing",
-  ];
-
-  // Friendly names for building types
-  const buildingNames: Record<BuildingType, string> = {
-    oxygenGenerator: "Oxygen Generator",
-    hydroponicFarm: "Hydroponic Farm",
-    solarPanel: "Solar Array",
-    metalMine: "Metal Extractor",
-    researchLab: "Research Lab",
-    housing: "Habitat Dome",
-  };
-
-  // Category friendly names
-  const categoryNames: Record<BuildingCategory, string> = {
-    production: "Production",
-    housing: "Housing",
-    research: "Research",
-    utility: "Utility",
-  };
+  // Grupowanie typów budynków do konstrukcji
+  const availableBuildings = buildingConfig.reduce((acc, config) => {
+    const template = initialBuildings.find((b) => b.type === config.type);
+    if (template) {
+      acc[config.category] = [...(acc[config.category] || []), template];
+    }
+    return acc;
+  }, {} as Record<BuildingCategory, typeof initialBuildings>);
 
   return (
     <div className="space-y-6 animate-fade-in">
+      {/* Existing Buildings Section */}
       <div className="glass-panel p-4">
-        <div className="flex items-center justify-between mb-4">
-          <h2 className="text-lg font-medium text-foreground/90">
-            Colony Buildings
-          </h2>
-          <div className="flex items-center space-x-2 text-sm">
-            <Users className="h-4 w-4 text-blue-400" />
-            <span>
-              {population.available} / {population.total} workers available
-            </span>
-            {population.deathTimer && (
-              <div className="flex items-center text-red-400 ml-2">
-                <Clock className="h-4 w-4 mr-1" />
-                <span>Death in: {Math.floor(population.deathTimer)}s</span>
-              </div>
-            )}
+        <div className="flex flex-col md:flex-row justify-between mb-4 gap-4">
+          <div className="flex items-center gap-4">
+            <h2 className="text-lg font-medium text-foreground/90">
+              Colony Buildings
+            </h2>
+            <div className="hidden md:flex items-center space-x-2 text-sm">
+              <Users className="h-4 w-4 text-blue-400" />
+              <span>
+                {population.available} / {population.total} workers available
+              </span>
+              {population.deathTimer && (
+                <div className="flex items-center text-red-400 ml-2">
+                  <Clock className="h-4 w-4 mr-1" />
+                  <span>
+                    Oxygen depletion in: {Math.floor(population.deathTimer)}s
+                  </span>
+                </div>
+              )}
+            </div>
           </div>
         </div>
 
-        <Tabs defaultValue="all" value={activeTab} onValueChange={setActiveTab}>
-          <TabsList className="mb-4">
-            <TabsTrigger value="all">All Buildings</TabsTrigger>
-            <TabsTrigger value="production">
-              <Factory className="h-4 w-4 mr-1" />
-              Production
-            </TabsTrigger>
-            <TabsTrigger value="research">
-              <Microscope className="h-4 w-4 mr-1" />
-              Research
-            </TabsTrigger>
-            <TabsTrigger value="housing">
-              <Home className="h-4 w-4 mr-1" />
-              Housing
-            </TabsTrigger>
+        {/* Search input */}
+        <div className="relative max-w-md w-full mb-4">
+          <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+          <input
+            type="text"
+            placeholder="Search buildings..."
+            className="w-full pl-10 pr-4 py-2 bg-background/90 rounded-lg border focus:outline-none focus:ring-2 focus:ring-primary"
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+          />
+        </div>
+
+        {/* Existing buildings */}
+        <Tabs value={activeTab} onValueChange={setActiveTab}>
+          <TabsList className="grid grid-cols-2 md:grid-cols-4 gap-2 w-full">
+            {categories.map((category) => (
+              <TabsTrigger
+                key={category.id}
+                value={category.id}
+                className="flex items-center justify-center gap-2"
+              >
+                {category.icon}
+                {category.name}
+              </TabsTrigger>
+            ))}
           </TabsList>
 
-          <TabsContent value="all" className="m-0">
-            <div className="grid grid-cols-1 gap-4">
-              {filteredBuildings.map((building) => (
-                <BuildingCard
-                  key={building.id}
-                  building={building}
-                  isExpanded={expandedBuilding === building.id}
-                  onUpgrade={upgradeBuilding}
-                  onAdjustWorkers={adjustWorkers}
-                  onToggleExpand={(id) =>
-                    setExpandedBuilding(id === expandedBuilding ? null : id)
-                  }
-                  resources={resources}
-                  canUpgrade={canUpgrade}
-                  getUpgradeCosts={getUpgradeCosts}
-                />
-              ))}
-            </div>
-          </TabsContent>
-          
-          <TabsContent value="production" className="m-0">
-            <div className="grid grid-cols-1 gap-4">
-              {filteredBuildings.map((building) => (
-                <BuildingCard
-                  key={building.id}
-                  building={building}
-                  isExpanded={expandedBuilding === building.id}
-                  onUpgrade={upgradeBuilding}
-                  onAdjustWorkers={adjustWorkers}
-                  onToggleExpand={(id) =>
-                    setExpandedBuilding(id === expandedBuilding ? null : id)
-                  }
-                  resources={resources}
-                  canUpgrade={canUpgrade}
-                  getUpgradeCosts={getUpgradeCosts}
-                />
-              ))}
-            </div>
-          </TabsContent>
-
-          <TabsContent value="research" className="m-0">
-            <div className="grid grid-cols-1 gap-4">
-              {filteredBuildings.map((building) => (
-                <BuildingCard
-                  key={building.id}
-                  building={building}
-                  isExpanded={expandedBuilding === building.id}
-                  onUpgrade={upgradeBuilding}
-                  onAdjustWorkers={adjustWorkers}
-                  onToggleExpand={(id) =>
-                    setExpandedBuilding(id === expandedBuilding ? null : id)
-                  }
-                  resources={resources}
-                  canUpgrade={canUpgrade}
-                  getUpgradeCosts={getUpgradeCosts}
-                />
-              ))}
-            </div>
-          </TabsContent>
-
-          <TabsContent value="housing" className="m-0">
-            <div className="grid grid-cols-1 gap-4">
-              {filteredBuildings.map((building) => (
-                <BuildingCard
-                  key={building.id}
-                  building={building}
-                  isExpanded={expandedBuilding === building.id}
-                  onUpgrade={upgradeBuilding}
-                  onAdjustWorkers={adjustWorkers}
-                  onToggleExpand={(id) =>
-                    setExpandedBuilding(id === expandedBuilding ? null : id)
-                  }
-                  resources={resources}
-                  canUpgrade={canUpgrade}
-                  getUpgradeCosts={getUpgradeCosts}
-                />
-              ))}
-            </div>
-          </TabsContent>
+          {/*  Building cards */}
+          {categories.map((category) => (
+            <TabsContent key={category.id} value={category.id} className="m-0">
+              <div className="grid grid-cols-1 gap-4">
+                {filteredBuildings
+                  .filter(
+                    (building) =>
+                      category.id === "all" ||
+                      buildingConfig.find((b) => b.type === building.type)
+                        ?.category === category.id
+                  )
+                  .map((building) => (
+                    <BuildingCard
+                      key={building.id}
+                      building={building}
+                      isExpanded={expandedBuilding === building.id}
+                      onUpgrade={upgradeBuilding}
+                      onAdjustWorkers={adjustWorkers}
+                      onToggleExpand={(id) =>
+                        setExpandedBuilding(id === expandedBuilding ? null : id)
+                      }
+                      resources={resources}
+                      canUpgrade={canUpgrade}
+                      getUpgradeCosts={getUpgradeCosts}
+                    />
+                  ))}
+              </div>
+            </TabsContent>
+          ))}
         </Tabs>
-
-        {buildings.length === 0 && (
-          <div className="text-center text-muted-foreground py-6">
-            No buildings yet. Start building your colony!
-          </div>
-        )}
       </div>
 
+      {/* Construction Section */}
       <div className="glass-panel p-4">
         <h2 className="text-lg font-medium text-foreground/90 mb-4">
           Construct New Buildings
         </h2>
 
-        <Tabs defaultValue="all">
-          <TabsList className="mb-4">
-            <TabsTrigger value="all">All</TabsTrigger>
-            <TabsTrigger value="production">
-              <Factory className="h-4 w-4 mr-1" />
-              Production
-            </TabsTrigger>
-            <TabsTrigger value="research">
-              <Microscope className="h-4 w-4 mr-1" />
-              Research
-            </TabsTrigger>
-            <TabsTrigger value="housing">
-              <Home className="h-4 w-4 mr-1" />
-              Housing
-            </TabsTrigger>
+        <Tabs defaultValue="production">
+          <TabsList className="grid grid-cols-2 md:grid-cols-3 gap-2 w-full">
+            {categories.slice(1).map((category) => (
+              <TabsTrigger
+                key={category.id}
+                value={category.id}
+                className="flex items-center justify-center gap-2"
+              >
+                {category.icon}
+                {category.name}
+              </TabsTrigger>
+            ))}
           </TabsList>
 
-          <TabsContent value="all" className="m-0">
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-              {buildingTypes.map((buildingType) => {
-                const buildingTemplate = initialBuildings.find(
-                  (b) => b.type === buildingType
-                );
-                if (!buildingTemplate) return null;
-                
-                const count = buildingsByType[buildingType].length;
-                const costs = getConstructionCosts(buildingType);
-                
-                if (count >= buildingTemplate.maxInstances) return null;
-
-                return (
-                  <ConstructionCard
-                    key={buildingType}
-                    buildingType={buildingType}
-                    buildingName={buildingNames[buildingType]}
-                    buildingIcon={buildingIcons[buildingType]}
-                    count={count}
-                    costs={costs}
-                    canAfford={(resource, cost) => 
-                      resource ? canAffordResource(resource, cost) : canAffordBuilding(buildingType)
-                    }
-                    onConstruct={constructBuilding}
-                  />
-                );
-              })}
-            </div>
-          </TabsContent>
-
-          {(["production", "research", "housing"] as BuildingCategory[]).map((category) => (
-            <TabsContent key={category} value={category} className="m-0">
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                {buildingTypes
-                  .map((buildingType) => {
-                    const buildingTemplate = initialBuildings.find(
-                      (b) => b.type === buildingType && b.category === category
+          {categories.slice(1).map((category) => (
+            <TabsContent key={category.id} value={category.id} className="mt-4">
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 auto-rows-fr">
+                {buildingConfig
+                  .filter((b) => b.category === category.id)
+                  .map(({ type }) => {
+                    const template = initialBuildings.find(
+                      (b) => b.type === type
                     );
-                    if (!buildingTemplate) return null;
-                    
-                    const count = buildingsByType[buildingType].length;
-                    const costs = getConstructionCosts(buildingType);
-                    
-                    if (count >= buildingTemplate.maxInstances) return null;
+                    if (!template) return null;
+
+                    const count = buildings.filter(
+                      (b) => b.type === type
+                    ).length;
+                    if (count >= template.maxInstances) return null;
 
                     return (
-                      <ConstructionCard
-                        key={buildingType}
-                        buildingType={buildingType}
-                        buildingName={buildingNames[buildingType]}
-                        buildingIcon={buildingIcons[buildingType]}
-                        count={count}
-                        costs={costs}
-                        canAfford={(resource, cost) => 
-                          resource ? canAffordResource(resource, cost) : canAffordBuilding(buildingType)
-                        }
-                        onConstruct={constructBuilding}
-                      />
+                      <Card
+                        key={type}
+                        className="h-full flex flex-col border-border/20 shadow-sm"
+                      >
+                        <CardHeader className="p-4 pb-0">
+                          <div className="flex items-center space-x-2">
+                            {buildingConfig.find((b) => b.type === type)?.icon}
+                            <CardTitle className="text-sm font-semibold">
+                              {
+                                buildingConfig.find((b) => b.type === type)
+                                  ?.name
+                              }
+                            </CardTitle>
+                          </div>
+                        </CardHeader>
+
+                        <CardContent className="p-4 flex-1">
+                          <div className="grid grid-cols-2 gap-2 text-xs mb-4">
+                            {Object.entries(template.baseCost).map(
+                              ([resource, cost]) => (
+                                <div
+                                  key={resource}
+                                  className={`flex items-center space-x-1 px-2 py-1 rounded bg-background/50 ${
+                                    !canAffordResource(resource, Number(cost))
+                                      ? "text-red-400"
+                                      : "text-foreground/70"
+                                  }`}
+                                >
+                                  <span className="text-sm">
+                                    {ResourcesIcon({ resource })}
+                                  </span>
+                                  <span className="font-medium">
+                                    {formatNumber(Number(cost))}
+                                  </span>
+                                </div>
+                              )
+                            )}
+                          </div>
+                        </CardContent>
+
+                        <CardFooter className="p-4 pt-0 mt-auto">
+                          <Button
+                            size="sm"
+                            onClick={() => constructBuilding(type)}
+                            disabled={!canAffordBuilding(type)}
+                            className="w-full h-9 font-medium transition-all"
+                            variant={
+                              canAffordBuilding(type) ? "default" : "secondary"
+                            }
+                          >
+                            <span className="truncate">
+                              Construct ({count}/{template.maxInstances})
+                            </span>
+                          </Button>
+                        </CardFooter>
+                      </Card>
                     );
-                  })
-                  .filter(Boolean)}
+                  })}
               </div>
             </TabsContent>
           ))}

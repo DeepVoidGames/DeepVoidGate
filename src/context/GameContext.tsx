@@ -1,8 +1,13 @@
-
-import React, { createContext, useContext, useReducer, useEffect, ReactNode } from 'react';
-import { GameState } from '@/store/types';
-import { GameAction } from '@/store/actions';
-import { gameReducer, initialState } from '@/store/reducers/gameReducer';
+import React, {
+  createContext,
+  useContext,
+  useReducer,
+  useEffect,
+  ReactNode,
+} from "react";
+import { GameState } from "@/store/types";
+import { GameAction } from "@/store/actions";
+import { gameReducer, initialState } from "@/store/reducers/gameReducer";
 
 // Create the game context
 interface GameContextType {
@@ -19,35 +24,48 @@ interface GameProviderProps {
 
 export const GameProvider: React.FC<GameProviderProps> = ({ children }) => {
   const [state, dispatch] = useReducer(gameReducer, initialState);
-  
+
   // Game tick effect - runs every 100ms
   useEffect(() => {
     const tickInterval = setInterval(() => {
-      dispatch({ type: 'TICK', payload: { currentTime: Date.now() } });
+      dispatch({ type: "TICK", payload: { currentTime: Date.now() } });
     }, 100);
-    
+
     // Auto-save every minute
     const saveInterval = setInterval(() => {
-      dispatch({ type: 'SAVE_GAME' });
+      dispatch({ type: "SAVE_GAME" });
     }, 60000);
-    
+
     // Try to load saved game on first mount
-    const savedState = localStorage.getItem('deepvoidgate_save');
+    const savedState = localStorage.getItem("deepvoidgate_save");
     if (savedState) {
-      dispatch({ type: 'LOAD_GAME' });
+      dispatch({ type: "LOAD_GAME" });
     } else {
       // Start with some initial buildings for new game
-      dispatch({ type: 'CONSTRUCT_BUILDING', payload: { buildingType: 'oxygenGenerator' } });
-      dispatch({ type: 'CONSTRUCT_BUILDING', payload: { buildingType: 'hydroponicFarm' } });
-      dispatch({ type: 'CONSTRUCT_BUILDING', payload: { buildingType: 'solarPanel' } });
+      dispatch({
+        type: "CONSTRUCT_BUILDING",
+        payload: { buildingType: "oxygenGenerator" },
+      });
+      dispatch({
+        type: "CONSTRUCT_BUILDING",
+        payload: { buildingType: "hydroponicFarm" },
+      });
+      dispatch({
+        type: "CONSTRUCT_BUILDING",
+        payload: { buildingType: "solarPanel" },
+      });
+      dispatch({
+        type: "CONSTRUCT_BUILDING",
+        payload: { buildingType: "metalMine" },
+      });
     }
-    
+
     return () => {
       clearInterval(tickInterval);
       clearInterval(saveInterval);
     };
   }, []);
-  
+
   return (
     <GameContext.Provider value={{ state, dispatch }}>
       {children}
@@ -59,7 +77,7 @@ export const GameProvider: React.FC<GameProviderProps> = ({ children }) => {
 export const useGame = (): GameContextType => {
   const context = useContext(GameContext);
   if (context === undefined) {
-    throw new Error('useGame must be used within a GameProvider');
+    throw new Error("useGame must be used within a GameProvider");
   }
   return context;
 };

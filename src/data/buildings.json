@@ -1,4 +1,3 @@
-
 [
   {
     "type": "oxygenGenerator",
@@ -21,7 +20,7 @@
     },
     "costMultiplier": 1.5,
     "productionMultiplier": 1.2,
-    "maxInstances": 3
+    "maxInstances": 1
   },
   {
     "type": "hydroponicFarm",
@@ -47,7 +46,7 @@
     },
     "costMultiplier": 1.4,
     "productionMultiplier": 1.2,
-    "maxInstances": 3
+    "maxInstances": 1
   },
   {
     "type": "solarPanel",
@@ -65,7 +64,7 @@
     "requirements": {},
     "costMultiplier": 1.6,
     "productionMultiplier": 1.3,
-    "maxInstances": 5
+    "maxInstances": 1
   },
   {
     "type": "metalMine",
@@ -89,7 +88,7 @@
     },
     "costMultiplier": 1.5,
     "productionMultiplier": 1.2,
-    "maxInstances": 3
+    "maxInstances": 1
   },
   {
     "type": "researchLab",
@@ -114,7 +113,7 @@
     },
     "costMultiplier": 1.7,
     "productionMultiplier": 1.3,
-    "maxInstances": 2
+    "maxInstances": 1
   },
   {
     "type": "housing",
@@ -136,6 +135,6 @@
     },
     "costMultiplier": 1.6,
     "productionMultiplier": 1,
-    "maxInstances": 5
+    "maxInstances": 1
   }
 ]

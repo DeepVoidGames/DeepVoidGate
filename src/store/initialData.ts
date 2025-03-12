@@ -1,4 +1,3 @@
-
 import {
   BuildingData,
   ResourceType,
@@ -68,7 +67,7 @@ export const initialResourcesState = {
     color: "yellow",
   },
   metals: {
-    amount: 150,
+    amount: 200,
     production: 0,
     consumption: 0,
     capacity: 200,
