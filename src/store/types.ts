@@ -1,9 +1,14 @@
-
 // Resource types
-export type ResourceType = 'oxygen' | 'food' | 'energy' | 'metals' | 'science';
+export type ResourceType = "oxygen" | "food" | "energy" | "metals" | "science";
 
 // Building types
-export type BuildingType = 'oxygenGenerator' | 'hydroponicFarm' | 'solarPanel' | 'metalMine' | 'researchLab' | 'housing';
+export type BuildingType =
+  | "oxygenGenerator"
+  | "hydroponicFarm"
+  | "solarPanel"
+  | "metalMine"
+  | "researchLab"
+  | "housing";
 
 // Resource data structure
 export interface ResourceData {
@@ -23,6 +28,7 @@ export interface BuildingData {
   description: string;
   level: number;
   workerCapacity: number;
+  maxInstances: number;
   assignedWorkers: number;
   efficiency: number;
   baseCost: {

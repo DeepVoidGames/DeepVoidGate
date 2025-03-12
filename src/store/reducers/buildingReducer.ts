@@ -1,28 +1,31 @@
-import { toast } from '@/components/ui/use-toast';
-import { GameAction } from '../actions';
-import { BuildingData, BuildingType, ResourceType } from '../types';
-import { generateId, initialBuildings } from '../initialData';
-import { canAffordCost, applyResourceCost } from './resourceReducer';
-import { ResourcesState } from './resourceReducer';
+import { toast } from "@/components/ui/use-toast";
+import { GameAction } from "../actions";
+import { BuildingData, BuildingType, ResourceType } from "../types";
+import { generateId, initialBuildings } from "../initialData";
+import { canAffordCost, applyResourceCost } from "./resourceReducer";
+import { ResourcesState } from "./resourceReducer";
 
 // Calculate building efficiency based on worker assignment and resource requirements
 export const calculateBuildingEfficiency = (
   buildings: BuildingData[],
   resources: ResourcesState
 ): BuildingData[] => {
-  return buildings.map(building => {
+  return buildings.map((building) => {
     // First calculate worker efficiency - minimum 10% if no workers
-    let workerEfficiency = building.assignedWorkers > 0 
-      ? Math.min(1, building.assignedWorkers / building.workerCapacity)
-      : 0.1; // 10% efficiency with no workers
-    
+    let workerEfficiency =
+      building.assignedWorkers > 0
+        ? Math.min(1, building.assignedWorkers / building.workerCapacity)
+        : 0.1; // 10% efficiency with no workers
+
     // Check if all required resources are available
     let resourceEfficiency = 1;
     let functioning = true;
-    
+
     if (building.requirements) {
       // Check resource requirements
-      for (const [resourceKey, amount] of Object.entries(building.requirements)) {
+      for (const [resourceKey, amount] of Object.entries(
+        building.requirements
+      )) {
         const resource = resources[resourceKey as ResourceType];
         if (resource && resource.amount < amount) {
           // If any required resource is completely missing, building stops functioning
@@ -37,14 +40,16 @@ export const calculateBuildingEfficiency = (
         }
       }
     }
-    
+
     // Final efficiency is the minimum of both but only if building is functioning
-    const efficiency = functioning ? Math.min(workerEfficiency, resourceEfficiency) : 0;
-    
-    return { 
-      ...building, 
+    const efficiency = functioning
+      ? Math.min(workerEfficiency, resourceEfficiency)
+      : 0;
+
+    return {
+      ...building,
       efficiency,
-      functioning
+      functioning,
     };
   });
 };
@@ -55,30 +60,32 @@ export const applyBuildingEffects = (
   resources: ResourcesState
 ): ResourcesState => {
   const newResources = { ...resources };
-  
-  buildings.forEach(building => {
+
+  buildings.forEach((building) => {
     if (building.efficiency <= 0) return; // Skip inactive buildings
-    
+
     // Apply production effects
     Object.entries(building.baseProduction).forEach(([resource, amount]) => {
       const resourceKey = resource as ResourceType;
       if (newResources[resourceKey]) {
         // Use Number to ensure we're using numeric values
-        const productionAmount = Number(amount) * Number(building.level) * Number(building.efficiency);
+        const productionAmount =
+          Number(amount) * Number(building.level) * Number(building.efficiency);
         newResources[resourceKey].production += productionAmount;
       }
     });
-    
+
     // Apply consumption effects
     Object.entries(building.baseConsumption).forEach(([resource, amount]) => {
       const resourceKey = resource as ResourceType;
       if (newResources[resourceKey]) {
         // Use Number to ensure we're using numeric values
-        const consumptionAmount = Number(amount) * Number(building.level) * Number(building.efficiency);
+        const consumptionAmount =
+          Number(amount) * Number(building.level) * Number(building.efficiency);
         newResources[resourceKey].consumption += consumptionAmount;
       }
     });
-    
+
     // Apply resource requirements
     if (building.requirements && building.efficiency > 0) {
       Object.entries(building.requirements).forEach(([resource, amount]) => {
@@ -91,7 +98,7 @@ export const applyBuildingEffects = (
       });
     }
   });
-  
+
   return newResources;
 };
 
@@ -100,43 +107,60 @@ export const constructBuilding = (
   buildings: BuildingData[],
   resources: ResourcesState,
   buildingType: BuildingType
-): { buildings: BuildingData[], resources: ResourcesState, success: boolean } => {
+): {
+  buildings: BuildingData[];
+  resources: ResourcesState;
+  success: boolean;
+} => {
   // Find the building template
-  const buildingTemplate = initialBuildings.find(b => b.type === buildingType);
+  const buildingTemplate = initialBuildings.find(
+    (b) => b.type === buildingType
+  );
   if (!buildingTemplate) {
     return { buildings, resources, success: false };
   }
-  
+
+  // Sprawdź limit instancji
+  const existingCount = buildings.filter((b) => b.type === buildingType).length;
+  if (existingCount >= buildingTemplate.maxInstances) {
+    toast({
+      title: "Limit osiągnięty",
+      description: `Możesz zbudować maksymalnie ${buildingTemplate.maxInstances} ${buildingTemplate.name}.`,
+      variant: "destructive",
+    });
+    return { buildings, resources, success: false };
+  }
+
   // Check if we can afford the building
   if (!canAffordCost(resources, buildingTemplate.baseCost)) {
     toast({
       title: "Insufficient Resources",
       description: `You don't have enough resources to build a ${buildingTemplate.name}.`,
-      variant: "destructive"
+      variant: "destructive",
     });
     return { buildings, resources, success: false };
   }
-  
+
   // Subtract resources
   const newResources = applyResourceCost(resources, buildingTemplate.baseCost);
-  
+
   // Create new building
   const newBuilding: BuildingData = {
     ...buildingTemplate,
     id: generateId(),
     level: 1,
-    functioning: true
+    functioning: true,
   };
-  
+
   toast({
     title: "Building Constructed",
     description: `You've built a new ${newBuilding.name}!`,
   });
-  
+
   return {
     buildings: [...buildings, newBuilding],
     resources: newResources,
-    success: true
+    success: true,
   };
 };
 
@@ -145,37 +169,44 @@ export const upgradeBuilding = (
   buildings: BuildingData[],
   resources: ResourcesState,
   buildingId: string
-): { buildings: BuildingData[], resources: ResourcesState, success: boolean } => {
+): {
+  buildings: BuildingData[];
+  resources: ResourcesState;
+  success: boolean;
+} => {
   // Find the building
-  const buildingIndex = buildings.findIndex(b => b.id === buildingId);
+  const buildingIndex = buildings.findIndex((b) => b.id === buildingId);
   if (buildingIndex === -1) {
     return { buildings, resources, success: false };
   }
-  
+
   const building = buildings[buildingIndex];
-  
+
   // Calculate upgrade cost based on the building's level
   const upgradeCosts: { [key in ResourceType]?: number } = {};
-  
+
   Object.entries(building.baseCost).forEach(([resource, baseCost]) => {
     const resourceKey = resource as ResourceType;
-    const cost = Math.floor(Number(baseCost) * Math.pow(Number(building.costMultiplier), Number(building.level)));
+    const cost = Math.floor(
+      Number(baseCost) *
+        Math.pow(Number(building.costMultiplier), Number(building.level))
+    );
     upgradeCosts[resourceKey] = cost;
   });
-  
+
   // Check if we can afford the upgrade
   if (!canAffordCost(resources, upgradeCosts)) {
     toast({
       title: "Insufficient Resources",
       description: `You don't have enough resources to upgrade this ${building.name}.`,
-      variant: "destructive"
+      variant: "destructive",
     });
     return { buildings, resources, success: false };
   }
-  
+
   // Subtract resources
   const newResources = applyResourceCost(resources, upgradeCosts);
-  
+
   // Upgrade building
   const newBuildings = [...buildings];
   newBuildings[buildingIndex] = {
@@ -183,72 +214,77 @@ export const upgradeBuilding = (
     level: building.level + 1,
     workerCapacity: Math.floor(Number(building.workerCapacity) * 1.2),
   };
-  
+
   toast({
     title: "Building Upgraded",
-    description: `You've upgraded your ${building.name} to level ${building.level + 1}!`,
+    description: `You've upgraded your ${building.name} to level ${
+      building.level + 1
+    }!`,
   });
-  
+
   return {
     buildings: newBuildings,
     resources: newResources,
-    success: true
+    success: true,
   };
 };
 
 // Handle worker assignment
 export const assignWorker = (
   buildings: BuildingData[],
-  population: { total: number, available: number, maxCapacity: number },
+  population: { total: number; available: number; maxCapacity: number },
   buildingId: string,
   count: number
-): { buildings: BuildingData[], available: number, success: boolean } => {
+): { buildings: BuildingData[]; available: number; success: boolean } => {
   // Find the building
-  const buildingIndex = buildings.findIndex(b => b.id === buildingId);
+  const buildingIndex = buildings.findIndex((b) => b.id === buildingId);
   if (buildingIndex === -1) {
     return { buildings, available: population.available, success: false };
   }
-  
+
   const building = buildings[buildingIndex];
-  
+
   // Calculate current assigned workers across all buildings
   const currentAssigned = buildings.reduce(
     (total, b) => total + (b.id !== buildingId ? b.assignedWorkers : 0),
     0
   );
-  
+
   // Determine new worker assignment for this building
   let newAssignment = building.assignedWorkers + count;
-  
+
   // Cannot assign more workers than capacity
   newAssignment = Math.min(newAssignment, building.workerCapacity);
-  
+
   // Cannot assign more workers than available
   const maxPossibleAssignment = population.total - currentAssigned;
   newAssignment = Math.min(newAssignment, maxPossibleAssignment);
-  
+
   // Cannot have negative workers
   newAssignment = Math.max(0, newAssignment);
-  
+
   // If no change, return current state
   if (newAssignment === building.assignedWorkers) {
     return { buildings, available: population.available, success: false };
   }
-  
+
   // Update building
   const newBuildings = [...buildings];
   newBuildings[buildingIndex] = {
     ...building,
     assignedWorkers: newAssignment,
   };
-  
+
   // Recalculate available workers
-  const totalAssigned = newBuildings.reduce((total, b) => total + b.assignedWorkers, 0);
+  const totalAssigned = newBuildings.reduce(
+    (total, b) => total + b.assignedWorkers,
+    0
+  );
   const available = population.total - totalAssigned;
-  
+
   return {
     buildings: newBuildings,
     available,
-    success: true
+    success: true,
   };
 };

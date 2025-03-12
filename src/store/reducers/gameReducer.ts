@@ -1,23 +1,30 @@
-
-import { toast } from '@/components/ui/use-toast';
-import { GameAction } from '../actions';
-import { GameState } from '../types';
-import { initialResourcesState, initialPopulationState, initialBuildings, resourceAlertThresholds } from '../initialData';
-import { generateId } from '../initialData';
-import { 
-  resetProductionCounters, 
-  calculateResourceChanges, 
-  applyResourceCost, 
-  canAffordCost 
-} from './resourceReducer';
-import { 
-  calculateBuildingEfficiency, 
-  applyBuildingEffects, 
-  constructBuilding, 
-  upgradeBuilding, 
-  assignWorker 
-} from './buildingReducer';
-import { calculatePopulationConsumption, recalculateAvailableWorkers } from './populationReducer';
+import { toast } from "@/components/ui/use-toast";
+import { GameAction } from "../actions";
+import { GameState } from "../types";
+import {
+  initialResourcesState,
+  initialPopulationState,
+  initialBuildings,
+  resourceAlertThresholds,
+} from "../initialData";
+import { generateId } from "../initialData";
+import {
+  resetProductionCounters,
+  calculateResourceChanges,
+  applyResourceCost,
+  canAffordCost,
+} from "./resourceReducer";
+import {
+  calculateBuildingEfficiency,
+  applyBuildingEffects,
+  constructBuilding,
+  upgradeBuilding,
+  assignWorker,
+} from "./buildingReducer";
+import {
+  calculatePopulationConsumption,
+  recalculateAvailableWorkers,
+} from "./populationReducer";
 
 // Initialize the game state
 export const initialState: GameState = {
@@ -36,83 +43,107 @@ const DEATH_TIMER_WARNING = 60; // 1 minute warning
 const resourceWarnings = {
   oxygen: { lastWarned: 0 },
   food: { lastWarned: 0 },
-  energy: { lastWarned: 0 }
+  energy: { lastWarned: 0 },
 };
 
 // Game reducer function
-export const gameReducer = (state: GameState, action: GameAction): GameState => {
+export const gameReducer = (
+  state: GameState,
+  action: GameAction
+): GameState => {
   switch (action.type) {
-    case 'TICK': {
+    case "TICK": {
       if (state.paused) return state;
 
       const { currentTime } = action.payload;
       const deltaTime = (currentTime - state.lastUpdate) / 1000; // in seconds
-      
+
       // Reset production and consumption rates
       let newResources = resetProductionCounters(state.resources);
-      
+
       // Calculate efficiency for each building
-      const buildings = calculateBuildingEfficiency(state.buildings, newResources);
-      
+      const buildings = calculateBuildingEfficiency(
+        state.buildings,
+        newResources
+      );
+
       // Apply building effects to resources
       newResources = applyBuildingEffects(buildings, newResources);
-      
+
       // Apply population consumption
-      newResources = calculatePopulationConsumption(state.population, newResources);
-      
+      newResources = calculatePopulationConsumption(
+        state.population,
+        newResources
+      );
+
       // Calculate resource changes based on production/consumption
       newResources = calculateResourceChanges(newResources, deltaTime);
-      
+
       // Check for critical resource shortages (with cooldown to prevent spam)
       const currentTime_ms = Date.now();
       const warningCooldown = 60000; // 1 minute cooldown
-      
+
       // Death timer logic - check if oxygen or food is critically low
       let newPopulation = { ...state.population };
-      const hasOxygenShortage = newResources.oxygen.amount <= (resourceAlertThresholds.oxygen?.critical || 0);
-      const hasFoodShortage = newResources.food.amount <= (resourceAlertThresholds.food?.critical || 0);
-      
+      const hasOxygenShortage =
+        newResources.oxygen.amount <=
+        (resourceAlertThresholds.oxygen?.critical || 0);
+      const hasFoodShortage =
+        newResources.food.amount <=
+        (resourceAlertThresholds.food?.critical || 0);
+
       if (hasOxygenShortage || hasFoodShortage) {
         // Start or continue death timer
         if (!newPopulation.deathTimer) {
           newPopulation.deathTimer = DEATH_TIMER_START;
-          
+
           toast({
-            title: hasOxygenShortage ? "CRITICAL: Oxygen Depletion!" : "CRITICAL: Starvation Imminent!",
-            description: `Life support critical! Colonists will start dying in ${Math.floor(DEATH_TIMER_START / 60)} minutes if not resolved.`,
-            variant: "destructive"
+            title: hasOxygenShortage
+              ? "CRITICAL: Oxygen Depletion!"
+              : "CRITICAL: Starvation Imminent!",
+            description: `Life support critical! Colonists will start dying in ${Math.floor(
+              DEATH_TIMER_START / 60
+            )} minutes if not resolved.`,
+            variant: "destructive",
           });
         } else {
           // Decrease timer
           newPopulation.deathTimer -= deltaTime;
-          
+
           // 1 minute warning
-          if (newPopulation.deathTimer <= DEATH_TIMER_WARNING && newPopulation.deathTimer > DEATH_TIMER_WARNING - 10) {
+          if (
+            newPopulation.deathTimer <= DEATH_TIMER_WARNING &&
+            newPopulation.deathTimer > DEATH_TIMER_WARNING - 10
+          ) {
             toast({
               title: "EMERGENCY: Colonist Death Imminent!",
-              description: `First colonist will die in ${Math.floor(newPopulation.deathTimer)} seconds!`,
-              variant: "destructive"
+              description: `First colonist will die in ${Math.floor(
+                newPopulation.deathTimer
+              )} seconds!`,
+              variant: "destructive",
             });
           }
-          
+
           // If timer reaches zero, kill a colonist
           if (newPopulation.deathTimer <= 0) {
             newPopulation.total = Math.max(0, newPopulation.total - 1);
             newPopulation.available = Math.max(0, newPopulation.available - 1);
             newPopulation.deathTimer = DEATH_TIMER_START; // Reset timer for next colonist
-            
+
             toast({
               title: "Colony Disaster: Colonist Lost",
-              description: "A colonist has died due to critical life support failure.",
-              variant: "destructive"
+              description:
+                "A colonist has died due to critical life support failure.",
+              variant: "destructive",
             });
-            
+
             // If all colonists are dead, game over
             if (newPopulation.total === 0) {
               toast({
                 title: "GAME OVER",
-                description: "All colonists have perished. The colony has failed.",
-                variant: "destructive"
+                description:
+                  "All colonists have perished. The colony has failed.",
+                variant: "destructive",
               });
             }
           }
@@ -121,92 +152,135 @@ export const gameReducer = (state: GameState, action: GameAction): GameState => 
         // If resources are restored, clear death timer
         if (newPopulation.deathTimer) {
           newPopulation.deathTimer = undefined;
-          
+
           toast({
             title: "Life Support Restored",
-            description: "Critical resources restored to safe levels. Colonists are safe for now.",
+            description:
+              "Critical resources restored to safe levels. Colonists are safe for now.",
           });
         }
       }
-      
+
       // Check oxygen levels
       if (resourceAlertThresholds.oxygen) {
         const oxygenLevel = newResources.oxygen.amount;
-        const oxygenNet = newResources.oxygen.production - newResources.oxygen.consumption;
-        
-        if (oxygenLevel <= resourceAlertThresholds.oxygen.critical && oxygenNet < 0) {
-          if (currentTime_ms - resourceWarnings.oxygen.lastWarned > warningCooldown) {
+        const oxygenNet =
+          newResources.oxygen.production - newResources.oxygen.consumption;
+
+        if (
+          oxygenLevel <= resourceAlertThresholds.oxygen.critical &&
+          oxygenNet < 0
+        ) {
+          if (
+            currentTime_ms - resourceWarnings.oxygen.lastWarned >
+            warningCooldown
+          ) {
             toast({
               title: "CRITICAL: Oxygen Shortage!",
-              description: "Your colony is suffocating. Build more oxygen generators immediately!",
-              variant: "destructive"
+              description:
+                "Your colony is suffocating. Build more oxygen generators immediately!",
+              variant: "destructive",
             });
             resourceWarnings.oxygen.lastWarned = currentTime_ms;
           }
-        } else if (oxygenLevel <= resourceAlertThresholds.oxygen.low && oxygenNet < 0) {
-          if (currentTime_ms - resourceWarnings.oxygen.lastWarned > warningCooldown) {
+        } else if (
+          oxygenLevel <= resourceAlertThresholds.oxygen.low &&
+          oxygenNet < 0
+        ) {
+          if (
+            currentTime_ms - resourceWarnings.oxygen.lastWarned >
+            warningCooldown
+          ) {
             toast({
               title: "Warning: Low Oxygen",
-              description: "Oxygen levels are dangerously low. Increase production.",
-              variant: "destructive"
+              description:
+                "Oxygen levels are dangerously low. Increase production.",
+              variant: "destructive",
             });
             resourceWarnings.oxygen.lastWarned = currentTime_ms;
           }
         }
       }
-      
+
       // Check food levels
       if (resourceAlertThresholds.food) {
         const foodLevel = newResources.food.amount;
-        const foodNet = newResources.food.production - newResources.food.consumption;
-        
+        const foodNet =
+          newResources.food.production - newResources.food.consumption;
+
         if (foodLevel <= resourceAlertThresholds.food.critical && foodNet < 0) {
-          if (currentTime_ms - resourceWarnings.food.lastWarned > warningCooldown) {
+          if (
+            currentTime_ms - resourceWarnings.food.lastWarned >
+            warningCooldown
+          ) {
             toast({
               title: "CRITICAL: Food Shortage!",
-              description: "Your colonists are starving. Increase food production immediately!",
-              variant: "destructive"
+              description:
+                "Your colonists are starving. Increase food production immediately!",
+              variant: "destructive",
             });
             resourceWarnings.food.lastWarned = currentTime_ms;
           }
-        } else if (foodLevel <= resourceAlertThresholds.food.low && foodNet < 0) {
-          if (currentTime_ms - resourceWarnings.food.lastWarned > warningCooldown) {
+        } else if (
+          foodLevel <= resourceAlertThresholds.food.low &&
+          foodNet < 0
+        ) {
+          if (
+            currentTime_ms - resourceWarnings.food.lastWarned >
+            warningCooldown
+          ) {
             toast({
               title: "Warning: Low Food",
-              description: "Food supplies are running low. Increase production.",
-              variant: "destructive"
+              description:
+                "Food supplies are running low. Increase production.",
+              variant: "destructive",
             });
             resourceWarnings.food.lastWarned = currentTime_ms;
           }
         }
       }
-      
+
       // Check energy levels
       if (resourceAlertThresholds.energy) {
         const energyLevel = newResources.energy.amount;
-        const energyNet = newResources.energy.production - newResources.energy.consumption;
-        
-        if (energyLevel <= resourceAlertThresholds.energy.critical && energyNet < 0) {
-          if (currentTime_ms - resourceWarnings.energy.lastWarned > warningCooldown) {
+        const energyNet =
+          newResources.energy.production - newResources.energy.consumption;
+
+        if (
+          energyLevel <= resourceAlertThresholds.energy.critical &&
+          energyNet < 0
+        ) {
+          if (
+            currentTime_ms - resourceWarnings.energy.lastWarned >
+            warningCooldown
+          ) {
             toast({
               title: "CRITICAL: Energy Shortage!",
-              description: "Your colony is losing power. Build more energy generators!",
-              variant: "destructive"
+              description:
+                "Your colony is losing power. Build more energy generators!",
+              variant: "destructive",
             });
             resourceWarnings.energy.lastWarned = currentTime_ms;
           }
-        } else if (energyLevel <= resourceAlertThresholds.energy.low && energyNet < 0) {
-          if (currentTime_ms - resourceWarnings.energy.lastWarned > warningCooldown) {
+        } else if (
+          energyLevel <= resourceAlertThresholds.energy.low &&
+          energyNet < 0
+        ) {
+          if (
+            currentTime_ms - resourceWarnings.energy.lastWarned >
+            warningCooldown
+          ) {
             toast({
               title: "Warning: Low Energy",
-              description: "Energy reserves are running low. Increase production.",
-              variant: "destructive"
+              description:
+                "Energy reserves are running low. Increase production.",
+              variant: "destructive",
             });
             resourceWarnings.energy.lastWarned = currentTime_ms;
           }
         }
       }
-      
+
       return {
         ...state,
         resources: newResources,
@@ -215,39 +289,52 @@ export const gameReducer = (state: GameState, action: GameAction): GameState => 
         lastUpdate: currentTime,
       };
     }
-    
-    case 'CONSTRUCT_BUILDING': {
+
+    case "CONSTRUCT_BUILDING": {
       const { buildingType } = action.payload;
-      const result = constructBuilding(state.buildings, state.resources, buildingType);
-      
+      const result = constructBuilding(
+        state.buildings,
+        state.resources,
+        buildingType
+      );
+
       if (!result.success) return state;
-      
+
       return {
         ...state,
         resources: result.resources,
         buildings: result.buildings,
       };
     }
-    
-    case 'UPGRADE_BUILDING': {
+
+    case "UPGRADE_BUILDING": {
       const { buildingId } = action.payload;
-      const result = upgradeBuilding(state.buildings, state.resources, buildingId);
-      
+      const result = upgradeBuilding(
+        state.buildings,
+        state.resources,
+        buildingId
+      );
+
       if (!result.success) return state;
-      
+
       return {
         ...state,
         resources: result.resources,
         buildings: result.buildings,
       };
     }
-    
-    case 'ASSIGN_WORKER': {
+
+    case "ASSIGN_WORKER": {
       const { buildingId, count } = action.payload;
-      const result = assignWorker(state.buildings, state.population, buildingId, count);
-      
+      const result = assignWorker(
+        state.buildings,
+        state.population,
+        buildingId,
+        count
+      );
+
       if (!result.success) return state;
-      
+
       return {
         ...state,
         buildings: result.buildings,
@@ -257,69 +344,69 @@ export const gameReducer = (state: GameState, action: GameAction): GameState => 
         },
       };
     }
-    
-    case 'SAVE_GAME': {
+
+    case "SAVE_GAME": {
       try {
-        localStorage.setItem('deepvoidgate_save', JSON.stringify(state));
+        localStorage.setItem("deepvoidgate_save", JSON.stringify(state));
         toast({
           title: "Game Saved",
-          description: "Your progress has been saved successfully."
+          description: "Your progress has been saved successfully.",
         });
       } catch (error) {
-        console.error('Failed to save game:', error);
+        console.error("Failed to save game:", error);
         toast({
           title: "Save Failed",
           description: "There was an error saving your game.",
-          variant: "destructive"
+          variant: "destructive",
         });
       }
       return state;
     }
-    
-    case 'LOAD_GAME': {
+
+    case "LOAD_GAME": {
       try {
-        const savedState = localStorage.getItem('deepvoidgate_save');
+        const savedState = localStorage.getItem("deepvoidgate_save");
         if (!savedState) {
           toast({
             title: "No Saved Game",
             description: "No saved game was found. Starting a new game.",
-            variant: "destructive"
+            variant: "destructive",
           });
           return initialState;
         }
-        
+
         const parsedState = JSON.parse(savedState) as GameState;
         toast({
           title: "Game Loaded",
-          description: "Your saved game has been loaded successfully."
+          description: "Your saved game has been loaded successfully.",
         });
         return {
           ...parsedState,
           lastUpdate: Date.now(),
         };
       } catch (error) {
-        console.error('Failed to load game:', error);
+        console.error("Failed to load game:", error);
         toast({
           title: "Load Failed",
           description: "There was an error loading your saved game.",
-          variant: "destructive"
+          variant: "destructive",
         });
         return state;
       }
     }
-    
-    case 'RESET_GAME': {
-      localStorage.removeItem('deepvoidgate_save');
+
+    case "RESET_GAME": {
+      localStorage.removeItem("deepvoidgate_save");
       toast({
         title: "Game Reset",
-        description: "Your game has been reset. Starting a new game."
+        description: "Your game has been reset. Starting a new game.",
       });
       return {
         ...initialState,
         lastUpdate: Date.now(),
       };
     }
-    
+
     default:
       return state;
   }
