@@ -1,5 +1,5 @@
 
-import { BuildingData, ResourceType, ResourceAlertThresholds } from './types';
+import { BuildingData, ResourceType, ResourceAlertThresholds, BuildingType } from './types';
 import buildingData from '../data/buildings.json';
 
 // Generate a unique ID
@@ -10,9 +10,11 @@ export const generateId = (): string => {
 // Initialize buildings from JSON data
 export const initialBuildings: Omit<BuildingData, 'id'>[] = buildingData.map(building => ({
   ...building,
+  type: building.type as BuildingType, // Ensure proper type casting
   level: 0,
   assignedWorkers: 0,
-  efficiency: 0
+  efficiency: 0,
+  functioning: true
 }));
 
 // Resource alert thresholds
@@ -78,4 +80,5 @@ export const initialPopulationState = {
   total: 10,
   available: 10,
   maxCapacity: 10,
+  deathTimer: null,
 };

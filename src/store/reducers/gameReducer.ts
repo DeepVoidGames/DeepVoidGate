@@ -28,6 +28,10 @@ export const initialState: GameState = {
   paused: false,
 };
 
+// Constants for death timer
+const DEATH_TIMER_START = 120; // 2 minutes until death
+const DEATH_TIMER_WARNING = 60; // 1 minute warning
+
 // Track resource warnings to avoid spamming
 const resourceWarnings = {
   oxygen: { lastWarned: 0 },
@@ -62,6 +66,68 @@ export const gameReducer = (state: GameState, action: GameAction): GameState => 
       // Check for critical resource shortages (with cooldown to prevent spam)
       const currentTime_ms = Date.now();
       const warningCooldown = 60000; // 1 minute cooldown
+      
+      // Death timer logic - check if oxygen or food is critically low
+      let newPopulation = { ...state.population };
+      const hasOxygenShortage = newResources.oxygen.amount <= (resourceAlertThresholds.oxygen?.critical || 0);
+      const hasFoodShortage = newResources.food.amount <= (resourceAlertThresholds.food?.critical || 0);
+      
+      if (hasOxygenShortage || hasFoodShortage) {
+        // Start or continue death timer
+        if (!newPopulation.deathTimer) {
+          newPopulation.deathTimer = DEATH_TIMER_START;
+          
+          toast({
+            title: hasOxygenShortage ? "CRITICAL: Oxygen Depletion!" : "CRITICAL: Starvation Imminent!",
+            description: `Life support critical! Colonists will start dying in ${Math.floor(DEATH_TIMER_START / 60)} minutes if not resolved.`,
+            variant: "destructive"
+          });
+        } else {
+          // Decrease timer
+          newPopulation.deathTimer -= deltaTime;
+          
+          // 1 minute warning
+          if (newPopulation.deathTimer <= DEATH_TIMER_WARNING && newPopulation.deathTimer > DEATH_TIMER_WARNING - 10) {
+            toast({
+              title: "EMERGENCY: Colonist Death Imminent!",
+              description: `First colonist will die in ${Math.floor(newPopulation.deathTimer)} seconds!`,
+              variant: "destructive"
+            });
+          }
+          
+          // If timer reaches zero, kill a colonist
+          if (newPopulation.deathTimer <= 0) {
+            newPopulation.total = Math.max(0, newPopulation.total - 1);
+            newPopulation.available = Math.max(0, newPopulation.available - 1);
+            newPopulation.deathTimer = DEATH_TIMER_START; // Reset timer for next colonist
+            
+            toast({
+              title: "Colony Disaster: Colonist Lost",
+              description: "A colonist has died due to critical life support failure.",
+              variant: "destructive"
+            });
+            
+            // If all colonists are dead, game over
+            if (newPopulation.total === 0) {
+              toast({
+                title: "GAME OVER",
+                description: "All colonists have perished. The colony has failed.",
+                variant: "destructive"
+              });
+            }
+          }
+        }
+      } else {
+        // If resources are restored, clear death timer
+        if (newPopulation.deathTimer) {
+          newPopulation.deathTimer = undefined;
+          
+          toast({
+            title: "Life Support Restored",
+            description: "Critical resources restored to safe levels. Colonists are safe for now.",
+          });
+        }
+      }
       
       // Check oxygen levels
       if (resourceAlertThresholds.oxygen) {
@@ -145,6 +211,7 @@ export const gameReducer = (state: GameState, action: GameAction): GameState => 
         ...state,
         resources: newResources,
         buildings,
+        population: newPopulation,
         lastUpdate: currentTime,
       };
     }

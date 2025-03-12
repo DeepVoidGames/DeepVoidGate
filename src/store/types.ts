@@ -39,11 +39,20 @@ export interface BuildingData {
   };
   costMultiplier: number;
   productionMultiplier: number;
+  functioning?: boolean; // New property to track if building is functioning
 }
 
 // Alert thresholds
 export interface ResourceAlertThresholds {
-  [key in ResourceType]?: {
+  oxygen?: {
+    low: number;
+    critical: number;
+  };
+  food?: {
+    low: number;
+    critical: number;
+  };
+  energy?: {
     low: number;
     critical: number;
   };
@@ -59,6 +68,7 @@ export interface GameState {
     total: number;
     available: number;
     maxCapacity: number;
+    deathTimer?: number; // New property to track time until colonist death
   };
   lastUpdate: number;
   paused: boolean;

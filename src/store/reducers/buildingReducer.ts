@@ -1,4 +1,3 @@
-
 import { toast } from '@/components/ui/use-toast';
 import { GameAction } from '../actions';
 import { BuildingData, BuildingType, ResourceType } from '../types';
@@ -12,28 +11,41 @@ export const calculateBuildingEfficiency = (
   resources: ResourcesState
 ): BuildingData[] => {
   return buildings.map(building => {
-    // First calculate worker efficiency
-    let workerEfficiency = Math.min(1, building.assignedWorkers / building.workerCapacity);
+    // First calculate worker efficiency - minimum 10% if no workers
+    let workerEfficiency = building.assignedWorkers > 0 
+      ? Math.min(1, building.assignedWorkers / building.workerCapacity)
+      : 0.1; // 10% efficiency with no workers
     
-    // Then check resource requirements
+    // Check if all required resources are available
     let resourceEfficiency = 1;
+    let functioning = true;
     
     if (building.requirements) {
-      // Check if all required resources are available
+      // Check resource requirements
       for (const [resourceKey, amount] of Object.entries(building.requirements)) {
         const resource = resources[resourceKey as ResourceType];
         if (resource && resource.amount < amount) {
-          // Building can't operate at full capacity due to resource shortage
+          // If any required resource is completely missing, building stops functioning
+          if (resource.amount <= 0) {
+            functioning = false;
+            resourceEfficiency = 0;
+            break;
+          }
+          // Otherwise, building can't operate at full capacity due to resource shortage
           const availableRatio = resource.amount / amount;
           resourceEfficiency = Math.min(resourceEfficiency, availableRatio);
         }
       }
     }
     
-    // Final efficiency is the minimum of both
-    const efficiency = Math.min(workerEfficiency, resourceEfficiency);
+    // Final efficiency is the minimum of both but only if building is functioning
+    const efficiency = functioning ? Math.min(workerEfficiency, resourceEfficiency) : 0;
     
-    return { ...building, efficiency };
+    return { 
+      ...building, 
+      efficiency,
+      functioning
+    };
   });
 };
 
@@ -51,7 +63,9 @@ export const applyBuildingEffects = (
     Object.entries(building.baseProduction).forEach(([resource, amount]) => {
       const resourceKey = resource as ResourceType;
       if (newResources[resourceKey]) {
-        newResources[resourceKey].production += amount * building.level * building.efficiency;
+        // Use Number to ensure we're using numeric values
+        const productionAmount = Number(amount) * Number(building.level) * Number(building.efficiency);
+        newResources[resourceKey].production += productionAmount;
       }
     });
     
@@ -59,7 +73,9 @@ export const applyBuildingEffects = (
     Object.entries(building.baseConsumption).forEach(([resource, amount]) => {
       const resourceKey = resource as ResourceType;
       if (newResources[resourceKey]) {
-        newResources[resourceKey].consumption += amount * building.level * building.efficiency;
+        // Use Number to ensure we're using numeric values
+        const consumptionAmount = Number(amount) * Number(building.level) * Number(building.efficiency);
+        newResources[resourceKey].consumption += consumptionAmount;
       }
     });
     
@@ -68,8 +84,9 @@ export const applyBuildingEffects = (
       Object.entries(building.requirements).forEach(([resource, amount]) => {
         const resourceKey = resource as ResourceType;
         if (newResources[resourceKey]) {
-          // Requirements are ongoing consumption
-          newResources[resourceKey].consumption += amount * building.level;
+          // Requirements are ongoing consumption - use Number to ensure numeric values
+          const requiredAmount = Number(amount) * Number(building.level);
+          newResources[resourceKey].consumption += requiredAmount;
         }
       });
     }
@@ -108,6 +125,7 @@ export const constructBuilding = (
     ...buildingTemplate,
     id: generateId(),
     level: 1,
+    functioning: true
   };
   
   toast({
@@ -141,7 +159,7 @@ export const upgradeBuilding = (
   
   Object.entries(building.baseCost).forEach(([resource, baseCost]) => {
     const resourceKey = resource as ResourceType;
-    const cost = Math.floor(baseCost * Math.pow(building.costMultiplier, building.level));
+    const cost = Math.floor(Number(baseCost) * Math.pow(Number(building.costMultiplier), Number(building.level)));
     upgradeCosts[resourceKey] = cost;
   });
   
@@ -163,7 +181,7 @@ export const upgradeBuilding = (
   newBuildings[buildingIndex] = {
     ...building,
     level: building.level + 1,
-    workerCapacity: Math.floor(building.workerCapacity * 1.2),
+    workerCapacity: Math.floor(Number(building.workerCapacity) * 1.2),
   };
   
   toast({

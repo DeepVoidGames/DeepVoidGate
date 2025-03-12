@@ -9,7 +9,10 @@ import {
   FlaskConical,
   ArrowUp,
   ArrowDown,
-  Users
+  Users,
+  AlertTriangle,
+  X,
+  Clock
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
@@ -36,7 +39,7 @@ const BuildingCard = ({ building, onUpgrade, onAdjustWorkers, onToggleExpand, is
       key={building.id} 
       className={`neo-panel overflow-hidden transition-all duration-300 ${
         isExpanded ? 'border-primary/30' : 'border-border/10'
-      }`}
+      } ${!building.functioning ? 'bg-red-950/10 border-red-800/30' : ''}`}
     >
       <CardHeader className="p-4 pb-0">
         <div className="flex items-center justify-between">
@@ -44,8 +47,14 @@ const BuildingCard = ({ building, onUpgrade, onAdjustWorkers, onToggleExpand, is
             {buildingIcons[building.type]}
             <CardTitle className="text-base">{building.name}</CardTitle>
           </div>
-          <div className="text-sm font-medium">
-            Lvl {building.level}
+          <div className="text-sm font-medium flex items-center gap-2">
+            {!building.functioning && (
+              <div className="flex items-center text-red-400 tooltip" title="Building not functioning">
+                <AlertTriangle className="h-4 w-4 mr-1" />
+                <span>Not Working</span>
+              </div>
+            )}
+            <span>Lvl {building.level}</span>
           </div>
         </div>
         <CardDescription className="mt-1 text-xs">
@@ -60,10 +69,14 @@ const BuildingCard = ({ building, onUpgrade, onAdjustWorkers, onToggleExpand, is
             <span>{building.assignedWorkers} / {building.workerCapacity} workers</span>
           </div>
           <div className={`
-            ${building.efficiency >= 0.9 ? 'text-green-400' : 
-              building.efficiency >= 0.5 ? 'text-yellow-400' : 'text-red-400'}
+            ${building.functioning ? 
+                (building.efficiency >= 0.9 ? 'text-green-400' : 
+                 building.efficiency >= 0.5 ? 'text-yellow-400' : 'text-red-400')
+              : 'text-red-400'}
           `}>
-            {Math.round(building.efficiency * 100)}% Efficiency
+            {building.functioning ? 
+              `${Math.round(building.efficiency * 100)}% Efficiency` : 
+              <span className="flex items-center"><X className="h-4 w-4 mr-1" /> Disabled</span>}
           </div>
         </div>
         
@@ -104,8 +117,9 @@ const BuildingCard = ({ building, onUpgrade, onAdjustWorkers, onToggleExpand, is
                     <span className={`resource-badge resource-badge-${resource}`}>
                       {resources[resource]?.icon}
                     </span>
-                    <span className="text-green-400">
-                      +{formatNumber(amount * building.level * building.efficiency)}/s
+                    <span className={building.functioning ? "text-green-400" : "text-gray-400"}>
+                      +{formatNumber(Number(amount) * Number(building.level) * Number(building.efficiency))}/s
+                      {!building.functioning && " (disabled)"}
                     </span>
                   </div>
                 ))}
@@ -114,8 +128,9 @@ const BuildingCard = ({ building, onUpgrade, onAdjustWorkers, onToggleExpand, is
                     <span className={`resource-badge resource-badge-${resource}`}>
                       {resources[resource]?.icon}
                     </span>
-                    <span className="text-red-400">
-                      -{formatNumber(amount * building.level * building.efficiency)}/s
+                    <span className={building.functioning ? "text-red-400" : "text-gray-400"}>
+                      -{formatNumber(Number(amount) * Number(building.level) * Number(building.efficiency))}/s
+                      {!building.functioning && " (disabled)"}
                     </span>
                   </div>
                 ))}
@@ -134,7 +149,8 @@ const BuildingCard = ({ building, onUpgrade, onAdjustWorkers, onToggleExpand, is
                           {resources[resource]?.icon}
                         </span>
                         <span className={hasEnough ? "text-foreground/70" : "text-red-400"}>
-                          Needs {formatNumber(amount * building.level)}
+                          Needs {formatNumber(Number(amount) * Number(building.level))}
+                          {!hasEnough && " (missing)"}
                         </span>
                       </div>
                     );
@@ -158,12 +174,12 @@ const BuildingCard = ({ building, onUpgrade, onAdjustWorkers, onToggleExpand, is
                   <div 
                     key={resource} 
                     className={`flex items-center space-x-1 ${
-                      resources[resource].amount < cost 
+                      resources[resource].amount < Number(cost) 
                         ? 'text-red-400' : 'text-foreground/70'
                     }`}
                   >
                     <span>{resource}:</span>
-                    <span>{formatNumber(cost)}</span>
+                    <span>{formatNumber(Number(cost))}</span>
                   </div>
                 ))}
               </div>
@@ -195,11 +211,11 @@ const ConstructionCard = ({ buildingType, count, costs, canAfford, onConstruct, 
             <div 
               key={resource} 
               className={`flex items-center space-x-1 ${
-                !canAfford(resource, cost) ? 'text-red-400' : 'text-foreground/70'
+                !canAfford(resource, Number(cost)) ? 'text-red-400' : 'text-foreground/70'
               }`}
             >
               <span>{resource}:</span>
-              <span>{formatNumber(cost)}</span>
+              <span>{formatNumber(Number(cost))}</span>
             </div>
           ))}
         </div>
@@ -256,7 +272,7 @@ export const BuildingManager: React.FC = () => {
     if (!template) return false;
     
     for (const [resource, cost] of Object.entries(template.baseCost)) {
-      if (resources[resource as keyof typeof resources].amount < cost) {
+      if (resources[resource as keyof typeof resources].amount < Number(cost)) {
         return false;
       }
     }
@@ -278,7 +294,7 @@ export const BuildingManager: React.FC = () => {
     const costs: Record<string, number> = {};
     
     for (const [resource, baseCost] of Object.entries(building.baseCost)) {
-      costs[resource] = Math.floor(baseCost * Math.pow(building.costMultiplier, building.level));
+      costs[resource] = Math.floor(Number(baseCost) * Math.pow(Number(building.costMultiplier), Number(building.level)));
     }
     
     return costs;
@@ -289,7 +305,7 @@ export const BuildingManager: React.FC = () => {
     const costs = getUpgradeCosts(building);
     
     for (const [resource, cost] of Object.entries(costs)) {
-      if (resources[resource as keyof typeof resources].amount < cost) {
+      if (resources[resource as keyof typeof resources].amount < Number(cost)) {
         return false;
       }
     }
@@ -353,6 +369,12 @@ export const BuildingManager: React.FC = () => {
           <div className="flex items-center space-x-2 text-sm">
             <Users className="h-4 w-4 text-blue-400" />
             <span>{population.available} / {population.total} workers available</span>
+            {population.deathTimer && (
+              <div className="flex items-center text-red-400 ml-2">
+                <Clock className="h-4 w-4 mr-1" />
+                <span>Death in: {Math.floor(population.deathTimer)}s</span>
+              </div>
+            )}
           </div>
         </div>
         
