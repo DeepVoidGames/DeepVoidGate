@@ -23,7 +23,7 @@ const ConstructionSection = ({
   canAffordBuilding,
 }) => {
   return (
-    <div>
+    <div className="space-y-4 my-5">
       {/* Construction Section */}
       <div className="glass-panel p-4">
         <h2 className="text-lg font-medium text-foreground/90 mb-4">
@@ -31,7 +31,7 @@ const ConstructionSection = ({
         </h2>
 
         <Tabs defaultValue="production">
-          <TabsList className="grid grid-cols-2 md:grid-cols-3 gap-2 w-full">
+          <TabsList className="grid grid-cols-2 md:grid-cols-4 gap-2 w-full">
             {categories.slice(1).map((category) => (
               <TabsTrigger
                 key={category.id}
@@ -108,8 +108,8 @@ const ConstructionSection = ({
 
                           {/* Production & Consumption */}
                           <div className="space-y-3">
-                            {Object.entries(template.baseProduction).length >
-                              0 && (
+                            {Object.entries(template?.baseProduction || {})
+                              .length > 0 && (
                               <div className="space-y-2">
                                 <h4 className="text-xs font-medium text-foreground/80">
                                   Production
@@ -132,8 +132,33 @@ const ConstructionSection = ({
                               </div>
                             )}
 
-                            {Object.entries(template.baseConsumption).length >
-                              0 && (
+                            {/* Storage Cap */}
+                            {Object.entries(template?.storageBonus || {})
+                              .length > 0 && (
+                              <div className="space-y-2">
+                                <h4 className="text-xs font-medium text-foreground/80">
+                                  Storage
+                                </h4>
+                                <div className="grid grid-cols-2 gap-2">
+                                  {Object.entries(template.storageBonus).map(
+                                    ([resource, amount]) => (
+                                      <div
+                                        key={resource}
+                                        className="flex items-center space-x-2 px-2 py-1.5 rounded-md bg-green-900/20 text-green-400"
+                                      >
+                                        <span>{resources[resource]?.icon}</span>
+                                        <span className="text-xs font-medium">
+                                          +{formatNumber(Number(amount))}
+                                        </span>
+                                      </div>
+                                    )
+                                  )}
+                                </div>
+                              </div>
+                            )}
+
+                            {Object.entries(template?.baseConsumption || {})
+                              .length > 0 && (
                               <div className="space-y-2">
                                 <h4 className="text-xs font-medium text-foreground/80">
                                   Consumption

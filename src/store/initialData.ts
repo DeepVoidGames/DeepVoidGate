@@ -49,6 +49,7 @@ export const initialResourcesState = {
     capacity: 100,
     icon: "O₂",
     color: "cyan",
+    baseCapacity: 100,
   },
   food: {
     amount: 50,
@@ -57,6 +58,7 @@ export const initialResourcesState = {
     capacity: 100,
     icon: "🌱",
     color: "green",
+    baseCapacity: 100,
   },
   energy: {
     amount: 100,
@@ -65,6 +67,7 @@ export const initialResourcesState = {
     capacity: 200,
     icon: "⚡",
     color: "yellow",
+    baseCapacity: 200,
   },
   metals: {
     amount: 200,
@@ -73,6 +76,7 @@ export const initialResourcesState = {
     capacity: 200,
     icon: "⛏️",
     color: "zinc",
+    baseCapacity: 200,
   },
   science: {
     amount: 0,
@@ -81,6 +85,7 @@ export const initialResourcesState = {
     capacity: 100,
     icon: "🔬",
     color: "purple",
+    baseCapacity: 100,
   },
 };
 

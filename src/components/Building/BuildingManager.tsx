@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useCallback, useState } from "react";
 import {
   Home,
   Droplets,
@@ -73,6 +73,12 @@ const buildingConfig = [
     category: "storage" as BuildingCategory,
     icon: <Warehouse className="h-5 w-5 text-blue-400" />,
   },
+  {
+    type: "basicBattery" as BuildingType,
+    name: "Basic Battery",
+    category: "storage" as BuildingCategory,
+    icon: <Zap className="h-5 w-5 text-yellow-400" />,
+  },
 ];
 
 // Konfiguracja kategorii
@@ -97,6 +103,11 @@ const categories = [
     name: "Housing",
     icon: <Home className="h-4 w-4" />,
   },
+  {
+    id: "storage" as BuildingCategory,
+    name: "Storage",
+    icon: <Package className="h-4 w-4" />,
+  },
 ];
 
 const ResourcesIcon = ({ resource }) => {
@@ -117,20 +128,13 @@ export const BuildingManager: React.FC = () => {
   const [activeTab, setActiveTab] = useState<string>("all");
   const [searchQuery, setSearchQuery] = useState("");
 
-  // Building icons mapping
-  const buildingIcons: Record<BuildingType, React.ReactNode> = {
-    oxygenGenerator: <Droplets className="h-5 w-5 text-cyan-400" />,
-    hydroponicFarm: <Leaf className="h-5 w-5 text-green-400" />,
-    solarPanel: <Zap className="h-5 w-5 text-yellow-400" />,
-    metalMine: <Pickaxe className="h-5 w-5 text-zinc-400" />,
-    researchLab: <FlaskConical className="h-5 w-5 text-purple-400" />,
-    housing: <Home className="h-5 w-5 text-blue-400" />,
-  };
-
   // Function to construct a new building
-  const constructBuilding = (buildingType: BuildingType) => {
-    dispatch({ type: "CONSTRUCT_BUILDING", payload: { buildingType } });
-  };
+  const constructBuilding = useCallback(
+    (buildingType: BuildingType) => {
+      dispatch({ type: "CONSTRUCT_BUILDING", payload: { buildingType } });
+    },
+    [dispatch]
+  );
 
   // Function to upgrade a building
   const upgradeBuilding = (buildingId: string) => {
@@ -178,14 +182,15 @@ export const BuildingManager: React.FC = () => {
   // Get upgrade costs for a building
   const getUpgradeCosts = (building: (typeof buildings)[0]) => {
     const costs: Record<string, number> = {};
+    const exponentialFactor = 1.2 ** building.level;
 
     for (const [resource, baseCost] of Object.entries(building.baseCost)) {
       costs[resource] = Math.floor(
         Number(baseCost) *
-          Math.pow(Number(building.costMultiplier), Number(building.level))
+          Math.pow(Number(building.costMultiplier), building.level) *
+          exponentialFactor
       );
     }
-
     return costs;
   };
 
@@ -204,49 +209,45 @@ export const BuildingManager: React.FC = () => {
 
   // Sort buildings by type
   const sortedBuildings = [...buildings].sort((a, b) => {
-    const order: BuildingType[] = [
-      "oxygenGenerator",
-      "hydroponicFarm",
-      "solarPanel",
-      "metalMine",
-      "researchLab",
+    const categoryOrder: BuildingCategory[] = [
+      "production",
+      "storage",
+      "research",
       "housing",
+      "utility",
     ];
+    const categoryComparison =
+      categoryOrder.indexOf(a.category) - categoryOrder.indexOf(b.category);
 
-    return order.indexOf(a.type) - order.indexOf(b.type);
+    if (categoryComparison !== 0) return categoryComparison;
+
+    return a.name.localeCompare(b.name);
   });
-
-  // Group buildings by type
-  const buildingsByType: Record<BuildingType, typeof buildings> = {
-    oxygenGenerator: [],
-    hydroponicFarm: [],
-    solarPanel: [],
-    metalMine: [],
-    researchLab: [],
-    housing: [],
-  };
 
   // Group buildings by category
   const buildingsByCategory: Record<BuildingCategory, typeof buildings> = {
     production: [],
     housing: [],
     research: [],
+    storage: [],
     utility: [],
   };
 
   sortedBuildings.forEach((building) => {
-    buildingsByType[building.type].push(building);
+    buildingsByCategory[building.category] =
+      buildingsByCategory[building.category] || [];
     buildingsByCategory[building.category].push(building);
   });
 
   // Filtrowanie budynków
   const filteredBuildings = buildings
-    .filter(
-      (building) =>
-        activeTab === "all" ||
-        buildingConfig.find((b) => b.type === building.type)?.category ===
-          activeTab
-    )
+    .filter((building) => {
+      if (activeTab === "all") return true;
+      const buildingConfigEntry = buildingConfig.find(
+        (b) => b.type === building.type
+      );
+      return buildingConfigEntry?.category === activeTab;
+    })
     .filter((building) => {
       const search = searchQuery.toLowerCase();
       return (

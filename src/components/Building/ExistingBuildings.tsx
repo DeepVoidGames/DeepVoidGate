@@ -21,7 +21,7 @@ const ExistingBuildings = ({
   return (
     <div>
       <Tabs value={activeTab} onValueChange={setActiveTab}>
-        <TabsList className="grid grid-cols-2 md:grid-cols-4 gap-2 w-full my-2">
+        <TabsList className="grid grid-cols-2 md:grid-cols-5 gap-2 w-full my-2">
           {categories.map((category) => (
             <TabsTrigger
               key={category.id}
@@ -60,6 +60,7 @@ const ExistingBuildings = ({
                     getUpgradeCosts={getUpgradeCosts}
                     formatNumber={formatNumber}
                     ResourcesIcon={ResourcesIcon}
+                    buildings={buildingConfig}
                   />
                 ))}
             </div>

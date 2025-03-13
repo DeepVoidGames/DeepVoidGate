@@ -154,9 +154,7 @@
     },
     "storageBonus": {
       "metals": 500,
-      "oxygen": 300,
-      "food": 300,
-      "energy": 1000
+      "oxygen": 300
     },
     "requirements": {},
     "costMultiplier": 1.8,
@@ -181,14 +179,33 @@
     "storageBonus": {
       "metals": 1500,
       "oxygen": 1000,
-      "food": 1000,
-      "energy": 3000,
-      "science": 500
+      "food": 1000
     },
     "requirements": {
       "basicStorage": 1
     },
     "costMultiplier": 2.0,
+    "productionMultiplier": 1,
+    "maxInstances": 2
+  },
+  {
+    "type": "basicBattery",
+    "category": "storage",
+    "name": "Basic Battery",
+    "description": "Stores excess energy for later use",
+    "workerCapacity": 0,
+    "baseCost": {
+      "metals": 50,
+      "energy": 20
+    },
+    "baseConsumption": {
+      "energy": 0.1
+    },
+    "storageBonus": {
+      "energy": 500
+    },
+    "requirements": {},
+    "costMultiplier": 1.5,
     "productionMultiplier": 1,
     "maxInstances": 2
   }

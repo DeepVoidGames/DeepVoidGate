@@ -6,8 +6,10 @@ import {
   FlaskConical,
   Home,
   Leaf,
+  Package,
   Pickaxe,
   Users,
+  Warehouse,
   X,
   Zap,
 } from "lucide-react";
@@ -32,6 +34,7 @@ const BuildingCard = ({
   onUpgrade,
   canUpgrade,
   ResourcesIcon,
+  buildings, // Nowa prop z listą wszystkich budynków
 }) => {
   const buildingIcons = {
     oxygenGenerator: <Droplets className="h-5 w-5 text-cyan-400" />,
@@ -40,9 +43,29 @@ const BuildingCard = ({
     metalMine: <Pickaxe className="h-5 w-5 text-zinc-400" />,
     researchLab: <FlaskConical className="h-5 w-5 text-purple-400" />,
     housing: <Home className="h-5 w-5 text-blue-400" />,
+    basicStorage: <Package className="h-5 w-5 text-orange-400" />,
+    advancedStorage: <Warehouse className="h-5 w-5 text-blue-400" />,
   };
 
   const costs = getUpgradeCosts(building);
+
+  // Sprawdź wymagania dot. innych budynków
+  const checkBuildingRequirements = () => {
+    const unmet = [];
+    for (const [reqType, reqCount] of Object.entries(
+      building.requirements || {}
+    )) {
+      const count = buildings.filter((b) => b.type === reqType).length;
+      if (count < reqCount) {
+        unmet.push(`${reqType} (${count}/${reqCount})`);
+      }
+    }
+    return unmet;
+  };
+
+  const unmetRequirements = checkBuildingRequirements();
+  const hasStorageBonus =
+    building.storageBonus && Object.keys(building.storageBonus).length > 0;
 
   return (
     <Card
@@ -60,7 +83,7 @@ const BuildingCard = ({
           <div className="text-sm font-medium flex items-center gap-2">
             {!building.functioning && (
               <div
-                className="flex items-center text-red-400 tooltip"
+                className="flex items-center text-red-400"
                 title="Building not functioning"
               >
                 <AlertTriangle className="h-4 w-4 mr-1" />
@@ -84,8 +107,7 @@ const BuildingCard = ({
             </span>
           </div>
           <div
-            className={`
-            ${
+            className={
               building.functioning
                 ? building.efficiency >= 0.9
                   ? "text-green-400"
@@ -94,7 +116,6 @@ const BuildingCard = ({
                   : "text-red-400"
                 : "text-red-400"
             }
-          `}
           >
             {building.functioning ? (
               `${Math.round(building.efficiency * 100)}% Efficiency`
@@ -135,6 +156,27 @@ const BuildingCard = ({
 
         {isExpanded && (
           <div className="mt-4 space-y-3 animate-fade-in">
+            {hasStorageBonus && (
+              <div className="space-y-1">
+                <h4 className="text-xs text-foreground/70">
+                  Storage Capacity:
+                </h4>
+                <div className="grid grid-cols-2 gap-2 text-xs text-cyan-400">
+                  {Object.entries(building.storageBonus).map(
+                    ([resource, bonus]) => (
+                      <div
+                        key={resource}
+                        className="flex items-center space-x-1"
+                      >
+                        <span>{ResourcesIcon({ resource })}</span>
+                        <span>+{formatNumber(Number(bonus) * building.level)}</span>
+                      </div>
+                    )
+                  )}
+                </div>
+              </div>
+            )}
+
             <div className="space-y-1">
               <h4 className="text-xs text-foreground/70">
                 Production & Consumption:
@@ -157,9 +199,7 @@ const BuildingCard = ({
                       >
                         +
                         {formatNumber(
-                          Number(amount) *
-                            Number(building.level) *
-                            Number(building.efficiency)
+                          Number(amount) * building.level * building.efficiency
                         )}
                         /s
                         {!building.functioning && " (disabled)"}
@@ -184,9 +224,7 @@ const BuildingCard = ({
                       >
                         -
                         {formatNumber(
-                          Number(amount) *
-                            Number(building.level) *
-                            Number(building.efficiency)
+                          Number(amount) * building.level * building.efficiency
                         )}
                         /s
                         {!building.functioning && " (disabled)"}
@@ -201,7 +239,7 @@ const BuildingCard = ({
               <Button
                 size="sm"
                 onClick={() => onUpgrade(building.id)}
-                disabled={!canUpgrade(building)}
+                disabled={!canUpgrade(building) || unmetRequirements.length > 0}
                 className="w-full button-primary"
               >
                 Upgrade to Level {building.level + 1}
@@ -209,7 +247,7 @@ const BuildingCard = ({
 
               <div className="space-y-1 mt-2">
                 <h4 className="text-xs text-foreground/70">
-                  Resource Requirements:
+                  Upgrade Requirements:
                 </h4>
                 <div className="grid grid-cols-2 gap-2 mt-2 text-xs">
                   {Object.entries(costs).map(([resource, cost]) => (
@@ -228,72 +266,17 @@ const BuildingCard = ({
                   ))}
                 </div>
 
-                <div className="space-y-1">
-                  <h4 className="text-xs text-foreground/70">
-                    Production & Consumption:
-                  </h4>
-                  <div className="grid grid-cols-2 gap-2 text-xs">
-                    {Object.entries(building.baseProduction).map(
-                      ([resource, amount]) => (
-                        <div
-                          key={resource}
-                          className="flex items-center space-x-1"
-                        >
-                          <span
-                            className={`resource-badge resource-badge-${resource}`}
-                          >
-                            {resources[resource]?.icon}
-                          </span>
-                          <span
-                            className={
-                              building.functioning
-                                ? "text-green-400"
-                                : "text-gray-400"
-                            }
-                          >
-                            +
-                            {formatNumber(
-                              Number(amount) *
-                                Number(building.level + 1) *
-                                Number(building.efficiency)
-                            )}
-                            /s
-                            {!building.functioning && " (disabled)"}
-                          </span>
-                        </div>
-                      )
-                    )}
-                    {Object.entries(building.baseConsumption).map(
-                      ([resource, amount]) => (
-                        <div
-                          key={resource}
-                          className="flex items-center space-x-1"
-                        >
-                          <span
-                            className={`resource-badge resource-badge-${resource}`}
-                          >
-                            {resources[resource]?.icon}
-                          </span>
-                          <span
-                            className={
-                              building.functioning
-                                ? "text-red-400"
-                                : "text-gray-400"
-                            }
-                          >
-                            -
-                            {formatNumber(
-                              Number(amount) *
-                                Number(building.level + 1) *
-                                Number(building.efficiency)
-                            )}
-                            /s
-                            {!building.functioning && " (disabled)"}
-                          </span>
-                        </div>
-                      )
-                    )}
+                {unmetRequirements.length > 0 && (
+                  <div className="text-red-400 text-xs mt-2">
+                    Building requirements: {unmetRequirements.join(", ")}
                   </div>
+                )}
+
+                <div className="mt-2 text-xs text-muted-foreground">
+                  {building.maxInstances > 1 &&
+                    `Can build: ${
+                      buildings.filter((b) => b.type === building.type).length
+                    }/${building.maxInstances}`}
                 </div>
               </div>
             </div>

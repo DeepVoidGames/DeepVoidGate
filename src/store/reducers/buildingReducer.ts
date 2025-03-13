@@ -1,4 +1,3 @@
-
 import { toast } from "@/components/ui/use-toast";
 import { GameAction } from "../actions";
 import { BuildingData, BuildingType, ResourceType } from "../types";
@@ -62,6 +61,12 @@ export const applyBuildingEffects = (
 ): ResourcesState => {
   const newResources = { ...resources };
 
+  // Reset capacity to base values before applying bonuses
+  Object.keys(newResources).forEach((resourceKey) => {
+    newResources[resourceKey as ResourceType].capacity =
+      resources[resourceKey as ResourceType].baseCapacity;
+  });
+
   buildings.forEach((building) => {
     if (building.efficiency <= 0) return; // Skip inactive buildings
 
@@ -95,6 +100,17 @@ export const applyBuildingEffects = (
           // Requirements are ongoing consumption - use Number to ensure numeric values
           const requiredAmount = Number(amount) * Number(building.level);
           newResources[resourceKey].consumption += requiredAmount;
+        }
+      });
+    }
+
+    // Apply storage bonus effects
+    if (building.storageBonus) {
+      Object.entries(building.storageBonus).forEach(([resource, amount]) => {
+        const resourceKey = resource as ResourceType;
+        if (newResources[resourceKey]) {
+          const storageBonusAmount = Number(amount) * Number(building.level);
+          newResources[resourceKey].capacity += storageBonusAmount;
         }
       });
     }

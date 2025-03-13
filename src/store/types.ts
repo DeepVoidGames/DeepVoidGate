@@ -1,9 +1,13 @@
-
 // Resource types
 export type ResourceType = "oxygen" | "food" | "energy" | "metals" | "science";
 
 // Building category types
-export type BuildingCategory = "production" | "housing" | "research" | "utility";
+export type BuildingCategory =
+  | "production"
+  | "housing"
+  | "research"
+  | "storage"
+  | "utility";
 
 // Building types
 export type BuildingType =
@@ -12,7 +16,10 @@ export type BuildingType =
   | "solarPanel"
   | "metalMine"
   | "researchLab"
-  | "housing";
+  | "housing"
+  | "basicStorage"
+  | "advancedStorage"
+  | "basicBattery";
 
 // Resource data structure
 export interface ResourceData {
@@ -22,6 +29,7 @@ export interface ResourceData {
   capacity: number;
   icon: string;
   color: string;
+  baseCapacity: number;
 }
 
 // Building data structure
@@ -43,6 +51,9 @@ export interface BuildingData {
     [key in ResourceType]?: number;
   };
   baseConsumption: {
+    [key in ResourceType]?: number;
+  };
+  storageBonus?: {
     [key in ResourceType]?: number;
   };
   requirements?: {
