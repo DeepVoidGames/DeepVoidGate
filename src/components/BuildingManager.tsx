@@ -285,44 +285,6 @@ const BuildingCard = ({
               </div>
             </div>
 
-            {building.requirements && (
-              <div className="space-y-1">
-                <h4 className="text-xs text-foreground/70">
-                  Resource Requirements:
-                </h4>
-                <div className="grid grid-cols-2 gap-2 text-xs">
-                  {Object.entries(building.requirements).map(
-                    ([resource, amount]) => {
-                      const hasEnough = resources[resource]?.amount >= amount;
-                      return (
-                        <div
-                          key={`req-${resource}`}
-                          className="flex items-center space-x-1"
-                        >
-                          <span
-                            className={`resource-badge resource-badge-${resource}`}
-                          >
-                            {resources[resource]?.icon}
-                          </span>
-                          <span
-                            className={
-                              hasEnough ? "text-foreground/70" : "text-red-400"
-                            }
-                          >
-                            Needs{" "}
-                            {formatNumber(
-                              Number(amount) * Number(building.level)
-                            )}
-                            {!hasEnough && " (missing)"}
-                          </span>
-                        </div>
-                      );
-                    }
-                  )}
-                </div>
-              </div>
-            )}
-
             <div className="pt-2">
               <Button
                 size="sm"
@@ -352,6 +314,74 @@ const BuildingCard = ({
                       <span>{formatNumber(Number(cost))}</span>
                     </div>
                   ))}
+                </div>
+
+                <div className="space-y-1">
+                  <h4 className="text-xs text-foreground/70">
+                    Production & Consumption:
+                  </h4>
+                  <div className="grid grid-cols-2 gap-2 text-xs">
+                    {Object.entries(building.baseProduction).map(
+                      ([resource, amount]) => (
+                        <div
+                          key={resource}
+                          className="flex items-center space-x-1"
+                        >
+                          <span
+                            className={`resource-badge resource-badge-${resource}`}
+                          >
+                            {resources[resource]?.icon}
+                          </span>
+                          <span
+                            className={
+                              building.functioning
+                                ? "text-green-400"
+                                : "text-gray-400"
+                            }
+                          >
+                            +
+                            {formatNumber(
+                              Number(amount) *
+                                Number(building.level + 1) *
+                                Number(building.efficiency)
+                            )}
+                            /s
+                            {!building.functioning && " (disabled)"}
+                          </span>
+                        </div>
+                      )
+                    )}
+                    {Object.entries(building.baseConsumption).map(
+                      ([resource, amount]) => (
+                        <div
+                          key={resource}
+                          className="flex items-center space-x-1"
+                        >
+                          <span
+                            className={`resource-badge resource-badge-${resource}`}
+                          >
+                            {resources[resource]?.icon}
+                          </span>
+                          <span
+                            className={
+                              building.functioning
+                                ? "text-red-400"
+                                : "text-gray-400"
+                            }
+                          >
+                            -
+                            {formatNumber(
+                              Number(amount) *
+                                Number(building.level + 1) *
+                                Number(building.efficiency)
+                            )}
+                            /s
+                            {!building.functioning && " (disabled)"}
+                          </span>
+                        </div>
+                      )
+                    )}
+                  </div>
                 </div>
               </div>
             </div>
@@ -696,10 +726,10 @@ export const BuildingManager: React.FC = () => {
                     return (
                       <Card
                         key={type}
-                        className="h-full flex flex-col border-border/20 shadow-sm"
+                        className="h-full flex flex-col border-border/20 shadow-sm neo-panel"
                       >
-                        <CardHeader className="p-4 pb-0">
-                          <div className="flex items-center space-x-2">
+                        <CardHeader className="p-4 pb-2">
+                          <div className="flex items-center space-x-3">
                             {buildingConfig.find((b) => b.type === type)?.icon}
                             <CardTitle className="text-sm font-semibold">
                               {
@@ -710,26 +740,83 @@ export const BuildingManager: React.FC = () => {
                           </div>
                         </CardHeader>
 
-                        <CardContent className="p-4 flex-1">
-                          <div className="grid grid-cols-2 gap-2 text-xs mb-4">
-                            {Object.entries(template.baseCost).map(
-                              ([resource, cost]) => (
-                                <div
-                                  key={resource}
-                                  className={`flex items-center space-x-1 px-2 py-1 rounded bg-background/50 ${
-                                    !canAffordResource(resource, Number(cost))
-                                      ? "text-red-400"
-                                      : "text-foreground/70"
-                                  }`}
-                                >
-                                  <span className="text-sm">
-                                    {ResourcesIcon({ resource })}
-                                  </span>
-                                  <span className="font-medium">
-                                    {formatNumber(Number(cost))}
-                                  </span>
+                        <CardContent className="p-4 pt-0 flex-1 space-y-4">
+                          {/* Construction Costs */}
+                          <div className="space-y-2">
+                            <h4 className="text-xs font-medium text-foreground/80">
+                              Construction Cost
+                            </h4>
+                            <div className="grid grid-cols-2 gap-2">
+                              {Object.entries(template.baseCost).map(
+                                ([resource, cost]) => (
+                                  <div
+                                    key={resource}
+                                    className={`flex items-center space-x-2 px-2 py-1.5 rounded-md ${
+                                      !canAffordResource(resource, Number(cost))
+                                        ? "bg-red-900/20 text-red-400"
+                                        : "bg-background/50 text-foreground/80"
+                                    }`}
+                                  >
+                                    <span className="text-sm">
+                                      {ResourcesIcon({ resource })}
+                                    </span>
+                                    <span className="text-xs font-medium">
+                                      {formatNumber(Number(cost))}
+                                    </span>
+                                  </div>
+                                )
+                              )}
+                            </div>
+                          </div>
+
+                          {/* Production & Consumption */}
+                          <div className="space-y-3">
+                            {Object.entries(template.baseProduction).length >
+                              0 && (
+                              <div className="space-y-2">
+                                <h4 className="text-xs font-medium text-foreground/80">
+                                  Production
+                                </h4>
+                                <div className="grid grid-cols-2 gap-2">
+                                  {Object.entries(template.baseProduction).map(
+                                    ([resource, amount]) => (
+                                      <div
+                                        key={resource}
+                                        className="flex items-center space-x-2 px-2 py-1.5 rounded-md bg-green-900/20 text-green-400"
+                                      >
+                                        <span>{resources[resource]?.icon}</span>
+                                        <span className="text-xs font-medium">
+                                          +{formatNumber(Number(amount))}/s
+                                        </span>
+                                      </div>
+                                    )
+                                  )}
                                 </div>
-                              )
+                              </div>
+                            )}
+
+                            {Object.entries(template.baseConsumption).length >
+                              0 && (
+                              <div className="space-y-2">
+                                <h4 className="text-xs font-medium text-foreground/80">
+                                  Consumption
+                                </h4>
+                                <div className="grid grid-cols-2 gap-2">
+                                  {Object.entries(template.baseConsumption).map(
+                                    ([resource, amount]) => (
+                                      <div
+                                        key={resource}
+                                        className="flex items-center space-x-2 px-2 py-1.5 rounded-md bg-red-900/20 text-red-400"
+                                      >
+                                        <span>{resources[resource]?.icon}</span>
+                                        <span className="text-xs font-medium">
+                                          -{formatNumber(Number(amount))}/s
+                                        </span>
+                                      </div>
+                                    )
+                                  )}
+                                </div>
+                              </div>
                             )}
                           </div>
                         </CardContent>
@@ -739,12 +826,17 @@ export const BuildingManager: React.FC = () => {
                             size="sm"
                             onClick={() => constructBuilding(type)}
                             disabled={!canAffordBuilding(type)}
-                            className="w-full h-9 font-medium transition-all"
+                            className="w-full button-primary h-9 font-medium transition-all"
                             variant={
                               canAffordBuilding(type) ? "default" : "secondary"
                             }
                           >
                             <span className="truncate">Construct</span>
+                            {count > 0 && (
+                              <span className="ml-2 text-xs opacity-80">
+                                ({count} built)
+                              </span>
+                            )}
                           </Button>
                         </CardFooter>
                       </Card>
