@@ -77,18 +77,19 @@
       "metals": 20
     },
     "baseProduction": {
-      "metals": 0.8
+      "metals": 0.6
     },
     "baseConsumption": {
-      "energy": 0.8,
-      "oxygen": 0.1
+      "energy": 1.0,
+      "oxygen": 0.2
     },
     "requirements": {
-      "energy": 0.2
+      "energy": 0.2,
+      "storage": 50
     },
-    "costMultiplier": 1.5,
-    "productionMultiplier": 1.2,
-    "maxInstances": 1
+    "costMultiplier": 1.7,
+    "productionMultiplier": 1.15,
+    "maxInstances": 2
   },
   {
     "type": "researchLab",
@@ -136,5 +137,59 @@
     "costMultiplier": 1.6,
     "productionMultiplier": 1,
     "maxInstances": 1
+  },
+  {
+    "type": "basicStorage",
+    "category": "storage",
+    "name": "Basic Storage",
+    "description": "Basic resource storage facility",
+    "workerCapacity": 0,
+    "baseCost": {
+      "metals": 80,
+      "energy": 30
+    },
+    "baseProduction": {},
+    "baseConsumption": {
+      "energy": 0.2
+    },
+    "storageBonus": {
+      "metals": 500,
+      "oxygen": 300,
+      "food": 300,
+      "energy": 1000
+    },
+    "requirements": {},
+    "costMultiplier": 1.8,
+    "productionMultiplier": 1,
+    "maxInstances": 3
+  },
+  {
+    "type": "advancedStorage",
+    "category": "storage",
+    "name": "Advanced Storage",
+    "description": "Advanced cryogenic storage complex",
+    "workerCapacity": 2,
+    "baseCost": {
+      "metals": 150,
+      "energy": 60,
+      "science": 10
+    },
+    "baseConsumption": {
+      "energy": 0.5,
+      "oxygen": 0.1
+    },
+    "storageBonus": {
+      "metals": 1500,
+      "oxygen": 1000,
+      "food": 1000,
+      "energy": 3000,
+      "science": 500
+    },
+    "requirements": {
+      "basicStorage": 1
+    },
+    "costMultiplier": 2.0,
+    "productionMultiplier": 1,
+    "maxInstances": 2
   }
 ]

@@ -2,7 +2,7 @@
 import React from 'react';
 import { GameProvider } from '@/context/GameContext';
 import { ResourceDisplay } from '@/components/ResourceDisplay';
-import { BuildingManager } from '@/components/BuildingManager';
+import { BuildingManager } from '@/components/Building/BuildingManager';
 import { PlanetaryView } from '@/components/PlanetaryView';
 import { GameHeader } from '@/components/GameHeader';
 
