@@ -4,7 +4,8 @@ import {
   ResourceAlertThresholds,
   BuildingType,
   BuildingCategory,
-} from "./types";
+  Technology,
+} from "@/store/types";
 import buildingData from "../data/buildings.json";
 
 // Generate a unique ID
@@ -95,3 +96,17 @@ export const initialPopulationState = {
   maxCapacity: 10,
   deathTimer: null,
 };
+
+export const initialTechnologies: Technology[] = [
+  {
+    id: "basic_energy",
+    name: "Basic Energy",
+    category: "Energy",
+    description: "Unlocks essential energy sources",
+    researchCost: { metals: 150, science: 75 },
+    prerequisites: [],
+    unlocksBuildings: [],
+    isResearched: false,
+    researchDuration: 30,
+  },
+];

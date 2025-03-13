@@ -21,6 +21,25 @@ export type BuildingType =
   | "advancedStorage"
   | "basicBattery";
 
+export type TechnologyCategory =
+  | "Infrastructure"
+  | "Energy"
+  | "Production"
+  | "Research"
+  | "Advanced";
+
+export interface Technology {
+  id: string;
+  name: string;
+  category: TechnologyCategory;
+  description: string;
+  researchCost: { [key in ResourceType]?: number };
+  prerequisites: string[]; // IDs technologii wymaganych do odblokowania
+  unlocksBuildings: BuildingType[];
+  isResearched: boolean;
+  researchDuration: number; // w sekundach
+}
+
 // Resource data structure
 export interface ResourceData {
   amount: number;
@@ -62,6 +81,8 @@ export interface BuildingData {
   costMultiplier: number;
   productionMultiplier: number;
   functioning?: boolean;
+  technologies: Technology[];
+  requiredTechnology?: string;
 }
 
 // Alert thresholds
@@ -93,6 +114,7 @@ export interface GameState {
     maxCapacity: number;
     deathTimer?: number;
   };
+  technologies: Technology[];
   lastUpdate: number;
   paused: boolean;
 }

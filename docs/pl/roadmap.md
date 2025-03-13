@@ -1,7 +1,5 @@
 ### **Roadmapa**
 
-Poniższa roadmapa dzieli projekt na **etapy**, każdy z nich zawiera kluczowe funkcjonalności do zaimplementowania. Kolejność została dobrana tak, aby jak najszybciej stworzyć działający prototyp i stopniowo rozbudowywać grę.
-
 ---
 
 ## **🟢 Etap 1: Podstawowy Prototyp (Minimalna grywalna wersja - MVP)**
@@ -23,13 +21,6 @@ Poniższa roadmapa dzieli projekt na **etapy**, każdy z nich zawiera kluczowe f
 
 - UI panelu zasobów
 - UI listy budynków z możliwością ich budowy i przydzielania pracowników
-
-🟩 **4. System zapisu i odczytu stanu gry**
-
-- Zapisywanie postępu w `IndexedDB` (Dexie.js)
-- Mechanizm ładowania stanu po ponownym uruchomieniu
-
----
 
 ## **🔴 Etap 2: Rozszerzenie mechanik i UX**
 

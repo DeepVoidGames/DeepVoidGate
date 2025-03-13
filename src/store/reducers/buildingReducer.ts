@@ -1,6 +1,6 @@
 import { toast } from "@/components/ui/use-toast";
 import { GameAction } from "../actions";
-import { BuildingData, BuildingType, ResourceType } from "../types";
+import { BuildingData, BuildingType, ResourceType, Technology } from "../types";
 import { generateId, initialBuildings } from "../initialData";
 import { canAffordCost, applyResourceCost } from "./resourceReducer";
 import { ResourcesState } from "./resourceReducer";
@@ -123,7 +123,8 @@ export const applyBuildingEffects = (
 export const constructBuilding = (
   buildings: BuildingData[],
   resources: ResourcesState,
-  buildingType: BuildingType
+  buildingType: BuildingType,
+  technologies: Technology[]
 ): {
   buildings: BuildingData[];
   resources: ResourcesState;
@@ -140,6 +141,22 @@ export const constructBuilding = (
       variant: "destructive",
     });
     return { buildings, resources, success: false };
+  }
+
+  // Sprawdź czy technologia jest odblokowana
+  if (buildingTemplate.requiredTechnology) {
+    const isUnlocked = technologies.some(
+      (t) => t.isResearched && t.unlocksBuildings.includes(buildingType)
+    );
+
+    if (!isUnlocked) {
+      toast({
+        title: "Technologia Wymagana",
+        description: `Wymagana technologia: ${buildingTemplate.requiredTechnology}`,
+        variant: "destructive",
+      });
+      return { buildings, resources, success: false };
+    }
   }
 
   // Check instance limit

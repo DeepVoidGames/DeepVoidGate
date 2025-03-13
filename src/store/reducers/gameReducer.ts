@@ -6,6 +6,7 @@ import {
   initialPopulationState,
   initialBuildings,
   resourceAlertThresholds,
+  initialTechnologies,
 } from "../initialData";
 import { generateId } from "../initialData";
 import {
@@ -25,12 +26,14 @@ import {
   calculatePopulationConsumption,
   recalculateAvailableWorkers,
 } from "./populationReducer";
+import { researchTechnology } from "./technologyReducer";
 
 // Initialize the game state
 export const initialState: GameState = {
   resources: initialResourcesState,
   buildings: [],
   population: initialPopulationState,
+  technologies: initialTechnologies,
   lastUpdate: Date.now(),
   paused: false,
 };
@@ -342,6 +345,23 @@ export const gameReducer = (
           ...state.population,
           available: result.available,
         },
+      };
+    }
+
+    case "RESEARCH_TECHNOLOGY": {
+      const { techId } = action.payload;
+      const result = researchTechnology(
+        state.technologies,
+        state.resources,
+        techId
+      );
+
+      if (!result.success) return state;
+
+      return {
+        ...state,
+        technologies: result.technologies,
+        resources: result.resources,
       };
     }
 

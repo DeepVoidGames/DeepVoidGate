@@ -207,6 +207,7 @@
     "requirements": {},
     "costMultiplier": 1.5,
     "productionMultiplier": 1,
-    "maxInstances": 2
+    "maxInstances": 2,
+    "requiredTechnology": "basic_energy"
   }
 ]

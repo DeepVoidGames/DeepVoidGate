@@ -14,4 +14,27 @@ export default defineConfig(({ mode }) => ({
       "@": path.resolve(__dirname, "./src"),
     },
   },
+  build: {
+    outDir: "dist",
+    assetsDir: "assets",
+    rollupOptions: {
+      output: {
+        entryFileNames: "[name].js",
+        chunkFileNames: "[name].js",
+        assetFileNames: (assetInfo) => {
+          if (!assetInfo.name) return "assets/[name]-[hash].[ext]";
+          const extType = assetInfo.name.split(".").pop();
+          if (
+            extType === "png" ||
+            extType === "jpg" ||
+            extType === "jpeg" ||
+            extType === "css"
+          ) {
+            return "assets/[name].[ext]";
+          }
+          return "assets/[name]-[hash].[ext]";
+        },
+      },
+    },
+  },
 }));
