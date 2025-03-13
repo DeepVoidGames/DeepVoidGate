@@ -642,7 +642,7 @@ export const BuildingManager: React.FC = () => {
 
         {/* Existing buildings */}
         <Tabs value={activeTab} onValueChange={setActiveTab}>
-          <TabsList className="grid grid-cols-2 md:grid-cols-4 gap-2 w-full">
+          <TabsList className="grid grid-cols-2 md:grid-cols-4 gap-2 w-full my-2">
             {categories.map((category) => (
               <TabsTrigger
                 key={category.id}
