@@ -1,169 +1,180 @@
-import React, { useRef, useEffect, useState, memo } from 'react';
-import { useGame } from '@/context/GameContext';
+import React, { useRef, useEffect, useState, memo } from "react";
+import { useGame } from "@/context/GameContext";
 
 export const PlanetaryView: React.FC = memo(() => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const { state } = useGame();
   const [isLoaded, setIsLoaded] = useState(false);
-  
-  // Canvas dimensions
+
   const width = 400;
   const height = 400;
-  
-  // Animation control - using useRef to avoid recalculations
+
+  // Ref-y do animacji
   const rotationAngleRef = useRef(0);
   const frameIdRef = useRef<number>();
   const lastTimeRef = useRef(0);
-  
+  const starsRef = useRef<
+    Array<{
+      x: number;
+      y: number;
+      size: number;
+      opacity: number;
+      speed: number;
+      angle: number;
+    }>
+  >([]);
+
   useEffect(() => {
     const canvas = canvasRef.current;
     if (!canvas) return;
-    
-    const ctx = canvas.getContext('2d');
+
+    const ctx = canvas.getContext("2d");
     if (!ctx) return;
-    
-    // High resolution canvas
+
+    // Inicjalizacja canvas
     canvas.width = width * 2;
     canvas.height = height * 2;
     ctx.scale(2, 2);
-    
-    // Planet parameters
+
+    // Generowanie gwiazd tylko raz
+    if (starsRef.current.length === 0) {
+      const newStars = [];
+      for (let i = 0; i < 100; i++) {
+        newStars.push({
+          x: Math.random() * width,
+          y: Math.random() * height,
+          size: Math.random() * 1.5,
+          opacity: 0.3 + Math.random() * 0.7,
+          speed: 0.1 + Math.random() * 0.3, // Różne prędkości
+          angle: Math.random() * Math.PI * 2, // Losowe kierunki
+        });
+      }
+      starsRef.current = newStars;
+    }
+
+    // Parametry planety
     const planetRadius = 120;
     const centerX = width / 2;
     const centerY = height / 2;
-    
-    // Generate stars once to improve performance
-    const stars: { x: number; y: number; size: number; opacity: number }[] = [];
-    for (let i = 0; i < 100; i++) {
-      stars.push({
-        x: Math.random() * width,
-        y: Math.random() * height,
-        size: Math.random() * 1.5,
-        opacity: 0.3 + Math.random() * 0.7
-      });
-    }
-    
-    // Colors for building types
+
+    // Kolory budynków
     const buildingColors: Record<string, string> = {
-      oxygenGenerator: '#22d3ee',
-      hydroponicFarm: '#4ade80',
-      solarPanel: '#facc15',
-      metalMine: '#a1a1aa',
-      researchLab: '#d8b4fe',
-      housing: '#60a5fa'
+      oxygenGenerator: "#22d3ee",
+      hydroponicFarm: "#4ade80",
+      solarPanel: "#facc15",
+      metalMine: "#a1a1aa",
+      researchLab: "#d8b4fe",
+      housing: "#60a5fa",
     };
-    
-    // Use requestAnimationFrame with timestamp for smooth animation
+
     const renderFrame = (timestamp: number) => {
-      // Control FPS for performance
-      const elapsed = timestamp - lastTimeRef.current;
-      if (elapsed < 16) { // Limit to ~60fps
-        frameIdRef.current = requestAnimationFrame(renderFrame);
-        return;
-      }
-      
+      const elapsedTime = timestamp - lastTimeRef.current;
       lastTimeRef.current = timestamp;
-      
-      // Clear canvas
+
+      // Aktualizacja pozycji gwiazd
+      starsRef.current.forEach((star) => {
+        const deltaX = Math.cos(star.angle) * star.speed * (elapsedTime / 16);
+        const deltaY = Math.sin(star.angle) * star.speed * (elapsedTime / 16);
+
+        star.x = (star.x + deltaX + width) % width;
+        star.y = (star.y + deltaY + height) % height;
+      });
+
+      // Czyszczenie canvas
       ctx.clearRect(0, 0, width, height);
-      
-      // Draw stars
-      ctx.fillStyle = '#ffffff';
-      stars.forEach(star => {
+
+      // Rysowanie gwiazd
+      ctx.fillStyle = "#ffffff";
+      starsRef.current.forEach((star) => {
         ctx.globalAlpha = star.opacity;
         ctx.beginPath();
         ctx.arc(star.x, star.y, star.size, 0, Math.PI * 2);
         ctx.fill();
       });
-      
-      // Draw planet shadow
+
+      // Rysowanie planety
       ctx.globalAlpha = 0.5;
       ctx.beginPath();
       ctx.arc(centerX + 5, centerY + 5, planetRadius, 0, Math.PI * 2);
-      ctx.fillStyle = '#000000';
+      ctx.fillStyle = "#000000";
       ctx.fill();
-      
-      // Draw planet
+
+      // Główna planeta
       ctx.globalAlpha = 1;
       const gradient = ctx.createRadialGradient(
-        centerX - 30, centerY - 30, 10,
-        centerX, centerY, planetRadius
+        centerX - 30,
+        centerY - 30,
+        10,
+        centerX,
+        centerY,
+        planetRadius
       );
-      gradient.addColorStop(0, '#1e293b');
-      gradient.addColorStop(1, '#0f172a');
-      
+      gradient.addColorStop(0, "#1e293b");
+      gradient.addColorStop(1, "#0f172a");
+
       ctx.beginPath();
       ctx.arc(centerX, centerY, planetRadius, 0, Math.PI * 2);
       ctx.fillStyle = gradient;
       ctx.fill();
-      
-      // Draw atmosphere glow
+
+      // Atmosfera
       ctx.beginPath();
       ctx.arc(centerX, centerY, planetRadius + 5, 0, Math.PI * 2);
-      ctx.strokeStyle = 'rgba(56, 189, 248, 0.1)';
+      ctx.strokeStyle = "rgba(56, 189, 248, 0.1)";
       ctx.lineWidth = 10;
       ctx.stroke();
-      
-      // Calculate building positions only when needed
+
+      // Budynki
       const buildingPositions = state.buildings.map((building, index) => {
         const angle = (index / state.buildings.length) * Math.PI * 2;
-        const distance = planetRadius * 0.6 + (building.id.charCodeAt(0) % 30) / 100 * (planetRadius * 0.3);
+        const distance =
+          planetRadius * 0.6 +
+          ((building.id.charCodeAt(0) % 30) / 100) * (planetRadius * 0.3);
         return {
           angle,
           distance,
           type: building.type,
-          size: 3 + building.level * 1.5
+          size: 3 + building.level * 1.5,
         };
       });
-      
-      // Draw buildings with improved performance
-      buildingPositions.forEach(building => {
-        // Rotate position around center (with optimized rotation calculation)
+
+      buildingPositions.forEach((building) => {
         const adjustedAngle = building.angle + rotationAngleRef.current;
         const rotatedX = centerX + Math.cos(adjustedAngle) * building.distance;
         const rotatedY = centerY + Math.sin(adjustedAngle) * building.distance;
-        
-        // Draw building
-        ctx.fillStyle = buildingColors[building.type] || '#ffffff';
+
+        // Rysowanie budynku
+        ctx.fillStyle = buildingColors[building.type] || "#ffffff";
         ctx.globalAlpha = 0.8;
         ctx.beginPath();
         ctx.arc(rotatedX, rotatedY, building.size, 0, Math.PI * 2);
         ctx.fill();
-        
-        // Draw glow
+
+        // Efekt świetlny
         ctx.beginPath();
         ctx.arc(rotatedX, rotatedY, building.size + 2, 0, Math.PI * 2);
-        ctx.strokeStyle = buildingColors[building.type] || '#ffffff';
+        ctx.strokeStyle = buildingColors[building.type] || "#ffffff";
         ctx.globalAlpha = 0.3;
         ctx.lineWidth = 2;
         ctx.stroke();
       });
-      
-      // Very slowly rotate the buildings - with better performance
-      rotationAngleRef.current += 0.0003;
-      
-      // Keep animating
+
+      rotationAngleRef.current += 0.0003 * (elapsedTime / 16);
       frameIdRef.current = requestAnimationFrame(renderFrame);
-      
-      // Mark as loaded after first render
-      if (!isLoaded) {
-        setIsLoaded(true);
-      }
+
+      if (!isLoaded) setIsLoaded(true);
     };
-    
+
     frameIdRef.current = requestAnimationFrame(renderFrame);
-    
-    return () => {
-      if (frameIdRef.current) {
-        cancelAnimationFrame(frameIdRef.current);
-      }
-    };
+    return () => frameIdRef.current && cancelAnimationFrame(frameIdRef.current);
   }, [state.buildings, isLoaded]);
-  
+
   return (
     <div className="glass-panel p-4 relative animate-fade-in">
-      <h2 className="text-lg font-medium text-foreground/90 mb-2">Planetary View</h2>
-      
+      <h2 className="text-lg font-medium text-foreground/90 mb-2">
+        Planetary View
+      </h2>
+
       <div className="flex items-center justify-center">
         <div className="relative">
           <canvas
@@ -171,7 +182,7 @@ export const PlanetaryView: React.FC = memo(() => {
             className="w-full h-auto max-w-[400px] rounded-full animate-pulse-subtle"
             style={{
               opacity: isLoaded ? 1 : 0,
-              transition: 'opacity 0.5s ease-in-out',
+              transition: "opacity 10s ease-in-out",
             }}
           />
           {!isLoaded && (
@@ -181,12 +192,13 @@ export const PlanetaryView: React.FC = memo(() => {
           )}
         </div>
       </div>
-      
+
       <div className="text-center mt-4 text-sm text-muted-foreground">
-        Colony: New Hope • Buildings: {state.buildings.length} • Population: {state.population.total}
+        Colony: New Hope • Buildings: {state.buildings.length} • Population:{" "}
+        {state.population.total}
       </div>
     </div>
   );
 });
 
-PlanetaryView.displayName = 'PlanetaryView';
+PlanetaryView.displayName = "PlanetaryView";
