@@ -18,7 +18,7 @@ import {
 import { useGame } from "@/context/GameContext";
 import { formatNumber } from "@/lib/utils";
 import { BuildingType, BuildingCategory } from "@/store/types";
-import { initialBuildings } from "@/store/initialData";
+import { initialBuildings, initialTechnologies } from "@/store/initialData";
 import ConstructionSection from "./ConstructionSection";
 import ExistingBuildings from "./ExistingBuildings";
 
@@ -325,6 +325,7 @@ export const BuildingManager: React.FC = () => {
           resources={resources}
           constructBuilding={constructBuilding}
           canAffordBuilding={canAffordBuilding}
+          technologies={initialTechnologies}
         />
       </div>
     </div>

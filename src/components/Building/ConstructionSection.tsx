@@ -21,7 +21,18 @@ const ConstructionSection = ({
   resources,
   constructBuilding,
   canAffordBuilding,
+  technologies,
 }) => {
+  // Funkcja sprawdzająca dostępność budynku
+  const isBuildingUnlocked = (buildingType) => {
+    const building = initialBuildings.find((b) => b.type === buildingType);
+    if (!building?.requiredTechnology) return true; // Budynki bez wymagań są zawsze dostępne
+
+    return technologies.some(
+      (tech) => tech.id === building.requiredTechnology && tech.isResearched
+    );
+  };
+
   return (
     <div className="space-y-4 my-5">
       {/* Construction Section */}
@@ -49,6 +60,7 @@ const ConstructionSection = ({
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 auto-rows-fr">
                 {buildingConfig
                   .filter((b) => b.category === category.id)
+                  .filter(({ type }) => isBuildingUnlocked(type))
                   .map(({ type }) => {
                     const template = initialBuildings.find(
                       (b) => b.type === type
