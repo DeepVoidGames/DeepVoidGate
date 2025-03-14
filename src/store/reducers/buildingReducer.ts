@@ -222,16 +222,16 @@ export const upgradeBuilding = (
   const building = buildings[buildingIndex];
 
   // Calculate upgrade cost based on the building's level
-  const upgradeCosts: { [key in ResourceType]?: number } = {};
-
-  Object.entries(building.baseCost).forEach(([resource, baseCost]) => {
-    const resourceKey = resource as ResourceType;
-    const cost = Math.floor(
-      Number(baseCost) *
-        Math.pow(Number(building.costMultiplier), Number(building.level))
-    );
-    upgradeCosts[resourceKey] = cost;
-  });
+  const upgradeCosts = Object.entries(building.baseCost).reduce(
+    (acc, [resource, baseCost]) => {
+      const cost = Math.floor(
+        Number(baseCost) * Math.pow(building.costMultiplier, building.level)
+      );
+      acc[resource as ResourceType] = cost;
+      return acc;
+    },
+    {} as Record<ResourceType, number>
+  );
 
   // Check if we can afford the upgrade
   if (!canAffordCost(resources, upgradeCosts)) {

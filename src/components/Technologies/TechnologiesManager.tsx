@@ -174,11 +174,6 @@ const TechnologiesManager: React.FC = () => {
                     {tech.description}
                   </p>
                 </div>
-                {/* <div className="text-muted-foreground">
-                  {tech.category === "Energy" && <Zap className="h-5 w-5" />}
-                  {tech.category === "Computing" && <Cpu className="h-5 w-5" />}
-                  {tech.category === "Aerospace" && <Rocket className="h-5 w-5" />}
-                </div> */}
               </div>
 
               {/* Koszty badań */}

@@ -7,6 +7,7 @@ import Index from "./pages/Index";
 import NotFound from "./pages/NotFound";
 import Technologies from "./pages/Technologies";
 import { GameProvider } from "./context/GameContext";
+import Navbar from "./components/Navbar";
 
 const queryClient = new QueryClient();
 
@@ -17,6 +18,7 @@ const App = () => (
         <Toaster />
         <Sonner />
         <BrowserRouter basename="/deepvoidgate/demo/">
+          <Navbar />
           <Routes>
             <Route path="/" element={<Index />} />
             <Route path="/tech" element={<Technologies />} />

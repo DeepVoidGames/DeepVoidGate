@@ -49,21 +49,6 @@ const BuildingCard = ({
 
   const costs = getUpgradeCosts(building);
 
-  // Sprawdź wymagania dot. innych budynków
-  const checkBuildingRequirements = () => {
-    const unmet = [];
-    for (const [reqType, reqCount] of Object.entries(
-      building.requirements || {}
-    )) {
-      const count = buildings.filter((b) => b.type === reqType).length;
-      if (count < reqCount) {
-        unmet.push(`${reqType} (${count}/${reqCount})`);
-      }
-    }
-    return unmet;
-  };
-
-  const unmetRequirements = checkBuildingRequirements();
   const hasStorageBonus =
     building.storageBonus && Object.keys(building.storageBonus).length > 0;
 
@@ -169,7 +154,9 @@ const BuildingCard = ({
                         className="flex items-center space-x-1"
                       >
                         <span>{ResourcesIcon({ resource })}</span>
-                        <span>+{formatNumber(Number(bonus) * building.level)}</span>
+                        <span>
+                          +{formatNumber(Number(bonus) * building.level)}
+                        </span>
                       </div>
                     )
                   )}
@@ -239,7 +226,7 @@ const BuildingCard = ({
               <Button
                 size="sm"
                 onClick={() => onUpgrade(building.id)}
-                disabled={!canUpgrade(building) || unmetRequirements.length > 0}
+                disabled={!canUpgrade(building)}
                 className="w-full button-primary"
               >
                 Upgrade to Level {building.level + 1}
@@ -265,13 +252,6 @@ const BuildingCard = ({
                     </div>
                   ))}
                 </div>
-
-                {unmetRequirements.length > 0 && (
-                  <div className="text-red-400 text-xs mt-2">
-                    Building requirements: {unmetRequirements.join(", ")}
-                  </div>
-                )}
-
                 <div className="mt-2 text-xs text-muted-foreground">
                   {building.maxInstances > 1 &&
                     `Can build: ${

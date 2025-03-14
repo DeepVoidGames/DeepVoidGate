@@ -194,16 +194,14 @@ export const BuildingManager: React.FC = () => {
     return costs;
   };
 
-  // Check if we can afford to upgrade a building
   const canUpgrade = (building: (typeof buildings)[0]) => {
+    // Sprawdź koszty ulepszenia
     const costs = getUpgradeCosts(building);
-
     for (const [resource, cost] of Object.entries(costs)) {
       if (resources[resource as keyof typeof resources].amount < Number(cost)) {
         return false;
       }
     }
-
     return true;
   };
 
