@@ -8,7 +8,6 @@ import { GameHeader } from '@/components/GameHeader';
 
 const Index = () => {
   return (
-    <GameProvider>
       <div className="min-h-screen bg-gradient-to-b from-background to-background/90 text-foreground p-4 md:p-6">
         <div className="max-w-7xl mx-auto space-y-4">
           <GameHeader />
@@ -25,7 +24,6 @@ const Index = () => {
           </div>
         </div>
       </div>
-    </GameProvider>
   );
 };
 
