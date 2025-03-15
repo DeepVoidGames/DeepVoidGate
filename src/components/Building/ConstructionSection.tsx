@@ -42,7 +42,7 @@ const ConstructionSection = ({
         </h2>
 
         <Tabs defaultValue="production">
-          <TabsList className="grid grid-cols-2 md:grid-cols-4 gap-2 w-full">
+          <TabsList className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-2 w-full h-full py-2 my-2">
             {categories.map((category) => (
               <TabsTrigger
                 key={category.id}
@@ -57,7 +57,7 @@ const ConstructionSection = ({
 
           {categories.slice(1).map((category) => (
             <TabsContent key={category.id} value={category.id} className="mt-4">
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 auto-rows-fr">
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 auto-rows-fr">
                 {buildingConfig
                   .filter((b) => b.category === category.id)
                   .filter(({ type }) => isBuildingUnlocked(type))
@@ -77,10 +77,10 @@ const ConstructionSection = ({
                         key={type}
                         className="h-full flex flex-col border-border/20 shadow-sm neo-panel"
                       >
-                        <CardHeader className="p-4 pb-2">
+                        <CardHeader className="p-2 pb-1">
                           <div className="flex items-center space-x-3">
                             {buildingConfig.find((b) => b.type === type)?.icon}
-                            <CardTitle className="text-sm font-semibold">
+                            <CardTitle className="text-xs font-semibold">
                               {
                                 buildingConfig.find((b) => b.type === type)
                                   ?.name
@@ -89,7 +89,7 @@ const ConstructionSection = ({
                           </div>
                         </CardHeader>
 
-                        <CardContent className="p-4 pt-0 flex-1 space-y-4">
+                        <CardContent className="p-2 pt-0 flex-1 space-y-2">
                           {/* Construction Costs */}
                           <div className="space-y-2">
                             <h4 className="text-xs font-medium text-foreground/80">
@@ -195,7 +195,7 @@ const ConstructionSection = ({
                           </div>
                         </CardContent>
 
-                        <CardFooter className="p-4 pt-0 mt-auto">
+                        <CardFooter className="p-2 pt-0 mt-auto">
                           <Button
                             size="sm"
                             onClick={() => constructBuilding(type)}

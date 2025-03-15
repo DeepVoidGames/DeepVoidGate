@@ -113,29 +113,37 @@ const BuildingCard = ({
         </div>
 
         <div className="flex justify-between gap-2 mt-3">
-          <Button
-            size="sm"
-            variant="outline"
-            onClick={() => onAdjustWorkers(building.id, 1)}
-            className="flex-1 border-green-800/30 bg-green-950/30 hover:bg-green-900/20"
-          >
-            <ArrowUp className="h-4 w-4 mr-1" /> Assign
-          </Button>
-          <Button
-            size="sm"
-            variant="outline"
-            onClick={() => onAdjustWorkers(building.id, -1)}
-            className="flex-1 border-red-800/30 bg-red-950/30 hover:bg-red-900/20"
-          >
-            <ArrowDown className="h-4 w-4 mr-1" /> Remove
-          </Button>
+          <div className="flex gap-2 flex-1">
+            <Button
+              size="sm"
+              variant="outline"
+              onClick={() => onAdjustWorkers(building.id, 1)}
+              className="p-1 sm:px-4 h-8 sm:h-9 border-green-800/30 bg-green-950/30 hover:bg-green-900/20 flex-1"
+            >
+              <ArrowUp className="h-4 w-4" />
+              <span className="hidden sm:inline ml-1">Assign</span>
+            </Button>
+
+            <Button
+              size="sm"
+              variant="outline"
+              onClick={() => onAdjustWorkers(building.id, -1)}
+              className="p-1 sm:px-4 h-8 sm:h-9 border-red-800/30 bg-red-950/30 hover:bg-red-900/20 flex-1"
+            >
+              <ArrowDown className="h-4 w-4" />
+              <span className="hidden sm:inline ml-1">Remove</span>
+            </Button>
+          </div>
+
           <Button
             size="sm"
             variant="outline"
             onClick={() => onToggleExpand(building.id)}
-            className="border-blue-800/30 bg-blue-950/30 hover:bg-blue-900/20"
+            className="px-2 sm:px-3 h-8 sm:h-9 border-blue-800/30 bg-blue-950/30 hover:bg-blue-900/20"
           >
-            {isExpanded ? "Less" : "More"}
+            <span className="text-xs sm:text-sm">
+              {isExpanded ? "Less" : "More"}
+            </span>
           </Button>
         </div>
 
