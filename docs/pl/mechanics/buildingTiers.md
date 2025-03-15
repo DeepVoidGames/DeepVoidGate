@@ -5,7 +5,7 @@
 - **Każdy Tier (T1-T5) wymaga 10 ulepszeń**, aby odblokować następny:
   - **Przykład dla Kopalni:**
     - T1 → T2: 10× ulepszeń (koszt: 100 metali + 50 energii/ulepszenie)
-    - Po 10 ulepszeniach: odblokuj **T2** (nowy model 3D + 50% wydajności bazowej)
+    - Po 10 ulepszeniach: odblokuj **T2** (50% wydajności bazowej)
   - **Statystyki per Tier:**
     - T1: +5% produkcji/ulepszenie
     - T5: +25% produkcji/ulepszenie + unikalny bonus
