@@ -1,4 +1,4 @@
-import React, { useCallback, useState } from "react";
+import React, { useCallback, useState, useEffect } from "react";
 import {
   Zap,
   FlaskConical,
@@ -11,14 +11,15 @@ import {
   Search,
   Lock,
   CheckCircle,
+  Clock,
 } from "lucide-react";
 import { GameProvider, useGame } from "@/context/GameContext";
 import { formatNumber } from "@/lib/utils";
 import { Technology, TechnologyCategory } from "@/store/types";
 import { initialTechnologies } from "@/store/initialData";
 import { toast } from "@/components/ui/use-toast";
+import { Progress } from "@/components/ui/progress";
 
-// Konfiguracja kategorii technologii
 const techCategories = [
   {
     id: "all" as TechnologyCategory | "all",
@@ -60,10 +61,30 @@ const ResourcesIcon = ({ resource }) => {
 
 const TechnologiesManager: React.FC = () => {
   const { state, dispatch } = useGame();
-  const { resources } = state;
-  const technologies = initialTechnologies || [];
+  const { resources, technologies } = state;
   const [activeTab, setActiveTab] = useState<string>("all");
   const [searchQuery, setSearchQuery] = useState("");
+  const [now, setNow] = useState(Date.now());
+
+  useEffect(() => {
+    // Natychmiastowe sprawdzenie postępu
+    dispatch({ type: "CHECK_RESEARCH_PROGRESS" });
+
+    // Codzienne aktualizacje
+    const interval = setInterval(() => {
+      dispatch({ type: "CHECK_RESEARCH_PROGRESS" });
+    }, 1000);
+
+    return () => clearInterval(interval);
+  }, [dispatch]);
+
+  // Update current time every second for progress calculation
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setNow(Date.now());
+    }, 1000);
+    return () => clearInterval(interval);
+  }, []);
 
   const researchTech = useCallback(
     (techId: string) => {
@@ -73,18 +94,25 @@ const TechnologiesManager: React.FC = () => {
   );
 
   const canResearchTech = (tech: Technology) => {
-    // Sprawdź zasoby
+    const isResearchInProgress = technologies.some(
+      (t) => t.researchStartTime && !t.isResearched
+    );
+
     const canAfford = Object.entries(tech.researchCost).every(
       ([resource, cost]) =>
         resources[resource as keyof typeof resources].amount >= cost
     );
 
-    // Sprawdź wymagania technologiczne
     const hasPrerequisites = tech.prerequisites.every((prereqId) =>
       technologies.some((t) => t.id === prereqId && t.isResearched)
     );
 
-    return canAfford && hasPrerequisites && !tech.isResearched;
+    return (
+      canAfford &&
+      hasPrerequisites &&
+      !tech.isResearched &&
+      !isResearchInProgress
+    );
   };
 
   const getPrerequisiteNames = (tech: Technology) => {
@@ -92,7 +120,7 @@ const TechnologiesManager: React.FC = () => {
       .map(
         (prereqId) =>
           technologies.find((t) => t.id === prereqId)?.name ||
-          "Nieznana technologia"
+          "Unknown technology"
       )
       .join(", ");
   };
@@ -106,17 +134,42 @@ const TechnologiesManager: React.FC = () => {
       const search = searchQuery.toLowerCase();
       return (
         tech.name.toLowerCase().includes(search) ||
-        tech.description?.toLowerCase().includes(search) // Dodajemy optional chaining dla description
+        tech.description?.toLowerCase().includes(search)
       );
     })
-    .sort(
-      (a, b) => (a.researchCost.science || 0) - (b.researchCost.science || 0)
-    );
+    .sort((a, b) => a.researchCost.science - b.researchCost.science);
+
+  const getResearchProgress = (tech: Technology) => {
+    if (!tech.researchStartTime || tech.isResearched) return null;
+
+    const elapsed = now - tech.researchStartTime;
+    const totalDuration = tech.researchDuration * 1000;
+
+    // Zabezpieczenie przed ujemnym czasem
+    if (elapsed >= totalDuration) {
+      return {
+        progress: 100,
+        remaining: "0:00",
+      };
+    }
+
+    const progress = (elapsed / totalDuration) * 100;
+    const remainingSeconds = Math.ceil((totalDuration - elapsed) / 1000);
+    const minutes = Math.max(0, Math.floor(remainingSeconds / 60));
+    const seconds = Math.max(0, remainingSeconds % 60);
+
+    return {
+      progress,
+      remaining: `${minutes}:${seconds.toString().padStart(2, "0")}`,
+    };
+  };
 
   return (
     <div className="glass-panel p-4 space-y-6 animate-fade-in">
       <div className="flex flex-col md:flex-row justify-between gap-4 mb-4">
-        <h2 className="text-lg font-medium text-foreground/90">Tech Tree</h2>
+        <h2 className="text-lg font-medium text-foreground/90">
+          Technology Tree
+        </h2>
 
         <div className="relative max-w-md w-full">
           <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
@@ -130,7 +183,6 @@ const TechnologiesManager: React.FC = () => {
         </div>
       </div>
 
-      {/* Category Tabs */}
       <div className="flex flex-wrap gap-2 mb-6">
         {techCategories.map((category) => (
           <button
@@ -148,11 +200,12 @@ const TechnologiesManager: React.FC = () => {
         ))}
       </div>
 
-      {/* Technologies Grid */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
         {filteredTechnologies.map((tech) => {
           const isResearched = tech.isResearched;
           const canResearch = canResearchTech(tech);
+          const progressInfo = getResearchProgress(tech);
+          const isInProgress = !!progressInfo;
 
           return (
             <div
@@ -176,59 +229,68 @@ const TechnologiesManager: React.FC = () => {
                 </div>
               </div>
 
-              {/* Koszty badań */}
-              <div className="flex flex-wrap gap-2 mb-3">
-                {Object.entries(tech.researchCost).map(([resource, cost]) => {
-                  const hasEnough =
-                    resources[resource as keyof typeof resources].amount >=
-                    cost;
-                  return (
-                    <div
-                      key={resource}
-                      className="flex items-center gap-1 px-2 py-1 bg-background rounded text-sm"
-                    >
-                      <ResourcesIcon resource={resource} />
-                      <span
-                        className={
-                          hasEnough ? "text-green-400" : "text-red-400"
-                        }
+              {!isResearched ? (
+                <div className="flex flex-wrap gap-2 mb-3">
+                  {Object.entries(tech.researchCost).map(([resource, cost]) => {
+                    const hasEnough =
+                      resources[resource as keyof typeof resources].amount >=
+                      cost;
+                    return (
+                      <div
+                        key={resource}
+                        className="flex items-center gap-1 px-2 py-1 bg-background rounded text-sm"
                       >
-                        {formatNumber(cost)}
-                      </span>
-                    </div>
-                  );
-                })}
-              </div>
+                        <ResourcesIcon resource={resource} />
+                        <span
+                          className={
+                            hasEnough ? "text-green-400" : "text-red-400"
+                          }
+                        >
+                          {formatNumber(cost)}
+                        </span>
+                      </div>
+                    );
+                  })}
+                </div>
+              ) : null}
 
-              {/* Wymagania */}
               {tech.prerequisites.length > 0 && (
                 <div className="text-xs text-muted-foreground mb-3">
                   <Lock className="inline mr-1 h-3 w-3" />
-                  Wymagania: {getPrerequisiteNames(tech)}
+                  Requires: {getPrerequisiteNames(tech)}
                 </div>
               )}
 
-              {/* Przycisk badań */}
-              <button
-                onClick={() => researchTech(tech.id)}
-                disabled={!canResearch || isResearched}
-                className={`w-full py-2 rounded-lg transition-colors ${
-                  isResearched
-                    ? "bg-green-800/50 cursor-default"
-                    : canResearch
-                    ? "bg-primary hover:bg-primary/90"
-                    : "bg-muted cursor-not-allowed"
-                }`}
-              >
-                {isResearched ? (
-                  <div className="flex items-center justify-center gap-2">
-                    <CheckCircle className="h-4 w-4" />
-                    Zbadano
+              {isInProgress ? (
+                <div className="space-y-2">
+                  <Progress value={progressInfo.progress} className="h-2" />
+                  <div className="flex items-center gap-2 text-xs text-muted-foreground">
+                    <Clock className="h-4 w-4" />
+                    <span>Remaining: {progressInfo.remaining}</span>
                   </div>
-                ) : (
-                  "Rozpocznij badania"
-                )}
-              </button>
+                </div>
+              ) : (
+                <button
+                  onClick={() => researchTech(tech.id)}
+                  disabled={!canResearch || isResearched}
+                  className={`w-full py-2 rounded-lg transition-colors ${
+                    isResearched
+                      ? "bg-green-800/50 cursor-default"
+                      : canResearch
+                      ? "bg-primary hover:bg-primary/90"
+                      : "bg-muted cursor-not-allowed"
+                  }`}
+                >
+                  {isResearched ? (
+                    <div className="flex items-center justify-center gap-2">
+                      <CheckCircle className="h-4 w-4" />
+                      Researched
+                    </div>
+                  ) : (
+                    "Start Research"
+                  )}
+                </button>
+              )}
             </div>
           );
         })}

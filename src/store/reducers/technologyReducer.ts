@@ -4,7 +4,6 @@ import { canAffordCost, applyResourceCost } from "./resourceReducer";
 import { ResourcesState } from "./resourceReducer";
 import { BuildingType } from "../types";
 
-// Sprawdź czy wszystkie wymagania technologiczne są spełnione
 const checkPrerequisites = (
   technology: Technology,
   researchedTechIds: string[]
@@ -14,7 +13,6 @@ const checkPrerequisites = (
   );
 };
 
-// Główna funkcja reduktora dla technologii
 export const researchTechnology = (
   technologies: Technology[],
   resources: ResourcesState,
@@ -28,8 +26,8 @@ export const researchTechnology = (
 
   if (!tech) {
     toast({
-      title: "Błąd technologii",
-      description: "Technologia nie istnieje",
+      title: "Technology Error",
+      description: "Technology does not exist",
       variant: "destructive",
     });
     return { technologies, resources, success: false };
@@ -37,8 +35,16 @@ export const researchTechnology = (
 
   if (tech.isResearched) {
     toast({
-      title: "Już zbadane",
-      description: "Ta technologia została już przebadana",
+      title: "Already Researched",
+      description: "This technology has already been researched",
+    });
+    return { technologies, resources, success: false };
+  }
+
+  if (tech.researchStartTime) {
+    toast({
+      title: "Research in Progress",
+      description: "This technology is already being researched",
     });
     return { technologies, resources, success: false };
   }
@@ -50,8 +56,8 @@ export const researchTechnology = (
     )
   ) {
     toast({
-      title: "Wymagania nie spełnione",
-      description: "Nie spełniono wymaganych warunków wstępnych",
+      title: "Prerequisites Not Met",
+      description: "Required prerequisites are not met",
       variant: "destructive",
     });
     return { technologies, resources, success: false };
@@ -59,8 +65,8 @@ export const researchTechnology = (
 
   if (!canAffordCost(resources, tech.researchCost)) {
     toast({
-      title: "Brak zasobów",
-      description: "Niewystarczające zasoby do badań",
+      title: "Insufficient Resources",
+      description: "Not enough resources to start research",
       variant: "destructive",
     });
     return { technologies, resources, success: false };
@@ -68,12 +74,18 @@ export const researchTechnology = (
 
   const newResources = applyResourceCost(resources, tech.researchCost);
   const newTechs = technologies.map((t) =>
-    t.id === techId ? { ...t, isResearched: true } : t
+    t.id === techId
+      ? {
+          ...t,
+          researchStartTime: Date.now(),
+          researchDuration: tech.researchDuration,
+        }
+      : t
   );
 
   toast({
-    title: "Technologia Odblokowana!",
-    description: `Pomyślnie zbadano: ${tech.name}`,
+    title: "Research Started",
+    description: `Started researching: ${tech.name} (Duration: ${tech.researchDuration}s)`,
   });
 
   return {
@@ -83,11 +95,28 @@ export const researchTechnology = (
   };
 };
 
-// Pomocnicza funkcja do sprawdzania dostępnych budynków
 export const getUnlockedBuildings = (
   technologies: Technology[]
 ): BuildingType[] => {
   return technologies
     .filter((t) => t.isResearched)
     .flatMap((t) => t.unlocksBuildings);
+};
+
+// Helper function to check completed researches (should be called periodically)
+export const updateResearches = (technologies: Technology[]): Technology[] => {
+  const now = Date.now();
+  return technologies.map((tech) => {
+    if (tech.researchStartTime && !tech.isResearched) {
+      const elapsed = (now - tech.researchStartTime) / 1000;
+      if (elapsed >= tech.researchDuration) {
+        toast({
+          title: "Research Completed",
+          description: `Successfully researched: ${tech.name}`,
+        });
+        return { ...tech, isResearched: true, researchStartTime: undefined };
+      }
+    }
+    return tech;
+  });
 };

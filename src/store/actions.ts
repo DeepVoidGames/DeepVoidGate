@@ -6,6 +6,7 @@ export type GameAction =
   | { type: "UPGRADE_BUILDING"; payload: { buildingId: string } }
   | { type: "ASSIGN_WORKER"; payload: { buildingId: string; count: number } }
   | { type: "RESEARCH_TECHNOLOGY"; payload: { techId: string } }
+  | { type: "CHECK_RESEARCH_PROGRESS" }
   | { type: "SAVE_GAME" }
   | { type: "LOAD_GAME" }
   | { type: "RESET_GAME" };

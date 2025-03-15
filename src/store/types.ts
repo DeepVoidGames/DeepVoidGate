@@ -38,6 +38,7 @@ export interface Technology {
   unlocksBuildings: BuildingType[];
   isResearched: boolean;
   researchDuration: number; // w sekundach
+  researchStartTime?: number;
 }
 
 // Resource data structure

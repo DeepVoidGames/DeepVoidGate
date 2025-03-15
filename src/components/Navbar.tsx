@@ -5,10 +5,10 @@ const Navbar = () => {
   const location = useLocation();
 
   const links = [
-    { path: "/", label: "Strona Główna", icon: <Home className="h-5 w-5" /> },
+    { path: "/", label: "Home", icon: <Home className="h-5 w-5" /> },
     {
       path: "/tech",
-      label: "Technologie",
+      label: "Tech",
       icon: <Microscope className="h-5 w-5" />,
     },
   ];

@@ -26,7 +26,7 @@ import {
   calculatePopulationConsumption,
   recalculateAvailableWorkers,
 } from "./populationReducer";
-import { researchTechnology } from "./technologyReducer";
+import { researchTechnology, updateResearches } from "./technologyReducer";
 
 // Initialize the game state
 export const initialState: GameState = {
@@ -363,6 +363,29 @@ export const gameReducer = (
         technologies: result.technologies,
         resources: result.resources,
       };
+    }
+
+    // Dodaj nowy case do aktualizacji badań
+    case "CHECK_RESEARCH_PROGRESS": {
+      const updatedTechnologies = updateResearches(state.technologies);
+
+      // Sprawdź czy jakieś technologie zostały ukończone
+      const completedTech = updatedTechnologies.find(
+        (t) =>
+          !state.technologies.some(
+            (ot) => ot.id === t.id && ot.isResearched === t.isResearched
+          )
+      );
+
+      // Jeśli znaleziono ukończoną technologię, zaktualizuj stan
+      if (completedTech) {
+        return {
+          ...state,
+          technologies: updatedTechnologies,
+        };
+      }
+
+      return state;
     }
 
     case "SAVE_GAME": {
