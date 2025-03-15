@@ -44,7 +44,9 @@ const migrateGameState = (savedState: any): GameState => {
 
   // Jeśli wersja jest starsza niż aktualna, zastosuj odpowiednie migracje
   if (savedState.version != CURRENT_GAME_VERSION) {
-    console.log("Migrating from version 1.0.0 to 1.1.0...");
+    console.log(
+      `Migrating from version ${savedState.version} to ${CURRENT_GAME_VERSION}...`
+    );
     return {
       ...savedState,
       version: CURRENT_GAME_VERSION,
@@ -56,7 +58,7 @@ const migrateGameState = (savedState: any): GameState => {
   return savedState;
 };
 
-const CURRENT_GAME_VERSION = "0.0.2"; // Aktualna wersja gry
+const CURRENT_GAME_VERSION = "0.0.3"; // Aktualna wersja gry
 // Initialize the game state
 export const initialState: GameState = {
   version: CURRENT_GAME_VERSION,
