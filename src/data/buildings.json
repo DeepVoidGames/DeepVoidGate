@@ -81,7 +81,7 @@
     "requirements": {},
     "costMultiplier": 1.7,
     "productionMultiplier": 1.15,
-    "maxInstances": 2
+    "maxInstances": 1
   },
   {
     "type": "researchLab",
@@ -146,7 +146,7 @@
     "requirements": {},
     "costMultiplier": 1.8,
     "productionMultiplier": 1,
-    "maxInstances": 3
+    "maxInstances": 1
   },
   {
     "type": "advancedStorage",
@@ -173,7 +173,7 @@
     },
     "costMultiplier": 2.0,
     "productionMultiplier": 1,
-    "maxInstances": 2
+    "maxInstances": 1
   },
   {
     "type": "basicBattery",
@@ -194,7 +194,7 @@
     "requirements": {},
     "costMultiplier": 1.5,
     "productionMultiplier": 1,
-    "maxInstances": 2,
+    "maxInstances": 1,
     "requiredTechnology": "basic_energy"
   }
 ]

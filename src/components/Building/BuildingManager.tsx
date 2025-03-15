@@ -323,7 +323,7 @@ export const BuildingManager: React.FC = () => {
           resources={resources}
           constructBuilding={constructBuilding}
           canAffordBuilding={canAffordBuilding}
-          technologies={initialTechnologies}
+          technologies={state.technologies}
         />
       </div>
     </div>
