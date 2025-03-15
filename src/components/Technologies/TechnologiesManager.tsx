@@ -182,7 +182,7 @@ const TechnologiesManager: React.FC = () => {
           <button
             key={category.id}
             onClick={() => setActiveTab(category.id)}
-            className={`flex items-center gap-2 px-4 py-2 rounded-lg transition-colors ${
+            className={`flex items-center gap-2 px-4 py-2 rounded-lg transition-colors w-full md:w-fit ${
               activeTab === category.id
                 ? "bg-primary text-primary-foreground"
                 : "bg-background/50 hover:bg-accent"

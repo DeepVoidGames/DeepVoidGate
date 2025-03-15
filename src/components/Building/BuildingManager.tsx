@@ -242,14 +242,14 @@ export const BuildingManager: React.FC = () => {
   return (
     <div className="space-y-6 animate-fade-in">
       {/* Existing Buildings Section */}
-      <div className="glass-panel p-4">
-        <div className="flex flex-col md:flex-row justify-between mb-4 gap-4">
-          <div className="flex items-center gap-4">
+      <div className="glass-panel p-4 w-full">
+        <div className="flex flex-col md:flex-row justify-between mb-4 gap-4 w-full">
+          <div className="grid grid-cols-2 w-full">
             <h2 className="text-lg font-medium text-foreground/90">
               Colony Buildings
             </h2>
-            <div className="hidden md:flex items-center space-x-2 text-sm">
-              <Users className="h-4 w-4 text-blue-400" />
+            <div className="flex items-center justify-end space-x-2 text-xs md:text-sm">
+              <Users className="h-2 w-2 md:h-4 md:w-4 text-blue-400" />
               <span>
                 {population.available} / {population.total} workers available
               </span>
