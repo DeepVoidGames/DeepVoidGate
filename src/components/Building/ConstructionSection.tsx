@@ -43,7 +43,7 @@ const ConstructionSection = ({
 
         <Tabs defaultValue="production">
           <TabsList className="grid grid-cols-2 md:grid-cols-4 gap-2 w-full">
-            {categories.slice(1).map((category) => (
+            {categories.map((category) => (
               <TabsTrigger
                 key={category.id}
                 value={category.id}

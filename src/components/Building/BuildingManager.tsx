@@ -84,11 +84,6 @@ const buildingConfig = [
 // Konfiguracja kategorii
 const categories = [
   {
-    id: "all" as BuildingCategory | "all",
-    name: "All",
-    icon: <Building className="h-4 w-4" />,
-  },
-  {
     id: "production" as BuildingCategory,
     name: "Production",
     icon: <Factory className="h-4 w-4" />,
@@ -125,7 +120,7 @@ export const BuildingManager: React.FC = () => {
   const { state, dispatch } = useGame();
   const { buildings, resources, population } = state;
   const [expandedBuilding, setExpandedBuilding] = useState<string | null>(null);
-  const [activeTab, setActiveTab] = useState<string>("all");
+  const [activeTab, setActiveTab] = useState<string>("production");
   const [searchQuery, setSearchQuery] = useState("");
 
   // Function to construct a new building
@@ -225,8 +220,8 @@ export const BuildingManager: React.FC = () => {
   // Group buildings by category
   const buildingsByCategory: Record<BuildingCategory, typeof buildings> = {
     production: [],
-    housing: [],
     research: [],
+    housing: [],
     storage: [],
     utility: [],
   };
@@ -240,7 +235,6 @@ export const BuildingManager: React.FC = () => {
   // Filtrowanie budynków
   const filteredBuildings = buildings
     .filter((building) => {
-      if (activeTab === "all") return true;
       const buildingConfigEntry = buildingConfig.find(
         (b) => b.type === building.type
       );
