@@ -21,6 +21,7 @@ import { BuildingType, BuildingCategory } from "@/store/types";
 import { initialBuildings, initialTechnologies } from "@/store/initialData";
 import ConstructionSection from "./ConstructionSection";
 import ExistingBuildings from "./ExistingBuildings";
+import { ResourcesIcon } from "@/config";
 
 // Centralna konfiguracja budynków
 //TODO Przenisnie tego do osobnego pliku najlepiej data/buildings.json
@@ -104,17 +105,6 @@ const categories = [
     icon: <Package className="h-4 w-4" />,
   },
 ];
-
-const ResourcesIcon = ({ resource }) => {
-  const icons = {
-    oxygen: "O₂",
-    food: "🌱",
-    energy: "⚡",
-    metals: "⛏️",
-    science: "🔬",
-  };
-  return icons[resource] || "?";
-};
 
 export const BuildingManager: React.FC = () => {
   const { state, dispatch } = useGame();

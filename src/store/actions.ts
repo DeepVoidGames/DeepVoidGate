@@ -9,4 +9,5 @@ export type GameAction =
   | { type: "CHECK_RESEARCH_PROGRESS" }
   | { type: "SAVE_GAME" }
   | { type: "LOAD_GAME" }
+  | { type: "CLOSE_OFFLINE_MODAL" }
   | { type: "RESET_GAME" };

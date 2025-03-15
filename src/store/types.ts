@@ -104,6 +104,11 @@ export interface ResourceAlertThresholds {
   };
 }
 
+export interface OfflineReport {
+  elapsedTime: number;
+  resourceChanges: Record<ResourceType, number>;
+}
+
 // Game state interface
 export interface GameState {
   version: string;
@@ -119,6 +124,8 @@ export interface GameState {
     deathTimer?: number;
   };
   technologies: Technology[];
-  lastUpdate: number;
   paused: boolean;
+  lastUpdate: number;
+  showOfflineProgress;
+  offlineReport;
 }

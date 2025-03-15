@@ -1,6 +1,6 @@
 import { toast } from "@/components/ui/use-toast";
 import { GameAction } from "../actions";
-import { GameState } from "../types";
+import { GameState, ResourceType } from "../types";
 import {
   initialResourcesState,
   initialPopulationState,
@@ -28,6 +28,7 @@ import {
 } from "./populationReducer";
 import { researchTechnology, updateResearches } from "./technologyReducer";
 import { stat } from "fs";
+import { calculateOfflineProduction } from "@/lib/calculateOfflineProduction";
 
 const migrateGameState = (savedState: any): GameState => {
   // Jeśli zapis nie ma wersji, oznacza to, że jest to stara wersja (np. przed dodaniem technologii)
@@ -66,6 +67,8 @@ export const initialState: GameState = {
   lastUpdate: Date.now(),
   paused: false,
   name: undefined,
+  showOfflineProgress: undefined,
+  offlineReport: undefined,
 };
 
 // Constants for death timer
@@ -396,7 +399,6 @@ export const gameReducer = (
       };
     }
 
-    // Dodaj nowy case do aktualizacji badań
     case "CHECK_RESEARCH_PROGRESS": {
       const updatedTechnologies = updateResearches(state.technologies);
 
@@ -424,6 +426,7 @@ export const gameReducer = (
         const stateToSave = {
           ...state,
           version: CURRENT_GAME_VERSION, // Zawsze zapisuj z aktualną wersją
+          lastUpdate: Date.now(),
         };
         localStorage.setItem("deepvoidgate_save", JSON.stringify(stateToSave));
         toast({
@@ -460,9 +463,52 @@ export const gameReducer = (
           title: "Game Loaded",
           description: "Your saved game has been loaded successfully.",
         });
+
+        const now = Date.now();
+        const elapsedTime = now - migratedState.lastUpdate; // Używamy czasu z załadowanego zapisu
+
+        if (elapsedTime > 5000) {
+          // Stwórz kopię surowców z załadowanego stanu
+          const originalResources = { ...migratedState.resources };
+
+          // Oblicz progres używając załadowanych budynków i technologii
+          const newResources = calculateOfflineProduction(
+            migratedState.buildings,
+            migratedState.resources,
+            migratedState.technologies,
+            elapsedTime
+          );
+
+          // Oblicz zmiany w surowcach
+          const resourceChanges = Object.keys(newResources).reduce(
+            (acc, key) => {
+              const resourceType = key as ResourceType;
+              acc[resourceType] =
+                newResources[resourceType].amount -
+                originalResources[resourceType].amount;
+              return acc;
+            },
+            {} as Record<ResourceType, number>
+          );
+
+          return {
+            ...migratedState,
+            resources: newResources,
+            lastUpdate: now,
+            showOfflineProgress: true,
+            offlineReport: {
+              elapsedTime,
+              resourceChanges,
+            },
+          };
+        }
+
+        // Jeśli nie było progresu, zaktualizuj tylko timestamp
         return {
           ...migratedState,
-          lastUpdate: Date.now(),
+          lastUpdate: now,
+          showOfflineProgress: false,
+          offlineReport: null,
         };
       } catch (error) {
         console.error("Failed to load game:", error);
@@ -474,6 +520,13 @@ export const gameReducer = (
         return state;
       }
     }
+
+    case "CLOSE_OFFLINE_MODAL":
+      return {
+        ...state,
+        showOfflineProgress: false,
+        offlineReport: null,
+      };
 
     case "RESET_GAME": {
       localStorage.removeItem("deepvoidgate_save");
