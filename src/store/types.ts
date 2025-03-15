@@ -84,6 +84,8 @@ export interface BuildingData {
   functioning?: boolean;
   technologies: Technology[];
   requiredTechnology?: string;
+  image?: string;
+  icon?: string;
 }
 
 // Alert thresholds

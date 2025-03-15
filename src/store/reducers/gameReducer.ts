@@ -27,6 +27,7 @@ import {
   recalculateAvailableWorkers,
 } from "./populationReducer";
 import { researchTechnology, updateResearches } from "./technologyReducer";
+import { stat } from "fs";
 
 // Initialize the game state
 export const initialState: GameState = {
@@ -36,6 +37,7 @@ export const initialState: GameState = {
   technologies: initialTechnologies,
   lastUpdate: Date.now(),
   paused: false,
+  name: undefined,
 };
 
 // Constants for death timer
@@ -298,7 +300,8 @@ export const gameReducer = (
       const result = constructBuilding(
         state.buildings,
         state.resources,
-        buildingType
+        buildingType,
+        state.technologies
       );
 
       if (!result.success) return state;

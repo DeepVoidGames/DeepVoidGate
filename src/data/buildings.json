@@ -159,6 +159,7 @@
       "energy": 60,
       "science": 10
     },
+    "baseProduction": {},
     "baseConsumption": {
       "energy": 0.5,
       "oxygen": 0.1
@@ -185,6 +186,7 @@
       "metals": 50,
       "energy": 20
     },
+    "baseProduction": {},
     "baseConsumption": {
       "energy": 0.1
     },

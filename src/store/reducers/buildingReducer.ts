@@ -1,7 +1,11 @@
 import { toast } from "@/components/ui/use-toast";
 import { GameAction } from "../actions";
 import { BuildingData, BuildingType, ResourceType, Technology } from "../types";
-import { generateId, initialBuildings } from "../initialData";
+import {
+  generateId,
+  initialBuildings,
+  initialTechnologies,
+} from "../initialData";
 import { canAffordCost, applyResourceCost } from "./resourceReducer";
 import { ResourcesState } from "./resourceReducer";
 
@@ -71,26 +75,32 @@ export const applyBuildingEffects = (
     if (building.efficiency <= 0) return; // Skip inactive buildings
 
     // Apply production effects
-    Object.entries(building.baseProduction).forEach(([resource, amount]) => {
-      const resourceKey = resource as ResourceType;
-      if (newResources[resourceKey]) {
-        // Use Number to ensure we're using numeric values
-        const productionAmount =
-          Number(amount) * Number(building.level) * Number(building.efficiency);
-        newResources[resourceKey].production += productionAmount;
-      }
-    });
+    if (building.baseProduction != null)
+      Object.entries(building.baseProduction).forEach(([resource, amount]) => {
+        const resourceKey = resource as ResourceType;
+        if (newResources[resourceKey]) {
+          // Use Number to ensure we're using numeric values
+          const productionAmount =
+            Number(amount) *
+            Number(building.level) *
+            Number(building.efficiency);
+          newResources[resourceKey].production += productionAmount;
+        }
+      });
 
     // Apply consumption effects
-    Object.entries(building.baseConsumption).forEach(([resource, amount]) => {
-      const resourceKey = resource as ResourceType;
-      if (newResources[resourceKey]) {
-        // Use Number to ensure we're using numeric values
-        const consumptionAmount =
-          Number(amount) * Number(building.level) * Number(building.efficiency);
-        newResources[resourceKey].consumption += consumptionAmount;
-      }
-    });
+    if (building.baseConsumption != null)
+      Object.entries(building.baseConsumption).forEach(([resource, amount]) => {
+        const resourceKey = resource as ResourceType;
+        if (newResources[resourceKey]) {
+          // Use Number to ensure we're using numeric values
+          const consumptionAmount =
+            Number(amount) *
+            Number(building.level) *
+            Number(building.efficiency);
+          newResources[resourceKey].consumption += consumptionAmount;
+        }
+      });
 
     // Apply resource requirements
     if (building.requirements && building.efficiency > 0) {
@@ -145,14 +155,21 @@ export const constructBuilding = (
 
   // Sprawdź czy technologia jest odblokowana
   if (buildingTemplate.requiredTechnology) {
-    const isUnlocked = technologies.some(
-      (t) => t.isResearched && t.unlocksBuildings.includes(buildingType)
+    const requiredTech = technologies.find(
+      (t) => t.id === buildingTemplate.requiredTechnology
     );
 
-    if (!isUnlocked) {
+    if (!requiredTech || !requiredTech.isResearched) {
+      const unlockingTechs = technologies
+        .filter((t) => t.unlocksBuildings.includes(buildingType))
+        .map((t) => t.name);
+
       toast({
-        title: "Technologia Wymagana",
-        description: `Wymagana technologia: ${buildingTemplate.requiredTechnology}`,
+        title: "Technology Required",
+        description: `Required technology: ${
+          requiredTech?.name || buildingTemplate.requiredTechnology
+        }\n
+      This building can be unlocked by: ${unlockingTechs.join(", ") || "none"}`,
         variant: "destructive",
       });
       return { buildings, resources, success: false };
