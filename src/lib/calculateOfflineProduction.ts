@@ -11,17 +11,32 @@ export const calculateOfflineProduction = (
   technologies: Technology[],
   elapsedTime: number
 ): ResourcesState => {
+  // Nowe ograniczenia
+  const MAX_OFFLINE_HOURS = 12; // Maksymalny czas brany pod uwagę
+  const EFFICIENCY_MULTIPLIER = 0.03; // 3% efektywności
+  const OUTPUT_REDUCTION = 1; // Dodatkowe ograniczenie wyjścia
+
   let currentResources = structuredClone(resources);
-  let remainingTime = elapsedTime;
+
+  // Ogranicz czas offline do maksymalnej wartości
+  const cappedElapsedTime = Math.min(
+    elapsedTime,
+    MAX_OFFLINE_HOURS * 60 * 60 * 1000 // 12 godzin w milisekundach
+  );
+
+  let remainingTime = cappedElapsedTime;
 
   while (remainingTime > 0) {
-    // Oblicz efektywność budynków z 10% wydajności
+    // Oblicz efektywność z podwójnym ograniczeniem
     const efficientBuildings = calculateBuildingEfficiency(
       buildings,
       currentResources
     ).map((building) => ({
       ...building,
-      efficiency: building.efficiency * 0.001, // Redukcja do 5%
+      efficiency: Math.min(
+        building.efficiency * EFFICIENCY_MULTIPLIER,
+        0.05 // Hard limit 5% nawet jeśli obliczenia dadzą więcej
+      ),
     }));
 
     const tempResources = applyBuildingEffects(
@@ -29,9 +44,17 @@ export const calculateOfflineProduction = (
       currentResources
     );
 
-    let maxSegmentTime = remainingTime;
+    // Dodatkowe ograniczenie produkcji
+    Object.keys(tempResources).forEach((resourceKey) => {
+      const res = tempResources[resourceKey as ResourceType];
 
-    // Oblicz czas do następnej zmiany stanu
+      // Zastosuj dodatkowy reduktor tylko dla produkcji
+      tempResources[resourceKey as ResourceType].production =
+        res.production * OUTPUT_REDUCTION;
+    });
+
+    // Reszta logiki czasowej pozostaje bez zmian
+    let maxSegmentTime = remainingTime;
     Object.values(tempResources).forEach((res) => {
       const netRate = res.production - res.consumption;
       if (netRate === 0) return;
@@ -49,7 +72,6 @@ export const calculateOfflineProduction = (
     const segmentTime = Math.min(maxSegmentTime, remainingTime);
     const segmentSeconds = segmentTime / 1000;
 
-    // Aktualizuj zasoby z ograniczoną wydajnością
     Object.keys(tempResources).forEach((resourceKey) => {
       const res = tempResources[resourceKey as ResourceType];
       const delta = (res.production - res.consumption) * segmentSeconds;
@@ -65,6 +87,20 @@ export const calculateOfflineProduction = (
 
     remainingTime -= segmentTime;
   }
+
+  // Globalne kapsowanie surowców
+  Object.keys(currentResources).forEach((resourceKey) => {
+    const resource = currentResources[resourceKey as ResourceType];
+
+    // Maksymalny zysk offline to 25% pojemności
+    const maxGain = resource.capacity * 0.25;
+    if (
+      resource.amount >
+      resources[resourceKey as ResourceType].amount + maxGain
+    ) {
+      resource.amount = resources[resourceKey as ResourceType].amount + maxGain;
+    }
+  });
 
   return currentResources;
 };

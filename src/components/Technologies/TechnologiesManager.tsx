@@ -57,7 +57,7 @@ const ResourcesIcon = ({ resource }) => {
 const TechnologiesManager: React.FC = () => {
   const { state, dispatch } = useGame();
   const { resources, technologies } = state;
-  const [activeTab, setActiveTab] = useState<string>("all");
+  const [activeTab, setActiveTab] = useState<string>("Energy");
   const [searchQuery, setSearchQuery] = useState("");
   const [now, setNow] = useState(Date.now());
 
