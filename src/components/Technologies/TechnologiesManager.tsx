@@ -22,11 +22,6 @@ import { Progress } from "@/components/ui/progress";
 
 const techCategories = [
   {
-    id: "all" as TechnologyCategory | "all",
-    name: "All",
-    icon: <Microscope className="h-4 w-4" />,
-  },
-  {
     id: "Energy",
     name: "Energy",
     icon: <Zap className="h-4 w-4 text-yellow-400" />,
@@ -125,20 +120,6 @@ const TechnologiesManager: React.FC = () => {
       .join(", ");
   };
 
-  const filteredTechnologies = technologies
-    .filter((tech) => {
-      if (activeTab === "all") return true;
-      return tech.category === activeTab;
-    })
-    .filter((tech) => {
-      const search = searchQuery.toLowerCase();
-      return (
-        tech.name.toLowerCase().includes(search) ||
-        tech.description?.toLowerCase().includes(search)
-      );
-    })
-    .sort((a, b) => a.researchCost.science - b.researchCost.science);
-
   const getResearchProgress = (tech: Technology) => {
     if (!tech.researchStartTime || tech.isResearched) return null;
 
@@ -163,6 +144,19 @@ const TechnologiesManager: React.FC = () => {
       remaining: `${minutes}:${seconds.toString().padStart(2, "0")}`,
     };
   };
+
+  const filteredTechnologies = technologies
+    .filter((tech) => {
+      return tech.category === activeTab;
+    })
+    .filter((tech) => {
+      const search = searchQuery.toLowerCase();
+      return (
+        tech.name.toLowerCase().includes(search) ||
+        tech.description?.toLowerCase().includes(search)
+      );
+    })
+    .sort((a, b) => a.researchCost.science - b.researchCost.science);
 
   return (
     <div className="glass-panel p-4 space-y-6 animate-fade-in">
