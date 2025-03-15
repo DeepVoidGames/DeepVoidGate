@@ -106,6 +106,7 @@ export interface ResourceAlertThresholds {
 
 // Game state interface
 export interface GameState {
+  version: string;
   name: ReactNode;
   resources: {
     [key in ResourceType]: ResourceData;

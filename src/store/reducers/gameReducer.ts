@@ -29,8 +29,36 @@ import {
 import { researchTechnology, updateResearches } from "./technologyReducer";
 import { stat } from "fs";
 
+const migrateGameState = (savedState: any): GameState => {
+  // Jeśli zapis nie ma wersji, oznacza to, że jest to stara wersja (np. przed dodaniem technologii)
+  if (!savedState.version) {
+    console.log("Migrating from pre-technology version...");
+    return {
+      ...initialState, // Domyślny stan
+      ...savedState, // Zachowaj stare dane
+      version: CURRENT_GAME_VERSION,
+      technologies: initialTechnologies, // Dodaj brakujące technologie
+    };
+  }
+
+  // Jeśli wersja jest starsza niż aktualna, zastosuj odpowiednie migracje
+  if (savedState.version != CURRENT_GAME_VERSION) {
+    console.log("Migrating from version 1.0.0 to 1.1.0...");
+    return {
+      ...savedState,
+      version: CURRENT_GAME_VERSION,
+      technologies: savedState.technologies || [], // Upewnij się, że technologie istnieją
+    };
+  }
+
+  // Jeśli wersja jest aktualna, zwróć stan bez zmian
+  return savedState;
+};
+
+const CURRENT_GAME_VERSION = "0.0.2"; // Aktualna wersja gry
 // Initialize the game state
 export const initialState: GameState = {
+  version: CURRENT_GAME_VERSION,
   resources: initialResourcesState,
   buildings: [],
   population: initialPopulationState,
@@ -393,7 +421,11 @@ export const gameReducer = (
 
     case "SAVE_GAME": {
       try {
-        localStorage.setItem("deepvoidgate_save", JSON.stringify(state));
+        const stateToSave = {
+          ...state,
+          version: CURRENT_GAME_VERSION, // Zawsze zapisuj z aktualną wersją
+        };
+        localStorage.setItem("deepvoidgate_save", JSON.stringify(stateToSave));
         toast({
           title: "Game Saved",
           description: "Your progress has been saved successfully.",
@@ -422,12 +454,14 @@ export const gameReducer = (
         }
 
         const parsedState = JSON.parse(savedState) as GameState;
+        const migratedState = migrateGameState(parsedState);
+
         toast({
           title: "Game Loaded",
           description: "Your saved game has been loaded successfully.",
         });
         return {
-          ...parsedState,
+          ...migratedState,
           lastUpdate: Date.now(),
         };
       } catch (error) {
