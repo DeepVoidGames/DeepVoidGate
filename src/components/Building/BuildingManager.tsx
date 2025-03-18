@@ -1,4 +1,4 @@
-import React, { useCallback, useState } from "react";
+import React, { useCallback, useMemo, useState } from "react";
 import {
   Home,
   Droplets,
@@ -17,11 +17,17 @@ import {
 } from "lucide-react";
 import { useGame } from "@/context/GameContext";
 import { formatNumber } from "@/lib/utils";
-import { BuildingType, BuildingCategory } from "@/store/types";
+import { BuildingType, BuildingCategory, ResourceType } from "@/store/types";
 import { initialBuildings, initialTechnologies } from "@/store/initialData";
 import ConstructionSection from "./ConstructionSection";
 import ExistingBuildings from "./ExistingBuildings";
 import { ResourcesIcon } from "@/config";
+import {
+  calculateUpgradeCosts,
+  canAffordBuilding,
+  canAffordResource,
+  canUpgradeBuilding,
+} from "@/store/reducers/buildingReducer";
 
 // Centralna konfiguracja budynków
 //TODO Przenisnie tego do osobnego pliku najlepiej data/buildings.json
@@ -113,7 +119,7 @@ export const BuildingManager: React.FC = () => {
   const [activeTab, setActiveTab] = useState<string>("production");
   const [searchQuery, setSearchQuery] = useState("");
 
-  // Function to construct a new building
+  // Handlers
   const constructBuilding = useCallback(
     (buildingType: BuildingType) => {
       dispatch({ type: "CONSTRUCT_BUILDING", payload: { buildingType } });
@@ -121,73 +127,12 @@ export const BuildingManager: React.FC = () => {
     [dispatch]
   );
 
-  // Function to upgrade a building
   const upgradeBuilding = (buildingId: string) => {
     dispatch({ type: "UPGRADE_BUILDING", payload: { buildingId } });
   };
 
-  // Function to assign or remove workers
   const adjustWorkers = (buildingId: string, count: number) => {
     dispatch({ type: "ASSIGN_WORKER", payload: { buildingId, count } });
-  };
-
-  // Check if we can afford to build a new building
-  const canAffordBuilding = (buildingType: BuildingType) => {
-    const buildingTemplate = initialBuildings.find(
-      (b) => b.type === buildingType
-    );
-
-    if (!buildingTemplate) return false;
-
-    // Check each resource cost
-    for (const [resource, cost] of Object.entries(buildingTemplate.baseCost)) {
-      if (resources[resource as keyof typeof resources].amount < Number(cost)) {
-        return false;
-      }
-    }
-
-    return true;
-  };
-
-  // Check if resource is affordable
-  const canAffordResource = (resourceType: string, amount: number) => {
-    return resources[resourceType as keyof typeof resources].amount >= amount;
-  };
-
-  // Get construction costs for display
-  const getConstructionCosts = (buildingType: BuildingType) => {
-    const buildingTemplate = initialBuildings.find(
-      (b) => b.type === buildingType
-    );
-    if (!buildingTemplate) return {};
-
-    return buildingTemplate.baseCost;
-  };
-
-  // Get upgrade costs for a building
-  const getUpgradeCosts = (building: (typeof buildings)[0]) => {
-    const costs: Record<string, number> = {};
-    const exponentialFactor = 1.2 ** building.level;
-
-    for (const [resource, baseCost] of Object.entries(building.baseCost)) {
-      costs[resource] = Math.floor(
-        Number(baseCost) *
-          Math.pow(Number(building.costMultiplier), building.level) *
-          exponentialFactor
-      );
-    }
-    return costs;
-  };
-
-  const canUpgrade = (building: (typeof buildings)[0]) => {
-    // Sprawdź koszty ulepszenia
-    const costs = getUpgradeCosts(building);
-    for (const [resource, cost] of Object.entries(costs)) {
-      if (resources[resource as keyof typeof resources].amount < Number(cost)) {
-        return false;
-      }
-    }
-    return true;
   };
 
   // Sort buildings by type
@@ -239,6 +184,20 @@ export const BuildingManager: React.FC = () => {
     })
     .sort((a, b) => a.type.localeCompare(b.type));
 
+  // Get costs and check affordability
+  const getUpgradeData = useMemo(
+    () =>
+      buildings.reduce((acc, building) => {
+        const costs = calculateUpgradeCosts(building);
+        acc[building.id] = {
+          costs,
+          canUpgrade: canUpgradeBuilding(building, resources, costs),
+        };
+        return acc;
+      }, {} as Record<string, { costs: Record<ResourceType, number>; canUpgrade: boolean }>),
+    [buildings, resources]
+  );
+
   return (
     <div className="space-y-6 animate-fade-in">
       {/* Existing Buildings Section */}
@@ -248,7 +207,7 @@ export const BuildingManager: React.FC = () => {
             <h2 className="text-lg font-medium text-foreground/90">
               Colony Buildings
             </h2>
-            <div className="flex items-center justify-end space-x-2 text-xs md:text-sm">
+            <div className="flex items-center justify-endm., space-x-2 text-xs md:text-sm">
               <Users className="h-2 w-2 md:h-4 md:w-4 text-blue-400" />
               <span>
                 {population.available} / {population.total} workers available
@@ -289,10 +248,9 @@ export const BuildingManager: React.FC = () => {
           adjustWorkers={adjustWorkers}
           setExpandedBuilding={setExpandedBuilding}
           resources={resources}
-          canUpgrade={canUpgrade}
-          getUpgradeCosts={getUpgradeCosts}
           formatNumber={formatNumber}
           ResourcesIcon={ResourcesIcon}
+          getUpgradeData={getUpgradeData}
         />
 
         {/* Construction Section */}

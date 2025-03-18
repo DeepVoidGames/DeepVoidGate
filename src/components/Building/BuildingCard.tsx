@@ -22,10 +22,11 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
+import { Progress } from "@/components/ui/progress";
+import { Badge } from "@/components/ui/badge";
 
 const BuildingCard = ({
   building,
-  getUpgradeCosts,
   isExpanded,
   formatNumber,
   onAdjustWorkers,
@@ -34,7 +35,8 @@ const BuildingCard = ({
   onUpgrade,
   canUpgrade,
   ResourcesIcon,
-  buildings, // Nowa prop z listą wszystkich budynków
+  upgradeCosts,
+  tierProgress,
 }) => {
   const buildingIcons = {
     oxygenGenerator: <Droplets className="h-5 w-5 text-cyan-400" />,
@@ -47,14 +49,30 @@ const BuildingCard = ({
     advancedStorage: <Warehouse className="h-5 w-5 text-blue-400" />,
   };
 
-  const costs = getUpgradeCosts(building);
+  // Kolory dla tierów
+  const tierColors: Record<number, string> = {
+    1: "bg-gray-400 text-gray-800",
+    2: "bg-blue-400 text-blue-800",
+    3: "bg-green-400 text-green-800",
+    4: "bg-purple-400 text-purple-800",
+    5: "bg-yellow-400 text-yellow-800",
+  };
 
   const hasStorageBonus =
     building.storageBonus && Object.keys(building.storageBonus).length > 0;
+  const isMaxTier = building.tier >= 5 && building.upgrades >= 10;
+
+  // Obliczanie efektywności z uwzględnieniem tieru
+  const calculateEfficiency = () => {
+    const baseEfficiency = building.efficiency || 0;
+    const tierMultiplier = 1 + (building.tier - 1) * 0.2;
+    return Math.min(baseEfficiency * tierMultiplier, 1);
+  };
+
+  const currentEfficiency = calculateEfficiency();
 
   return (
     <Card
-      key={building.id}
       className={`neo-panel overflow-hidden transition-all duration-300 ${
         isExpanded ? "border-primary/30" : "border-border/10"
       } ${!building.functioning ? "bg-red-950/10 border-red-800/30" : ""}`}
@@ -65,17 +83,16 @@ const BuildingCard = ({
             {buildingIcons[building.type]}
             <CardTitle className="text-base">{building.name}</CardTitle>
           </div>
-          <div className="text-sm font-medium flex items-center gap-2">
+          <div className="flex items-center gap-2">
+            <Badge className={tierColors[building.tier]}>
+              Tier {building.tier}
+            </Badge>
             {!building.functioning && (
-              <div
-                className="flex items-center text-red-400"
-                title="Building not functioning"
-              >
-                <AlertTriangle className="h-4 w-4 mr-1" />
-                <span>Not Working</span>
-              </div>
+              <Badge variant="destructive" className="flex items-center gap-1">
+                <AlertTriangle className="h-4 w-4" />
+                <span>Disabled</span>
+              </Badge>
             )}
-            <span>Lvl {building.level}</span>
           </div>
         </div>
         <CardDescription className="mt-1 text-xs">
@@ -94,16 +111,16 @@ const BuildingCard = ({
           <div
             className={
               building.functioning
-                ? building.efficiency >= 0.9
+                ? currentEfficiency >= 0.9
                   ? "text-green-400"
-                  : building.efficiency >= 0.5
+                  : currentEfficiency >= 0.5
                   ? "text-yellow-400"
                   : "text-red-400"
                 : "text-red-400"
             }
           >
             {building.functioning ? (
-              `${Math.round(building.efficiency * 100)}% Efficiency`
+              `${Math.round(currentEfficiency * 100)}% Efficiency`
             ) : (
               <span className="flex items-center">
                 <X className="h-4 w-4 mr-1" /> Disabled
@@ -111,6 +128,19 @@ const BuildingCard = ({
             )}
           </div>
         </div>
+
+        {tierProgress && (
+          <div className="mb-3">
+            <div className="flex justify-between text-xs mb-1">
+              <span>Upgrade Progress</span>
+              <span>{building.upgrades}/10 upgrades</span>
+            </div>
+            <Progress
+              value={(building.upgrades / 10) * 100}
+              className="h-2 bg-gray-700"
+            />
+          </div>
+        )}
 
         <div className="flex justify-between gap-2 mt-3">
           <div className="flex gap-2 flex-1">
@@ -149,6 +179,7 @@ const BuildingCard = ({
 
         {isExpanded && (
           <div className="mt-4 space-y-3 animate-fade-in">
+            {/* Sekcja Storage Bonus */}
             {hasStorageBonus && (
               <div className="space-y-1">
                 <h4 className="text-xs text-foreground/70">
@@ -163,7 +194,10 @@ const BuildingCard = ({
                       >
                         <span>{ResourcesIcon({ resource })}</span>
                         <span>
-                          +{formatNumber(Number(bonus) * building.level)}
+                          +
+                          {formatNumber(
+                            Number(bonus) * (building.tier === 5 ? 2 : 1) // Bonus dla T5
+                          )}
                         </span>
                       </div>
                     )
@@ -172,101 +206,109 @@ const BuildingCard = ({
               </div>
             )}
 
+            {/* Sekcja Production/Consumption */}
             <div className="space-y-1">
               <h4 className="text-xs text-foreground/70">
                 Production & Consumption:
               </h4>
               <div className="grid grid-cols-2 gap-2 text-xs">
                 {Object.entries(building.baseProduction).map(
-                  ([resource, amount]) => (
-                    <div key={resource} className="flex items-center space-x-1">
-                      <span
-                        className={`resource-badge resource-badge-${resource}`}
+                  ([resource, amount]) => {
+                    const baseValue = Number(amount) * building.tier;
+                    const tier5Bonus =
+                      building.tier === 5
+                        ? building.uniqueBonus?.production?.[resource] || 0
+                        : 0;
+                    const total = (baseValue + tier5Bonus) * currentEfficiency;
+
+                    return (
+                      <div
+                        key={resource}
+                        className="flex items-center space-x-1 justify-start w-full"
                       >
-                        {resources[resource]?.icon}
-                      </span>
-                      <span
-                        className={
-                          building.functioning
-                            ? "text-green-400"
-                            : "text-gray-400"
-                        }
-                      >
-                        +
-                        {formatNumber(
-                          Number(amount) * building.level * building.efficiency
+                        <span>{ResourcesIcon({ resource })}</span>
+                        <span className="text-xs text-foreground/70">
+                          {resource}
+                        </span>
+                        <span className="text-green-400">
+                          +{formatNumber(total)}/s
+                        </span>
+                        {tier5Bonus > 0 && (
+                          <Badge className="ml-1 bg-yellow-800/30 text-yellow-400">
+                            T5 Bonus
+                          </Badge>
                         )}
-                        /s
-                        {!building.functioning && " (disabled)"}
-                      </span>
-                    </div>
-                  )
+                      </div>
+                    );
+                  }
                 )}
                 {Object.entries(building.baseConsumption).map(
                   ([resource, amount]) => (
-                    <div key={resource} className="flex items-center space-x-1">
-                      <span
-                        className={`resource-badge resource-badge-${resource}`}
-                      >
-                        {resources[resource]?.icon}
-                      </span>
-                      <span
-                        className={
-                          building.functioning
-                            ? "text-red-400"
-                            : "text-gray-400"
-                        }
-                      >
-                        -
-                        {formatNumber(
-                          Number(amount) * building.level * building.efficiency
-                        )}
-                        /s
-                        {!building.functioning && " (disabled)"}
-                      </span>
+                    <div key={resource} className="w-full">
+                      <div className="flex items-center space-x-1">
+                        <span>{resources[resource]?.icon}</span>
+                        <span className="text-xs text-foreground/70">
+                          {resource}
+                        </span>
+                        <span
+                          className={
+                            building.functioning
+                              ? "text-red-400"
+                              : "text-gray-400"
+                          }
+                        >
+                          -
+                          {formatNumber(
+                            Number(amount) * building.tier * building.efficiency
+                          )}
+                          /s
+                          {!building.functioning && " (disabled)"}
+                        </span>
+                      </div>
                     </div>
                   )
                 )}
               </div>
             </div>
 
+            {/* Przycisk i wymagania ulepszenia */}
             <div className="pt-2">
               <Button
                 size="sm"
                 onClick={() => onUpgrade(building.id)}
-                disabled={!canUpgrade(building)}
+                disabled={isMaxTier || !canUpgrade}
                 className="w-full button-primary"
               >
-                Upgrade to Level {building.level + 1}
+                {isMaxTier
+                  ? "Max Tier Reached"
+                  : `Upgrade to ${building.upgrades + 1}/10 (Tier ${
+                      building.tier
+                    })`}
               </Button>
 
-              <div className="space-y-1 mt-2">
-                <h4 className="text-xs text-foreground/70">
-                  Upgrade Requirements:
-                </h4>
-                <div className="grid grid-cols-2 gap-2 mt-2 text-xs">
-                  {Object.entries(costs).map(([resource, cost]) => (
-                    <div
-                      key={resource}
-                      className={`flex items-center space-x-1 ${
-                        resources[resource].amount < Number(cost)
-                          ? "text-red-400"
-                          : "text-foreground/70"
-                      }`}
-                    >
-                      <span>{ResourcesIcon({ resource })}</span>
-                      <span>{resource}:</span>
-                      <span>{formatNumber(Number(cost))}</span>
-                    </div>
-                  ))}
+              {!isMaxTier && (
+                <div className="space-y-1 mt-2">
+                  <h4 className="text-xs text-foreground/70">
+                    Upgrade Requirements:
+                  </h4>
+                  <div className="grid grid-cols-2 gap-2 mt-2 text-xs">
+                    {Object.entries(upgradeCosts).map(([resource, cost]) => (
+                      <div
+                        key={resource}
+                        className={`flex items-center space-x-1 ${
+                          resources[resource]?.amount < Number(cost)
+                            ? "text-red-400"
+                            : "text-foreground/70"
+                        }`}
+                      >
+                        <span>{ResourcesIcon({ resource })}</span>
+                        <span>{resource}</span>
+                        <span>{formatNumber(Number(cost))}</span>
+                      </div>
+                    ))}
+                  </div>
                 </div>
-                <div className="mt-2 text-xs text-muted-foreground">
-                  {building.maxInstances > 1 &&
-                    `Can build: ${
-                      buildings.filter((b) => b.type === building.type).length
-                    }/${building.maxInstances}`}
-                </div>
-              </div>
+              )}
             </div>
           </div>
         )}

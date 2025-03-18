@@ -29,36 +29,11 @@ import {
 import { researchTechnology, updateResearches } from "./technologyReducer";
 import { stat } from "fs";
 import { calculateOfflineProduction } from "@/lib/calculateOfflineProduction";
+import {
+  CURRENT_GAME_VERSION,
+  migrateGameState,
+} from "@/migrations/migrateGameState";
 
-const migrateGameState = (savedState: any): GameState => {
-  // Jeśli zapis nie ma wersji, oznacza to, że jest to stara wersja (np. przed dodaniem technologii)
-  if (!savedState.version) {
-    console.log("Migrating from pre-technology version...");
-    return {
-      ...initialState, // Domyślny stan
-      ...savedState, // Zachowaj stare dane
-      version: CURRENT_GAME_VERSION,
-      technologies: initialTechnologies, // Dodaj brakujące technologie
-    };
-  }
-
-  // Jeśli wersja jest starsza niż aktualna, zastosuj odpowiednie migracje
-  if (savedState.version != CURRENT_GAME_VERSION) {
-    console.log(
-      `Migrating from version ${savedState.version} to ${CURRENT_GAME_VERSION}...`
-    );
-    return {
-      ...savedState,
-      version: CURRENT_GAME_VERSION,
-      technologies: savedState.technologies || [], // Upewnij się, że technologie istnieją
-    };
-  }
-
-  // Jeśli wersja jest aktualna, zwróć stan bez zmian
-  return savedState;
-};
-
-const CURRENT_GAME_VERSION = "0.0.3"; // Aktualna wersja gry
 // Initialize the game state
 export const initialState: GameState = {
   version: CURRENT_GAME_VERSION,

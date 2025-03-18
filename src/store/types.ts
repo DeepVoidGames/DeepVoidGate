@@ -86,6 +86,12 @@ export interface BuildingData {
   requiredTechnology?: string;
   image?: string;
   icon?: string;
+  tier: number;
+  upgrades: number;
+  uniqueBonus?: {
+    production?: Partial<Record<ResourceType, number>>;
+    storage?: Partial<Record<ResourceType, number>>;
+  };
 }
 
 // Alert thresholds
@@ -128,4 +134,9 @@ export interface GameState {
   lastUpdate: number;
   showOfflineProgress;
   offlineReport;
+}
+
+export interface UpgradeData {
+  costs: Record<ResourceType, number>;
+  canUpgrade: boolean;
 }

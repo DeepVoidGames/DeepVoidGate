@@ -18,7 +18,13 @@
     "requirements": {},
     "costMultiplier": 1.5,
     "productionMultiplier": 1.2,
-    "maxInstances": 1
+    "maxInstances": 1,
+    "tier": 1,
+    "upgrades": 0,
+    "uniqueBonus": {
+      "production": { "oxygen": 10 },
+      "storage": { "oxygen": 500 }
+    }
   },
   {
     "type": "hydroponicFarm",
@@ -41,7 +47,13 @@
     "requirements": {},
     "costMultiplier": 1.4,
     "productionMultiplier": 1.2,
-    "maxInstances": 1
+    "maxInstances": 1,
+    "tier": 1,
+    "upgrades": 0,
+    "uniqueBonus": {
+      "production": { "food": 5 },
+      "storage": { "food": 300 }
+    }
   },
   {
     "type": "solarPanel",
@@ -53,13 +65,19 @@
       "metals": 60
     },
     "baseProduction": {
-      "energy": 2
+      "energy": 1
     },
     "baseConsumption": {},
     "requirements": {},
     "costMultiplier": 1.6,
     "productionMultiplier": 1.3,
-    "maxInstances": 1
+    "maxInstances": 1,
+    "tier": 1,
+    "upgrades": 0,
+    "uniqueBonus": {
+      "production": { "energy": 15 },
+      "storage": { "energy": 1000 }
+    }
   },
   {
     "type": "metalMine",
@@ -81,7 +99,13 @@
     "requirements": {},
     "costMultiplier": 1.7,
     "productionMultiplier": 1.15,
-    "maxInstances": 1
+    "maxInstances": 1,
+    "tier": 1,
+    "upgrades": 0,
+    "uniqueBonus": {
+      "production": { "metals": 8 },
+      "storage": { "metals": 1500 }
+    }
   },
   {
     "type": "researchLab",
@@ -103,7 +127,13 @@
     "requirements": {},
     "costMultiplier": 1.7,
     "productionMultiplier": 1.3,
-    "maxInstances": 1
+    "maxInstances": 1,
+    "tier": 1,
+    "upgrades": 0,
+    "uniqueBonus": {
+      "production": { "science": 3 },
+      "storage": { "science": 200 }
+    }
   },
   {
     "type": "housing",
@@ -123,7 +153,12 @@
     "requirements": {},
     "costMultiplier": 1.6,
     "productionMultiplier": 1,
-    "maxInstances": 1
+    "maxInstances": 1,
+    "tier": 1,
+    "upgrades": 0,
+    "uniqueBonus": {
+      "storage": { "population": 50 }
+    }
   },
   {
     "type": "basicStorage",
@@ -146,7 +181,16 @@
     "requirements": {},
     "costMultiplier": 1.8,
     "productionMultiplier": 1,
-    "maxInstances": 1
+    "maxInstances": 1,
+    "tier": 1,
+    "upgrades": 0,
+    "uniqueBonus": {
+      "storage": {
+        "metals": 1000,
+        "oxygen": 800,
+        "food": 500
+      }
+    }
   },
   {
     "type": "advancedStorage",
@@ -174,7 +218,17 @@
     },
     "costMultiplier": 2.0,
     "productionMultiplier": 1,
-    "maxInstances": 1
+    "maxInstances": 1,
+    "tier": 1,
+    "upgrades": 0,
+    "uniqueBonus": {
+      "storage": {
+        "metals": 3000,
+        "oxygen": 2000,
+        "food": 1500,
+        "science": 1000
+      }
+    }
   },
   {
     "type": "basicBattery",
@@ -197,6 +251,11 @@
     "costMultiplier": 1.5,
     "productionMultiplier": 1,
     "maxInstances": 1,
-    "requiredTechnology": "basic_energy"
+    "requiredTechnology": "basic_energy",
+    "tier": 1,
+    "upgrades": 0,
+    "uniqueBonus": {
+      "storage": { "energy": 2000 }
+    }
   }
 ]
