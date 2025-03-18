@@ -405,6 +405,7 @@ export const gameReducer = (
           version: CURRENT_GAME_VERSION, // Zawsze zapisuj z aktualną wersją
           lastUpdate: Date.now(),
         };
+
         localStorage.setItem("deepvoidgate_save", JSON.stringify(stateToSave));
         toast({
           title: "Game Saved",

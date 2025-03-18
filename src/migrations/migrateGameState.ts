@@ -43,30 +43,43 @@ const migrateV0ToV1 = (state: any) => {
 };
 
 const migrateV1ToV2 = (state: any) => {
+  console.log("Migrating from V1 to V2...");
+
   return {
     ...state,
     version: 2,
     buildings: (state.buildings || []).map((b: any) => {
+      console.log("Processing building:", { id: b.id, type: b.type });
+
+      if (b.tier !== undefined && b.upgrades !== undefined) {
+        console.log(
+          "Building already has tier and upgrades, skipping migration"
+        );
+        return {
+          ...b,
+          level: undefined,
+        };
+      }
+
+      console.log("Migrating building from level-based to tier system");
       const template = initialBuildings.find((ib) => ib.type === b.type) || {};
       const oldLevel = b.level || 1;
 
-      // Konwersja starego levelu na nowy system
-      const totalUpgrades = oldLevel - 1; // Level 1 = 0 upgrades
+      const totalUpgrades = oldLevel - 1;
       const tier = Math.min(Math.floor(totalUpgrades / 10) + 1, 5);
       let upgrades = totalUpgrades % 10;
 
-      // Specjalny przypadek dla T5
       if (tier === 5) {
-        const t5Upgrades = totalUpgrades - 40; // 40 upgrade'ów potrzebnych do T5
+        const t5Upgrades = totalUpgrades - 40;
         upgrades = Math.min(Math.max(t5Upgrades, 0), 10);
       }
 
       return {
-        ...template, // Najpierw template z initialBuildings
-        ...b, // Następnie stare właściwości
+        ...template,
+        ...b,
         tier,
         upgrades,
-        level: undefined, // Usuwamy stare pole
+        level: undefined,
         efficiency: Number(b.efficiency) || 0,
       };
     }),
