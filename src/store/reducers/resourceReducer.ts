@@ -1,5 +1,5 @@
-import { GameAction } from '../actions';
-import { ResourceType, ResourceData } from '../types';
+import { GameAction } from "../actions";
+import { ResourceType, ResourceData } from "../types";
 
 // Define ResourcesState as a type rather than an interface with mapped type
 export type ResourcesState = Record<ResourceType, ResourceData>;
@@ -10,31 +10,39 @@ export const calculateResourceChanges = (
   deltaTime: number
 ): ResourcesState => {
   const newResources = { ...resources };
-  
+
   Object.keys(newResources).forEach((key) => {
     const resourceKey = key as ResourceType;
     const resource = newResources[resourceKey];
-    const netProduction = resource.production - resource.consumption;
-    
-    // Apply resource delta
-    let newAmount = resource.amount + (netProduction * deltaTime);
-    
-    // Enforce resource limits
+
+    // Oblicz zmianę z uwzględnieniem czasu
+    const netRate = resource.production - resource.consumption;
+    const delta = netRate * deltaTime;
+
+    // Oblicz nową ilość z uwzględnieniem pojemności
+    let newAmount = resource.amount + delta;
+
+    // Zastosuj limity (0 < amount < capacity)
     newAmount = Math.max(0, Math.min(newAmount, resource.capacity));
-    
-    newResources[resourceKey] = {
-      ...resource,
-      amount: newAmount,
-    };
+
+    // Aktualizuj stan tylko jeśli jest zmiana
+    if (Math.abs(delta) > 0.0001) {
+      newResources[resourceKey] = {
+        ...resource,
+        amount: parseFloat(newAmount.toFixed(4)), // Zaokrąglij do 4 miejsc po przecinku
+      };
+    }
   });
-  
+
   return newResources;
 };
 
 // Reset production and consumption counters
-export const resetProductionCounters = (resources: ResourcesState): ResourcesState => {
+export const resetProductionCounters = (
+  resources: ResourcesState
+): ResourcesState => {
   const newResources = { ...resources };
-  
+
   Object.keys(newResources).forEach((key) => {
     const resourceKey = key as ResourceType;
     newResources[resourceKey] = {
@@ -43,7 +51,7 @@ export const resetProductionCounters = (resources: ResourcesState): ResourcesSta
       consumption: 0,
     };
   });
-  
+
   return newResources;
 };
 
@@ -53,17 +61,18 @@ export const applyResourceCost = (
   costs: Partial<Record<ResourceType, number>>
 ): ResourcesState => {
   const newResources = { ...resources };
-  
+
   Object.entries(costs).forEach(([resource, cost]) => {
     const resourceKey = resource as ResourceType;
     if (cost && newResources[resourceKey]) {
+      const newAmount = newResources[resourceKey].amount - cost;
       newResources[resourceKey] = {
         ...newResources[resourceKey],
-        amount: newResources[resourceKey].amount - cost
+        amount: Math.max(0, newAmount), // Nigdy poniżej zera
       };
     }
   });
-  
+
   return newResources;
 };
 
@@ -72,14 +81,17 @@ export const canAffordCost = (
   resources: ResourcesState,
   costs: Partial<Record<ResourceType, number>>
 ): boolean => {
-  let canAfford = true;
-  
-  Object.entries(costs).forEach(([resource, cost]) => {
+  return Object.entries(costs).every(([resource, cost]) => {
     const resourceKey = resource as ResourceType;
-    if (cost && resources[resourceKey].amount < cost) {
-      canAfford = false;
+    const currentAmount = resources[resourceKey]?.amount || 0;
+
+    // Logi diagnostyczne
+    if (cost && currentAmount < cost) {
+      console.warn(
+        `Insufficient ${resource}: ${currentAmount.toFixed(2)} < ${cost}`
+      );
+      return false;
     }
+    return true;
   });
-  
-  return canAfford;
 };

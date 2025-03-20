@@ -63,6 +63,7 @@ export const applyBuildingEffects = (
   buildings: BuildingData[],
   resources: ResourcesState
 ): ResourcesState => {
+  // Inicjalizacja nowego stanu zasobów
   const newResources = Object.keys(resources).reduce(
     (acc, key) => ({
       ...acc,
@@ -70,7 +71,7 @@ export const applyBuildingEffects = (
         ...resources[key as ResourceType],
         production: 0,
         consumption: 0,
-        capacity: resources[key as ResourceType].baseCapacity,
+        capacity: resources[key as ResourceType].baseCapacity, // Resetuj pojemność do wartości bazowej
       },
     }),
     {} as ResourcesState
@@ -79,17 +80,18 @@ export const applyBuildingEffects = (
   buildings.forEach((building) => {
     if (!building || building.efficiency <= 0) return;
 
-    // Oblicz bonusy tylko raz
-    const tierBonus = 1 + building.tier * 0.05;
-    const upgradeBonus = 1 + building.upgrades * 0.01;
+    // Oblicz bonusy dla tierów i ulepszeń
+    const tierBonus = 1 + (building.tier - 1) * 0.3; // 30% bonus za każdy tier
+    const upgradeBonus = 1 + building.upgrades * 0.1; // 10% bonus za każde ulepszenie
     const totalBonus = tierBonus * upgradeBonus;
 
-    // Produkcja z uwzględnieniem wszystkich bonusów
+    // Produkcja z uwzględnieniem bonusów
     if (building.baseProduction) {
       Object.entries(building.baseProduction).forEach(([resource, amount]) => {
         const resourceKey = resource as ResourceType;
         const baseValue = Number(amount) || 0;
-        const production = baseValue * totalBonus * building.efficiency;
+        const production =
+          baseValue + baseValue * totalBonus * building.efficiency;
         newResources[resourceKey].production += production;
       });
     }
@@ -103,9 +105,39 @@ export const applyBuildingEffects = (
       });
     }
 
-    // Bonusy T5
-    if (building.tier === 5 && building.uniqueBonus) {
-      // ... (bez zmian)
+    // Bonusy maksymalnego tieru
+    if (building.tier === building.maxTier && building.uniqueBonus) {
+      // Bonusy do produkcji
+      if (building.uniqueBonus.production) {
+        Object.entries(building.uniqueBonus.production).forEach(
+          ([resource, bonus]) => {
+            const resourceKey = resource as ResourceType;
+            const bonusValue = Number(bonus) || 0;
+            newResources[resourceKey].production +=
+              bonusValue * building.efficiency;
+          }
+        );
+      }
+
+      // Bonusy do magazynowania
+      if (building.uniqueBonus.storage) {
+        Object.entries(building.uniqueBonus.storage).forEach(
+          ([resource, bonus]) => {
+            const resourceKey = resource as ResourceType;
+            const bonusValue = Number(bonus) || 0;
+            newResources[resourceKey].capacity += bonusValue;
+          }
+        );
+      }
+    }
+
+    // Bonusy do magazynowania z poziomu budynku (niezależne od T5)
+    if (building.storageBonus) {
+      Object.entries(building.storageBonus).forEach(([resource, bonus]) => {
+        const resourceKey = resource as ResourceType;
+        const bonusValue = Number(bonus) || 0;
+        newResources[resourceKey].capacity += bonusValue * building.tier; // Pojemność rośnie z tierem
+      });
     }
   });
 
@@ -210,9 +242,12 @@ export const upgradeBuilding = (
   resources: ResourcesState,
   buildingId: string
 ) => {
+  //  Znajdź indeks budynku
   const buildingIndex = buildings.findIndex((b) => b.id === buildingId);
+  // Sprawdź czy budynek istnieje
   if (buildingIndex === -1) return { buildings, resources, success: false };
 
+  // Pobierz budynek
   const building = buildings[buildingIndex];
 
   // Sprawdź maksymalny poziom
@@ -221,19 +256,9 @@ export const upgradeBuilding = (
   }
 
   // Oblicz koszt z uwzględnieniem progresji
-  const upgradeCosts = Object.entries(building.baseCost).reduce(
-    (acc, [resource, baseCost]) => {
-      const cost = Math.floor(
-        Number(baseCost) *
-          Math.pow(building.costMultiplier, building.tier) *
-          (1 + building.upgrades * 0.1)
-      );
-      acc[resource as ResourceType] = cost;
-      return acc;
-    },
-    {} as Record<ResourceType, number>
-  );
+  const upgradeCosts = getBuildingUpgradeCost(building);
 
+  // Sprawdź czy stać na ulepszenie
   if (!canAffordCost(resources, upgradeCosts)) {
     toast({
       title: "Insufficient Resources",
@@ -243,6 +268,7 @@ export const upgradeBuilding = (
     return { buildings, resources, success: false };
   }
 
+  // Odejmij koszt ulepszenia
   const newResources = applyResourceCost(resources, upgradeCosts);
   const newBuildings = [...buildings];
 
@@ -250,11 +276,13 @@ export const upgradeBuilding = (
   let newTier = building.tier;
   let newUpgrades = building.upgrades + 1;
 
-  if (newUpgrades >= 10 && newTier < 5) {
+  // Jeśli osiągnięto 10 ulepszeń, przejdź do następnego tieru
+  if (newUpgrades >= 10 && newTier < building.maxTier) {
     newTier++;
     newUpgrades = 0;
   }
 
+  // Aktualizuj budynek
   newBuildings[buildingIndex] = {
     ...building,
     tier: newTier,
@@ -262,22 +290,6 @@ export const upgradeBuilding = (
   };
 
   return { buildings: newBuildings, resources: newResources, success: true };
-};
-
-// Get upgrade costs calculation
-export const calculateUpgradeCosts = (
-  building: BuildingData
-): Record<ResourceType, number> => {
-  return Object.entries(building.baseCost).reduce(
-    (acc, [resource, baseCost]) => {
-      const cost = Math.floor(
-        Number(baseCost) * Math.pow(building.costMultiplier, building.tier)
-      );
-      acc[resource as ResourceType] = cost;
-      return acc;
-    },
-    {} as Record<ResourceType, number>
-  );
 };
 
 // Check if can afford building
@@ -318,6 +330,40 @@ export const canUpgradeBuilding = (
   if (building.tier >= 5 && building.upgrades >= 10) return false;
   return Object.entries(costs).every(
     ([resource, cost]) => resources[resource as ResourceType].amount >= cost
+  );
+};
+
+// Get production by resource
+export const getProductionByResource = (
+  building: BuildingData,
+  resource: string
+): number => {
+  const tierBonus = 1 + (building.tier - 1) * 0.3; // 30% bonus za każdy tier
+  const upgradeBonus = 1 + building.upgrades * 0.1; // 10% bonus za każde ulepszenie
+  const totalBonus = tierBonus * upgradeBonus;
+
+  // Produkcja z uwzględnieniem bonusów
+  if (building.baseProduction) {
+    const amount = building.baseProduction[resource] || 0;
+    return amount + amount * totalBonus * building.efficiency;
+  }
+};
+
+// Get building upgrade cost
+export const getBuildingUpgradeCost = (
+  building: BuildingData
+): Record<ResourceType, number> => {
+  return Object.entries(building.baseCost).reduce(
+    (acc, [resource, baseCost]) => {
+      const cost = Math.floor(
+        Number(baseCost) *
+          Math.pow(building.costMultiplier, building.tier) *
+          (1 + building.upgrades * 0.1)
+      );
+      acc[resource as ResourceType] = cost;
+      return acc;
+    },
+    {} as Record<ResourceType, number>
   );
 };
 

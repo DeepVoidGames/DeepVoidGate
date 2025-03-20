@@ -24,6 +24,10 @@ import {
 import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
 import { Badge } from "@/components/ui/badge";
+import {
+  getBuildingUpgradeCost,
+  getProductionByResource,
+} from "@/store/reducers/buildingReducer";
 
 const BuildingCard = ({
   building,
@@ -142,6 +146,7 @@ const BuildingCard = ({
           </div>
         )}
 
+        {/* Przyciski do obsługi */}
         <div className="flex justify-between gap-2 mt-3">
           <div className="flex gap-2 flex-1">
             <Button
@@ -212,36 +217,30 @@ const BuildingCard = ({
                 Production & Consumption:
               </h4>
               <div className="grid grid-cols-2 gap-2 text-xs">
-                {Object.entries(building.baseProduction).map(
-                  ([resource, amount]) => {
-                    const baseValue = Number(amount) * building.tier;
-                    const tier5Bonus =
-                      building.tier === 5
-                        ? building.uniqueBonus?.production?.[resource] || 0
-                        : 0;
-                    const total = (baseValue + tier5Bonus) * currentEfficiency;
-
-                    return (
-                      <div
-                        key={resource}
-                        className="flex items-center space-x-1 justify-start w-full"
-                      >
-                        <span>{ResourcesIcon({ resource })}</span>
-                        <span className="text-xs text-foreground/70">
-                          {resource}
-                        </span>
-                        <span className="text-green-400">
-                          +{formatNumber(total)}/s
-                        </span>
-                        {tier5Bonus > 0 && (
+                {/* Production */}
+                {Object.entries(building.baseProduction).map(([resource]) => {
+                  const total = getProductionByResource(building, resource);
+                  return (
+                    <div
+                      key={resource}
+                      className="flex items-center space-x-1 justify-start w-full"
+                    >
+                      <span>{ResourcesIcon({ resource })}</span>
+                      <span className="text-xs text-foreground/70">
+                        {resource}
+                      </span>
+                      <span className="text-green-400">
+                        +{formatNumber(total)}/s
+                      </span>
+                      {/* {tier5Bonus > 0 && (
                           <Badge className="ml-1 bg-yellow-800/30 text-yellow-400">
                             T5 Bonus
                           </Badge>
-                        )}
-                      </div>
-                    );
-                  }
-                )}
+                        )} */}
+                    </div>
+                  );
+                })}
+                {/* Consumption */}
                 {Object.entries(building.baseConsumption).map(
                   ([resource, amount]) => (
                     <div key={resource} className="w-full">
@@ -292,20 +291,22 @@ const BuildingCard = ({
                     Upgrade Requirements:
                   </h4>
                   <div className="grid grid-cols-2 gap-2 mt-2 text-xs">
-                    {Object.entries(upgradeCosts).map(([resource, cost]) => (
-                      <div
-                        key={resource}
-                        className={`flex items-center space-x-1 ${
-                          resources[resource]?.amount < Number(cost)
-                            ? "text-red-400"
-                            : "text-foreground/70"
-                        }`}
-                      >
-                        <span>{ResourcesIcon({ resource })}</span>
-                        <span>{resource}</span>
-                        <span>{formatNumber(Number(cost))}</span>
-                      </div>
-                    ))}
+                    {Object.entries(getBuildingUpgradeCost(building)).map(
+                      ([resource, cost]) => (
+                        <div
+                          key={resource}
+                          className={`flex items-center space-x-1 ${
+                            resources[resource]?.amount < Number(cost)
+                              ? "text-red-400"
+                              : "text-foreground/70"
+                          }`}
+                        >
+                          <span>{ResourcesIcon({ resource })}</span>
+                          <span>{resource}</span>
+                          <span>{formatNumber(Number(cost))}</span>
+                        </div>
+                      )
+                    )}
                   </div>
                 </div>
               )}

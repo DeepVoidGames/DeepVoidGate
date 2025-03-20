@@ -23,10 +23,10 @@ import ConstructionSection from "./ConstructionSection";
 import ExistingBuildings from "./ExistingBuildings";
 import { ResourcesIcon } from "@/config";
 import {
-  calculateUpgradeCosts,
   canAffordBuilding,
   canAffordResource,
   canUpgradeBuilding,
+  getBuildingUpgradeCost,
 } from "@/store/reducers/buildingReducer";
 
 // Centralna konfiguracja budynków
@@ -188,7 +188,7 @@ export const BuildingManager: React.FC = () => {
   const getUpgradeData = useMemo(
     () =>
       buildings.reduce((acc, building) => {
-        const costs = calculateUpgradeCosts(building);
+        const costs = getBuildingUpgradeCost(building);
         acc[building.id] = {
           costs,
           canUpgrade: canUpgradeBuilding(building, resources, costs),

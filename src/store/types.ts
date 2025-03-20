@@ -87,6 +87,7 @@ export interface BuildingData {
   image?: string;
   icon?: string;
   tier: number;
+  maxTier?: number;
   upgrades: number;
   uniqueBonus?: {
     production?: Partial<Record<ResourceType, number>>;
