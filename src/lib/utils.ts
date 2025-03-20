@@ -8,6 +8,10 @@ export function cn(...inputs: ClassValue[]) {
 // Format a number with appropriate suffixes (K, M, B, etc.)
 export function formatNumber(num: number): string {
   if (num === 0) return "0";
+  if (num === Infinity) return "∞";
+  if (num === -Infinity) return "-∞";
+  if (isNaN(num)) return "NaN";
+  if (num == undefined) return "undefined";
 
   if (Math.abs(num) < 1) {
     // Format small numbers with appropriate precision
