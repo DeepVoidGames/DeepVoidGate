@@ -26,6 +26,7 @@ import { Progress } from "@/components/ui/progress";
 import { Badge } from "@/components/ui/badge";
 import {
   getBuildingUpgradeCost,
+  getCapacityByResource,
   getProductionByResource,
 } from "@/store/reducers/buildingReducer";
 
@@ -201,7 +202,7 @@ const BuildingCard = ({
                         <span>
                           +
                           {formatNumber(
-                            Number(bonus) * (building.tier === 5 ? 2 : 1) // Bonus dla T5
+                            getCapacityByResource(building, Number(bonus))
                           )}
                         </span>
                       </div>

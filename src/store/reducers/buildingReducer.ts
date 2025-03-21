@@ -82,7 +82,7 @@ export const applyBuildingEffects = (
 
     // Oblicz bonusy dla tierów i ulepszeń
     const tierBonus = 1 + (building.tier - 1) * 0.3; // 30% bonus za każdy tier
-    const upgradeBonus = 1 + building.upgrades * 0.1; // 10% bonus za każde ulepszenie
+    const upgradeBonus = 1 + building.upgrades * 0.06; // 10% bonus za każde ulepszenie
     const totalBonus = tierBonus * upgradeBonus;
 
     // Produkcja z uwzględnieniem bonusów
@@ -105,38 +105,41 @@ export const applyBuildingEffects = (
       });
     }
 
-    // Bonusy maksymalnego tieru
-    if (building.tier === building.maxTier && building.uniqueBonus) {
-      // Bonusy do produkcji
-      if (building.uniqueBonus.production) {
-        Object.entries(building.uniqueBonus.production).forEach(
-          ([resource, bonus]) => {
-            const resourceKey = resource as ResourceType;
-            const bonusValue = Number(bonus) || 0;
-            newResources[resourceKey].production +=
-              bonusValue * building.efficiency;
-          }
-        );
-      }
+    // TODO: Bonusy z za maksymalnego tieru i ulepszeń
+    // // Bonusy maksymalnego tieru
+    // if (building.tier === building.maxTier && building.uniqueBonus) {
+    //   // Bonusy do produkcji
+    //   if (building.uniqueBonus.production) {
+    //     Object.entries(building.uniqueBonus.production).forEach(
+    //       ([resource, bonus]) => {
+    //         const resourceKey = resource as ResourceType;
+    //         const bonusValue = Number(bonus) || 0;
+    //         newResources[resourceKey].production +=
+    //           bonusValue * building.efficiency;
+    //       }
+    //     );
+    //   }
 
-      // Bonusy do magazynowania
-      if (building.uniqueBonus.storage) {
-        Object.entries(building.uniqueBonus.storage).forEach(
-          ([resource, bonus]) => {
-            const resourceKey = resource as ResourceType;
-            const bonusValue = Number(bonus) || 0;
-            newResources[resourceKey].capacity += bonusValue;
-          }
-        );
-      }
-    }
+    //   // Bonusy do magazynowania
+    //   if (building.uniqueBonus.storage) {
+    //     Object.entries(building.uniqueBonus.storage).forEach(
+    //       ([resource, bonus]) => {
+    //         const resourceKey = resource as ResourceType;
+    //         const baseValue = Number(bonus) || 0;
+    //         const value = baseValue + baseValue * totalBonus;
+    //         newResources[resourceKey].capacity += value;
+    //       }
+    //     );
+    //   }
+    // }
 
     // Bonusy do magazynowania z poziomu budynku (niezależne od T5)
     if (building.storageBonus) {
       Object.entries(building.storageBonus).forEach(([resource, bonus]) => {
         const resourceKey = resource as ResourceType;
-        const bonusValue = Number(bonus) || 0;
-        newResources[resourceKey].capacity += bonusValue * building.tier; // Pojemność rośnie z tierem
+        const baseValue = Number(bonus) || 0;
+        const value = baseValue + baseValue * totalBonus;
+        newResources[resourceKey].capacity += value;
       });
     }
   });
@@ -311,6 +314,7 @@ export const canAffordBuilding = (buildingType: BuildingType): boolean => {
   });
 };
 
+// Check if can afford cost
 export const canAffordResource = (
   resources: ResourcesState,
   resourceType: ResourceType,
@@ -365,6 +369,17 @@ export const getBuildingUpgradeCost = (
     },
     {} as Record<ResourceType, number>
   );
+};
+
+export const getCapacityByResource = (
+  building: BuildingData,
+  amount: number
+): number => {
+  const tierBonus = 1 + (building.tier - 1) * 0.3; // 30% bonus za każdy tier
+  const upgradeBonus = 1 + building.upgrades * 0.06; // 10% bonus za każde ulepszenie
+  const totalBonus = tierBonus * upgradeBonus;
+
+  return amount + amount * totalBonus;
 };
 
 // Handle worker assignment
