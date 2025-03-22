@@ -135,6 +135,7 @@ export interface GameState {
   lastUpdate: number;
   showOfflineProgress;
   offlineReport;
+  colonistProgress: number;
 }
 
 export interface UpgradeData {

@@ -105,7 +105,6 @@ export const applyBuildingEffects = (
       });
     }
 
-    // TODO: Bonusy z za maksymalnego tieru i ulepszeń
     // Bonusy maksymalnego tieru
     if (building.tier === building.maxTier && building.uniqueBonus) {
       // Bonusy do produkcji
@@ -140,6 +139,10 @@ export const applyBuildingEffects = (
         const value = baseValue + baseValue * totalBonus;
         newResources[resourceKey].capacity += value;
       });
+    }
+
+    // Dodanie 
+    if (building.category === "housing") {
     }
   });
 

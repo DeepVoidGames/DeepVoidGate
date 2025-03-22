@@ -36,7 +36,7 @@ import {
 
 // Initialize the game state
 export const initialState: GameState = {
-  version: CURRENT_GAME_VERSION,
+  version: CURRENT_GAME_VERSION.toString(),
   resources: initialResourcesState,
   buildings: [],
   population: initialPopulationState,
@@ -46,6 +46,7 @@ export const initialState: GameState = {
   name: undefined,
   showOfflineProgress: undefined,
   offlineReport: undefined,
+  colonistProgress: 0,
 };
 
 // Constants for death timer
@@ -294,11 +295,52 @@ export const gameReducer = (
         }
       }
 
+      // Oblicz całkowitą pojemność mieszkań
+      const totalHousing = buildings
+        .filter((b) => b.category === "housing" && b.functioning)
+        .reduce((sum, building) => {
+          const tierBonus = 1 + (building.tier - 1) * 5;
+          const upgradeBonus = 1 + building.upgrades;
+          const totalBonus = tierBonus * upgradeBonus;
+          return sum + (building.category == "housing" ? 1 : 0) * totalBonus;
+        }, 0);
+
+      // Zaktualizuj populację
+      newPopulation.total = Math.floor(totalHousing) + 10;
+
+      // Logika dodawania kolonistów
+      let newColonistProgress = state.colonistProgress;
+      let colonistsAdded = 0;
+
+      if (newPopulation.total < newPopulation.maxCapacity) {
+        newColonistProgress += deltaTime;
+      }
+
+      while (
+        newColonistProgress >= 600 &&
+        newPopulation.total < newPopulation.maxCapacity
+      ) {
+        newPopulation.total += 1;
+        newPopulation.available += 1;
+        newColonistProgress -= 600;
+        colonistsAdded += 1;
+      }
+
+      if (colonistsAdded > 0) {
+        toast({
+          title: "New Colonists Arrived",
+          description: `${colonistsAdded} new ${
+            colonistsAdded > 1 ? "colonists" : "colonist"
+          } have joined your colony!`,
+        });
+      }
+
       return {
         ...state,
         resources: newResources,
         buildings,
         population: newPopulation,
+        colonistProgress: newColonistProgress,
         lastUpdate: currentTime,
       };
     }
