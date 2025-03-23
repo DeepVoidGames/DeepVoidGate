@@ -22,10 +22,15 @@ export const migrateGameState = (savedState: any): GameState => {
     currentState = migrateV1ToV2(currentState);
   }
 
-  // Krok 3: Upewnij się że wszystkie pola są zdefiniowane
+  const mergedTechnologies = initialTechnologies.map((tech) => {
+    const savedTech = savedState.technologies.find((t) => t.id === tech.id);
+    return savedTech ? { ...tech, ...savedTech } : tech;
+  });
+
   return {
     ...initialState, // Bazowe wartości
     ...currentState, // Nadpisujemy migrowanymi danymi
+    technologies: mergedTechnologies,
     version: CURRENT_GAME_VERSION,
   };
 };

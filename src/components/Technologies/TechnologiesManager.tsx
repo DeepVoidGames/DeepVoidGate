@@ -62,7 +62,7 @@ const ResourcesIcon = ({ resource }) => {
 const TechnologiesManager: React.FC = () => {
   const { state, dispatch } = useGame();
   const { resources, technologies } = state;
-  const [activeTab, setActiveTab] = useState<string>("Energy");
+  const [activeTab, setActiveTab] = useState<string>("Infrastructure");
   const [searchQuery, setSearchQuery] = useState("");
   const [now, setNow] = useState(Date.now());
 
@@ -199,7 +199,7 @@ const TechnologiesManager: React.FC = () => {
         ))}
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 h-[250px] overflow-y-auto">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 h-[450px]overflow-y-auto">
         {filteredTechnologies.map((tech) => {
           const isResearched = tech.isResearched;
           const canResearch = canResearchTech(tech);
@@ -209,7 +209,7 @@ const TechnologiesManager: React.FC = () => {
           return (
             <div
               key={tech.id}
-              className={`p-4 rounded-lg border transition-all duration-200 ${
+              className={`p-4 rounded-lg border transition-all duration-200 h-[250px] relative ${
                 isResearched
                   ? "bg-green-900/20 border-green-800"
                   : `bg-background/50 border-muted/30 ${
@@ -219,10 +219,10 @@ const TechnologiesManager: React.FC = () => {
             >
               <div className="flex justify-between items-start mb-3">
                 <div>
-                  <h3 className="font-medium text-foreground/90">
+                  <h3 className="font-medium text-foreground/90 text-sm">
                     {tech.name}
                   </h3>
-                  <p className="text-sm text-muted-foreground">
+                  <p className="text-xs text-muted-foreground">
                     {tech.description}
                   </p>
                 </div>
@@ -253,43 +253,45 @@ const TechnologiesManager: React.FC = () => {
                 </div>
               ) : null}
 
-              {tech.prerequisites.length > 0 && (
-                <div className="text-xs text-muted-foreground mb-3">
-                  <Lock className="inline mr-1 h-3 w-3" />
-                  Requires: {getPrerequisiteNames(tech)}
-                </div>
-              )}
-
-              {isInProgress ? (
-                <div className="space-y-2">
-                  <Progress value={progressInfo.progress} className="h-2" />
-                  <div className="flex items-center gap-2 text-xs text-muted-foreground">
-                    <Clock className="h-4 w-4" />
-                    <span>Remaining: {progressInfo.remaining}</span>
+              <div className=" bottom-0 left-0 right-0 absolute p-4 rounded-b-lg">
+                {tech.prerequisites.length > 0 && (
+                  <div className="text-xs text-muted-foreground mb-3">
+                    <Lock className="inline mr-1 h-3 w-3" />
+                    Requires: {getPrerequisiteNames(tech)}
                   </div>
-                </div>
-              ) : (
-                <button
-                  onClick={() => researchTech(tech.id)}
-                  disabled={!canResearch || isResearched}
-                  className={`w-full py-2 rounded-lg transition-colors justify-end ${
-                    isResearched
-                      ? "bg-green-800/50 cursor-default"
-                      : canResearch
-                      ? "bg-primary hover:bg-primary/90"
-                      : "bg-muted cursor-not-allowed"
-                  }`}
-                >
-                  {isResearched ? (
-                    <div className="flex items-center justify-center gap-2">
-                      <CheckCircle className="h-4 w-4" />
-                      Researched
+                )}
+
+                {isInProgress ? (
+                  <div className="space-y-2">
+                    <Progress value={progressInfo.progress} className="h-2" />
+                    <div className="flex items-center gap-2 text-xs text-muted-foreground">
+                      <Clock className="h-4 w-4" />
+                      <span>Remaining: {progressInfo.remaining}</span>
                     </div>
-                  ) : (
-                    "Start Research"
-                  )}
-                </button>
-              )}
+                  </div>
+                ) : (
+                  <button
+                    onClick={() => researchTech(tech.id)}
+                    disabled={!canResearch || isResearched}
+                    className={`w-full py-2 rounded-lg transition-colors justify-end ${
+                      isResearched
+                        ? "bg-green-800/50 cursor-default"
+                        : canResearch
+                        ? "bg-primary hover:bg-primary/90"
+                        : "bg-muted cursor-not-allowed"
+                    }`}
+                  >
+                    {isResearched ? (
+                      <div className="flex items-center justify-center gap-2">
+                        <CheckCircle className="h-4 w-4" />
+                        Researched
+                      </div>
+                    ) : (
+                      "Start Research"
+                    )}
+                  </button>
+                )}
+              </div>
             </div>
           );
         })}
