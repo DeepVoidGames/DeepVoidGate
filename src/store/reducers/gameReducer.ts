@@ -533,7 +533,7 @@ export const gameReducer = (
         console.error("Failed to load game:", error);
         toast({
           title: "Load Failed",
-          description: "There was an error loading your saved game.",
+          description: error.message || "There was an error loading your game.",
           variant: "destructive",
         });
         return state;

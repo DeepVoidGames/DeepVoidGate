@@ -19,7 +19,6 @@ export const initialBuildings: Omit<BuildingData, "id">[] = buildingData.map(
     ...building,
     type: building.type as BuildingType,
     category: building.category as BuildingCategory,
-    level: 0,
     assignedWorkers: 0,
     efficiency: 0,
     functioning: true,

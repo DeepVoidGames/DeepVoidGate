@@ -57,7 +57,7 @@ export interface ResourceData {
 
 // Building data structure
 export interface BuildingData {
-  id: string;
+  id?: string;
   type: BuildingType;
   category: BuildingCategory;
   name: string;
