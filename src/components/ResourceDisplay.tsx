@@ -101,7 +101,7 @@ export const ResourceDisplay: React.FC = () => {
                       : `bg-${resource.color}-500/20`
                   }`}
                 />
-                <div className="text-xs font-mono min-w-[90px] text-right">
+                <div className="text-xs font-mono min-w-[95px] text-right">
                   {formatNumber(resource.amount)} /{" "}
                   {formatNumber(resource.capacity)}
                 </div>

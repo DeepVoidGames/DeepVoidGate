@@ -210,6 +210,7 @@ const migrateBuildings = (savedBuildings: any[]): any[] => {
       baseCost: template.baseCost || building.baseCost,
       baseProduction: template.baseProduction || building.baseProduction,
       baseConsumption: template.baseConsumption || building.baseConsumption,
+      storageBonus: template.storageBonus || building.storageBonus,
       requirements: template.requirements || building.requirements,
       costMultiplier: template.costMultiplier ?? building.costMultiplier,
       productionMultiplier:

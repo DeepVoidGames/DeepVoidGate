@@ -1,61 +1,27 @@
-### **🏗 System Tierów Budynków**
+# Jak działają budynki w grze?
 
-#### 1. **Progresja Poziomowa**
+Budynki są kluczowym elementem twojej kolonii. Każdy z nich pełni określoną funkcję – mogą produkować zasoby, wspierać rozwój technologiczny lub usprawniać zarządzanie. Aby jednak działały efektywnie, muszą mieć odpowiednią liczbę pracowników oraz dostęp do niezbędnych surowców.
 
-- **Każdy Tier (T1-T5) wymaga 10 ulepszeń**, aby odblokować następny:
-  - **Przykład dla Kopalni:**
-    - T1 → T2: 10× ulepszeń (koszt: 100 metali + 50 energii/ulepszenie)
-    - Po 10 ulepszeniach: odblokuj **T2** (50% wydajności bazowej)
-  - **Statystyki per Tier:**
-    - T1: +5% produkcji/ulepszenie
-    - T5: +25% produkcji/ulepszenie + unikalny bonus
+## Efektywność budynków
 
-#### 2. **Wymagania Między Tierami**
+Efektywność budynku zależy od liczby przypisanych do niego pracowników oraz dostępnych zasobów. Im lepiej spełnione te warunki, tym wydajniejsza jest produkcja. Jeśli brakuje surowców lub pracowników, budynek może działać z mniejszą mocą lub nawet zostać wyłączony.
 
-- **Przejście T5:**
-  - Event "Kryzys Stabilności" – przez 24h budynek zużywa 300% zasobów, ale po ukończeniu zyskuje **status Omega** (paszywna produkcja nawet bez pracowników)
+## Wpływ budynków na gospodarkę
 
----
+Każdy budynek wpływa na twoją kolonię. Niektóre produkują surowce, inne je konsumują, a jeszcze inne zapewniają bonusy do efektywności produkcji. Rozważne planowanie rozbudowy pozwala uniknąć deficytów i maksymalizować zyski.
 
-### **🔧 Mechanika Ulepszeń**
+## Budowa nowych budynków
 
-#### 1. **Mini-Cele w Grindzie**
+Aby zbudować nowy budynek, musisz mieć odpowiednie zasoby oraz spełniać wymagania technologiczne. Jeśli je posiadasz, budowa zostanie rozpoczęta i po określonym czasie nowa struktura pojawi się w kolonii.
 
-- Co 3 ulepszenia w tierze: **wybór bonusu** (np.):
-  - +10% do produkcji
-  - -5% do zużycia energii
-  - +1% szansy na **krytyczną produkcję** (2× zasobów)
-- **Achievementy za perfekcję**:
-  - "Doskonałość T3" – zrób wszystkie 10 ulepszeń w ≤15 minut → unikalny skin
+## Ulepszanie budynków
 
----
+Z czasem możesz ulepszać swoje budynki, zwiększając ich wydajność i zmniejszając zużycie surowców. Każde ulepszenie wymaga inwestycji, ale pozwala uzyskać większe korzyści w przyszłości.
 
-### **🌌 Integracja z Drzewkiem Technologicznym**
+## Czy możesz sobie pozwolić na budowę?
 
-#### 1. **Techy Aktywujące Tiery**
+Przed postawieniem nowego budynku warto sprawdzić, czy masz wystarczającą ilość surowców. Jeśli ci ich zabraknie, nie będziesz w stanie rozpocząć budowy.
 
-- Aby odblokować możliwość ulepszania do T3+, wymagane są:
-  - **Tech "Inżynieria Wyższa"** (gałąź przemysłowa)
-  - **Tech "Stabilizacja Pola"** (gałąź eksperymentalna)
-- **Rewersyjna synergia**:
-  - Każdy ukończony tier budynku odblokuje **1 punkt techowy** w drzewku
+## Produkcja zasobów
 
-### **🎮 Gameplay Loop Dla Tierów**
-
-1. **Faza Grindu**:
-   - Zbieraj metale/energię na 10 ulepszeń T1
-   - Decyduj, czy inwestować w mini-bonusy co 3 poziom
-2. **Faza Przełomu**:
-   - Po T3: poświęć 2 budynki, by stworzyć potężniejszy T4
-   - Odblokuj nowe opcje w drzewku tech
-3. **Faza Endgame**:
-   - Zdobywaj **Materię Omega** (nowa waluta z T5) do ulepszania innych budynków
-   - Używaj T5 do automatyzacji grindowania niższych tierów
-
-### **⚙️ Przykładowy Przepływ**
-
-1. Gracz ma **Kopalnię T2** (8/10 ulepszeń)
-2. Inwestuje ostatnie 2000 metali, by dokończyć T2 → odblokowuje **T3**
-3. W drzewku tech odblokowuje **"Przeróbka Hydrauliczna"**, która dodaje szansę na podwójne wydobycie w T3+
-4. Po 6h grindowania, ulepsza kopalnię do T4 poprzez **fuzję 3x T3**
-5. T4 generuje **+400% metali**, ale wymaga teraz **kriogenicznego chłodzenia** (nowy mechanic zużycia wody)
+Niektóre budynki generują surowce – na przykład kopalnie dostarczają metale, a elektrownie produkują energię. Każdy z nich ma określoną wydajność, którą można zwiększyć poprzez rozwój technologii i ulepszenia.
