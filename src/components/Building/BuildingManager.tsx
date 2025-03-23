@@ -97,7 +97,7 @@ const categories = [
   },
   {
     id: "research" as BuildingCategory,
-    name: "Reasearch",
+    name: "Research",
     icon: <Microscope className="h-4 w-4" />,
   },
   {
