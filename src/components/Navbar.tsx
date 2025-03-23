@@ -116,10 +116,10 @@ const DesktopNav = () => {
             ))}
           </div>
 
-          <div className="flex items-center gap-4">
+          <div className="flex items-center justify-center content-center gap-4">
             <Link
               to="/settings"
-              className={`h-10 w-10 items-center justify-center rounded-md transition-colors ${
+              className={`h-10 w-10 flex items-center justify-center content-center rounded-md transition-colors ${
                 location.pathname === "/settings"
                   ? "bg-blue-100/20 text-blue-400"
                   : "text-foreground/80 hover:bg-accent/10"
