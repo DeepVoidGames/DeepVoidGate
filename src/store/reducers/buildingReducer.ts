@@ -359,8 +359,9 @@ export const getProductionByResource = (
   resource: string,
   resources: ResourcesState
 ): number => {
-  const tierBonus = 1 + (building.tier - 1) * 0.3; // 30% bonus za każdy tier
-  const upgradeBonus = 1 + building.upgrades * 0.1; // 10% bonus za każde ulepszenie
+  // Oblicz bonusy dla tierów i ulepszeń
+  const tierBonus = 1.5 ** (building.tier - 1); // Silniejszy wpływ tierów
+  const upgradeBonus = 1 + building.upgrades * 0.05; // Mniejszy wpływ upgrade'ów
   const totalBonus = tierBonus * upgradeBonus;
 
   // Produkcja z uwzględnieniem bonusów

@@ -19,7 +19,10 @@ export type BuildingType =
   | "housing"
   | "basicStorage"
   | "advancedStorage"
-  | "basicBattery";
+  | "basicBattery"
+  | "advancedMetalExtractor"
+  | "highYieldMetalFracturer"
+  | "plasmaCoreMetalSynthesizer";
 
 export type TechnologyCategory =
   | "Infrastructure"

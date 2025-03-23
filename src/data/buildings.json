@@ -96,7 +96,7 @@
       "metals": 0.6
     },
     "baseConsumption": {
-      "energy": 1.0,
+      "energy": 0.6,
       "oxygen": 0.2
     },
     "requirements": {},
@@ -271,7 +271,7 @@
     }
   },
   {
-    "type": "metalMine",
+    "type": "advancedMetalExtractor",
     "category": "production",
     "name": "Advanced Metal Extractor",
     "description": "Uses enhanced drilling techniques for 25% faster ore extraction.",
@@ -301,7 +301,7 @@
     }
   },
   {
-    "type": "metalMine",
+    "type": "highYieldMetalFracturer",
     "category": "production",
     "name": "High-Yield Metal Fracturer",
     "description": "Seismic resonance cracks deep ore veins for exponential yields.",
@@ -331,7 +331,7 @@
     }
   },
   {
-    "type": "metalMine",
+    "type": "plasmaCoreMetalSynthesizer",
     "category": "production",
     "name": "Plasma-Core Metal Synthesizer",
     "description": "Molecular disassembly and fusion to transmute base elements into pure metal.",
