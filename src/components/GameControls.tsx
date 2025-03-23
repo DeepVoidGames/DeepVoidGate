@@ -25,14 +25,14 @@ export const GameControls: React.FC = () => {
         <Save className="h-4 w-4" />
       </Button>
 
-      <Button
+      {/* <Button
         variant="outline"
         size="icon"
         className="glass-panel border-white/10"
         onClick={handleGameReset}
       >
         <RotateCcw className="h-4 w-4" />
-      </Button>
+      </Button> */}
     </div>
   );
 };

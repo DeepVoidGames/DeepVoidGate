@@ -6,6 +6,7 @@ import {
   initialBuildings,
   initialResourcesState,
   initialTechnologies,
+  resourceAlertThresholds,
 } from "../initialData";
 import { canAffordCost, applyResourceCost } from "./resourceReducer";
 import { ResourcesState } from "./resourceReducer";
@@ -59,6 +60,7 @@ export const calculateBuildingEfficiency = (
   });
 };
 
+// Apply building effects
 export const applyBuildingEffects = (
   buildings: BuildingData[],
   resources: ResourcesState
@@ -81,8 +83,8 @@ export const applyBuildingEffects = (
     if (!building || building.efficiency <= 0) return;
 
     // Oblicz bonusy dla tierów i ulepszeń
-    const tierBonus = 1 + (building.tier - 1) * 0.3; // 30% bonus za każdy tier
-    const upgradeBonus = 1 + building.upgrades * 0.06; // 10% bonus za każde ulepszenie
+    const tierBonus = 1 + (building.tier - 1) * 0.8; // 30% bonus za każdy tier
+    const upgradeBonus = 1 + building.upgrades * 0.06 + building.tier / 10; // 10% bonus za każde ulepszenie
     const totalBonus = tierBonus * upgradeBonus;
 
     // Produkcja z uwzględnieniem bonusów
@@ -90,8 +92,19 @@ export const applyBuildingEffects = (
       Object.entries(building.baseProduction).forEach(([resource, amount]) => {
         const resourceKey = resource as ResourceType;
         const baseValue = Number(amount) || 0;
-        const production =
-          baseValue + baseValue * totalBonus * building.efficiency;
+        let production = 0;
+
+        if (
+          resourceAlertThresholds.energy &&
+          resources.energy?.amount < resourceAlertThresholds.energy.critical &&
+          building.baseConsumption?.energy
+        ) {
+          production =
+            baseValue + baseValue * totalBonus * building.efficiency * 0.1;
+        } else {
+          production = baseValue + baseValue * totalBonus * building.efficiency;
+        }
+
         newResources[resourceKey].production += production;
       });
     }
@@ -100,8 +113,9 @@ export const applyBuildingEffects = (
     if (building.baseConsumption) {
       Object.entries(building.baseConsumption).forEach(([resource, amount]) => {
         const resourceKey = resource as ResourceType;
-        const consumption = (Number(amount) || 0) * building.efficiency;
-        newResources[resourceKey].consumption += consumption;
+        const consumption = Number(amount) || 0;
+        newResources[resourceKey].consumption +=
+          consumption * building.efficiency;
       });
     }
 
@@ -141,7 +155,7 @@ export const applyBuildingEffects = (
       });
     }
 
-    // Dodanie 
+    // Dodanie
     if (building.category === "housing") {
     }
   });
@@ -342,7 +356,8 @@ export const canUpgradeBuilding = (
 // Get production by resource
 export const getProductionByResource = (
   building: BuildingData,
-  resource: string
+  resource: string,
+  resources: ResourcesState
 ): number => {
   const tierBonus = 1 + (building.tier - 1) * 0.3; // 30% bonus za każdy tier
   const upgradeBonus = 1 + building.upgrades * 0.1; // 10% bonus za każde ulepszenie
@@ -351,7 +366,9 @@ export const getProductionByResource = (
   // Produkcja z uwzględnieniem bonusów
   if (building.baseProduction) {
     const amount = building.baseProduction[resource] || 0;
-    return amount + amount * totalBonus * building.efficiency;
+    return (
+      amount + amount * totalBonus * calculateEfficiency(building, resources)
+    );
   }
 };
 
@@ -373,6 +390,7 @@ export const getBuildingUpgradeCost = (
   );
 };
 
+// Get capacity by resource
 export const getCapacityByResource = (
   building: BuildingData,
   amount: number
@@ -382,6 +400,25 @@ export const getCapacityByResource = (
   const totalBonus = tierBonus * upgradeBonus;
 
   return amount + amount * totalBonus;
+};
+
+// Calculate building efficiency
+export const calculateEfficiency = (
+  building: BuildingData,
+  resources: ResourcesState
+) => {
+  const baseEfficiency = building.efficiency || 0;
+  const tierMultiplier = 1 + (building.tier - 1) * 0.2;
+
+  if (
+    resourceAlertThresholds.energy &&
+    resources.energy?.amount < resourceAlertThresholds.energy.critical &&
+    building.baseConsumption?.energy
+  ) {
+    return Math.min(baseEfficiency * tierMultiplier, 0.1);
+  } else {
+    return Math.min(baseEfficiency * tierMultiplier, 1);
+  }
 };
 
 // Handle worker assignment

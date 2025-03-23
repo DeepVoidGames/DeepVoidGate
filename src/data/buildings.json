@@ -145,7 +145,7 @@
     "category": "housing",
     "name": "Habitat Dome",
     "description": "Living quarters for the colony's population",
-    "workerCapacity": 1,
+    "workerCapacity": 0,
     "baseCost": {
       "metals": 100,
       "energy": 20

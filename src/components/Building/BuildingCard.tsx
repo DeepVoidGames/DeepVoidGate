@@ -25,6 +25,7 @@ import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
 import { Badge } from "@/components/ui/badge";
 import {
+  calculateEfficiency,
   getBuildingUpgradeCost,
   getCapacityByResource,
   getProductionByResource,
@@ -68,13 +69,8 @@ const BuildingCard = ({
   const isMaxTier = building.tier >= 5 && building.upgrades >= 10;
 
   // Obliczanie efektywności z uwzględnieniem tieru
-  const calculateEfficiency = () => {
-    const baseEfficiency = building.efficiency || 0;
-    const tierMultiplier = 1 + (building.tier - 1) * 0.2;
-    return Math.min(baseEfficiency * tierMultiplier, 1);
-  };
 
-  const currentEfficiency = calculateEfficiency();
+  const currentEfficiency = calculateEfficiency(building, resources);
 
   return (
     <Card
@@ -220,7 +216,11 @@ const BuildingCard = ({
               <div className="grid grid-cols-2 gap-2 text-xs">
                 {/* Production */}
                 {Object.entries(building.baseProduction).map(([resource]) => {
-                  const total = getProductionByResource(building, resource);
+                  const total = getProductionByResource(
+                    building,
+                    resource,
+                    resources
+                  );
                   return (
                     <div
                       key={resource}

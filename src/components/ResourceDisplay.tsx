@@ -1,58 +1,79 @@
-
-import React from 'react';
-import { useGame } from '@/context/GameContext';
-import { Progress } from '@/components/ui/progress';
-import { formatNumber } from '@/lib/utils';
-import { ResourceType } from '@/store/types';
-import { Clock, AlertTriangle } from 'lucide-react';
+import React from "react";
+import { useGame } from "@/context/GameContext";
+import { Progress } from "@/components/ui/progress";
+import { formatNumber } from "@/lib/utils";
+import { ResourceType } from "@/store/types";
+import { Clock, AlertTriangle } from "lucide-react";
 
 export const ResourceDisplay: React.FC = () => {
   const { state } = useGame();
   const { resources, population } = state;
-  
-  const resourceOrder: ResourceType[] = ['oxygen', 'food', 'energy', 'metals', 'science'];
-  
+
+  const resourceOrder: ResourceType[] = [
+    "oxygen",
+    "food",
+    "energy",
+    "metals",
+    "science",
+  ];
+
   return (
     <div className="glass-panel p-4 space-y-3 animate-fade-in">
       <div className="flex items-center justify-between">
         <h2 className="text-lg font-medium text-foreground/90">Resources</h2>
-        
+
         {population.deathTimer && (
           <div className="flex items-center text-red-500 font-medium gap-1">
             <AlertTriangle className="h-4 w-4" />
             <Clock className="h-4 w-4" />
-            <span>Colony in danger! {Math.floor(population.deathTimer)}s until death</span>
+            <span>
+              Colony in danger! {Math.floor(population.deathTimer)}s until death
+            </span>
           </div>
         )}
       </div>
-      
+
       <div className="grid grid-cols-1 gap-3">
         {resourceOrder.map((resourceKey) => {
           const resource = resources[resourceKey];
-          const percentFull = Math.min(100, (resource.amount / resource.capacity) * 100);
+          const percentFull = Math.min(
+            100,
+            (resource.amount / resource.capacity) * 100
+          );
           const netRate = resource.production - resource.consumption;
-          
+
           // Determine critical status for coloring
           let resourceStatus = "normal";
-          if (resourceKey === "oxygen" || resourceKey === "food" || resourceKey === "energy") {
+          if (
+            resourceKey === "oxygen" ||
+            resourceKey === "food" ||
+            resourceKey === "energy"
+          ) {
             if (resource.amount <= 5) {
               resourceStatus = "critical";
             } else if (resource.amount <= 20) {
               resourceStatus = "low";
             }
           }
-          
+
           return (
             <div key={resourceKey} className="space-y-1">
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-2">
-                  <span className={`resource-badge resource-badge-${resourceKey}`}>
+                  <span
+                    className={`resource-badge resource-badge-${resourceKey}`}
+                  >
                     {resource.icon}
                   </span>
-                  <span className={`font-medium capitalize ${
-                    resourceStatus === "critical" ? "text-red-500" : 
-                    resourceStatus === "low" ? "text-yellow-500" : ""
-                  }`}>
+                  <span
+                    className={`font-medium capitalize ${
+                      resourceStatus === "critical"
+                        ? "text-red-500"
+                        : resourceStatus === "low"
+                        ? "text-yellow-500"
+                        : ""
+                    }`}
+                  >
                     {resourceKey}
                     {resourceStatus === "critical" && (
                       <AlertTriangle className="h-3 w-3 inline ml-1 text-red-500" />
@@ -60,23 +81,29 @@ export const ResourceDisplay: React.FC = () => {
                   </span>
                 </div>
                 <div className="text-sm font-mono">
-                  <span className={netRate >= 0 ? 'text-green-400' : 'text-red-400'}>
-                    {netRate > 0 && '+'}{formatNumber(netRate)}/s
+                  <span
+                    className={netRate >= 0 ? "text-green-400" : "text-red-400"}
+                  >
+                    {netRate > 0 && "+"}
+                    {formatNumber(netRate)}/s
                   </span>
                 </div>
               </div>
-              
+
               <div className="flex items-center gap-3">
-                <Progress 
-                  value={percentFull} 
+                <Progress
+                  value={percentFull}
                   className={`progress-bar flex-grow h-2 ${
-                    resourceStatus === "critical" ? "bg-red-500/20" :
-                    resourceStatus === "low" ? "bg-yellow-500/20" :
-                    `bg-${resource.color}-500/20`
+                    resourceStatus === "critical"
+                      ? "bg-red-500/20"
+                      : resourceStatus === "low"
+                      ? "bg-yellow-500/20"
+                      : `bg-${resource.color}-500/20`
                   }`}
                 />
                 <div className="text-xs font-mono min-w-[90px] text-right">
-                  {formatNumber(resource.amount)} / {formatNumber(resource.capacity)}
+                  {formatNumber(resource.amount)} /{" "}
+                  {formatNumber(resource.capacity)}
                 </div>
               </div>
             </div>

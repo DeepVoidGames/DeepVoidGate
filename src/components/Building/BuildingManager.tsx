@@ -210,7 +210,8 @@ export const BuildingManager: React.FC = () => {
             <div className="flex items-center justify-endm., space-x-2 text-xs md:text-sm">
               <Users className="h-2 w-2 md:h-4 md:w-4 text-blue-400" />
               <span>
-                {population.available} / {population.total} workers available
+                {population.available} / {population.maxCapacity} workers
+                available
               </span>
               {population.deathTimer && (
                 <div className="flex items-center text-red-400 ml-2">

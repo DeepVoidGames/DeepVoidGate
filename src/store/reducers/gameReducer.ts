@@ -295,6 +295,9 @@ export const gameReducer = (
         }
       }
 
+      let newColonistTimer = state.colonistProgress ?? 0;
+      newColonistTimer += deltaTime;
+
       // Oblicz całkowitą pojemność mieszkań
       const totalHousing = buildings
         .filter((b) => b.category === "housing" && b.functioning)
@@ -306,32 +309,28 @@ export const gameReducer = (
         }, 0);
 
       // Zaktualizuj populację
-      newPopulation.total = Math.floor(totalHousing) + 10;
+      newPopulation.maxCapacity = Math.floor(totalHousing) + 10;
 
       // Logika dodawania kolonistów
       let newColonistProgress = state.colonistProgress;
-      let colonistsAdded = 0;
 
+      // Jeśli jest miejsce i upłynął czas, dodaj nowego kolonistę
       if (newPopulation.total < newPopulation.maxCapacity) {
         newColonistProgress += deltaTime;
       }
 
-      while (
-        newColonistProgress >= 600 &&
+      // Jeśli upłynął czas, dodaj nowego kol
+      if (
+        newColonistTimer >= 600 &&
         newPopulation.total < newPopulation.maxCapacity
       ) {
         newPopulation.total += 1;
         newPopulation.available += 1;
-        newColonistProgress -= 600;
-        colonistsAdded += 1;
-      }
+        newColonistTimer = 0;
 
-      if (colonistsAdded > 0) {
         toast({
-          title: "New Colonists Arrived",
-          description: `${colonistsAdded} new ${
-            colonistsAdded > 1 ? "colonists" : "colonist"
-          } have joined your colony!`,
+          title: "New Colonist Arrived",
+          description: "A new colonist has joined your colony!",
         });
       }
 

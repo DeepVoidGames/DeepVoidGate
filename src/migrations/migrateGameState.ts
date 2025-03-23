@@ -22,6 +22,8 @@ export const migrateGameState = (savedState: any): GameState => {
     currentState = migrateV1ToV2(currentState);
   }
 
+  // Krok 3: Migracja z V2 do V3
+  // Dodanie nowych technologii
   const mergedTechnologies = initialTechnologies.map((tech) => {
     const savedTech = savedState.technologies.find((t) => t.id === tech.id);
     return savedTech ? { ...tech, ...savedTech } : tech;
@@ -30,6 +32,7 @@ export const migrateGameState = (savedState: any): GameState => {
   return {
     ...initialState, // Bazowe wartości
     ...currentState, // Nadpisujemy migrowanymi danymi
+    buildings: migrateBuildings(currentState.buildings || []),
     technologies: mergedTechnologies,
     version: CURRENT_GAME_VERSION,
   };
@@ -190,4 +193,30 @@ const migrateV1ToV2 = (state: any) => {
     lastUpdate: state.lastUpdate || Date.now(),
     paused: state.paused || false,
   };
+};
+
+const migrateBuildings = (savedBuildings: any[]): any[] => {
+  return savedBuildings.map((building) => {
+    // Znajdź szablon budynku
+    const template =
+      initialBuildings.find((ib) => ib.type === building.type) || {};
+
+    return {
+      ...template, // Wartości domyślne z szablonu
+      ...building, // Nadpisujemy wartościami z zapisanego stanu
+      name: template.name || building.name,
+      description: template.description || building.description,
+      workerCapacity: template.workerCapacity ?? building.workerCapacity,
+      baseCost: template.baseCost || building.baseCost,
+      baseProduction: template.baseProduction || building.baseProduction,
+      baseConsumption: template.baseConsumption || building.baseConsumption,
+      requirements: template.requirements || building.requirements,
+      costMultiplier: template.costMultiplier ?? building.costMultiplier,
+      productionMultiplier:
+        template.productionMultiplier ?? building.productionMultiplier,
+      maxInstances: template.maxInstances ?? building.maxInstances,
+      maxTier: template.maxTier ?? building.maxTier,
+      uniqueBonus: template.uniqueBonus || building.uniqueBonus,
+    };
+  });
 };
