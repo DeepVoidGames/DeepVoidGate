@@ -6,7 +6,6 @@ import { GameControls } from "./GameControls";
 export const GameHeader: React.FC = () => {
   const { state } = useGame();
   const { population, colonistProgress } = state;
-
   return (
     <header className="glass-panel p-4 flex items-center justify-between animate-fade-in">
       <div className="flex flex-col">
@@ -29,9 +28,12 @@ export const GameHeader: React.FC = () => {
               {population.total}
             </span>{" "}
           </span>
-          <span className="text-muted-foreground">
-            New Colonists in: {(10 * 60 - colonistProgress).toFixed(0)}s
-          </span>
+
+          {10 * 60 - colonistProgress > 0 ? (
+            <span className="text-muted-foreground">
+              New Colonists in: {(10 * 60 - colonistProgress).toFixed(0)}s
+            </span>
+          ) : null}
         </div>
 
         <GameControls />
