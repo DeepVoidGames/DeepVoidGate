@@ -55,6 +55,16 @@ export interface ResourceData {
   baseCapacity: number;
 }
 
+export interface Resource {
+  amount: number;
+  production: number;
+  consumption: number;
+  capacity: number;
+  icon: string;
+  color: string;
+  baseCapacity: number;
+}
+
 // Building data structure
 export interface BuildingData {
   id?: string;

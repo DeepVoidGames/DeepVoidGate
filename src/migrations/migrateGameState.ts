@@ -1,13 +1,7 @@
 import { initialBuildings, initialTechnologies } from "@/store/initialData";
 import { initialState } from "@/store/reducers/gameReducer";
 import { ResourcesState } from "@/store/reducers/resourceReducer";
-import {
-  BuildingCategory,
-  BuildingType,
-  GameState,
-  ResourceData,
-  ResourceType,
-} from "@/store/types";
+import { GameState, ResourceData } from "@/store/types";
 import { stat } from "fs";
 
 export const CURRENT_GAME_VERSION = 3; // Aktualna wersja gry
@@ -15,10 +9,8 @@ export const CURRENT_GAME_VERSION = 3; // Aktualna wersja gry
 export const migrateGameState = (savedState: any): GameState => {
   let currentState = { ...savedState };
 
-  if (typeof currentState.version === "string") {
-    currentState.version = 0;
-  }
-
+  // Migracje wersji
+  if (typeof currentState.version === "string") currentState.version = 0;
   if (currentState.version === undefined || currentState.version === 0) {
     currentState = migrateV0ToV1(currentState);
   }
@@ -26,34 +18,40 @@ export const migrateGameState = (savedState: any): GameState => {
     currentState = migrateV1ToV2(currentState);
   }
 
-  const mergedTechnologies = initialTechnologies.map((tech) => {
-    const savedTech = savedState.technologies.find((t) => t.id === tech.id);
-    return savedTech ? { ...tech, ...savedTech } : tech;
-  });
+  // Merge technologii (bez zmian)
+  const mergedTechnologies = initialTechnologies.map((tech) => ({
+    ...tech,
+    ...currentState.technologies.find((t: any) => t.id === tech.id),
+  }));
 
-  // Merge resources z initialState, aby dodać nowe zasoby
-  // Ensure resource consumption exists
-  const migratedResources = Object.keys(savedState.resources).reduce(
-    (acc, key) => {
-      const resourceType = key as ResourceType;
-      acc[resourceType] = {
-        amount: savedState.resources[resourceType].amount,
-        production: savedState.resources[resourceType].production || 0,
-        consumption: savedState.resources[resourceType].consumption || 0,
-        // Add other necessary properties
-      };
-      return acc;
-    },
-    {} as Record<ResourceType, Resource>
+  // Poprawiony mechanizm dla budynków:
+  const initialBuildings = initialState.buildings;
+
+  // Krok 1: Stwórz mapę budynków initial po 'type'
+  const initialBuildingsMap = new Map(initialBuildings.map((b) => [b.type, b]));
+
+  // Krok 2: Przepisz zapisane budynki, łącząc z initial (po 'type')
+  const mergedSavedBuildings = (currentState.buildings || []).map(
+    (savedBldg) => ({
+      ...initialBuildingsMap.get(savedBldg.type), // Nadpisuje domyślne wartości
+      ...savedBldg, // Zachowuje zapisane wartości
+    })
   );
 
-  const tempBuildings = migrateBuildings(currentState.buildings || []);
+  // Krok 3: Dodaj nowe budynki z initial, których nie ma w zapisie
+  const newInitialBuildings = initialBuildings.filter(
+    (initialBldg) =>
+      !(currentState.buildings || []).some(
+        (savedBldg) => savedBldg.type === initialBldg.type
+      )
+  );
+
+  const finalBuildings = [...mergedSavedBuildings, ...newInitialBuildings];
 
   return {
     ...initialState,
     ...currentState,
-    resources: migratedResources, // Użyj scalonych zasobów
-    buildings: syncNewBuldigns(tempBuildings),
+    buildings: migrateBuildings(finalBuildings),
     technologies: mergedTechnologies,
     version: CURRENT_GAME_VERSION,
   };
@@ -204,15 +202,10 @@ const migrateV1ToV2 = (state: any) => {
     deathTimer: null,
   };
 
-  const finalResources = {
-    ...defaultResources,
-    ...fixedResources,
-  };
-
   // 4. Zwracamy nowy stan
   return {
     version: 2, // Upewnij się, że wersja jest poprawna!
-    resources: finalResources,
+    resources: fixedResources,
     buildings: buildings,
     population,
     technologies: state.technologies || [],
@@ -234,10 +227,9 @@ const migrateBuildings = (savedBuildings: any[]): any[] => {
       description: template.description || building.description,
       workerCapacity: template.workerCapacity ?? building.workerCapacity,
       baseCost: template.baseCost || building.baseCost,
-      baseConsumption:
-        template.baseConsumption || building.baseConsumption || {},
-      baseProduction: template.baseProduction || building.baseProduction || {},
-      storageBonus: template.storageBonus || building.storageBonus || {},
+      baseProduction: template.baseProduction || building.baseProduction,
+      baseConsumption: template.baseConsumption || building.baseConsumption,
+      storageBonus: template.storageBonus || building.storageBonus,
       requirements: template.requirements || building.requirements,
       costMultiplier: template.costMultiplier ?? building.costMultiplier,
       productionMultiplier:
@@ -247,31 +239,4 @@ const migrateBuildings = (savedBuildings: any[]): any[] => {
       uniqueBonus: template.uniqueBonus || building.uniqueBonus,
     };
   });
-};
-
-const syncNewBuldigns = (buildings: any[]) => {
-  // Dodaj tylko brakujące budynki z initialBuildings
-  const newBuildings = initialBuildings.filter(
-    (ib) => !buildings.some((b) => b.type === ib.type)
-  );
-
-  // Scal z istniejącymi budynkami, zachowując kolejność
-  const mergedBuildings = [...buildings];
-
-  for (const newBuilding of newBuildings) {
-    mergedBuildings.push({
-      ...newBuilding,
-      // Nadpisz domyślne wartości dla kluczowych pól
-      tier: 1,
-      upgrades: 0,
-      type: buildings.type as BuildingType,
-      category: buildings.category as BuildingCategory,
-      assignedWorkers: 0,
-      efficiency: 0,
-      functioning: true,
-      // Inne pola, które mogą wymagać inicjalizacji
-    });
-  }
-
-  return mergedBuildings;
 };
