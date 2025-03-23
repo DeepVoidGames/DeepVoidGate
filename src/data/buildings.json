@@ -266,5 +266,96 @@
     "uniqueBonus": {
       "storage": { "energy": 2000 }
     }
+  },
+  {
+    "type": "metalMine",
+    "category": "production",
+    "name": "Advanced Metal Extractor",
+    "description": "Uses enhanced drilling techniques for 25% faster ore extraction.",
+    "workerCapacity": 5,
+    "baseCost": {
+      "energy": 51,
+      "metals": 34
+    },
+    "baseProduction": {
+      "metals": 0.7
+    },
+    "baseConsumption": {
+      "energy": 1.1,
+      "oxygen": 0.25
+    },
+    "requirements": {},
+    "requiredTechnology": "deep_core_mining",
+    "costMultiplier": 1.7,
+    "productionMultiplier": 1.15,
+    "maxInstances": 1,
+    "tier": 1,
+    "maxTier": 5,
+    "upgrades": 1,
+    "uniqueBonus": {
+      "production": { "metals": 12 },
+      "storage": { "metals": 3000 }
+    }
+  },
+  {
+    "type": "metalMine",
+    "category": "production",
+    "name": "High-Yield Metal Fracturer",
+    "description": "Seismic resonance cracks deep ore veins for exponential yields.",
+    "workerCapacity": 6,
+    "baseCost": {
+      "energy": 87,
+      "metals": 58
+    },
+    "baseProduction": {
+      "metals": 0.8
+    },
+    "baseConsumption": {
+      "energy": 1.25,
+      "oxygen": 0.3
+    },
+    "requirements": {},
+    "requiredTechnology": "seismic_ore_mapping",
+    "costMultiplier": 1.7,
+    "productionMultiplier": 1.15,
+    "maxInstances": 1,
+    "tier": 1,
+    "maxTier": 5,
+    "upgrades": 2,
+    "uniqueBonus": {
+      "production": { "metals": 18 },
+      "storage": { "metals": 5000 }
+    }
+  },
+  {
+    "type": "metalMine",
+    "category": "production",
+    "name": "Plasma-Core Metal Synthesizer",
+    "description": "Molecular disassembly and fusion to transmute base elements into pure metal.",
+    "workerCapacity": 8,
+    "baseCost": {
+      "energy": 148,
+      "metals": 99
+    },
+    "baseProduction": {
+      "metals": 0.95
+    },
+    "baseConsumption": {
+      "energy": 1.5,
+      "oxygen": 0.4,
+      "water": 0.1
+    },
+    "requirements": {},
+    "requiredTechnology": "plasma_refining",
+    "costMultiplier": 1.7,
+    "productionMultiplier": 1.15,
+    "maxInstances": 1,
+    "tier": 1,
+    "maxTier": 5,
+    "upgrades": 3,
+    "uniqueBonus": {
+      "production": { "metals": 20 },
+      "storage": { "metals": 8000 }
+    }
   }
 ]

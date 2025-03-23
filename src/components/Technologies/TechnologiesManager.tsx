@@ -22,24 +22,29 @@ import { Progress } from "@/components/ui/progress";
 
 const techCategories = [
   {
+    id: "Infrastructure",
+    name: "Infrastructure",
+    icon: <Network className="h-4 w-4 text-green-400" />,
+  },
+  {
     id: "Energy",
     name: "Energy",
     icon: <Zap className="h-4 w-4 text-yellow-400" />,
   },
   {
-    id: "Computing",
-    name: "Computing",
-    icon: <Cpu className="h-4 w-4 text-blue-400" />,
+    id: "Production",
+    name: "Production",
+    icon: <FlaskConical className="h-4 w-4 text-blue-400" />,
   },
   {
-    id: "Aerospace",
-    name: "Aerospace",
+    id: "Research",
+    name: "Research",
+    icon: <Microscope className="h-4 w-4 text-purple-400" />,
+  },
+  {
+    id: "Advanced",
+    name: "Advanced",
     icon: <Rocket className="h-4 w-4 text-red-400" />,
-  },
-  {
-    id: "Materials",
-    name: "Materials",
-    icon: <Atom className="h-4 w-4 text-purple-400" />,
   },
 ];
 
@@ -194,7 +199,7 @@ const TechnologiesManager: React.FC = () => {
         ))}
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 h-[250px] overflow-y-auto">
         {filteredTechnologies.map((tech) => {
           const isResearched = tech.isResearched;
           const canResearch = canResearchTech(tech);
@@ -267,7 +272,7 @@ const TechnologiesManager: React.FC = () => {
                 <button
                   onClick={() => researchTech(tech.id)}
                   disabled={!canResearch || isResearched}
-                  className={`w-full py-2 rounded-lg transition-colors ${
+                  className={`w-full py-2 rounded-lg transition-colors justify-end ${
                     isResearched
                       ? "bg-green-800/50 cursor-default"
                       : canResearch
