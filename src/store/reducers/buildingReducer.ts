@@ -363,6 +363,7 @@ export const getProductionByResource = (
   const tierBonus = 1.5 ** (building.tier - 1); // Silniejszy wpływ tierów
   const upgradeBonus = 1 + building.upgrades * 0.05; // Mniejszy wpływ upgrade'ów
   const totalBonus = tierBonus * upgradeBonus;
+  const amount = building.baseProduction[resource] || 0;
 
   let bonus = 0;
 
@@ -374,7 +375,6 @@ export const getProductionByResource = (
 
     // Produkcja z uwzględnieniem bonusów
     if (building.baseProduction) {
-      const amount = building.baseProduction[resource] || 0;
       return (
         amount +
         amount * totalBonus * calculateEfficiency(building, resources) +
@@ -382,6 +382,10 @@ export const getProductionByResource = (
       );
     }
   }
+
+  return (
+    amount + amount * totalBonus * calculateEfficiency(building, resources)
+  );
 };
 
 // Get building upgrade cost
