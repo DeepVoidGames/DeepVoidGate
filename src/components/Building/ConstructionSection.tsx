@@ -101,9 +101,9 @@ const ConstructionSection = ({
                                   <div
                                     key={resource}
                                     className={`flex items-center space-x-2 px-2 py-1.5 rounded-md ${
-                                      !canAffordResource(resource, Number(cost))
+                                      !canAffordBuilding(type)
                                         ? "bg-red-900/20 text-red-400"
-                                        : "bg-background/50 text-foreground/80"
+                                        : "bg-green-900/20 text-green-400"
                                     }`}
                                   >
                                     <span className="text-sm">

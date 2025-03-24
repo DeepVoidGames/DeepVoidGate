@@ -364,12 +364,23 @@ export const getProductionByResource = (
   const upgradeBonus = 1 + building.upgrades * 0.05; // Mniejszy wpływ upgrade'ów
   const totalBonus = tierBonus * upgradeBonus;
 
-  // Produkcja z uwzględnieniem bonusów
-  if (building.baseProduction) {
-    const amount = building.baseProduction[resource] || 0;
-    return (
-      amount + amount * totalBonus * calculateEfficiency(building, resources)
-    );
+  let bonus = 0;
+
+  if (building.tier === building.maxTier && building.uniqueBonus) {
+    // Bonusy do produkcji
+    if (building.uniqueBonus.production) {
+      bonus = building.uniqueBonus.production[resource];
+    }
+
+    // Produkcja z uwzględnieniem bonusów
+    if (building.baseProduction) {
+      const amount = building.baseProduction[resource] || 0;
+      return (
+        amount +
+        amount * totalBonus * calculateEfficiency(building, resources) +
+        (bonus || 0)
+      );
+    }
   }
 };
 

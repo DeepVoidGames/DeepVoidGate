@@ -66,7 +66,8 @@ const BuildingCard = ({
 
   const hasStorageBonus =
     building.storageBonus && Object.keys(building.storageBonus).length > 0;
-  const isMaxTier = building.tier >= 5 && building.upgrades >= 10;
+  const isMaxTier =
+    building.tier >= building.maxTier && building.upgrades >= 10;
 
   // Obliczanie efektywności z uwzględnieniem tieru
 
@@ -182,11 +183,13 @@ const BuildingCard = ({
         {isExpanded && (
           <div className="mt-4 space-y-3 animate-fade-in">
             {/* Sekcja Storage Bonus */}
-            {hasStorageBonus && (
-              <div className="space-y-1">
+            <div className="space-y-1">
+              {hasStorageBonus || building?.uniqueBonus?.storage ? (
                 <h4 className="text-xs text-foreground/70">
                   Storage Capacity:
                 </h4>
+              ) : null}
+              {hasStorageBonus && (
                 <div className="grid grid-cols-2 gap-2 text-xs text-cyan-400">
                   {Object.entries(building.storageBonus).map(
                     ([resource, bonus]) => (
@@ -205,8 +208,23 @@ const BuildingCard = ({
                     )
                   )}
                 </div>
-              </div>
-            )}
+              )}
+              {building?.uniqueBonus?.storage && (
+                <div className="grid grid-cols-2 gap-2 text-xs text-cyan-400">
+                  {Object.entries(building.uniqueBonus.storage).map(
+                    ([resource, bonus]) => (
+                      <div
+                        key={resource}
+                        className="flex items-center space-x-1"
+                      >
+                        <span>{ResourcesIcon({ resource })}</span>
+                        <span>+{formatNumber(bonus)}</span>
+                      </div>
+                    )
+                  )}
+                </div>
+              )}
+            </div>
 
             {/* Sekcja Production/Consumption */}
             <div className="space-y-1">
@@ -234,10 +252,10 @@ const BuildingCard = ({
                         +{formatNumber(total)}/s
                       </span>
                       {/* {tier5Bonus > 0 && (
-                          <Badge className="ml-1 bg-yellow-800/30 text-yellow-400">
-                            T5 Bonus
-                          </Badge>
-                        )} */}
+                        <Badge className="ml-1 bg-yellow-800/30 text-yellow-400">
+                          T5 Bonus
+                        </Badge>
+                      )} */}
                     </div>
                   );
                 })}
