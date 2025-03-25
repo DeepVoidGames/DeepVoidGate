@@ -295,14 +295,11 @@ export const gameReducer = (
         }
       }
 
-      let newColonistTimer = state.colonistProgress ?? 0;
-      newColonistTimer += deltaTime;
-
       // Oblicz całkowitą pojemność mieszkań
       const totalHousing = buildings
         .filter((b) => b.category === "housing" && b.functioning)
         .reduce((sum, building) => {
-          const tierBonus = 1 + (building.tier - 1) * 5;
+          const tierBonus = 1 + (building.tier - 1);
           const upgradeBonus = 1 + building.upgrades;
           const totalBonus = tierBonus * upgradeBonus;
           return sum + (building.category == "housing" ? 1 : 0) * totalBonus;
@@ -312,21 +309,23 @@ export const gameReducer = (
       newPopulation.maxCapacity = Math.floor(totalHousing) + 10;
 
       // Logika dodawania kolonistów
-      let newColonistProgress = state.colonistProgress;
+      let newColonistProgress = state.colonistProgress ?? 0;
 
-      // Jeśli jest miejsce i upłynął czas, dodaj nowego kolonistę
+      // Inkrementuj timer tylko jeśli jest miejsce
       if (newPopulation.total < newPopulation.maxCapacity) {
         newColonistProgress += deltaTime;
+      } else {
+        newColonistProgress = 0; // Resetuj jeśli brak miejsca
       }
 
-      // Jeśli upłynął czas, dodaj nowego kol
+      // Sprawdź czy czas się skończył i jest miejsce
       if (
-        newColonistTimer >= 600 &&
+        newColonistProgress >= 60 * 2 &&
         newPopulation.total < newPopulation.maxCapacity
       ) {
         newPopulation.total += 1;
         newPopulation.available += 1;
-        newColonistTimer = 0;
+        newColonistProgress = 0; // Resetuj timer
 
         toast({
           title: "New Colonist Arrived",
@@ -339,7 +338,7 @@ export const gameReducer = (
         resources: newResources,
         buildings,
         population: newPopulation,
-        colonistProgress: newColonistProgress,
+        colonistProgress: newColonistProgress, // Ustaw zaktualizowany progres
         lastUpdate: currentTime,
       };
     }
@@ -381,6 +380,7 @@ export const gameReducer = (
 
     case "ASSIGN_WORKER": {
       const { buildingId, count } = action.payload;
+      console.log("ASSIGN_WORKER", buildingId, count);
       const result = assignWorker(
         state.buildings,
         state.population,

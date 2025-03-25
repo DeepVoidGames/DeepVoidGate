@@ -14,8 +14,8 @@ export const calculatePopulationConsumption = (
   const newResources = { ...resources };
 
   // Basic life support - oxygen and food consumption
-  const oxygenPerPerson = 0.05;
-  const foodPerPerson = 0.05;
+  const oxygenPerPerson = 0.07;
+  const foodPerPerson = 0.07;
 
   newResources.oxygen.consumption += population.total * oxygenPerPerson;
   newResources.food.consumption += population.total * foodPerPerson;

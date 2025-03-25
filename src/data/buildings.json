@@ -10,7 +10,7 @@
       "energy": 20
     },
     "baseProduction": {
-      "oxygen": 1
+      "oxygen": 1.5
     },
     "baseConsumption": {
       "energy": 0.5
@@ -39,7 +39,7 @@
       "oxygen": 10
     },
     "baseProduction": {
-      "food": 1
+      "food": 1.5
     },
     "baseConsumption": {
       "oxygen": 0.2,
@@ -67,7 +67,7 @@
       "metals": 60
     },
     "baseProduction": {
-      "energy": 1
+      "energy": 1.5
     },
     "baseConsumption": {},
     "requirements": {},
@@ -93,7 +93,7 @@
       "metals": 20
     },
     "baseProduction": {
-      "metals": 0.6
+      "metals": 0.9
     },
     "baseConsumption": {
       "energy": 0.6,
@@ -122,7 +122,7 @@
       "energy": 40
     },
     "baseProduction": {
-      "science": 0.5
+      "science": 1.0
     },
     "baseConsumption": {
       "energy": 1,
