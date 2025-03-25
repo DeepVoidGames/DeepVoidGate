@@ -26,6 +26,8 @@ function Settings() {
     React.useState(false);
   const [email, setEmail] = React.useState("");
   const [verificationCode, setVerificationCode] = React.useState("");
+  const [isLoadSaveModalOpen, setIsLoadSaveModalOpen] = React.useState(false);
+  const [saveData, setSaveData] = React.useState("");
 
   useEffect(() => {
     handleLoadSettings();
@@ -67,6 +69,75 @@ function Settings() {
       });
     }
   };
+
+  const devSection = (
+    <div className="space-y-4">
+      <div className="flex">
+        <button
+          onClick={() => {
+            navigator.clipboard.writeText(
+              localStorage.getItem("deepvoidgate_save")
+            );
+            toast({
+              title: "Save Copied",
+              description: "Save has been copied to clipboard.",
+              variant: "default",
+            });
+          }}
+          className="w-full py-3 bg-blue-600 hover:bg-blue-700 text-white rounded-lg transition-colors duration-200 p-2 m-1"
+        >
+          Copy Save
+        </button>
+        <button
+          onClick={() => setIsLoadSaveModalOpen(true)}
+          className="w-full py-3 bg-red-600 hover:bg-red-700 text-white rounded-lg transition-colors duration-200 p-2 m-1"
+        >
+          Load Save
+        </button>
+      </div>
+    </div>
+  );
+
+  // Dodajemy nowy modal
+  const loadSaveModal = (
+    <div className="fixed inset-0 bg-black/50 flex items-center justify-center p-4 backdrop-blur-sm">
+      <div className="glass-panel p-6 max-w-xl w-full space-y-4">
+        <h3 className="text-xl font-bold text-gray-100">Load Game Save</h3>
+        <p className="text-gray-300">
+          Paste your save data below. Warning: This will overwrite your current
+          game!
+        </p>
+        <textarea
+          value={saveData}
+          onChange={(e) => setSaveData(e.target.value)}
+          className="w-full h-64 bg-gray-700 text-gray-200 px-3 py-2 rounded-lg font-mono text-sm"
+          placeholder="Paste your save data here..."
+        />
+        <div className="flex gap-2 justify-end">
+          <button
+            onClick={() => {
+              setIsLoadSaveModalOpen(false);
+              setSaveData("");
+            }}
+            className="px-4 py-2 text-gray-300 hover:text-white transition-colors"
+          >
+            Cancel
+          </button>
+          <button
+            onClick={() => {
+              if (saveData) {
+                localStorage.setItem("deepvoidgate_save", saveData);
+                window.location.reload();
+              }
+            }}
+            className="px-4 py-2 bg-red-600 hover:bg-red-700 text-white rounded-lg transition-colors"
+          >
+            Load Save
+          </button>
+        </div>
+      </div>
+    </div>
+  );
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-background to-background/90 flex items-center justify-center p-4">
@@ -228,6 +299,9 @@ function Settings() {
             </div>
           </div>
 
+          {/* Dev */}
+          {devSection}
+
           {/* Przycisk zapisywania */}
           <button
             className="w-full py-3 bg-blue-600 hover:bg-blue-700 text-white rounded-lg transition-colors duration-200"
@@ -236,6 +310,8 @@ function Settings() {
             Save Settings
           </button>
         </div>
+
+        {isLoadSaveModalOpen && loadSaveModal}
 
         {/* Modal weryfikacyjny */}
         {isVerificationModalOpen && (
