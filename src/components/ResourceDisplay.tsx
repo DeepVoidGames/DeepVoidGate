@@ -77,12 +77,25 @@ export const ResourceDisplay: React.FC = () => {
                   </span>
                 </div>
                 <div className="text-sm font-mono">
-                  <span
-                    className={netRate >= 0 ? "text-green-400" : "text-red-400"}
-                  >
-                    {netRate > 0 && "+"}
-                    {formatNumber(netRate)}/s
-                  </span>
+                  <div className="relative inline-block group">
+                    <span
+                      className={`cursor-pointer ${
+                        netRate >= 0 ? "text-green-400" : "text-red-400"
+                      }`}
+                    >
+                      {netRate > 0 && "+"}
+                      {formatNumber(netRate)}/s
+                    </span>
+                    {/* Tooltip with production and consumption */}
+                    <div className="absolute hidden group-hover:flex flex-col gap-1 bottom-full left-1/2 -translate-x-1/2 mb-2 bg-gray-800 text-white text-xs p-2 rounded-md shadow-lg z-10">
+                      <span className="text-green-400 whitespace-nowrap">
+                        +{formatNumber(resource.production)}/s
+                      </span>
+                      <span className="text-red-400 whitespace-nowrap">
+                        -{formatNumber(resource.consumption)}/s
+                      </span>
+                    </div>
+                  </div>
                 </div>
               </div>
 
