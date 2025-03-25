@@ -215,13 +215,13 @@ export const BuildingManager: React.FC = () => {
           "metals",
           "science",
         ];
-        const indexA = order.indexOf(a.type);
-        const indexB = order.indexOf(b.type);
+        // const indexA = order.indexOf(a.type);
+        // const indexB = order.indexOf(b.type);
 
-        // Sortuj najpierw według kolejności tagów
-        if (indexA !== indexB) {
-          return indexA - indexB;
-        }
+        // // Sortuj najpierw według kolejności tagów
+        // if (indexA !== indexB) {
+        //   return indexA - indexB;
+        // }
 
         // Następnie malejąco po production
         return b.baseProduction - a.baseProduction;

@@ -368,5 +368,103 @@
       "storage": { "metals": 8000 }
     },
     "tag": "metals"
+  },
+  {
+    "type": "geothermalPlant",
+    "category": "production",
+    "name": "Geothermal Plant",
+    "description": "Harnesses geothermal energy from the planet's core for stable power generation.",
+    "workerCapacity": 2,
+    "baseCost": {
+      "metals": 80,
+      "energy": 30
+    },
+    "baseProduction": {
+      "energy": 2.0
+    },
+    "baseConsumption": {
+      "energy": 0.3
+    },
+    "requirements": {
+      "geothermal_energy": 1
+    },
+    "costMultiplier": 1.7,
+    "productionMultiplier": 1.25,
+    "maxInstances": 1,
+    "tier": 1,
+    "maxTier": 5,
+    "upgrades": 0,
+    "uniqueBonus": {
+      "production": { "energy": 20 },
+      "storage": { "energy": 1500 }
+    },
+    "tag": "energy"
+  },
+  {
+    "type": "fissionReactor",
+    "category": "production",
+    "name": "Nuclear Fission Reactor",
+    "description": "Generates energy through controlled nuclear fission reactions, providing high output.",
+    "workerCapacity": 3,
+    "baseCost": {
+      "metals": 120,
+      "energy": 50,
+      "science": 20
+    },
+    "baseProduction": {
+      "energy": 3.5
+    },
+    "baseConsumption": {
+      "metals": 0.2,
+      "energy": 0.5
+    },
+    "requirements": {
+      "nuclear_fission": 1
+    },
+    "costMultiplier": 1.8,
+    "productionMultiplier": 1.3,
+    "maxInstances": 1,
+    "tier": 1,
+    "maxTier": 5,
+    "upgrades": 0,
+    "uniqueBonus": {
+      "production": { "energy": 30 },
+      "storage": { "energy": 2500 }
+    },
+    "tag": "energy"
+  },
+  {
+    "type": "fusionReactor",
+    "category": "production",
+    "name": "Fusion Reactor",
+    "description": "Utilizes nuclear fusion to produce vast amounts of clean energy with minimal waste.",
+    "workerCapacity": 4,
+    "baseCost": {
+      "metals": 200,
+      "energy": 100,
+      "science": 50,
+      "water": 10
+    },
+    "baseProduction": {
+      "energy": 5.0
+    },
+    "baseConsumption": {
+      "water": 0.1,
+      "energy": 0.8
+    },
+    "requirements": {
+      "fusion_energy": 1
+    },
+    "costMultiplier": 2.0,
+    "productionMultiplier": 1.4,
+    "maxInstances": 1,
+    "tier": 1,
+    "maxTier": 5,
+    "upgrades": 0,
+    "uniqueBonus": {
+      "production": { "energy": 50 },
+      "storage": { "energy": 5000 }
+    },
+    "tag": "energy"
   }
 ]

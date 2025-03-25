@@ -101,7 +101,7 @@ export const initialTechnologies: Technology[] = [
     id: "basic_energy",
     name: "Basic Energy",
     category: "Energy",
-    description: "Unlocks essential energy sources",
+    description: "Unlocks essential energy storage",
     researchCost: { metals: 150, science: 75 },
     prerequisites: [],
     unlocksBuildings: [],
@@ -149,6 +149,53 @@ export const initialTechnologies: Technology[] = [
     prerequisites: ["seismic_ore_mapping", "nanotech_refining"],
     unlocksBuildings: [],
     researchDuration: 300,
+    isResearched: false,
+  },
+  {
+    id: "geothermal_energy",
+    name: "Geothermal Energy",
+    category: "Energy",
+    description:
+      "Unlocks the ability to harness geothermal energy from the planet's core.",
+    researchCost: {
+      metals: 600,
+      science: 700,
+    },
+    prerequisites: ["basic_energy"],
+    unlocksBuildings: ["geothermalPlant"],
+    researchDuration: 160,
+    isResearched: false,
+  },
+  {
+    id: "nuclear_fission",
+    name: "Nuclear Fission",
+    category: "Energy",
+    description:
+      "Enables the use of nuclear fission reactors for high-energy output.",
+    researchCost: {
+      metals: 1200,
+      science: 950,
+      energy: 150,
+    },
+    prerequisites: ["geothermal_energy"],
+    unlocksBuildings: ["fissionReactor"],
+    researchDuration: 360,
+    isResearched: false,
+  },
+  {
+    id: "fusion_energy",
+    name: "Fusion Energy",
+    category: "Energy",
+    description:
+      "Achieves sustainable energy production through nuclear fusion technology.",
+    researchCost: {
+      metals: 2000,
+      science: 1500,
+      energy: 300,
+    },
+    prerequisites: ["nuclear_fission", "plasma_refining"],
+    unlocksBuildings: ["fusionReactor"],
+    researchDuration: 600,
     isResearched: false,
   },
 ];

@@ -48,11 +48,13 @@ export const migrateGameState = (savedState: any): GameState => {
 
   const finalBuildings = [...mergedSavedBuildings, ...newInitialBuildings];
 
+  const tech = migrateTechnologiesStats(mergedTechnologies);
+
   return {
     ...initialState,
     ...currentState,
     buildings: migrateBuildingsStats(finalBuildings),
-    technologies: mergedTechnologies,
+    technologies: tech,
     version: CURRENT_GAME_VERSION,
   };
 };
@@ -237,6 +239,24 @@ const migrateBuildingsStats = (savedBuildings: any[]): any[] => {
       maxInstances: template.maxInstances ?? building.maxInstances,
       maxTier: template.maxTier ?? building.maxTier,
       uniqueBonus: template.uniqueBonus || building.uniqueBonus,
+    };
+  });
+};
+
+const migrateTechnologiesStats = (savedTechnologies: any[]): any[] => {
+  return savedTechnologies.map((tech) => {
+    // Znajdź szablon technologii
+    const template = initialTechnologies.find((it) => it.id === tech.id) || {};
+
+    return {
+      ...template, // Wartości domyślne z szablonu
+      ...tech, // Nadpisujemy wartościami z zapisanego stanu
+      name: template.name || tech.name,
+      description: template.description || tech.description,
+      researchCost: template.researchCost || tech.researchCost,
+      prerequisites: template.prerequisites || tech.prerequisites,
+      unlocksBuildings: template.unlocksBuildings || tech.unlocksBuildings,
+      researchDuration: template.researchDuration || tech.researchDuration,
     };
   });
 };

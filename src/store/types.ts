@@ -22,7 +22,10 @@ export type BuildingType =
   | "basicBattery"
   | "advancedMetalExtractor"
   | "highYieldMetalFracturer"
-  | "plasmaCoreMetalSynthesizer";
+  | "plasmaCoreMetalSynthesizer"
+  | "geothermalPlant"
+  | "fissionReactor"
+  | "fusionReactor";
 
 export type TechnologyCategory =
   | "Infrastructure"
