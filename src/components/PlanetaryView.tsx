@@ -194,7 +194,7 @@ export const PlanetaryView: React.FC = memo(() => {
       </div>
 
       <div className="text-center mt-4 text-sm text-muted-foreground">
-        Colony: New Hope • Buildings: {state.buildings.length} • Population:{" "}
+        Colony: 新大陸 • Buildings: {state.buildings.length} • Population:{" "}
         {state.population.total}
       </div>
     </div>
