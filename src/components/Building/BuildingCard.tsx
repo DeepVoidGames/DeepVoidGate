@@ -184,7 +184,9 @@ const BuildingCard = ({
           <div className="mt-4 space-y-3 animate-fade-in">
             {/* Sekcja Storage Bonus */}
             <div className="space-y-1">
-              {hasStorageBonus || building?.uniqueBonus?.storage ? (
+              {hasStorageBonus ||
+              (building?.uniqueBonus?.storage &&
+                building?.tier === building?.maxTier) ? (
                 <h4 className="text-xs text-foreground/70">
                   Storage Capacity:
                 </h4>
@@ -201,7 +203,11 @@ const BuildingCard = ({
                         <span>
                           +
                           {formatNumber(
-                            getCapacityByResource(building, Number(bonus))
+                            getCapacityByResource(
+                              building,
+                              Number(bonus),
+                              resource
+                            )
                           )}
                         </span>
                       </div>
@@ -209,7 +215,10 @@ const BuildingCard = ({
                   )}
                 </div>
               )}
-              {building?.uniqueBonus?.storage && (
+
+              {!hasStorageBonus &&
+              building?.uniqueBonus?.storage &&
+              building?.tier === building?.maxTier ? (
                 <div className="grid grid-cols-2 gap-2 text-xs text-cyan-400">
                   {Object.entries(building.uniqueBonus.storage).map(
                     ([resource, bonus]) => (
@@ -223,7 +232,7 @@ const BuildingCard = ({
                     )
                   )}
                 </div>
-              )}
+              ) : null}
             </div>
 
             {/* Sekcja Production/Consumption */}

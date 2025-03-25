@@ -409,12 +409,17 @@ export const getBuildingUpgradeCost = (
 // Get capacity by resource
 export const getCapacityByResource = (
   building: BuildingData,
-  amount: number
+  amount: number,
+  resource?: string
 ): number => {
   const tierBonus = 1 + (building.tier - 1) * 0.3; // 30% bonus za każdy tier
   const upgradeBonus = 1 + building.upgrades * 0.06; // 10% bonus za każde ulepszenie
   const totalBonus = tierBonus * upgradeBonus;
 
+  let bonus = 0;
+  if (building.tier === building.maxTier && building.uniqueBonus.storage) {
+    bonus = building.uniqueBonus.storage[resource];
+  }
   return amount + amount * totalBonus;
 };
 
