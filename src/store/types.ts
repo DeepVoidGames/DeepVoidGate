@@ -31,6 +31,8 @@ export type TechnologyCategory =
   | "Research"
   | "Advanced";
 
+export type BuildingTags = "oxygen" | "food" | "energy" | "metals" | "science";
+
 export interface Technology {
   id: string;
   name: string;
@@ -106,6 +108,7 @@ export interface BuildingData {
     production?: Partial<Record<ResourceType, number>>;
     storage?: Partial<Record<ResourceType, number>>;
   };
+  tag?: BuildingTags;
 }
 
 // Alert thresholds

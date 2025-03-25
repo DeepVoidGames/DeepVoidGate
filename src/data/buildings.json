@@ -25,7 +25,8 @@
     "uniqueBonus": {
       "production": { "oxygen": 10 },
       "storage": { "oxygen": 500 }
-    }
+    },
+    "tag": "oxygen"
   },
   {
     "type": "hydroponicFarm",
@@ -55,7 +56,8 @@
     "uniqueBonus": {
       "production": { "food": 5 },
       "storage": { "food": 300 }
-    }
+    },
+    "tag": "food"
   },
   {
     "type": "solarPanel",
@@ -80,14 +82,15 @@
     "uniqueBonus": {
       "production": { "energy": 15 },
       "storage": { "energy": 1000 }
-    }
+    },
+    "tag": "energy"
   },
   {
     "type": "metalMine",
     "category": "production",
     "name": "Metal Extractor",
     "description": "Extracts metal ores from the planetary crust",
-    "workerCapacity": 4,
+    "workerCapacity": 3,
     "baseCost": {
       "energy": 30,
       "metals": 20
@@ -109,7 +112,8 @@
     "uniqueBonus": {
       "production": { "metals": 8 },
       "storage": { "metals": 1500 }
-    }
+    },
+    "tag": "metals"
   },
   {
     "type": "researchLab",
@@ -141,7 +145,8 @@
     "uniqueBonus": {
       "production": { "science": 3 },
       "storage": { "science": 200 }
-    }
+    },
+    "tag": "science"
   },
   {
     "type": "housing",
@@ -298,7 +303,8 @@
     "uniqueBonus": {
       "production": { "metals": 12 },
       "storage": { "metals": 3000 }
-    }
+    },
+    "tag": "metals"
   },
   {
     "type": "highYieldMetalFracturer",
@@ -328,7 +334,8 @@
     "uniqueBonus": {
       "production": { "metals": 18 },
       "storage": { "metals": 5000 }
-    }
+    },
+    "tag": "metals"
   },
   {
     "type": "plasmaCoreMetalSynthesizer",
@@ -359,6 +366,7 @@
     "uniqueBonus": {
       "production": { "metals": 20 },
       "storage": { "metals": 8000 }
-    }
+    },
+    "tag": "metals"
   }
 ]

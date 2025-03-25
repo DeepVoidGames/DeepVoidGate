@@ -17,7 +17,12 @@ import {
 } from "lucide-react";
 import { useGame } from "@/context/GameContext";
 import { formatNumber } from "@/lib/utils";
-import { BuildingType, BuildingCategory, ResourceType } from "@/store/types";
+import {
+  BuildingType,
+  BuildingCategory,
+  ResourceType,
+  BuildingTags,
+} from "@/store/types";
 import { initialBuildings, initialTechnologies } from "@/store/initialData";
 import ConstructionSection from "./ConstructionSection";
 import ExistingBuildings from "./ExistingBuildings";
@@ -200,7 +205,31 @@ export const BuildingManager: React.FC = () => {
         building.description.toLowerCase().includes(search)
       );
     })
-    .sort((a, b) => a.type.localeCompare(b.type));
+    .sort((a, b) => {
+      // Specjalne sortowanie tylko dla kategorii "production"
+      if (activeTab === "production") {
+        const order: BuildingTags[] = [
+          "oxygen",
+          "food",
+          "energy",
+          "metals",
+          "science",
+        ];
+        const indexA = order.indexOf(a.type);
+        const indexB = order.indexOf(b.type);
+
+        // Sortuj najpierw według kolejności tagów
+        if (indexA !== indexB) {
+          return indexA - indexB;
+        }
+
+        // Następnie malejąco po production
+        return b.baseProduction - a.baseProduction;
+      }
+
+      // Domyślne sortowanie dla pozostałych kategorii (np. po nazwie)
+      return a.type.localeCompare(b.type);
+    });
 
   // Get costs and check affordability
   const getUpgradeData = useMemo(
