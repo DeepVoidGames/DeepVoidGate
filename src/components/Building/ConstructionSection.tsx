@@ -101,7 +101,7 @@ const ConstructionSection = ({
                                   <div
                                     key={resource}
                                     className={`flex items-center space-x-2 px-2 py-1.5 rounded-md ${
-                                      !canAffordBuilding(type)
+                                      !canAffordBuilding(type, resources)
                                         ? "bg-red-900/20 text-red-400"
                                         : "bg-green-900/20 text-green-400"
                                     }`}
@@ -199,10 +199,12 @@ const ConstructionSection = ({
                           <Button
                             size="sm"
                             onClick={() => constructBuilding(type)}
-                            disabled={!canAffordBuilding(type)}
+                            disabled={!canAffordBuilding(type, resources)}
                             className="w-full button-primary h-9 font-medium transition-all"
                             variant={
-                              canAffordBuilding(type) ? "default" : "secondary"
+                              canAffordBuilding(type, resources)
+                                ? "default"
+                                : "secondary"
                             }
                           >
                             <span className="truncate">Construct</span>

@@ -51,7 +51,7 @@ export const migrateGameState = (savedState: any): GameState => {
   return {
     ...initialState,
     ...currentState,
-    buildings: migrateBuildings(finalBuildings),
+    buildings: migrateBuildingsStats(finalBuildings),
     technologies: mergedTechnologies,
     version: CURRENT_GAME_VERSION,
   };
@@ -214,7 +214,7 @@ const migrateV1ToV2 = (state: any) => {
   };
 };
 
-const migrateBuildings = (savedBuildings: any[]): any[] => {
+const migrateBuildingsStats = (savedBuildings: any[]): any[] => {
   return savedBuildings.map((building) => {
     // Znajdź szablon budynku
     const template =

@@ -312,14 +312,17 @@ export const upgradeBuilding = (
 };
 
 // Check if can afford building
-export const canAffordBuilding = (buildingType: BuildingType): boolean => {
+export const canAffordBuilding = (
+  buildingType: BuildingType,
+  resources: ResourcesState
+): boolean => {
   // Znajdź szablon budynku
   const template = initialBuildings.find((b) => b.type === buildingType);
   if (!template) return false;
 
   // Sprawdź każdy wymagany zasób
   return Object.entries(template.baseCost).every(([resource, cost]) => {
-    const resourceData = initialResourcesState[resource as ResourceType];
+    const resourceData = resources[resource as ResourceType];
 
     // Jeśli zasób nie istnieje lub jego ilość jest niewystarczająca
     if (!resourceData || resourceData.amount < Number(cost)) {

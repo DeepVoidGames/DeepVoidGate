@@ -86,6 +86,24 @@ const buildingConfig = [
     category: "storage" as BuildingCategory,
     icon: <Zap className="h-5 w-5 text-yellow-400" />,
   },
+  {
+    type: "advancedMetalExtractor" as BuildingType,
+    name: "Advanced Metal Extractor",
+    category: "production" as BuildingCategory,
+    icon: <Pickaxe className="h-5 w-5 text-zinc-400" />,
+  },
+  {
+    type: "highYieldMetalFracturer" as BuildingType,
+    name: "High-Yield Metal Fracturer",
+    category: "production" as BuildingCategory,
+    icon: <Pickaxe className="h-5 w-5 text-zinc-400" />,
+  },
+  {
+    type: "plasmaCoreMetalSynthesizer" as BuildingType,
+    name: "Plasma Core Metal Synthesizer",
+    category: "production" as BuildingCategory,
+    icon: <Pickaxe className="h-5 w-5 text-zinc-400" />,
+  },
 ];
 
 // Konfiguracja kategorii
