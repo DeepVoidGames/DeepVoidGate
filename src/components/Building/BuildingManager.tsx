@@ -31,7 +31,7 @@ import {
 
 // Centralna konfiguracja budynków
 //TODO Przenisnie tego do osobnego pliku najlepiej data/buildings.json
-const buildingConfig = [
+export const buildingConfig = [
   {
     type: "oxygenGenerator" as BuildingType,
     name: "Oxygen Generator",

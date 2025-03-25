@@ -248,7 +248,7 @@
     "description": "Stores excess energy for later use",
     "workerCapacity": 0,
     "baseCost": {
-      "metals": 50,
+      "metals": 150,
       "energy": 20
     },
     "baseProduction": {},
@@ -278,13 +278,13 @@
     "workerCapacity": 5,
     "baseCost": {
       "energy": 51,
-      "metals": 34
+      "metals": 340
     },
     "baseProduction": {
-      "metals": 0.7
+      "metals": 1.0
     },
     "baseConsumption": {
-      "energy": 1.1,
+      "energy": 0.8,
       "oxygen": 0.25
     },
     "requirements": {},
@@ -308,13 +308,13 @@
     "workerCapacity": 6,
     "baseCost": {
       "energy": 87,
-      "metals": 58
+      "metals": 508
     },
     "baseProduction": {
-      "metals": 0.8
+      "metals": 1.8
     },
     "baseConsumption": {
-      "energy": 1.25,
+      "energy": 1.1,
       "oxygen": 0.3
     },
     "requirements": {},
@@ -341,10 +341,10 @@
       "metals": 99
     },
     "baseProduction": {
-      "metals": 0.95
+      "metals": 2.95
     },
     "baseConsumption": {
-      "energy": 1.5,
+      "energy": 1.35,
       "oxygen": 0.4,
       "water": 0.1
     },

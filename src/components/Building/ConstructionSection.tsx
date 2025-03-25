@@ -55,7 +55,7 @@ const ConstructionSection = ({
             ))}
           </TabsList>
 
-          {categories.slice(1).map((category) => (
+          {categories.map((category) => (
             <TabsContent key={category.id} value={category.id} className="mt-4">
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 auto-rows-fr">
                 {buildingConfig
@@ -71,7 +71,7 @@ const ConstructionSection = ({
                       (b) => b.type === type
                     ).length;
                     if (count >= template.maxInstances) return null;
-
+                    console.log("ConstructionSection -> template", template);
                     return (
                       <Card
                         key={type}

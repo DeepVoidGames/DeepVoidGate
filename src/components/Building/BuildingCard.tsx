@@ -30,6 +30,7 @@ import {
   getCapacityByResource,
   getProductionByResource,
 } from "@/store/reducers/buildingReducer";
+import { buildingConfig } from "./BuildingManager";
 
 const BuildingCard = ({
   building,
@@ -44,17 +45,6 @@ const BuildingCard = ({
   upgradeCosts,
   tierProgress,
 }) => {
-  const buildingIcons = {
-    oxygenGenerator: <Droplets className="h-5 w-5 text-cyan-400" />,
-    hydroponicFarm: <Leaf className="h-5 w-5 text-green-400" />,
-    solarPanel: <Zap className="h-5 w-5 text-yellow-400" />,
-    metalMine: <Pickaxe className="h-5 w-5 text-zinc-400" />,
-    researchLab: <FlaskConical className="h-5 w-5 text-purple-400" />,
-    housing: <Home className="h-5 w-5 text-blue-400" />,
-    basicStorage: <Package className="h-5 w-5 text-orange-400" />,
-    advancedStorage: <Warehouse className="h-5 w-5 text-blue-400" />,
-  };
-
   // Kolory dla tierów
   const tierColors: Record<number, string> = {
     1: "bg-gray-400 text-gray-800",
@@ -82,7 +72,7 @@ const BuildingCard = ({
       <CardHeader className="p-4 pb-0">
         <div className="flex items-center justify-between">
           <div className="flex items-center space-x-3">
-            {buildingIcons[building.type]}
+            {buildingConfig.find((b) => b.type === building.type)?.icon}
             <CardTitle className="text-base">{building.name}</CardTitle>
           </div>
           <div className="flex items-center gap-2">
