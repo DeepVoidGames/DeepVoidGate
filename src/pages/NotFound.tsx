@@ -1,5 +1,4 @@
-
-import { useLocation } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import { useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { ArrowLeft } from "lucide-react";
@@ -23,14 +22,11 @@ const NotFound = () => {
         <p className="text-xl text-muted-foreground mb-6">
           Signal lost. This sector of space is uncharted.
         </p>
-        <Button 
-          asChild 
-          className="button-primary"
-        >
-          <a href="/">
+        <Button asChild className="button-primary">
+          <Link to="/">
             <ArrowLeft className="mr-2 h-4 w-4" />
             Return to Colony
-          </a>
+          </Link>
         </Button>
       </div>
     </div>

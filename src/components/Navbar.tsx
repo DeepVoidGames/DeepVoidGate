@@ -1,7 +1,20 @@
 import * as React from "react";
 import { Link, useLocation } from "react-router-dom";
-import { Home, Microscope, Settings, Menu, X } from "lucide-react";
+import {
+  Home,
+  Microscope,
+  Settings,
+  Menu,
+  X,
+  Gem,
+  Zap,
+  Coins,
+} from "lucide-react";
 import { useIsMobile } from "@/hooks/use-mobile"; // Zaimportuj hook z odpowiedniej ścieżki
+import { ResourceData, ResourceType } from "@/store/types";
+import { useGame } from "@/context/GameContext";
+import { ResourcesIcon } from "@/config";
+import { formatNumber } from "@/lib/utils";
 
 const MobileNav = () => {
   const location = useLocation();
@@ -33,18 +46,19 @@ const MobileNav = () => {
             <span>{link.label}</span>
           </Link>
         ))}
-
-        <button
-          onClick={() => setIsMenuOpen(true)}
-          className={`flex flex-col items-center gap-1 p-2 text-xs font-medium transition-colors ${
-            location.pathname === "/settings"
-              ? "text-blue-400"
-              : "text-foreground/60 hover:text-foreground"
-          }`}
-        >
-          <Settings className="h-5 w-5" />
-          <span>Settings</span>
-        </button>
+        <Link to="/settings">
+          <button
+            // onClick={() => setIsMenuOpen(true)}
+            className={`flex flex-col items-center gap-1 p-2 text-xs font-medium transition-colors ${
+              location.pathname === "/settings"
+                ? "text-blue-400"
+                : "text-foreground/60 hover:text-foreground"
+            }`}
+          >
+            <Settings className="h-5 w-5" />
+            <span>Settings</span>
+          </button>
+        </Link>
       </div>
 
       {isMenuOpen && (
@@ -106,8 +120,8 @@ const DesktopNav = () => {
                 to={link.path}
                 className={`flex h-10 w-36 items-center justify-center gap-2 rounded-md text-sm font-medium transition-colors p-1 ${
                   location.pathname === link.path
-                    ? "bg-accent/20 text-foreground"
-                    : "text-foreground/80 hover:bg-accent/10 hover:text-foreground"
+                    ? "bg-blue-100/20 text-blue-400"
+                    : "text-foreground/80 hover:bg-accent/10"
                 }`}
               >
                 {link.icon}
@@ -139,6 +153,78 @@ const Navbar = () => {
 
   if (isMobile === undefined) return null; // Możesz dodać placeholder ładowania
   return isMobile ? <MobileNav /> : <DesktopNav />;
+};
+
+export const MobileTopNav = () => {
+  const isMobile = useIsMobile();
+  const { state } = useGame();
+  const { resources } = state;
+
+  if (!isMobile) return null;
+
+  return (
+    <nav className="fixed top-0 left-0 z-50 w-full border-b bg-background/95">
+      <div className="flex h-12 items-center justify-between px-4">
+        {/* Lewa strona - surowce z animacjami */}
+        <div className="flex gap-[2vw] min-[400px]:gap-[3vw] items-center justify-center content-center w-full">
+          {Object.values(resources).map((resource, key) => (
+            <div
+              key={key}
+              className="flex items-center gap-1.5 group relative"
+              title={`${key}: ${formatNumber(resource.amount)} (${
+                resource.production
+              }/${resource.consumption})`}
+            >
+              {/* Ikona z animacją */}
+              <div className="w-3 h-3 flex items-center justify-center transition-transform duration-200">
+                {resource.icon}
+              </div>
+
+              {/* Wartość z animacją zmian */}
+              <div className="flex flex-col max-[400px]:min-w-[20px] min-w-[30px]">
+                <span
+                  className={`max-[400px]:text-xs text-sm  font-medium transition-colors ${
+                    resource.production > resource.consumption
+                      ? "text-green-400/90"
+                      : "text-red-400/90"
+                  }`}
+                >
+                  {formatNumber(Number(resource.amount.toFixed(0)))}
+                </span>
+
+                {/* Mini-wskaźnik produkcji */}
+                <div className="flex items-center gap-1 max-[400px]:text-[9px] text-xs">
+                  <span className="text-green-400/80">
+                    +{formatNumber(resource.production)}
+                  </span>
+                  <span className="text-red-400/80">
+                    -{formatNumber(resource.consumption)}
+                  </span>
+                </div>
+              </div>
+
+              {/* Progress bar */}
+              <div className="absolute bottom-0 left-0 right-0 h-0.5 bg-gray-700">
+                <div
+                  className="h-full bg-current transition-all duration-500"
+                  style={{
+                    width: `${Math.min(
+                      (resource.amount / resource.capacity) * 100,
+                      100
+                    )}%`,
+                    backgroundColor:
+                      resource.production > resource.consumption
+                        ? "#4ade80"
+                        : "#f87171",
+                  }}
+                />
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+    </nav>
+  );
 };
 
 export default Navbar;

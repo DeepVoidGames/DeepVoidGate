@@ -73,11 +73,17 @@ const BuildingCard = ({
         <div className="flex items-center justify-between">
           <div className="flex items-center space-x-3">
             {buildingConfig.find((b) => b.type === building.type)?.icon}
-            <CardTitle className="text-base">{building.name}</CardTitle>
+            <CardTitle className="text-base max-[400px]:text-[14px]">
+              {building.name}
+            </CardTitle>
           </div>
           <div className="flex items-center gap-2">
-            <Badge className={tierColors[building.tier]}>
-              Tier {building.tier}
+            <Badge
+              className={`${
+                tierColors[building.tier]
+              } h-[22px] w-[60px] items-center justify-center`}
+            >
+              <span className="">Tier {building.tier}</span>
             </Badge>
             {!building.functioning && (
               <Badge variant="destructive" className="flex items-center gap-1">

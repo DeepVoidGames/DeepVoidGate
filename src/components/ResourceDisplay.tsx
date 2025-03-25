@@ -60,11 +60,7 @@ export const ResourceDisplay: React.FC = () => {
             <div key={resourceKey} className="space-y-1">
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-2">
-                  <span
-                    className={`resource-badge resource-badge-${resourceKey}`}
-                  >
-                    {resource.icon}
-                  </span>
+                  <span className={`resource-badge`}>{resource.icon}</span>
                   <span
                     className={`font-medium capitalize ${
                       resourceStatus === "critical"

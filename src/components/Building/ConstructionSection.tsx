@@ -71,7 +71,6 @@ const ConstructionSection = ({
                       (b) => b.type === type
                     ).length;
                     if (count >= template.maxInstances) return null;
-                    console.log("ConstructionSection -> template", template);
                     return (
                       <Card
                         key={type}

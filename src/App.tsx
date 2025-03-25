@@ -8,6 +8,7 @@ import NotFound from "./pages/NotFound";
 import Technologies from "./pages/Technologies";
 import { GameProvider } from "./context/GameContext";
 import Navbar from "./components/Navbar";
+import Settings from "./pages/Settings";
 
 const queryClient = new QueryClient();
 
@@ -22,6 +23,7 @@ const App = () => (
           <Routes>
             <Route path="/" element={<Index />} />
             <Route path="/tech" element={<Technologies />} />
+            <Route path="/settings" element={<Settings />} />
             {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
             <Route path="*" element={<NotFound />} />
           </Routes>

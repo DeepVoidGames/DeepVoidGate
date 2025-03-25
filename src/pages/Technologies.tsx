@@ -4,23 +4,33 @@ import { ResourceDisplay } from "@/components/ResourceDisplay";
 import { PlanetaryView } from "@/components/PlanetaryView";
 import { GameHeader } from "@/components/GameHeader";
 import TechnologiesManager from "@/components/Technologies/TechnologiesManager";
+import { getSettings } from "@/pages/Settings";
+import { MobileTopNav } from "@/components/Navbar";
 
 const Index = () => {
-  return (
-    <div className="min-h-screen bg-gradient-to-b from-background to-background/90 text-foreground p-4 md:p-6 my-12">
-      <div className="max-w-7xl mx-auto space-y-4">
-        <GameHeader />
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
-          <div className="lg:col-span-2 space-y-4">
-            <TechnologiesManager />
-          </div>
+  const settings = getSettings();
 
-          <div className="space-y-4">
-            <PlanetaryView />
+  return (
+    <>
+      <MobileTopNav />
+      <div className="min-h-screen bg-gradient-to-b from-background to-background/90 text-foreground p-4 md:p-6 my-12">
+        <div className="max-w-7xl mx-auto space-y-4">
+          <GameHeader />
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
+            <div className="lg:col-span-2 space-y-4">
+              <TechnologiesManager />
+            </div>
+
+            <div className="space-y-4">
+              {settings?.compactUI &&
+                !settings?.compactUIOptions?.showPlanetaryView && (
+                  <PlanetaryView />
+                )}
+            </div>
           </div>
         </div>
       </div>
-    </div>
+    </>
   );
 };
 
