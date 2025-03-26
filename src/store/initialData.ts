@@ -146,7 +146,7 @@ export const initialTechnologies: Technology[] = [
       metals: 1200,
       science: 800,
     },
-    prerequisites: ["seismic_ore_mapping", "nanotech_refining"],
+    prerequisites: ["seismic_ore_mapping"],
     unlocksBuildings: [],
     researchDuration: 300,
     isResearched: false,
