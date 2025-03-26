@@ -299,10 +299,10 @@ export const gameReducer = (
       const totalHousing = buildings
         .filter((b) => b.category === "housing" && b.functioning)
         .reduce((sum, building) => {
-          const tierBonus = 1 + (building.tier - 1);
-          const upgradeBonus = 1 + building.upgrades;
-          const totalBonus = tierBonus * upgradeBonus;
-          return sum + (building.category == "housing" ? 1 : 0) * totalBonus;
+          const baseCapacity = 12 * building.tier; // Tier 1:30, Tier 2:60, Tier 3:90...
+          const upgradeBonus = 1 * building.upgrades;
+          const totalHousing = baseCapacity + upgradeBonus;
+          return totalHousing;
         }, 0);
 
       // Zaktualizuj populację

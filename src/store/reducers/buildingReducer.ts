@@ -423,7 +423,7 @@ export const getCapacityByResource = (
   if (building.tier === building.maxTier && building.uniqueBonus.storage) {
     bonus = building.uniqueBonus.storage[resource];
   }
-  return amount + amount * totalBonus;
+  return amount + amount * totalBonus + bonus;
 };
 
 // Calculate building efficiency

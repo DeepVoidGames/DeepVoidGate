@@ -52,6 +52,11 @@ const BuildingCard = ({
     3: "bg-green-400 text-green-800",
     4: "bg-purple-400 text-purple-800",
     5: "bg-yellow-400 text-yellow-800",
+    6: "bg-red-400 text-red-800",
+    7: "bg-cyan-400 text-cyan-800",
+    8: "bg-pink-400 text-pink-800",
+    9: "bg-orange-400 text-orange-800",
+    10: "bg-indigo-400 text-indigo-800",
   };
 
   const hasStorageBonus =
@@ -187,48 +192,33 @@ const BuildingCard = ({
                   Storage Capacity:
                 </h4>
               ) : null}
-              {hasStorageBonus && (
+              {(hasStorageBonus ||
+                (building?.uniqueBonus?.storage &&
+                  building?.tier === building?.maxTier)) && (
                 <div className="grid grid-cols-2 gap-2 text-xs text-cyan-400">
-                  {Object.entries(building.storageBonus).map(
-                    ([resource, bonus]) => (
-                      <div
-                        key={resource}
-                        className="flex items-center space-x-1"
-                      >
-                        <span>{ResourcesIcon({ resource })}</span>
-                        <span>
-                          +
-                          {formatNumber(
-                            getCapacityByResource(
-                              building,
-                              Number(bonus),
-                              resource
-                            )
-                          )}
-                        </span>
-                      </div>
-                    )
-                  )}
+                  {Object.entries(
+                    hasStorageBonus
+                      ? building.storageBonus
+                      : building.uniqueBonus.storage
+                  ).map(([resource, bonus]) => (
+                    <div key={resource} className="flex items-center space-x-1">
+                      <span>{ResourcesIcon({ resource })}</span>
+                      <span>
+                        +
+                        {formatNumber(
+                          hasStorageBonus
+                            ? getCapacityByResource(
+                                building,
+                                Number(bonus),
+                                resource
+                              )
+                            : bonus
+                        )}
+                      </span>
+                    </div>
+                  ))}
                 </div>
               )}
-
-              {!hasStorageBonus &&
-              building?.uniqueBonus?.storage &&
-              building?.tier === building?.maxTier ? (
-                <div className="grid grid-cols-2 gap-2 text-xs text-cyan-400">
-                  {Object.entries(building.uniqueBonus.storage).map(
-                    ([resource, bonus]) => (
-                      <div
-                        key={resource}
-                        className="flex items-center space-x-1"
-                      >
-                        <span>{ResourcesIcon({ resource })}</span>
-                        <span>+{formatNumber(bonus)}</span>
-                      </div>
-                    )
-                  )}
-                </div>
-              ) : null}
             </div>
 
             {/* Sekcja Production/Consumption */}
