@@ -1,19 +1,12 @@
 import React, { useCallback, useMemo, useState } from "react";
 import {
   Home,
-  Droplets,
-  Leaf,
-  Zap,
-  Pickaxe,
-  FlaskConical,
   Users,
   Clock,
   Factory,
   Microscope,
-  Building,
   Search,
   Package,
-  Warehouse,
 } from "lucide-react";
 import { useGame } from "@/context/GameContext";
 import { formatNumber } from "@/lib/utils";
@@ -33,83 +26,10 @@ import {
   canUpgradeBuilding,
   getBuildingUpgradeCost,
 } from "@/store/reducers/buildingReducer";
+import { buildingConfig } from "@/data/buildingConfig";
 
 // Centralna konfiguracja budynków
 //TODO Przenisnie tego do osobnego pliku najlepiej data/buildings.json
-export const buildingConfig = [
-  {
-    type: "oxygenGenerator" as BuildingType,
-    name: "Oxygen Generator",
-    category: "production" as BuildingCategory,
-    icon: <Droplets className="h-5 w-5 text-cyan-400" />,
-  },
-  {
-    type: "hydroponicFarm" as BuildingType,
-    name: "Hydroponic Farm",
-    category: "production" as BuildingCategory,
-    icon: <Leaf className="h-5 w-5 text-green-400" />,
-  },
-  {
-    type: "solarPanel" as BuildingType,
-    name: "Solar Panel",
-    category: "production" as BuildingCategory,
-    icon: <Zap className="h-5 w-5 text-yellow-400" />,
-  },
-  {
-    type: "metalMine" as BuildingType,
-    name: "Metal Mine",
-    category: "production" as BuildingCategory,
-    icon: <Pickaxe className="h-5 w-5 text-zinc-400" />,
-  },
-  {
-    type: "researchLab" as BuildingType,
-    name: "Research Lab",
-    category: "research" as BuildingCategory,
-    icon: <FlaskConical className="h-5 w-5 text-purple-400" />,
-  },
-  {
-    type: "housing" as BuildingType,
-    name: "Basic House",
-    category: "housing" as BuildingCategory,
-    icon: <Home className="h-5 w-5 text-blue-400" />,
-  },
-  {
-    type: "basicStorage" as BuildingType,
-    name: "Basic Storage",
-    category: "storage" as BuildingCategory,
-    icon: <Package className="h-5 w-5 text-orange-400" />,
-  },
-  {
-    type: "advancedStorage" as BuildingType,
-    name: "Advanced Storage",
-    category: "storage" as BuildingCategory,
-    icon: <Warehouse className="h-5 w-5 text-blue-400" />,
-  },
-  {
-    type: "basicBattery" as BuildingType,
-    name: "Basic Battery",
-    category: "storage" as BuildingCategory,
-    icon: <Zap className="h-5 w-5 text-yellow-400" />,
-  },
-  {
-    type: "advancedMetalExtractor" as BuildingType,
-    name: "Advanced Metal Extractor",
-    category: "production" as BuildingCategory,
-    icon: <Pickaxe className="h-5 w-5 text-zinc-400" />,
-  },
-  {
-    type: "highYieldMetalFracturer" as BuildingType,
-    name: "High-Yield Metal Fracturer",
-    category: "production" as BuildingCategory,
-    icon: <Pickaxe className="h-5 w-5 text-zinc-400" />,
-  },
-  {
-    type: "plasmaCoreMetalSynthesizer" as BuildingType,
-    name: "Plasma Core Metal Synthesizer",
-    category: "production" as BuildingCategory,
-    icon: <Pickaxe className="h-5 w-5 text-zinc-400" />,
-  },
-];
 
 // Konfiguracja kategorii
 const categories = [
@@ -319,3 +239,5 @@ export const BuildingManager: React.FC = () => {
     </div>
   );
 };
+export { buildingConfig };
+
