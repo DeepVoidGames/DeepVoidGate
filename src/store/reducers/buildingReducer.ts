@@ -115,7 +115,8 @@ export const applyBuildingEffects = (
         const resourceKey = resource as ResourceType;
         const consumption = Number(amount) || 0;
         newResources[resourceKey].consumption +=
-          consumption * building.efficiency;
+          (consumption + consumption * building.tier * 0.1) *
+          building.efficiency;
       });
     }
 
@@ -159,6 +160,11 @@ export const applyBuildingEffects = (
     if (building.category === "housing") {
     }
   });
+
+  //! Hard coded water porduction to 10
+  if (newResources.water) {
+    newResources.water.production += 10;
+  }
 
   return newResources;
 };
