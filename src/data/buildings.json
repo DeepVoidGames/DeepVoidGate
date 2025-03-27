@@ -283,7 +283,7 @@
     "workerCapacity": 5,
     "baseCost": {
       "energy": 51,
-      "metals": 340
+      "metals": 190
     },
     "baseProduction": {
       "metals": 1.0
@@ -314,7 +314,7 @@
     "workerCapacity": 6,
     "baseCost": {
       "energy": 87,
-      "metals": 508
+      "metals": 308
     },
     "baseProduction": {
       "metals": 1.8
@@ -345,7 +345,7 @@
     "workerCapacity": 8,
     "baseCost": {
       "energy": 148,
-      "metals": 99
+      "metals": 500
     },
     "baseProduction": {
       "metals": 2.95

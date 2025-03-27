@@ -79,7 +79,7 @@ const ConstructionSection = ({
                         <CardHeader className="p-2 pb-1">
                           <div className="flex items-center space-x-3">
                             {buildingConfig.find((b) => b.type === type)?.icon}
-                            <CardTitle className="text-xs font-semibold">
+                            <CardTitle className="max-[400px]:text-xs text-sm font-semibold">
                               {
                                 buildingConfig.find((b) => b.type === type)
                                   ?.name
