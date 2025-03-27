@@ -49,11 +49,13 @@ export const migrateGameState = (savedState: any): GameState => {
   const finalBuildings = [...mergedSavedBuildings, ...newInitialBuildings];
 
   const tech = migrateTechnologiesStats(mergedTechnologies);
+  const resources = migrateResources(currentState.resources);
 
   return {
     ...initialState,
     ...currentState,
     buildings: migrateBuildingsStats(finalBuildings),
+    resources: resources,
     technologies: tech,
     version: CURRENT_GAME_VERSION,
   };
@@ -259,4 +261,27 @@ const migrateTechnologiesStats = (savedTechnologies: any[]): any[] => {
       researchDuration: template.researchDuration || tech.researchDuration,
     };
   });
+};
+
+const migrateResources = (
+  savedResources: ResourcesState
+): Record<string, any> => {
+  const migratedResources: Record<string, any> = {};
+
+  // Iterujemy po wszystkich zasobach z initialState
+  Object.entries(initialState.resources).forEach(([key, defaultResource]) => {
+    const savedResource = savedResources[key as keyof ResourceData];
+
+    // Łączymy domyślne wartości z zapisanymi (jeśli istnieją)
+    migratedResources[key] = {
+      ...defaultResource,
+      ...savedResource,
+      amount: savedResource?.amount ?? defaultResource.amount,
+      production: savedResource?.production ?? defaultResource.production,
+      consumption: savedResource?.consumption ?? defaultResource.consumption,
+      capacity: savedResource?.capacity ?? defaultResource.capacity,
+    };
+  });
+
+  return migratedResources;
 };

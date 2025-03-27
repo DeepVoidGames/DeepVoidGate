@@ -11,6 +11,7 @@ export const ResourceDisplay: React.FC = () => {
 
   const resourceOrder: ResourceType[] = [
     "oxygen",
+    "water",
     "food",
     "energy",
     "metals",
@@ -47,7 +48,8 @@ export const ResourceDisplay: React.FC = () => {
           if (
             resourceKey === "oxygen" ||
             resourceKey === "food" ||
-            resourceKey === "energy"
+            resourceKey === "energy" ||
+            resourceKey === "water"
           ) {
             if (resource.amount <= 5) {
               resourceStatus = "critical";

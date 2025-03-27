@@ -179,7 +179,7 @@ const ConstructionSection = ({
                                     ([resource, amount]) => (
                                       <div
                                         key={resource}
-                                        className="flex items-center space-x-2 px-2 py-1.5 rounded-md bg-red-900/20 text-red-400"
+                                        className="flex items-center space-x-1 px-1 py-1.5 rounded-md bg-red-900/20 text-red-400"
                                       >
                                         <span>{resources[resource]?.icon}</span>
                                         <span className="text-xs font-medium">

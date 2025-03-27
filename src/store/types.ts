@@ -1,5 +1,11 @@
 // Resource types
-export type ResourceType = "oxygen" | "food" | "energy" | "metals" | "science";
+export type ResourceType =
+  | "oxygen"
+  | "water"
+  | "food"
+  | "energy"
+  | "metals"
+  | "science";
 
 // Building category types
 export type BuildingCategory =

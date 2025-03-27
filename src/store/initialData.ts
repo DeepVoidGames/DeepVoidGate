@@ -51,6 +51,15 @@ export const initialResourcesState = {
     color: "cyan",
     baseCapacity: 100,
   },
+  water: {
+    amount: 50,
+    production: 0,
+    consumption: 0,
+    capacity: 100,
+    icon: "💧",
+    color: "blue",
+    baseCapacity: 100,
+  },
   food: {
     amount: 50,
     production: 0,
