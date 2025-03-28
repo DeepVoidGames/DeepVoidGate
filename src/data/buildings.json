@@ -105,7 +105,7 @@
     },
     "requirements": {},
     "costMultiplier": 1.7,
-    "productionMultiplier": 1.15,
+    "productionMultiplier": 1.25,
     "maxInstances": 1,
     "tier": 1,
     "maxTier": 5,
@@ -296,7 +296,7 @@
     "requirements": {},
     "requiredTechnology": "deep_core_mining",
     "costMultiplier": 1.7,
-    "productionMultiplier": 1.15,
+    "productionMultiplier": 1.3,
     "maxInstances": 1,
     "tier": 1,
     "maxTier": 5,
@@ -312,7 +312,7 @@
     "category": "production",
     "name": "High-Yield Metal Fracturer",
     "description": "Seismic resonance cracks deep ore veins for exponential yields.",
-    "workerCapacity": 6,
+    "workerCapacity": 9,
     "baseCost": {
       "energy": 87,
       "metals": 308
@@ -327,7 +327,7 @@
     "requirements": {},
     "requiredTechnology": "seismic_ore_mapping",
     "costMultiplier": 1.7,
-    "productionMultiplier": 1.15,
+    "productionMultiplier": 1.35,
     "maxInstances": 1,
     "tier": 1,
     "maxTier": 5,
@@ -343,7 +343,7 @@
     "category": "production",
     "name": "Plasma-Core Metal Synthesizer",
     "description": "Molecular disassembly and fusion to transmute base elements into pure metal.",
-    "workerCapacity": 8,
+    "workerCapacity": 12,
     "baseCost": {
       "energy": 148,
       "metals": 500
@@ -359,7 +359,7 @@
     "requirements": {},
     "requiredTechnology": "plasma_refining",
     "costMultiplier": 1.7,
-    "productionMultiplier": 1.15,
+    "productionMultiplier": 1.4,
     "maxInstances": 1,
     "tier": 1,
     "maxTier": 5,
@@ -464,5 +464,101 @@
       "storage": { "energy": 5000 }
     },
     "tag": "energy"
+  },
+  {
+    "type": "algaeOxygenFarm",
+    "category": "production",
+    "name": "Algae Oxygen Farm",
+    "description": "Uses fast-growing algae to convert CO2 into breathable oxygen through photosynthesis.",
+    "workerCapacity": 2,
+    "baseCost": {
+      "metals": 40,
+      "energy": 25
+    },
+    "baseProduction": {
+      "oxygen": 1.2
+    },
+    "baseConsumption": {
+      "energy": 0.4,
+      "water": 0.3
+    },
+    "requirements": {},
+    "costMultiplier": 1.4,
+    "productionMultiplier": 1.15,
+    "maxInstances": 1,
+    "tier": 1,
+    "maxTier": 5,
+    "upgrades": 0,
+    "uniqueBonus": {
+      "production": { "oxygen": 8 },
+      "storage": { "oxygen": 400 }
+    },
+    "tag": "oxygen"
+  },
+  {
+    "type": "electrolyticOxygenPlant",
+    "category": "production",
+    "name": "Electrolytic Oxygen Plant",
+    "description": "Splits water molecules into oxygen and hydrogen through electrolysis for industrial-scale production.",
+    "workerCapacity": 3,
+    "baseCost": {
+      "metals": 80,
+      "energy": 50,
+      "science": 10
+    },
+    "baseProduction": {
+      "oxygen": 2.5
+    },
+    "baseConsumption": {
+      "energy": 1.2,
+      "water": 0.8
+    },
+    "requirements": {
+      "basicStorage": 1
+    },
+    "requiredTechnology": "electrolytic_processing",
+    "costMultiplier": 1.6,
+    "productionMultiplier": 1.25,
+    "maxInstances": 1,
+    "tier": 1,
+    "maxTier": 5,
+    "upgrades": 1,
+    "uniqueBonus": {
+      "production": { "oxygen": 15 },
+      "storage": { "oxygen": 1000 }
+    },
+    "tag": "oxygen"
+  },
+  {
+    "type": "plasmaOxygenRefinery",
+    "category": "production",
+    "name": "Plasma Oxygen Refinery",
+    "description": "Superheats mineral oxides into plasma state, then magnetically filters pure oxygen from molten slag.",
+    "workerCapacity": 4,
+    "baseCost": {
+      "metals": 150,
+      "energy": 120,
+      "science": 40
+    },
+    "baseProduction": {
+      "oxygen": 4.0
+    },
+    "baseConsumption": {
+      "energy": 2.0,
+      "metals": 0.3
+    },
+    "requirements": {},
+    "requiredTechnology": "plasma_refining",
+    "costMultiplier": 1.8,
+    "productionMultiplier": 1.3,
+    "maxInstances": 1,
+    "tier": 1,
+    "maxTier": 5,
+    "upgrades": 2,
+    "uniqueBonus": {
+      "production": { "oxygen": 25 },
+      "storage": { "oxygen": 2000 }
+    },
+    "tag": "oxygen"
   }
 ]

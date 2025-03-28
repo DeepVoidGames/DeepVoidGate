@@ -31,7 +31,10 @@ export type BuildingType =
   | "plasmaCoreMetalSynthesizer"
   | "geothermalPlant"
   | "fissionReactor"
-  | "fusionReactor";
+  | "fusionReactor"
+  | "algaeOxygenFarm"
+  | "electrolyticOxygenPlant"
+  | "plasmaOxygenRefinery";
 
 export type TechnologyCategory =
   | "Infrastructure"

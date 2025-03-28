@@ -114,4 +114,22 @@ export const buildingConfig = [
     category: "production" as BuildingCategory,
     icon: React.createElement(Zap, { className: "h-5 w-5 text-yellow-400" }),
   },
+  {
+    type: "algaeOxygenFarm" as BuildingType,
+    name: "Algae Oxygen Farm",
+    category: "production" as BuildingCategory,
+    icon: React.createElement(Droplets, { className: "h-5 w-5 text-cyan-400" }),
+  },
+  {
+    type: "electrolyticOxygenPlant" as BuildingType,
+    name: "Electrolytic Oxygen Plant",
+    category: "production" as BuildingCategory,
+    icon: React.createElement(Droplets, { className: "h-5 w-5 text-cyan-400" }),
+  },
+  {
+    type: "plasmaOxygenRefinery" as BuildingType,
+    name: "Plasma Oxygen Refinery",
+    category: "production" as BuildingCategory,
+    icon: React.createElement(Droplets, { className: "h-5 w-5 text-cyan-400" }),
+  },
 ];

@@ -126,7 +126,7 @@ export const BuildingManager: React.FC = () => {
       );
     })
     .sort((a, b) => {
-      // Specjalne sortowanie tylko dla kategorii "production"
+      // Special sorting only for "production" category
       if (activeTab === "production") {
         const order: BuildingTags[] = [
           "oxygen",
@@ -135,19 +135,21 @@ export const BuildingManager: React.FC = () => {
           "metals",
           "science",
         ];
-        // const indexA = order.indexOf(a.type);
-        // const indexB = order.indexOf(b.type);
+        const indexA = order.indexOf(a.tag); // Make sure `a.tag` is of type `BuildingTags`
+        const indexB = order.indexOf(b.tag); // Same for `b.tag`
 
-        // // Sortuj najpierw według kolejności tagów
-        // if (indexA !== indexB) {
-        //   return indexA - indexB;
-        // }
+        // Sort first by tag order
+        if (indexA !== -1 && indexB !== -1 && indexA !== indexB) {
+          return indexA - indexB;
+        }
 
-        // Następnie malejąco po production
-        return b.baseProduction - a.baseProduction;
+        // Then sort by production (choose a resource, e.g., 'energy')
+        const productionA = a.baseProduction.energy ?? 0; // Using nullish coalescing for safety
+        const productionB = b.baseProduction.energy ?? 0;
+        return productionB - productionA;
       }
 
-      // Domyślne sortowanie dla pozostałych kategorii (np. po nazwie)
+      // Default sorting for other categories (e.g., by name)
       return a.type.localeCompare(b.type);
     });
 
@@ -240,4 +242,3 @@ export const BuildingManager: React.FC = () => {
   );
 };
 export { buildingConfig };
-

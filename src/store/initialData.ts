@@ -207,4 +207,20 @@ export const initialTechnologies: Technology[] = [
     researchDuration: 600,
     isResearched: false,
   },
+  {
+    id: "electrolytic_processing",
+    name: "Electrolytic Processing",
+    category: "Production",
+    description:
+      "Enables large-scale separation of compounds through electrical current.",
+    researchCost: {
+      metals: 400,
+      science: 250,
+      energy: 100,
+    },
+    prerequisites: ["basic_energy"],
+    unlocksBuildings: ["electrolyticOxygenPlant"],
+    researchDuration: 120,
+    isResearched: false,
+  },
 ];

@@ -91,21 +91,12 @@ export const applyBuildingEffects = (
     if (building.baseProduction) {
       Object.entries(building.baseProduction).forEach(([resource, amount]) => {
         const resourceKey = resource as ResourceType;
-        const baseValue = Number(amount) || 0;
-        let production = 0;
 
-        if (
-          resourceAlertThresholds.energy &&
-          resources.energy?.amount < resourceAlertThresholds.energy.critical &&
-          building.baseConsumption?.energy
-        ) {
-          production =
-            baseValue + baseValue * totalBonus * building.efficiency * 0.1;
-        } else {
-          production = baseValue + baseValue * totalBonus * building.efficiency;
-        }
-
-        newResources[resourceKey].production += production;
+        newResources[resourceKey].production += getProductionByResource(
+          building,
+          resource,
+          resources
+        );
       });
     }
 
@@ -154,10 +145,6 @@ export const applyBuildingEffects = (
         const value = baseValue + baseValue * totalBonus;
         newResources[resourceKey].capacity += value;
       });
-    }
-
-    // Dodanie
-    if (building.category === "housing") {
     }
   });
 
@@ -369,32 +356,56 @@ export const getProductionByResource = (
   resources: ResourcesState
 ): number => {
   // Oblicz bonusy dla tierów i ulepszeń
+  // const tierBonus = 1.5 ** (building.tier - 1); // Silniejszy wpływ tierów
+  // const upgradeBonus = 1 + building.upgrades * 0.05; // Mniejszy wpływ upgrade'ów
+  // const totalBonus = tierBonus * upgradeBonus;
+  // const amount = building.baseProduction[resource] || 0;
+
+  // let bonus = 0;
+
+  // if (building.tier === building.maxTier && building.uniqueBonus) {
+  //   // Bonusy do produkcji
+  //   if (building.uniqueBonus.production) {
+  //     bonus = building.uniqueBonus.production[resource];
+  //   }
+
+  //   // Produkcja z uwzględnieniem bonusów
+  //   if (building.baseProduction) {
+  //     return (
+  //       (amount +
+  //         amount * totalBonus * calculateEfficiency(building, resources) +
+  //         (bonus || 0)) *
+  //       building.productionMultiplier
+  //     );
+  //   }
+  // }
+
+  // return (
+  //   (amount + amount * totalBonus * calculateEfficiency(building, resources)) *
+  //   building.productionMultiplier
+  // );
+
+  // Oblicz bonusy dla tierów i ulepszeń
   const tierBonus = 1.5 ** (building.tier - 1); // Silniejszy wpływ tierów
   const upgradeBonus = 1 + building.upgrades * 0.05; // Mniejszy wpływ upgrade'ów
   const totalBonus = tierBonus * upgradeBonus;
-  const amount = building.baseProduction[resource] || 0;
 
-  let bonus = 0;
+  const resourceKey = resource as ResourceType;
+  const baseValue = Number(building.baseProduction[resourceKey]) || 0;
+  let production = 0;
 
-  if (building.tier === building.maxTier && building.uniqueBonus) {
-    // Bonusy do produkcji
-    if (building.uniqueBonus.production) {
-      bonus = building.uniqueBonus.production[resource];
-    }
-
-    // Produkcja z uwzględnieniem bonusów
-    if (building.baseProduction) {
-      return (
-        amount +
-        amount * totalBonus * calculateEfficiency(building, resources) +
-        (bonus || 0)
-      );
-    }
+  if (
+    resourceAlertThresholds.energy &&
+    resources.energy?.amount < resourceAlertThresholds.energy.critical &&
+    building.baseConsumption?.energy
+  ) {
+    production = baseValue + baseValue * totalBonus * building.efficiency * 0.1;
+  } else {
+    production = baseValue + baseValue * totalBonus * building.efficiency;
   }
+  production = production * building.productionMultiplier;
 
-  return (
-    amount + amount * totalBonus * calculateEfficiency(building, resources)
-  );
+  return production;
 };
 
 // Get building upgrade cost
