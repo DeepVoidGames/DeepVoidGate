@@ -166,24 +166,24 @@ export const MobileTopNav = () => {
     <nav className="fixed top-0 left-0 z-50 w-full border-b bg-background/95">
       <div className="flex h-12 items-center justify-between px-4">
         {/* Lewa strona - surowce z animacjami */}
-        <div className="flex gap-[2vw] min-[400px]:gap-[3vw] items-center justify-center content-center w-full">
+        <div className="flex gap-[1vw] min-[500px]:gap-[3vw] items-center justify-center content-center w-full">
           {Object.values(resources).map((resource, key) => (
             <div
               key={key}
-              className="flex items-center gap-1.5 group relative"
+              className="flex items-center gap-[7px] group relative"
               title={`${key}: ${formatNumber(resource.amount)} (${
                 resource.production
               }/${resource.consumption})`}
             >
               {/* Ikona z animacją */}
-              <div className="w-3 h-3 flex items-center justify-center transition-transform duration-200">
-                {resource.icon}
+              <div className="w-[1px] h-[1px] min-[500px]:w-3 min-[500px]:h-3 flex items-center justify-center transition-transform duration-200">
+                <span className="text-[10px]">{resource.icon}</span>
               </div>
 
               {/* Wartość z animacją zmian */}
-              <div className="flex flex-col max-[400px]:min-w-[20px] min-w-[30px]">
+              <div className="flex flex-col max-[500px]:min-w-[20px] min-w-[30px]">
                 <span
-                  className={`max-[400px]:text-xs text-sm  font-medium transition-colors ${
+                  className={`max-[500px]:text-xs text-sm  font-medium transition-colors ${
                     resource.production > resource.consumption
                       ? "text-green-400/90"
                       : "text-red-400/90"
@@ -193,7 +193,7 @@ export const MobileTopNav = () => {
                 </span>
 
                 {/* Mini-wskaźnik produkcji */}
-                <div className="flex items-center gap-1 max-[400px]:text-[9px] text-xs">
+                <div className="flex items-center max-[500px]:gap-[3px] gap-1 max-[400px]:text-[9px] text-xs">
                   <span className="text-green-400/80">
                     +{formatNumber(resource.production)}
                   </span>
