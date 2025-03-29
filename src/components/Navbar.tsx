@@ -167,7 +167,7 @@ export const MobileTopNav = () => {
   const { resources } = state;
   const settings = getSettings();
 
-  if (!isMobile && !settings.compactUIOptions.alwaysMobileNavbar) return null;
+  if (!isMobile && !settings?.compactUIOptions?.alwaysMobileNavbar) return null;
 
   return (
     <nav className="fixed top-0 left-0 z-50 w-full border-b bg-background/95 min-[700px]:p-2">

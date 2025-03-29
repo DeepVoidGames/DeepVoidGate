@@ -13,7 +13,7 @@ type SettingsType = {
 
 export const getSettings = (): SettingsType => {
   const settings = JSON.parse(localStorage.getItem("settings"));
-  return settings;
+  return settings || {};
 };
 
 function Settings() {
