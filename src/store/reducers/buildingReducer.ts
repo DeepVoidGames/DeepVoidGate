@@ -356,36 +356,6 @@ export const getProductionByResource = (
   resources: ResourcesState
 ): number => {
   // Oblicz bonusy dla tierów i ulepszeń
-  // const tierBonus = 1.5 ** (building.tier - 1); // Silniejszy wpływ tierów
-  // const upgradeBonus = 1 + building.upgrades * 0.05; // Mniejszy wpływ upgrade'ów
-  // const totalBonus = tierBonus * upgradeBonus;
-  // const amount = building.baseProduction[resource] || 0;
-
-  // let bonus = 0;
-
-  // if (building.tier === building.maxTier && building.uniqueBonus) {
-  //   // Bonusy do produkcji
-  //   if (building.uniqueBonus.production) {
-  //     bonus = building.uniqueBonus.production[resource];
-  //   }
-
-  //   // Produkcja z uwzględnieniem bonusów
-  //   if (building.baseProduction) {
-  //     return (
-  //       (amount +
-  //         amount * totalBonus * calculateEfficiency(building, resources) +
-  //         (bonus || 0)) *
-  //       building.productionMultiplier
-  //     );
-  //   }
-  // }
-
-  // return (
-  //   (amount + amount * totalBonus * calculateEfficiency(building, resources)) *
-  //   building.productionMultiplier
-  // );
-
-  // Oblicz bonusy dla tierów i ulepszeń
   const tierBonus = 1.5 ** (building.tier - 1); // Silniejszy wpływ tierów
   const upgradeBonus = 1 + building.upgrades * 0.05; // Mniejszy wpływ upgrade'ów
   const totalBonus = tierBonus * upgradeBonus;
@@ -393,6 +363,11 @@ export const getProductionByResource = (
   const resourceKey = resource as ResourceType;
   const baseValue = Number(building.baseProduction[resourceKey]) || 0;
   let production = 0;
+  let bonus = 0;
+
+  if (building.tier == building?.maxTier && building.uniqueBonus?.production) {
+    bonus = building.uniqueBonus?.production[resourceKey] || 0;
+  }
 
   if (
     resourceAlertThresholds.energy &&
@@ -403,7 +378,8 @@ export const getProductionByResource = (
   } else {
     production = baseValue + baseValue * totalBonus * building.efficiency;
   }
-  production = production * building.productionMultiplier;
+
+  production = production * building.productionMultiplier + bonus;
 
   return production;
 };
