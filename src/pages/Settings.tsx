@@ -13,7 +13,13 @@ type SettingsType = {
 
 export const getSettings = (): SettingsType => {
   const settings = JSON.parse(localStorage.getItem("settings"));
-  return settings || {};
+  return (
+    settings || {
+      compactUI: false,
+      compactUIOptions: {},
+      analyticsConsent: false,
+    }
+  );
 };
 
 function Settings() {
@@ -203,14 +209,14 @@ function Settings() {
                         })
                       }
                       className={`w-12 h-6 rounded-full p-1 transition-colors duration-200 ${
-                        compactUIOptions.showPlanetaryView
+                        compactUIOptions?.showPlanetaryView
                           ? "bg-blue-500"
                           : "bg-gray-600"
                       }`}
                     >
                       <div
                         className={`bg-white w-4 h-4 rounded-full transform transition-transform duration-200 ${
-                          compactUIOptions.showPlanetaryView
+                          compactUIOptions?.showPlanetaryView
                             ? "translate-x-6"
                             : "translate-x-0"
                         }`}
@@ -267,22 +273,23 @@ function Settings() {
                     <button
                       onClick={() =>
                         setCompactUIOptions({
-                          showPlanetaryView: compactUIOptions.showPlanetaryView,
+                          showPlanetaryView:
+                            compactUIOptions?.showPlanetaryView,
                           compactResourcesView:
-                            compactUIOptions.compactResourcesView,
+                            compactUIOptions?.compactResourcesView,
                           alwaysMobileNavbar:
-                            !compactUIOptions.alwaysMobileNavbar,
+                            !compactUIOptions?.alwaysMobileNavbar,
                         })
                       }
                       className={`w-12 h-6 rounded-full p-1 transition-colors duration-200 ${
-                        compactUIOptions.alwaysMobileNavbar
+                        compactUIOptions?.alwaysMobileNavbar
                           ? "bg-blue-500"
                           : "bg-gray-600"
                       }`}
                     >
                       <div
                         className={`bg-white w-4 h-4 rounded-full transform transition-transform duration-200 ${
-                          compactUIOptions.alwaysMobileNavbar
+                          compactUIOptions?.alwaysMobileNavbar
                             ? "translate-x-6"
                             : "translate-x-0"
                         }`}
