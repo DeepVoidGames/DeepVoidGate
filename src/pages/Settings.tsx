@@ -83,6 +83,10 @@ function Settings() {
 
   const devSection = (
     <div className="space-y-4">
+      <h2 className="text-xl font-semibold text-gray-100 mb-2">
+        Game save data
+      </h2>
+
       <div className="flex">
         <button
           onClick={() => {
@@ -151,9 +155,11 @@ function Settings() {
   );
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-background to-background/90 flex items-center justify-center p-4">
+    <div className="min-h-screen bg-gradient-to-b from-background to-background/90 flex items-center justify-center p-4 mb-10 ">
       <div className="glass-panel p-8 max-w-md w-full animate-scale-in">
-        <h1 className="text-3xl mb-6 font-bold text-gray-100">Game Settings</h1>
+        <div className="flex items-center mb-6">
+          <h1 className="text-3xl  font-bold text-gray-100">Game Settings</h1>
+        </div>
 
         <div className="space-y-6">
           {/* Sekcja Interfejsu */}
@@ -347,6 +353,18 @@ function Settings() {
                   />
                 </button>
               </div>
+            </div>
+          </div>
+
+          {/* Sekcja Analityki */}
+          <div className="space-y-4">
+            <h2 className="text-xl font-semibold text-gray-100 mb-2">
+              Community
+            </h2>
+            <div className="p-3 bg-white/5 rounded-lg">
+              <a href="https://discord.gg/JEbcXgaWzB" target="_blank">
+                <img src="/discord.svg" className="w-8" />
+              </a>
             </div>
           </div>
 
