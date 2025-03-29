@@ -6,6 +6,7 @@ type SettingsType = {
   compactUIOptions: {
     showPlanetaryView: boolean;
     compactResourcesView: boolean;
+    alwaysMobileNavbar: boolean;
   };
   analyticsConsent: boolean;
 };
@@ -20,6 +21,7 @@ function Settings() {
   const [compactUIOptions, setCompactUIOptions] = React.useState({
     showPlanetaryView: false,
     compactResourcesView: false,
+    alwaysMobileNavbar: false,
   });
   const [analyticsConsent, setAnalyticsConsent] = React.useState(true);
   const [isVerificationModalOpen, setIsVerificationModalOpen] =
@@ -54,6 +56,7 @@ function Settings() {
       description: "Your settings have been saved successfully.",
       variant: "default",
     });
+    window.location.reload();
   };
 
   const handleLoadSettings = () => {
@@ -66,6 +69,8 @@ function Settings() {
           settings.compactUIOptions?.showPlanetaryView || false,
         compactResourcesView:
           settings.compactUIOptions?.compactResourcesView || false,
+        alwaysMobileNavbar:
+          settings.compactUIOptions?.alwaysMobileNavbar || false,
       });
     }
   };
@@ -180,9 +185,9 @@ function Settings() {
               <div className="ml-4 space-y-3 border-l-2 border-gray-700 pl-4">
                 <div className="flex justify-between items-center p-2 bg-white/5 rounded-lg">
                   <div className="flex flex-col">
-                    <span className="text-gray-200">Show Planetary View</span>
+                    <span className="text-gray-200">Hide Planetary View</span>
                     <span className="text-xs text-gray-400 ">
-                      Display planetary view on the right (mobile bottom).
+                      Hide display planetary view on the right (mobile bottom).
                     </span>
                   </div>
                   <div>
@@ -193,6 +198,8 @@ function Settings() {
                             !compactUIOptions.showPlanetaryView,
                           compactResourcesView:
                             compactUIOptions.compactResourcesView,
+                          alwaysMobileNavbar:
+                            compactUIOptions.alwaysMobileNavbar,
                         })
                       }
                       className={`w-12 h-6 rounded-full p-1 transition-colors duration-200 ${
@@ -228,6 +235,8 @@ function Settings() {
                           showPlanetaryView: compactUIOptions.showPlanetaryView,
                           compactResourcesView:
                             !compactUIOptions.compactResourcesView,
+                          alwaysMobileNavbar:
+                            compactUIOptions.alwaysMobileNavbar,
                         })
                       }
                       className={`w-12 h-6 rounded-full p-1 transition-colors duration-200 ${
@@ -239,6 +248,41 @@ function Settings() {
                       <div
                         className={`bg-white w-4 h-4 rounded-full transform transition-transform duration-200 ${
                           compactUIOptions.compactResourcesView
+                            ? "translate-x-6"
+                            : "translate-x-0"
+                        }`}
+                      />
+                    </button>
+                  </div>
+                </div>
+
+                <div className="flex justify-between items-center p-2 bg-white/5 rounded-lg">
+                  <div className="flex flex-col">
+                    <span className="text-gray-200">Always Mobile Navbar</span>
+                    <span className="text-xs text-gray-400 ">
+                      Display resources at the top and the menu at the bottom.
+                    </span>
+                  </div>
+                  <div>
+                    <button
+                      onClick={() =>
+                        setCompactUIOptions({
+                          showPlanetaryView: compactUIOptions.showPlanetaryView,
+                          compactResourcesView:
+                            compactUIOptions.compactResourcesView,
+                          alwaysMobileNavbar:
+                            !compactUIOptions.alwaysMobileNavbar,
+                        })
+                      }
+                      className={`w-12 h-6 rounded-full p-1 transition-colors duration-200 ${
+                        compactUIOptions.alwaysMobileNavbar
+                          ? "bg-blue-500"
+                          : "bg-gray-600"
+                      }`}
+                    >
+                      <div
+                        className={`bg-white w-4 h-4 rounded-full transform transition-transform duration-200 ${
+                          compactUIOptions.alwaysMobileNavbar
                             ? "translate-x-6"
                             : "translate-x-0"
                         }`}

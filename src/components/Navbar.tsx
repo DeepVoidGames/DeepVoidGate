@@ -15,6 +15,7 @@ import { ResourceData, ResourceType } from "@/store/types";
 import { useGame } from "@/context/GameContext";
 import { ResourcesIcon } from "@/config";
 import { formatNumber } from "@/lib/utils";
+import { getSettings } from "@/pages/Settings";
 
 const MobileNav = () => {
   const location = useLocation();
@@ -150,61 +151,70 @@ const DesktopNav = () => {
 
 const Navbar = () => {
   const isMobile = useIsMobile();
+  const settings = getSettings();
 
   if (isMobile === undefined) return null; // Możesz dodać placeholder ładowania
-  return isMobile ? <MobileNav /> : <DesktopNav />;
+  return isMobile || settings.compactUIOptions?.alwaysMobileNavbar ? (
+    <MobileNav />
+  ) : (
+    <DesktopNav />
+  );
 };
 
 export const MobileTopNav = () => {
   const isMobile = useIsMobile();
   const { state } = useGame();
   const { resources } = state;
+  const settings = getSettings();
 
-  if (!isMobile) return null;
+  if (!isMobile && !settings.compactUIOptions.alwaysMobileNavbar) return null;
 
   return (
-    <nav className="fixed top-0 left-0 z-50 w-full border-b bg-background/95">
-      <div className="flex h-12 items-center justify-between px-4">
+    <nav className="fixed top-0 left-0 z-50 w-full border-b bg-background/95 min-[700px]:p-2">
+      <div className="grid grid-cols-1 h-12 items-center justify-between px-4">
         {/* Lewa strona - surowce z animacjami */}
-        <div className="flex gap-[1vw] min-[500px]:gap-[3vw] items-center justify-center content-center w-full">
+        <div className="grid grid-flow-col gap-[1vw] min-[400px]:gap-[3vw] items-center justify-center content-center w-full">
           {Object.values(resources).map((resource, key) => (
             <div
               key={key}
-              className="flex items-center gap-[7px] group relative"
+              className="flex items-center  group relative min-[750px]:w-[100px] max-[750px]:w-[80px] max-[600px]:w-[60px] max-[435px]:w-[50px]"
               title={`${key}: ${formatNumber(resource.amount)} (${
                 resource.production
               }/${resource.consumption})`}
             >
-              {/* Ikona z animacją */}
-              <div className="w-[1px] h-[1px] min-[500px]:w-3 min-[500px]:h-3 flex items-center justify-center transition-transform duration-200">
-                <span className="text-[10px]">{resource.icon}</span>
-              </div>
-
               {/* Wartość z animacją zmian */}
-              <div className="flex flex-col max-[500px]:min-w-[20px] min-w-[30px]">
-                <span
-                  className={`max-[500px]:text-xs text-sm  font-medium transition-colors ${
-                    resource.production > resource.consumption
-                      ? "text-green-400/90"
-                      : "text-red-400/90"
-                  }`}
-                >
-                  {formatNumber(Number(resource.amount.toFixed(0)))}
-                </span>
+              <div className="flex flex-col max-[400px]:min-w-[20px] min-w-[30px]">
+                <div className="flex items-center justify-start">
+                  <div className="max-[400px]:mr-1 mr-3 min-[400px]:w-3 min-[400px]:h-3 flex items-center justify-center transition-transform duration-200">
+                    <span className="max-[700px]:text-[10px] text-[1rem]">
+                      {resource.icon}
+                    </span>
+                  </div>
+                  <span
+                    className={`max-[400px]:text-xs max-[700px]:text-sm min-[700px]:text-[1.1rem]  font-medium transition-colors ${
+                      resource.production > resource.consumption
+                        ? "text-green-400/90"
+                        : "text-red-400/90"
+                    }`}
+                  >
+                    {" "}
+                    {formatNumber(Number(resource.amount.toFixed(0)))}
+                  </span>
+                </div>
 
                 {/* Mini-wskaźnik produkcji */}
-                <div className="flex items-center max-[500px]:gap-[3px] gap-1 max-[400px]:text-[9px] text-xs">
+                <div className="flex items-center max-[400px]:gap-[5px] gap-1 max-[700px]:text-[10px] text-[1rem] text-xs min-[700px]:mb-1">
                   <span className="text-green-400/80">
                     +{formatNumber(resource.production)}
                   </span>
                   <span className="text-red-400/80">
-                    -{formatNumber(resource.consumption)}
+                    -{formatNumber(Number(resource.consumption.toFixed(2)))}
                   </span>
                 </div>
               </div>
 
               {/* Progress bar */}
-              <div className="absolute bottom-0 left-0 right-0 h-0.5 bg-gray-700">
+              <div className="absolute bottom-0 left-0 right-0 h-0.5 bg-gray-700 ">
                 <div
                   className="h-full bg-current transition-all duration-500"
                   style={{
