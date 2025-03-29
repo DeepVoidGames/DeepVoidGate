@@ -132,4 +132,22 @@ export const buildingConfig = [
     category: "production" as BuildingCategory,
     icon: React.createElement(Droplets, { className: "h-5 w-5 text-cyan-400" }),
   },
+  {
+    type: "fungalFarm" as BuildingType,
+    name: "Fungal Farm",
+    category: "production" as BuildingCategory,
+    icon: React.createElement(Leaf, { className: "h-5 w-5 text-green-400" }),
+  },
+  {
+    type: "hydroponicTower" as BuildingType,
+    name: "Hydroponic Tower",
+    category: "production" as BuildingCategory,
+    icon: React.createElement(Leaf, { className: "h-5 w-5 text-green-400" }),
+  },
+  {
+    type: "proteinSynthesizer" as BuildingType,
+    name: "Protein Synthesizer",
+    category: "production" as BuildingCategory,
+    icon: React.createElement(Leaf, { className: "h-5 w-5 text-green-400" }),
+  },
 ];

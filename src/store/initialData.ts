@@ -223,4 +223,40 @@ export const initialTechnologies: Technology[] = [
     researchDuration: 120,
     isResearched: false,
   },
+  {
+    id: "basic_agriculture",
+    name: "Basic Agriculture",
+    category: "Production",
+    description:
+      "Unlocks foundational food production systems for colony sustainability.",
+    researchCost: { metals: 100, science: 50 },
+    prerequisites: [],
+    unlocksBuildings: ["fungalFarm"],
+    researchDuration: 45,
+    isResearched: false,
+  },
+  {
+    id: "vertical_farming",
+    name: "Vertical Farming",
+    category: "Production",
+    description:
+      "Enables space-efficient stacked growing systems with automated nutrient delivery.",
+    researchCost: { metals: 200, science: 100, energy: 30 },
+    prerequisites: ["basic_agriculture"],
+    unlocksBuildings: ["hydroponicTower"],
+    researchDuration: 90,
+    isResearched: false,
+  },
+  {
+    id: "biotech_engineering",
+    name: "Biotech Engineering",
+    category: "Production",
+    description:
+      "Advanced microbial cultivation and synthetic nutrition technologies.",
+    researchCost: { metals: 350, science: 200, food: 50 },
+    prerequisites: ["vertical_farming"],
+    unlocksBuildings: ["proteinSynthesizer"],
+    researchDuration: 180,
+    isResearched: false,
+  },
 ];

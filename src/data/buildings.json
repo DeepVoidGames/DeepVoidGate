@@ -558,5 +558,103 @@
       "storage": { "oxygen": 2000 }
     },
     "tag": "oxygen"
+  },
+  {
+    "type": "fungalFarm",
+    "category": "production",
+    "name": "Fungal Farm",
+    "description": "Cultivates fast-growing mushrooms in dark chambers using recycled organic waste.",
+    "workerCapacity": 2,
+    "baseCost": {
+      "metals": 30,
+      "energy": 15
+    },
+    "baseProduction": {
+      "food": 1.0
+    },
+    "baseConsumption": {
+      "oxygen": 0.1,
+      "energy": 0.2
+    },
+    "requirements": {},
+    "requiredTechnology": "basic_agriculture",
+    "costMultiplier": 1.4,
+    "productionMultiplier": 1.1,
+    "maxInstances": 1,
+    "tier": 1,
+    "maxTier": 5,
+    "upgrades": 0,
+    "uniqueBonus": {
+      "production": { "food": 4 },
+      "storage": { "food": 200 }
+    },
+    "tag": "food"
+  },
+  {
+    "type": "hydroponicTower",
+    "category": "production",
+    "name": "Hydroponic Tower",
+    "description": "Vertical farms with automated irrigation maximizing yield in limited space.",
+    "workerCapacity": 3,
+    "baseCost": {
+      "metals": 70,
+      "energy": 40,
+      "oxygen": 15
+    },
+    "baseProduction": {
+      "food": 2.2
+    },
+    "baseConsumption": {
+      "oxygen": 0.3,
+      "energy": 0.5,
+      "water": 0.4
+    },
+    "requirements": {
+      "hydroponicFarm": 1
+    },
+    "requiredTechnology": "vertical_farming",
+    "costMultiplier": 1.5,
+    "productionMultiplier": 1.2,
+    "maxInstances": 1,
+    "tier": 1,
+    "maxTier": 5,
+    "upgrades": 1,
+    "uniqueBonus": {
+      "production": { "food": 10 },
+      "storage": { "food": 600 }
+    },
+    "tag": "food"
+  },
+  {
+    "type": "proteinSynthesizer",
+    "category": "production",
+    "name": "Protein Synthesizer",
+    "description": "Processes microorganisms into high-protein food paste using advanced biotechnology.",
+    "workerCapacity": 4,
+    "baseCost": {
+      "metals": 120,
+      "energy": 80,
+      "science": 30
+    },
+    "baseProduction": {
+      "food": 3.8
+    },
+    "baseConsumption": {
+      "energy": 1.2,
+      "oxygen": 0.4
+    },
+    "requirements": {},
+    "requiredTechnology": "biotech_engineering",
+    "costMultiplier": 1.7,
+    "productionMultiplier": 1.3,
+    "maxInstances": 1,
+    "tier": 1,
+    "maxTier": 5,
+    "upgrades": 2,
+    "uniqueBonus": {
+      "production": { "food": 20 },
+      "storage": { "food": 1200 }
+    },
+    "tag": "food"
   }
 ]

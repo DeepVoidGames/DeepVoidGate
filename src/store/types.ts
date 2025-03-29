@@ -34,7 +34,10 @@ export type BuildingType =
   | "fusionReactor"
   | "algaeOxygenFarm"
   | "electrolyticOxygenPlant"
-  | "plasmaOxygenRefinery";
+  | "plasmaOxygenRefinery"
+  | "fungalFarm"
+  | "hydroponicTower"
+  | "proteinSynthesizer";
 
 export type TechnologyCategory =
   | "Infrastructure"
