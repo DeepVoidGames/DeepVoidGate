@@ -171,9 +171,7 @@
     "tier": 1,
     "maxTier": 5,
     "upgrades": 0,
-    "uniqueBonus": {
-      "storage": { "population": 50 }
-    }
+    "uniqueBonus": {}
   },
   {
     "type": "basicStorage",

@@ -81,6 +81,7 @@ export const applyBuildingEffects = (
 
   buildings.forEach((building) => {
     if (!building || building.efficiency <= 0) return;
+    if ((building.type as BuildingType) == "housing") return;
 
     // Oblicz bonusy dla tierów i ulepszeń
     const tierBonus = 1.5 ** (building.tier - 1); // Silniejszy wpływ tierów
