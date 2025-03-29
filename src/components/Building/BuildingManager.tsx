@@ -25,6 +25,7 @@ import {
   canAffordResource,
   canUpgradeBuilding,
   getBuildingUpgradeCost,
+  getProductionByResource,
 } from "@/store/reducers/buildingReducer";
 import { buildingConfig } from "@/data/buildingConfig";
 
@@ -126,30 +127,36 @@ export const BuildingManager: React.FC = () => {
       );
     })
     .sort((a, b) => {
-      // Special sorting only for "production" category
       if (activeTab === "production") {
-        const order: BuildingTags[] = [
+        const resourceOrder: BuildingTags[] = [
           "oxygen",
           "food",
           "energy",
           "metals",
           "science",
         ];
-        const indexA = order.indexOf(a.tag); // Make sure `a.tag` is of type `BuildingTags`
-        const indexB = order.indexOf(b.tag); // Same for `b.tag`
 
-        // Sort first by tag order
-        if (indexA !== -1 && indexB !== -1 && indexA !== indexB) {
-          return indexA - indexB;
-        }
+        // Pobierz indeksy wg kolejności zasobów z pola 'tag'
+        const getOrderIndex = (building: typeof a) => {
+          const index = resourceOrder.indexOf(building.tag as BuildingTags);
+          return index === -1 ? Infinity : index; // Nieznane tagi na koniec
+        };
 
-        // Then sort by production (choose a resource, e.g., 'energy')
-        const productionA = a.baseProduction.energy ?? 0; // Using nullish coalescing for safety
-        const productionB = b.baseProduction.energy ?? 0;
-        return productionB - productionA;
+        const aIndex = getOrderIndex(a);
+        const bIndex = getOrderIndex(b);
+
+        // 1. Sortowanie główne - kolejność zasobów
+        if (aIndex !== bIndex) return aIndex - bIndex;
+
+        // 2. Sortowanie wewnątrz grupy - po produkcji właściwego zasobu
+        const getProduction = (building: typeof a) => {
+          return getProductionByResource(building, building.tag, resources);
+        };
+
+        return getProduction(b) - getProduction(a); // Sortuj malejąco
       }
 
-      // Default sorting for other categories (e.g., by name)
+      // Domyślne sortowanie alfabetyczne po type
       return a.type.localeCompare(b.type);
     });
 
