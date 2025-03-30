@@ -760,5 +760,111 @@
       "storage": { "science": 1500 }
     },
     "tag": "science"
+  },
+  {
+    "type": "modularStorageHub",
+    "category": "storage",
+    "name": "Modular Storage Hub",
+    "description": "Flexible storage complex with adjustable compartments for multiple resource types",
+    "workerCapacity": 0,
+    "baseCost": {
+      "metals": 120,
+      "energy": 50
+    },
+    "baseProduction": {},
+    "baseConsumption": {
+      "energy": 0.3
+    },
+    "storageBonus": {
+      "metals": 800,
+      "oxygen": 600,
+      "food": 600,
+      "science": 400
+    },
+    "requirements": {
+      "basicStorage": 1
+    },
+    "requiredTechnology": "industrial_automation",
+    "costMultiplier": 1.7,
+    "maxInstances": 1,
+    "tier": 1,
+    "maxTier": 3,
+    "uniqueBonus": {
+      "storage": {
+        "metals": 1500,
+        "oxygen": 1200,
+        "food": 1000,
+        "science": 800
+      }
+    }
+  },
+  {
+    "type": "metallicCompactionVault",
+    "category": "storage",
+    "name": "Metallic Compaction Vault",
+    "description": "High-density storage using molecular compression for bulk metal storage",
+    "workerCapacity": 0,
+    "baseCost": {
+      "metals": 200,
+      "energy": 30
+    },
+    "baseProduction": {},
+    "baseConsumption": {
+      "energy": 0.4
+    },
+    "storageBonus": {
+      "metals": 2500
+    },
+    "requirements": {},
+    "requiredTechnology": "composite_alloys",
+    "costMultiplier": 1.5,
+    "maxInstances": 1,
+    "tier": 1,
+    "maxTier": 6,
+    "uniqueBonus": {
+      "storage": {
+        "metals": 5000
+      }
+    }
+  },
+  {
+    "type": "cryoUniversalDepot",
+    "category": "storage",
+    "name": "Cryo-Universal Depot",
+    "description": "Cryogenically stabilized megawarehouse with multi-resource preservation systems",
+    "workerCapacity": 0,
+    "baseCost": {
+      "metals": 300,
+      "energy": 100,
+      "science": 50
+    },
+    "baseProduction": {},
+    "baseConsumption": {
+      "energy": 0.8
+    },
+    "storageBonus": {
+      "metals": 1500,
+      "oxygen": 1500,
+      "food": 1500,
+      "science": 1500,
+      "energy": 2000
+    },
+    "requirements": {
+      "modularStorageHub": 1
+    },
+    "requiredTechnology": "quantum_computing",
+    "costMultiplier": 2.0,
+    "maxInstances": 1,
+    "tier": 1,
+    "maxTier": 5,
+    "uniqueBonus": {
+      "storage": {
+        "metals": 4000,
+        "oxygen": 3500,
+        "food": 3500,
+        "science": 3000,
+        "energy": 5000
+      }
+    }
   }
 ]

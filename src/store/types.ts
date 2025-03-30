@@ -40,7 +40,10 @@ export type BuildingType =
   | "proteinSynthesizer"
   | "dataAnalysisCenter"
   | "quantumComputer"
-  | "neuralSimulationLab";
+  | "neuralSimulationLab"
+  | "modularStorageHub"
+  | "metallicCompactionVault"
+  | "cryoUniversalDepot";
 
 export type TechnologyCategory =
   | "Infrastructure"

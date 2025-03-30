@@ -174,4 +174,28 @@ export const buildingConfig = [
       className: "h-5 w-5 text-purple-400",
     }),
   },
+  {
+    type: "modularStorageHub" as BuildingType,
+    name: "Modular Storage Hub",
+    category: "storage" as BuildingCategory,
+    icon: React.createElement(Warehouse, {
+      className: "h-5 w-5 text-blue-400",
+    }),
+  },
+  {
+    type: "metallicCompactionVault" as BuildingType,
+    name: "Metallic Compaction Vault",
+    category: "storage" as BuildingCategory,
+    icon: React.createElement(Warehouse, {
+      className: "h-5 w-5 text-blue-400",
+    }),
+  },
+  {
+    type: "cryoUniversalDepot" as BuildingType,
+    name: "Cryo-Universal Depot",
+    category: "storage" as BuildingCategory,
+    icon: React.createElement(Warehouse, {
+      className: "h-5 w-5 text-blue-400",
+    }),
+  },
 ];
