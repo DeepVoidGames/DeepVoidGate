@@ -47,6 +47,7 @@ export const initialState: GameState = {
   showOfflineProgress: undefined,
   offlineReport: undefined,
   colonistProgress: 0,
+  userID: null,
 };
 
 // Constants for death timer

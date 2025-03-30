@@ -9,8 +9,8 @@ import {
 import buildingData from "../data/buildings.json";
 
 // Generate a unique ID
-export const generateId = (): string => {
-  return Math.random().toString(36).substr(2, 9);
+export const generateId = (lenght: number = 9): string => {
+  return Math.random().toString(36).substr(2, lenght);
 };
 
 // Initialize buildings from JSON data

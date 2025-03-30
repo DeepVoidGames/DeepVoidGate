@@ -170,6 +170,7 @@ export interface GameState {
   showOfflineProgress;
   offlineReport;
   colonistProgress: number;
+  userID: string;
 }
 
 export interface UpgradeData {

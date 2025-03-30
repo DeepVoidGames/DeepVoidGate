@@ -1,4 +1,8 @@
-import { initialBuildings, initialTechnologies } from "@/store/initialData";
+import {
+  generateId,
+  initialBuildings,
+  initialTechnologies,
+} from "@/store/initialData";
 import { initialState } from "@/store/reducers/gameReducer";
 import { ResourcesState } from "@/store/reducers/resourceReducer";
 import { GameState, ResourceData } from "@/store/types";
@@ -37,6 +41,8 @@ export const migrateGameState = (savedState: any): GameState => {
       ...savedBldg, // Zachowuje zapisane wartości
     })
   );
+
+  if (currentState.userID == null) currentState.userID = generateId(16);
 
   // Krok 3: Dodaj nowe budynki z initial, których nie ma w zapisie
   const newInitialBuildings = initialBuildings.filter(
