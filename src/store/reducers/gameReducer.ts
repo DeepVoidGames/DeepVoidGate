@@ -34,6 +34,7 @@ import {
   migrateGameState,
 } from "@/migrations/migrateGameState";
 import { initialMilestones } from "@/data/milestonesData";
+import { checkMilestones } from "./milestonesReducer";
 
 // Initialize the game state
 export const initialState: GameState = {
@@ -336,12 +337,18 @@ export const gameReducer = (
         });
       }
 
-      return {
+      const newMilestones = checkMilestones({
         ...state,
         resources: newResources,
+      });
+
+      return {
+        ...state,
+        resources: newMilestones.resources,
         buildings,
         population: newPopulation,
         colonistProgress: newColonistProgress, // Ustaw zaktualizowany progres
+        milestones: newMilestones.milestones,
         lastUpdate: currentTime,
       };
     }

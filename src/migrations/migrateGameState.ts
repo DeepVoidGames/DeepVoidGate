@@ -302,6 +302,8 @@ const migrateResources = (
       production: savedResource?.production ?? defaultResource.production,
       consumption: savedResource?.consumption ?? defaultResource.consumption,
       capacity: savedResource?.capacity ?? defaultResource.capacity,
+      bonusCapacity:
+        savedResource?.bonusCapacity ?? (defaultResource.bonusCapacity || 0),
     };
   });
 

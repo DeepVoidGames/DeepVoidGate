@@ -73,7 +73,9 @@ export const applyBuildingEffects = (
         ...resources[key as ResourceType],
         production: 0,
         consumption: 0,
-        capacity: resources[key as ResourceType].baseCapacity, // Resetuj pojemność do wartości bazowej
+        capacity:
+          resources[key as ResourceType].baseCapacity +
+          (resources[key as ResourceType]?.bonusCapacity || 0), // Resetuj pojemność do wartości bazowej
       },
     }),
     {} as ResourcesState

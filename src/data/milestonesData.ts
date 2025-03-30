@@ -35,8 +35,8 @@ export const createTieredMilestone = (
         ...state.resources,
         [resourceKey]: {
           ...state.resources[resourceKey],
-          capacity:
-            state.resources[resourceKey].capacity + tierDef.rewardAmount,
+          bonusCapacity:
+            state.resources[resourceKey].bonusCapacity + tierDef.rewardAmount,
         },
       },
     }),

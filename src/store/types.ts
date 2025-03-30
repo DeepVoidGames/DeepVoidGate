@@ -78,6 +78,7 @@ export interface ResourceData {
   icon: string;
   color: string;
   baseCapacity: number;
+  bonusCapacity?: number;
 }
 
 export interface Resource {
@@ -88,6 +89,7 @@ export interface Resource {
   icon: string;
   color: string;
   baseCapacity: number;
+  bonusCapacity?: number;
 }
 
 // Building data structure
