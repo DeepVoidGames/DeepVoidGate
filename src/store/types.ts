@@ -1,3 +1,5 @@
+import { ReactNode } from "react";
+
 // Resource types
 export type ResourceType =
   | "oxygen"
@@ -148,6 +150,26 @@ export interface ResourceAlertThresholds {
   };
 }
 
+export type MilestoneProgressConfig = {
+  type: "resource" | "count" | "technology" | "tier";
+  resource?: ResourceType;
+  target?: number;
+  buildingType?: BuildingType;
+  techId?: string;
+};
+
+export type Milestone = {
+  id: string;
+  name: string;
+  description: string;
+  condition: (state: GameState) => boolean;
+  progress: (state: GameState) => number; // Nowe pole
+  reward?: (state: GameState) => GameState;
+  completed: boolean;
+  category: string;
+  rewardDescription?: string;
+};
+
 export interface OfflineReport {
   elapsedTime: number;
   resourceChanges: Record<ResourceType, number>;
@@ -174,6 +196,7 @@ export interface GameState {
   offlineReport;
   colonistProgress: number;
   userID: string;
+  milestones: Milestone[];
 }
 
 export interface UpgradeData {

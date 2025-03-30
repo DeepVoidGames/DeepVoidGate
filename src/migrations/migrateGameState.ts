@@ -1,3 +1,4 @@
+import { initialMilestones } from "@/data/milestonesData";
 import {
   generateId,
   initialBuildings,
@@ -7,6 +8,8 @@ import { initialState } from "@/store/reducers/gameReducer";
 import { ResourcesState } from "@/store/reducers/resourceReducer";
 import { GameState, ResourceData } from "@/store/types";
 import { stat } from "fs";
+
+// TODO Add sync milestones data with save
 
 export const CURRENT_GAME_VERSION = 3; // Aktualna wersja gry
 
@@ -57,12 +60,25 @@ export const migrateGameState = (savedState: any): GameState => {
   const tech = migrateTechnologiesStats(mergedTechnologies);
   const resources = migrateResources(currentState.resources);
 
+  const mergedMilestones = initialMilestones.map((initialMs) => {
+    const savedMs = savedState.milestones?.find(
+      (m: any) => m.id === initialMs.id
+    );
+    return savedMs
+      ? {
+          ...initialMs,
+          completed: savedMs.completed,
+        }
+      : initialMs;
+  });
+
   return {
     ...initialState,
     ...currentState,
     buildings: migrateBuildingsStats(finalBuildings),
     resources: resources,
     technologies: tech,
+    milestones: mergedMilestones,
     version: CURRENT_GAME_VERSION,
   };
 };

@@ -33,6 +33,7 @@ import {
   CURRENT_GAME_VERSION,
   migrateGameState,
 } from "@/migrations/migrateGameState";
+import { initialMilestones } from "@/data/milestonesData";
 
 // Initialize the game state
 export const initialState: GameState = {
@@ -48,6 +49,7 @@ export const initialState: GameState = {
   offlineReport: undefined,
   colonistProgress: 0,
   userID: null,
+  milestones: initialMilestones,
 };
 
 // Constants for death timer
