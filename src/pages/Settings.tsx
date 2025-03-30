@@ -356,14 +356,17 @@ function Settings() {
             </div>
           </div>
 
-          {/* Sekcja Analityki */}
+          {/* Sekcja Społeczności */}
           <div className="space-y-4">
             <h2 className="text-xl font-semibold text-gray-100 mb-2">
               Community
             </h2>
             <div className="p-3 bg-white/5 rounded-lg">
               <a href="https://discord.gg/JEbcXgaWzB" target="_blank">
-                <img src="/discord.svg" className="w-8" />
+                <img
+                  src={`${"/deepvoidgate/demo/"}/discord.svg`}
+                  className="w-8"
+                />
               </a>
             </div>
           </div>
