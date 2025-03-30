@@ -428,6 +428,10 @@ export const calculateEfficiency = (
   const baseEfficiency = building.efficiency || 0;
   const tierMultiplier = 1 + (building.tier - 1) * 0.2;
 
+  if (building.workerCapacity == 0) {
+    return 1;
+  }
+
   if (
     resourceAlertThresholds.energy &&
     resources.energy?.amount < resourceAlertThresholds.energy.critical &&
