@@ -168,6 +168,8 @@ export type Milestone = {
   completed: boolean;
   category: string;
   rewardDescription?: string;
+  tier?: number;
+  prerequisiteId?: string;
 };
 
 export interface OfflineReport {
