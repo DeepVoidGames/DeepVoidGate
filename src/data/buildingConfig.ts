@@ -150,4 +150,28 @@ export const buildingConfig = [
     category: "production" as BuildingCategory,
     icon: React.createElement(Leaf, { className: "h-5 w-5 text-green-400" }),
   },
+  {
+    type: "dataAnalysisCenter" as BuildingType,
+    name: "Data Analysis Center",
+    category: "research" as BuildingCategory,
+    icon: React.createElement(FlaskConical, {
+      className: "h-5 w-5 text-purple-400",
+    }),
+  },
+  {
+    type: "quantumComputer" as BuildingType,
+    name: "Quantum Computer",
+    category: "research" as BuildingCategory,
+    icon: React.createElement(FlaskConical, {
+      className: "h-5 w-5 text-purple-400",
+    }),
+  },
+  {
+    type: "neuralSimulationLab" as BuildingType,
+    name: "Neural SimulationLab",
+    category: "research" as BuildingCategory,
+    icon: React.createElement(FlaskConical, {
+      className: "h-5 w-5 text-purple-400",
+    }),
+  },
 ];
