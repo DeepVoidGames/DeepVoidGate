@@ -9,6 +9,8 @@ import {
   Gem,
   Zap,
   Coins,
+  Icon,
+  Milestone,
 } from "lucide-react";
 import { useIsMobile } from "@/hooks/use-mobile"; // Zaimportuj hook z odpowiedniej ścieżki
 import { ResourceData, ResourceType } from "@/store/types";
@@ -27,6 +29,11 @@ const MobileNav = () => {
       path: "/tech",
       label: "Tech",
       icon: <Microscope className="h-5 w-5" />,
+    },
+    {
+      path: "/milestones",
+      label: "Milestones",
+      icon: <Milestone className="h-5 w-5" />,
     },
   ];
 
@@ -177,7 +184,7 @@ export const MobileTopNav = () => {
           {Object.values(resources).map((resource, key) => (
             <div
               key={key}
-              className="flex items-center  group relative min-[750px]:w-[100px] max-[750px]:w-[80px] max-[600px]:w-[60px] max-[435px]:w-[50px]"
+              className="flex items-center  group relative min-[750px]:w-[100px] max-[750px]:w-[80px] max-[600px]:w-[60px] max-[435px]:w-[58px]"
               title={`${key}: ${formatNumber(resource.amount)} (${
                 resource.production
               }/${resource.consumption})`}
