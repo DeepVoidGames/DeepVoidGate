@@ -19,23 +19,23 @@ import { ResourcesIcon } from "@/config";
 import { formatNumber } from "@/lib/utils";
 import { getSettings } from "@/pages/Settings";
 
+const links = [
+  { path: "/", label: "Home", icon: <Home className="h-5 w-5" /> },
+  {
+    path: "/tech",
+    label: "Tech",
+    icon: <Microscope className="h-5 w-5" />,
+  },
+  {
+    path: "/milestones",
+    label: "Milestones",
+    icon: <Milestone className="h-5 w-5" />,
+  },
+];
+
 const MobileNav = () => {
   const location = useLocation();
   const [isMenuOpen, setIsMenuOpen] = React.useState(false);
-
-  const links = [
-    { path: "/", label: "Home", icon: <Home className="h-5 w-5" /> },
-    {
-      path: "/tech",
-      label: "Tech",
-      icon: <Microscope className="h-5 w-5" />,
-    },
-    {
-      path: "/milestones",
-      label: "Milestones",
-      icon: <Milestone className="h-5 w-5" />,
-    },
-  ];
 
   return (
     <nav className="fixed bottom-0 left-0 z-50 w-full border-t bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
@@ -98,15 +98,6 @@ const MobileNav = () => {
 
 const DesktopNav = () => {
   const location = useLocation();
-
-  const links = [
-    { path: "/", label: "Home", icon: <Home className="h-5 w-5" /> },
-    {
-      path: "/tech",
-      label: "Tech",
-      icon: <Microscope className="h-5 w-5" />,
-    },
-  ];
 
   return (
     <nav className="fixed top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
