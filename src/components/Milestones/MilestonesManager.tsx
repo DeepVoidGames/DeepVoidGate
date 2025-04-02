@@ -158,25 +158,29 @@ const MilestonesManager = () => {
               return milestones.map((milestone) => (
                 <div
                   key={milestone.id}
-                  className={`p-4 rounded-lg border transition-all relative ${
+                  className={`p-4 rounded-lg border transition-all relative max-h-[300px] ${
                     milestone.completed
                       ? "bg-green-900/20 border-green-800"
                       : "bg-background/50 border-muted/30 hover:border-primary hover:shadow-lg"
                   }`}
                 >
                   <div className="flex justify-between items-start mb-3">
-                    <div>
-                      <h3 className="font-medium text-foreground/90 flex items-center gap-2">
-                        {milestone.completed ? (
-                          <Medal className="h-5 w-5 text-amber-400" />
-                        ) : (
-                          <Star className="h-5 w-5 text-muted-foreground" />
-                        )}
-                        {milestone.name}
-                      </h3>
-                      <p className="text-xs text-muted-foreground mt-1">
-                        {milestone.description}
-                      </p>
+                    <div className="grid">
+                      <div className="h-[50px]">
+                        <h3 className="font-medium text-foreground/90 flex items-center gap-2">
+                          {milestone.completed ? (
+                            <Medal className="h-5 w-5 text-amber-400" />
+                          ) : (
+                            <Star className="h-5 w-5 text-muted-foreground" />
+                          )}
+                          {milestone.name}
+                        </h3>
+                      </div>
+                      <div className="h-[50px]">
+                        <p className="text-xs text-muted-foreground mt-1">
+                          {milestone.description}
+                        </p>
+                      </div>
                     </div>
                   </div>
 
@@ -219,7 +223,7 @@ const MilestonesManager = () => {
               return (
                 <div
                   key={baseId}
-                  className="p-4 rounded-lg border bg-background/50 border-muted/30 hover:border-primary hover:shadow-lg"
+                  className="p-4 rounded-lg border bg-background/50 border-muted/30 hover:border-primary hover:shadow-lg h-[300px]"
                 >
                   {/* ... (Grouped milestone display logic) ... */}
                   <div className="flex justify-between items-start mb-3">

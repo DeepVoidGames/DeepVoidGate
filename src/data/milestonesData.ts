@@ -300,6 +300,20 @@ export const initialMilestones: Milestone[] = [
     completed: false,
     category: "population",
   },
+  {
+    id: "population_thriving_community",
+    name: "Thriving Community",
+    description:
+      "The colony has reached a significant milestone, becoming a bustling hub of activity and growth.",
+    condition: function (state: GameState): boolean {
+      return state.population.total >= 150;
+    },
+    progress: function (state: GameState): number {
+      return Math.min((state.population.total / 150) * 100, 100);
+    },
+    completed: false,
+    category: "population",
+  },
 ];
 
 // Export the tier definitions for reuse in other parts of the code
