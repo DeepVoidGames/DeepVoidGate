@@ -18,7 +18,11 @@ const Index = () => {
   return (
     <>
       <MobileTopNav />
-      <div className="min-h-screen bg-gradient-to-b from-background to-background/90 text-foreground p-4 md:p-6 my-12">
+      <div
+        className={`min-h-screen bg-gradient-to-b from-background to-background/90 text-foreground p-4 md:p-6 my-12 ${
+          settings?.compactUIOptions?.doubleNavbar ? "mt-[130px]" : ""
+        }`}
+      >
         {state.showOfflineProgress && state.offlineReport && (
           <OfflineProgressModal
             report={state.offlineReport}
@@ -43,7 +47,9 @@ const Index = () => {
               {settings?.compactUI &&
               settings?.compactUIOptions?.compactResourcesView &&
               !isMobile ? (
-                <ResourceDisplay />
+                <div className="sticky top-0 z-10">
+                  <ResourceDisplay />
+                </div>
               ) : null}
               {settings?.compactUI &&
                 !settings?.compactUIOptions?.showPlanetaryView && (

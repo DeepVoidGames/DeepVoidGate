@@ -7,6 +7,7 @@ type SettingsType = {
     showPlanetaryView: boolean;
     compactResourcesView: boolean;
     alwaysMobileNavbar: boolean;
+    doubleNavbar: boolean;
   };
   analyticsConsent: boolean;
 };
@@ -18,6 +19,7 @@ export const getSettings = (): SettingsType => {
       compactUI: false,
       compactUIOptions: {},
       analyticsConsent: false,
+      doubleNavbar: false,
     }
   );
 };
@@ -28,6 +30,7 @@ function Settings() {
     showPlanetaryView: false,
     compactResourcesView: false,
     alwaysMobileNavbar: false,
+    doubleNavbar: false,
   });
   const [analyticsConsent, setAnalyticsConsent] = React.useState(true);
   const [isVerificationModalOpen, setIsVerificationModalOpen] =
@@ -77,6 +80,7 @@ function Settings() {
           settings.compactUIOptions?.compactResourcesView || false,
         alwaysMobileNavbar:
           settings.compactUIOptions?.alwaysMobileNavbar || false,
+        doubleNavbar: settings.compactUIOptions?.doubleNavbar || false,
       });
     }
   };
@@ -155,8 +159,8 @@ function Settings() {
   );
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-background to-background/90 flex items-center justify-center p-4 mb-10 ">
-      <div className="glass-panel p-8 max-w-md w-full animate-scale-in">
+    <div className="min-h-screen bg-gradient-to-b from-background to-background/90 flex items-center justify-center p-4 mb-10">
+      <div className="glass-panel p-8 max-w-[800px] w-full animate-fade-in">
         <div className="flex items-center mb-6">
           <h1 className="text-3xl  font-bold text-gray-100">Game Settings</h1>
         </div>
@@ -212,6 +216,7 @@ function Settings() {
                             compactUIOptions.compactResourcesView,
                           alwaysMobileNavbar:
                             compactUIOptions.alwaysMobileNavbar,
+                          doubleNavbar: compactUIOptions.doubleNavbar,
                         })
                       }
                       className={`w-12 h-6 rounded-full p-1 transition-colors duration-200 ${
@@ -249,6 +254,7 @@ function Settings() {
                             !compactUIOptions.compactResourcesView,
                           alwaysMobileNavbar:
                             compactUIOptions.alwaysMobileNavbar,
+                          doubleNavbar: compactUIOptions.doubleNavbar,
                         })
                       }
                       className={`w-12 h-6 rounded-full p-1 transition-colors duration-200 ${
@@ -285,6 +291,7 @@ function Settings() {
                             compactUIOptions?.compactResourcesView,
                           alwaysMobileNavbar:
                             !compactUIOptions?.alwaysMobileNavbar,
+                          doubleNavbar: compactUIOptions.doubleNavbar,
                         })
                       }
                       className={`w-12 h-6 rounded-full p-1 transition-colors duration-200 ${
@@ -296,6 +303,43 @@ function Settings() {
                       <div
                         className={`bg-white w-4 h-4 rounded-full transform transition-transform duration-200 ${
                           compactUIOptions?.alwaysMobileNavbar
+                            ? "translate-x-6"
+                            : "translate-x-0"
+                        }`}
+                      />
+                    </button>
+                  </div>
+                </div>
+
+                <div className="flex justify-between items-center p-2 bg-white/5 rounded-lg">
+                  <div className="flex flex-col">
+                    <span className="text-gray-200">Double Navbar</span>
+                    <span className="text-xs text-gray-400 ">
+                      Display second navbar with resources data.
+                    </span>
+                  </div>
+                  <div>
+                    <button
+                      onClick={() =>
+                        setCompactUIOptions({
+                          showPlanetaryView:
+                            compactUIOptions?.showPlanetaryView,
+                          compactResourcesView:
+                            compactUIOptions?.compactResourcesView,
+                          alwaysMobileNavbar:
+                            compactUIOptions?.alwaysMobileNavbar,
+                          doubleNavbar: !compactUIOptions.doubleNavbar,
+                        })
+                      }
+                      className={`w-12 h-6 rounded-full p-1 transition-colors duration-200 ${
+                        compactUIOptions?.doubleNavbar
+                          ? "bg-blue-500"
+                          : "bg-gray-600"
+                      }`}
+                    >
+                      <div
+                        className={`bg-white w-4 h-4 rounded-full transform transition-transform duration-200 ${
+                          compactUIOptions?.doubleNavbar
                             ? "translate-x-6"
                             : "translate-x-0"
                         }`}

@@ -5,7 +5,6 @@ import { MobileTopNav } from "@/components/Navbar";
 function Milestones() {
   return (
     <>
-      <MobileTopNav />
       <div className="min-h-screen bg-gradient-to-b from-background to-background/90 text-foreground p-4 md:p-6 my-12">
         <div className="max-w-7xl mx-auto space-y-4">
           <GameHeader />

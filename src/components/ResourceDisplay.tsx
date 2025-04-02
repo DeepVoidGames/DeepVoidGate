@@ -4,10 +4,13 @@ import { Progress } from "@/components/ui/progress";
 import { formatNumber } from "@/lib/utils";
 import { ResourceType } from "@/store/types";
 import { Clock, AlertTriangle } from "lucide-react";
+import { getSettings } from "@/pages/Settings";
 
 export const ResourceDisplay: React.FC = () => {
   const { state } = useGame();
   const { resources, population } = state;
+
+  const settings = getSettings();
 
   const resourceOrder: ResourceType[] = [
     "oxygen",
@@ -17,9 +20,8 @@ export const ResourceDisplay: React.FC = () => {
     "metals",
     "science",
   ];
-
   return (
-    <div className="glass-panel p-4 space-y-3 animate-fade-in">
+    <div className={"glass-panel p-4 space-y-3 animate-fade-in"}>
       <div className="flex items-center justify-between">
         <h2 className="text-lg font-medium text-foreground/90">Resources</h2>
 
@@ -33,7 +35,6 @@ export const ResourceDisplay: React.FC = () => {
           </div>
         )}
       </div>
-
       <div className="grid grid-cols-1 gap-3">
         {resourceOrder.map((resourceKey) => {
           const resource = resources[resourceKey];
@@ -59,7 +60,7 @@ export const ResourceDisplay: React.FC = () => {
           }
 
           return (
-            <div key={resourceKey} className="space-y-1">
+            <div key={resourceKey} className="space-x-1">
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-2">
                   <span className={`resource-badge`}>{resource.icon}</span>

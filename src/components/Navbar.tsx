@@ -165,10 +165,19 @@ export const MobileTopNav = () => {
   const { resources } = state;
   const settings = getSettings();
 
-  if (!isMobile && !settings?.compactUIOptions?.alwaysMobileNavbar) return null;
+  if (
+    !isMobile &&
+    !settings?.compactUIOptions?.alwaysMobileNavbar &&
+    !settings?.compactUIOptions?.doubleNavbar
+  )
+    return null;
 
   return (
-    <nav className="fixed top-0 left-0 z-50 w-full border-b bg-background/95 min-[700px]:p-2">
+    <nav
+      className={`fixed left-0 z-50 w-full border-b bg-background/95 min-[700px]:p-2 ${
+        settings?.compactUIOptions?.doubleNavbar ? " top-[64.5px] " : " top-0"
+      }`}
+    >
       <div className="grid grid-cols-1 h-12 items-center justify-between px-4">
         {/* Lewa strona - surowce z animacjami */}
         <div className="grid grid-flow-col gap-[1vw] min-[400px]:gap-[3vw] items-center justify-center content-center w-full">
