@@ -328,4 +328,52 @@ export const initialTechnologies: Technology[] = [
     researchDuration: 120,
     isResearched: false,
   },
+  {
+    id: "quantum_tunneling_synthesis",
+    name: "Quantum Tunneling Synthesis",
+    category: "Production",
+    description:
+      "Quantum tunneling manipulation to extract metals from quantum vacuum.",
+    researchCost: {
+      metals: 2600,
+      science: 950,
+      energy: 200,
+    },
+    prerequisites: ["plasma_refining"],
+    unlocksBuildings: ["quantumFluxMetalForge"],
+    researchDuration: 320,
+    isResearched: false,
+  },
+  {
+    id: "mhd_fusion_confinement",
+    name: "MHD Fusion Confinement",
+    category: "Production",
+    description:
+      "Plasma stabilization under extreme pressure conditions for the synthesis of metallic isotopes.",
+    researchCost: {
+      metals: 2450,
+      science: 1100,
+      energy: 180,
+    },
+    prerequisites: ["quantum_tunneling_synthesis"],
+    unlocksBuildings: ["fusionEdgeMetallizer"],
+    researchDuration: 440,
+    isResearched: false,
+  },
+  {
+    id: "nano_scale_dismantling",
+    name: "Nanoscale Dismantling",
+    category: "Production",
+    description:
+      "Programmable nanobot swarms to deconstruct matter at the atomic level.",
+    researchCost: {
+      metals: 5750,
+      science: 1300,
+      energy: 250,
+    },
+    prerequisites: ["mhd_fusion_confinement"],
+    unlocksBuildings: ["nanoDismantlerFoundry"],
+    researchDuration: 580,
+    isResearched: false,
+  },
 ];

@@ -866,5 +866,101 @@
         "energy": 5000
       }
     }
+  },
+  {
+    "type": "quantumFluxMetalForge",
+    "category": "production",
+    "name": "Quantum-Flux Metal Forge",
+    "description": "Utilizes quantum tunneling to extract metal isotopes from subatomic particle fluctuations.",
+    "workerCapacity": 10,
+    "baseCost": {
+      "energy": 165,
+      "metals": 450
+    },
+    "baseProduction": {
+      "metals": 3.2
+    },
+    "baseConsumption": {
+      "energy": 1.6,
+      "oxygen": 0.35,
+      "water": 0.25
+    },
+    "requirements": {},
+    "requiredTechnology": "quantum_tunneling_synthesis",
+    "costMultiplier": 1.65,
+    "productionMultiplier": 1.45,
+    "maxInstances": 1,
+    "tier": 1,
+    "maxTier": 5,
+    "upgrades": 0,
+    "uniqueBonus": {
+      "production": { "metals": 25 },
+      "storage": { "metals": 7000 }
+    },
+    "tag": "metals"
+  },
+  {
+    "type": "fusionEdgeMetallizer",
+    "category": "production",
+    "name": "Fusion-Edge Metallizer",
+    "description": "Magnetohydrodynamic confinement fuses light elements into dense metallic matrices.",
+    "workerCapacity": 14,
+    "baseCost": {
+      "energy": 135,
+      "metals": 520
+    },
+    "baseProduction": {
+      "metals": 2.8
+    },
+    "baseConsumption": {
+      "energy": 1.2,
+      "oxygen": 0.6,
+      "water": 0.1
+    },
+    "requirements": {},
+    "requiredTechnology": "mhd_fusion_confinement",
+    "costMultiplier": 1.8,
+    "productionMultiplier": 1.3,
+    "maxInstances": 1,
+    "tier": 1,
+    "maxTier": 5,
+    "upgrades": 0,
+    "uniqueBonus": {
+      "production": { "metals": 18 },
+      "storage": { "metals": 9500 }
+    },
+    "tag": "metals"
+  },
+  {
+    "type": "nanoDismantlerFoundry",
+    "category": "production",
+    "name": "Nano-Dismantler Foundry",
+    "description": "Swarm nanobots systematically deconstruct matter at picoscale for atomic recycling.",
+    "workerCapacity": 8,
+    "baseCost": {
+      "energy": 180,
+      "metals": 480
+    },
+    "baseProduction": {
+      "metals": 3.5
+    },
+    "baseConsumption": {
+      "energy": 1.8,
+      "oxygen": 0.2,
+      "water": 0.35
+    },
+    "requirements": {},
+    "requiredTechnology": "nano_scale_dismantling",
+    "costMultiplier": 1.55,
+    "productionMultiplier": 1.55,
+    "maxInstances": 1,
+    "tier": 1,
+    "maxTier": 5,
+    "upgrades": 0,
+    "uniqueBonus": {
+      "production": { "metals": 28 },
+      "storage": { "metals": 5000 }
+    },
+    "tag": "metals"
   }
 ]

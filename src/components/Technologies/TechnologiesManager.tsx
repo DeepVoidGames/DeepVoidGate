@@ -255,7 +255,7 @@ const TechnologiesManager: React.FC = () => {
 
               <div className=" bottom-0 left-0 right-0 absolute p-4 rounded-b-lg">
                 {tech.prerequisites.length > 0 && (
-                  <div className="text-xs text-muted-foreground mb-3">
+                  <div className="text-xs text-[10px] text-muted-foreground mb-3">
                     <Lock className="inline mr-1 h-3 w-3" />
                     Requires: {getPrerequisiteNames(tech)}
                   </div>
