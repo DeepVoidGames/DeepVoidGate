@@ -1,5 +1,6 @@
 // src/data/milestonesData.ts
 import { Milestone, GameState } from "@/store/types";
+import { stat } from "fs";
 
 // Define a new type for tiered milestones
 export interface TierDefinition {
@@ -271,6 +272,34 @@ export const initialMilestones: Milestone[] = [
     "science",
     scienceTiers
   ),
+  {
+    id: "population_foundation",
+    name: "The foundation of the colony",
+    description:
+      "As the first settlers arrive, the foundation of the colony is laid.",
+    condition: function (state: GameState): boolean {
+      if (state.population.total >= 50) return true;
+    },
+    progress: function (state: GameState): number {
+      return (state.population.total / 50) * 100;
+    },
+    completed: false,
+    category: "population",
+  },
+  {
+    id: "population_horizons",
+    name: "Expanding Horizons",
+    description:
+      "With a growing population, the colony takes its first steps toward a thriving settlement.",
+    condition: function (state: GameState): boolean {
+      if (state.population.total >= 80) return true;
+    },
+    progress: function (state: GameState): number {
+      return (state.population.total / 80) * 100;
+    },
+    completed: false,
+    category: "population",
+  },
 ];
 
 // Export the tier definitions for reuse in other parts of the code
