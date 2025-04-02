@@ -45,7 +45,10 @@ export type BuildingType =
   | "neuralSimulationLab"
   | "modularStorageHub"
   | "metallicCompactionVault"
-  | "cryoUniversalDepot";
+  | "cryoUniversalDepot"
+  | "quantumFluxMetalForge"
+  | "fusionEdgeMetallizer"
+  | "nanoDismantlerFoundry";
 
 export type TechnologyCategory =
   | "Infrastructure"

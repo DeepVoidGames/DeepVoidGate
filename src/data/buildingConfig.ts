@@ -198,4 +198,22 @@ export const buildingConfig = [
       className: "h-5 w-5 text-blue-400",
     }),
   },
+  {
+    type: "quantumFluxMetalForge" as BuildingType,
+    name: "Quantum-Flux Metal Forge",
+    category: "production" as BuildingCategory,
+    icon: React.createElement(Pickaxe, { className: "h-5 w-5 text-zinc-400" }),
+  },
+  {
+    type: "fusionEdgeMetallizer" as BuildingType,
+    name: "Fusion-Edge Metallizer",
+    category: "production" as BuildingCategory,
+    icon: React.createElement(Pickaxe, { className: "h-5 w-5 text-zinc-400" }),
+  },
+  {
+    type: "nanoDismantlerFoundry" as BuildingType,
+    name: "Nano-Dismantler Foundry",
+    category: "production" as BuildingCategory,
+    icon: React.createElement(Pickaxe, { className: "h-5 w-5 text-zinc-400" }),
+  },
 ];
