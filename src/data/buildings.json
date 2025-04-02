@@ -962,5 +962,31 @@
       "storage": { "metals": 5000 }
     },
     "tag": "metals"
+  },
+  {
+    "type": "subterranean_arcology",
+    "category": "housing",
+    "name": "Subterranean Arcology",
+    "description": "Multi-level underground habitat with integrated life support systems and radiation shielding.",
+    "workerCapacity": 0,
+    "baseCost": {
+      "metals": 1500,
+      "energy": 85
+    },
+    "baseProduction": {},
+    "baseConsumption": {
+      "oxygen": 0.25,
+      "energy": 0.4,
+      "water": 0.1
+    },
+    "requirements": {},
+    "costMultiplier": 1.7,
+    "productionMultiplier": 1,
+    "maxInstances": 1,
+    "tier": 1,
+    "maxTier": 5,
+    "upgrades": 0,
+    "uniqueBonus": {},
+    "tag": "habitation"
   }
 ]

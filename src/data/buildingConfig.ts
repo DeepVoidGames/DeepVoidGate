@@ -216,4 +216,10 @@ export const buildingConfig = [
     category: "production" as BuildingCategory,
     icon: React.createElement(Pickaxe, { className: "h-5 w-5 text-zinc-400" }),
   },
+  {
+    type: "subterranean_arcology" as BuildingType,
+    name: "Subterranean Arcology",
+    category: "housing" as BuildingCategory,
+    icon: React.createElement(Home, { className: "h-5 w-5 text-blue-400" }),
+  },
 ];
