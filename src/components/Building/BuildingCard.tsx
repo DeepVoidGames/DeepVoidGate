@@ -70,9 +70,9 @@ const BuildingCard = ({
 
   return (
     <Card
-      className={`neo-panel overflow-hidden transition-all duration-300 ${
-        isExpanded ? "border-primary/30" : "border-border/10"
-      } ${!building.functioning ? "bg-red-950/10 border-red-800/30" : ""}`}
+      className={`neo-panel overflow-hidden transition-all duration-300 border-primary/30 ${
+        !building.functioning ? "bg-red-950/10 border-red-800/30" : ""
+      }`}
     >
       <CardHeader className="p-4 pb-0">
         <div className="flex items-center justify-between">
@@ -110,6 +110,25 @@ const BuildingCard = ({
             <span>
               {building.assignedWorkers} / {building.workerCapacity} workers
             </span>
+            {/* Przeniesione i zmodyfikowane przyciski */}
+            <div className="flex gap-2 ml-2">
+              <Button
+                size="sm"
+                variant="outline"
+                onClick={() => onAdjustWorkers(building.id, 1)}
+                className="p-1 h-7 w-7 border-green-800/30 bg-green-950/30 hover:bg-green-900/20"
+              >
+                <ArrowUp className="h-3 w-3" />
+              </Button>
+              <Button
+                size="sm"
+                variant="outline"
+                onClick={() => onAdjustWorkers(building.id, -1)}
+                className="p-1 h-7 w-7 border-red-800/30 bg-red-950/30 hover:bg-red-900/20"
+              >
+                <ArrowDown className="h-3 w-3" />
+              </Button>
+            </div>
           </div>
           <div
             className={
@@ -147,29 +166,9 @@ const BuildingCard = ({
 
         {/* Przyciski do obsługi */}
         <div className="flex justify-between gap-2 mt-3">
-          <div className="flex gap-2 flex-1">
-            <Button
-              size="sm"
-              variant="outline"
-              onClick={() => onAdjustWorkers(building.id, 1)}
-              className="p-1 sm:px-4 h-8 sm:h-9 border-green-800/30 bg-green-950/30 hover:bg-green-900/20 flex-1"
-            >
-              <ArrowUp className="h-4 w-4" />
-              <span className="hidden sm:inline ml-1">Assign</span>
-            </Button>
+          <div className="flex gap-2 flex-1"></div>
 
-            <Button
-              size="sm"
-              variant="outline"
-              onClick={() => onAdjustWorkers(building.id, -1)}
-              className="p-1 sm:px-4 h-8 sm:h-9 border-red-800/30 bg-red-950/30 hover:bg-red-900/20 flex-1"
-            >
-              <ArrowDown className="h-4 w-4" />
-              <span className="hidden sm:inline ml-1">Remove</span>
-            </Button>
-          </div>
-
-          <Button
+          {/* <Button
             size="sm"
             variant="outline"
             onClick={() => onToggleExpand(building.id)}
@@ -178,155 +177,151 @@ const BuildingCard = ({
             <span className="text-xs sm:text-sm">
               {isExpanded ? "Less" : "More"}
             </span>
-          </Button>
+          </Button> */}
         </div>
 
-        {isExpanded && (
-          <div className="mt-4 space-y-3 animate-fade-in">
-            {/* Sekcja Storage Bonus */}
-            <div className="space-y-1">
-              {hasStorageBonus ||
+        <div className="mt-4 space-y-3 animate-fade-in">
+          {/* Sekcja Storage Bonus */}
+          <div className="space-y-1">
+            {hasStorageBonus ||
+            (building?.uniqueBonus?.storage &&
+              building?.tier === building?.maxTier) ? (
+              <h4 className="text-xs text-foreground/70">Storage Capacity:</h4>
+            ) : null}
+            {(hasStorageBonus ||
               (building?.uniqueBonus?.storage &&
-                building?.tier === building?.maxTier) ? (
-                <h4 className="text-xs text-foreground/70">
-                  Storage Capacity:
-                </h4>
-              ) : null}
-              {(hasStorageBonus ||
-                (building?.uniqueBonus?.storage &&
-                  building?.tier === building?.maxTier)) && (
-                <div className="grid grid-cols-2 gap-2 text-xs text-cyan-400">
-                  {Object.entries(
-                    hasStorageBonus
-                      ? building.storageBonus
-                      : building.uniqueBonus.storage
-                  ).map(([resource, bonus]) => (
-                    <div key={resource} className="flex items-center space-x-1">
-                      <span>{ResourcesIcon({ resource })}</span>
-                      <span>
-                        +
-                        {formatNumber(
-                          hasStorageBonus
-                            ? getCapacityByResource(
-                                building,
-                                Number(bonus),
-                                resource
-                              )
-                            : bonus
-                        )}
-                      </span>
-                    </div>
-                  ))}
-                </div>
-              )}
-            </div>
+                building?.tier === building?.maxTier)) && (
+              <div className="grid grid-cols-2 gap-2 text-xs text-cyan-400">
+                {Object.entries(
+                  hasStorageBonus
+                    ? building.storageBonus
+                    : building.uniqueBonus.storage
+                ).map(([resource, bonus]) => (
+                  <div key={resource} className="flex items-center space-x-1">
+                    <span>{ResourcesIcon({ resource })}</span>
+                    <span>
+                      +
+                      {formatNumber(
+                        hasStorageBonus
+                          ? getCapacityByResource(
+                              building,
+                              Number(bonus),
+                              resource
+                            )
+                          : bonus
+                      )}
+                    </span>
+                  </div>
+                ))}
+              </div>
+            )}
+          </div>
 
-            {/* Sekcja Production/Consumption */}
-            <div className="space-y-1">
-              <h4 className="text-xs text-foreground/70">
-                Production & Consumption:
-              </h4>
-              <div className="grid grid-cols-2 gap-2 text-xs">
-                {/* Production */}
-                {Object.entries(building.baseProduction).map(([resource]) => {
-                  const total = getProductionByResource(
-                    building,
-                    resource,
-                    resources
-                  );
-                  return (
-                    <div
-                      key={resource}
-                      className="flex items-center space-x-1 justify-start w-full"
-                    >
-                      <span>{ResourcesIcon({ resource })}</span>
-                      <span className="text-xs text-foreground/70">
-                        {resource}
-                      </span>
-                      <span className="text-green-400">
-                        +{formatNumber(total)}/s
-                      </span>
-                      {/* {tier5Bonus > 0 && (
+          {/* Sekcja Production/Consumption */}
+          <div className="space-y-1">
+            <h4 className="text-xs text-foreground/70">
+              Production & Consumption:
+            </h4>
+            <div className="grid grid-cols-2 gap-2 text-xs">
+              {/* Production */}
+              {Object.entries(building.baseProduction).map(([resource]) => {
+                const total = getProductionByResource(
+                  building,
+                  resource,
+                  resources
+                );
+                return (
+                  <div
+                    key={resource}
+                    className="flex items-center space-x-1 justify-start w-full"
+                  >
+                    <span>{ResourcesIcon({ resource })}</span>
+                    <span className="text-xs text-foreground/70">
+                      {resource}
+                    </span>
+                    <span className="text-green-400">
+                      +{formatNumber(total)}/s
+                    </span>
+                    {/* {tier5Bonus > 0 && (
                         <Badge className="ml-1 bg-yellow-800/30 text-yellow-400">
                           T5 Bonus
                         </Badge>
                       )} */}
-                    </div>
-                  );
-                })}
-                {/* Consumption */}
-                {Object.entries(building.baseConsumption).map(
-                  ([resource, amount]) => (
-                    <div key={resource} className="w-full">
-                      <div className="flex items-center space-x-1">
-                        <span>{resources[resource]?.icon}</span>
-                        <span className="text-xs text-foreground/70">
-                          {resource}
-                        </span>
-                        <span
-                          className={
-                            building.functioning
-                              ? "text-red-400"
-                              : "text-gray-400"
-                          }
-                        >
-                          -
-                          {formatNumber(
-                            Number(amount) * building.tier * building.efficiency
-                          )}
-                          /s
-                          {!building.functioning && " (disabled)"}
-                        </span>
-                      </div>
-                    </div>
-                  )
-                )}
-              </div>
-            </div>
-
-            {/* Przycisk i wymagania ulepszenia */}
-            <div className="pt-2">
-              <Button
-                size="sm"
-                onClick={() => onUpgrade(building.id)}
-                disabled={isMaxTier || !canUpgrade}
-                className="w-full button-primary"
-              >
-                {isMaxTier
-                  ? "Max Tier Reached"
-                  : `Upgrade to ${building.upgrades + 1}/10 (Tier ${
-                      building.tier
-                    })`}
-              </Button>
-
-              {!isMaxTier && (
-                <div className="space-y-1 mt-2">
-                  <h4 className="text-xs text-foreground/70">
-                    Upgrade Requirements:
-                  </h4>
-                  <div className="grid grid-cols-2 gap-2 mt-2 text-xs">
-                    {Object.entries(getBuildingUpgradeCost(building)).map(
-                      ([resource, cost]) => (
-                        <div
-                          key={resource}
-                          className={`flex items-center space-x-1 ${
-                            resources[resource]?.amount < Number(cost)
-                              ? "text-red-400"
-                              : "text-foreground/70"
-                          }`}
-                        >
-                          <span>{ResourcesIcon({ resource })}</span>
-                          <span>{resource}</span>
-                          <span>{formatNumber(Number(cost))}</span>
-                        </div>
-                      )
-                    )}
                   </div>
-                </div>
+                );
+              })}
+              {/* Consumption */}
+              {Object.entries(building.baseConsumption).map(
+                ([resource, amount]) => (
+                  <div key={resource} className="w-full">
+                    <div className="flex items-center space-x-1">
+                      <span>{resources[resource]?.icon}</span>
+                      <span className="text-xs text-foreground/70">
+                        {resource}
+                      </span>
+                      <span
+                        className={
+                          building.functioning
+                            ? "text-red-400"
+                            : "text-gray-400"
+                        }
+                      >
+                        -
+                        {formatNumber(
+                          Number(amount) * building.tier * building.efficiency
+                        )}
+                        /s
+                        {!building.functioning && " (disabled)"}
+                      </span>
+                    </div>
+                  </div>
+                )
               )}
             </div>
           </div>
-        )}
+
+          {/* Przycisk i wymagania ulepszenia */}
+          <div className="pt-2">
+            <Button
+              size="sm"
+              onClick={() => onUpgrade(building.id)}
+              disabled={isMaxTier || !canUpgrade}
+              className="w-full button-primary"
+            >
+              {isMaxTier
+                ? "Max Tier Reached"
+                : `Upgrade to ${building.upgrades + 1}/10 (Tier ${
+                    building.tier
+                  })`}
+            </Button>
+
+            {!isMaxTier && (
+              <div className="space-y-1 mt-2">
+                <h4 className="text-xs text-foreground/70">
+                  Upgrade Requirements:
+                </h4>
+                <div className="grid grid-cols-2 gap-2 mt-2 text-xs">
+                  {Object.entries(getBuildingUpgradeCost(building)).map(
+                    ([resource, cost]) => (
+                      <div
+                        key={resource}
+                        className={`flex items-center space-x-1 ${
+                          resources[resource]?.amount < Number(cost)
+                            ? "text-red-400"
+                            : "text-foreground/70"
+                        }`}
+                      >
+                        <span>{ResourcesIcon({ resource })}</span>
+                        <span>{resource}</span>
+                        <span>{formatNumber(Number(cost))}</span>
+                      </div>
+                    )
+                  )}
+                </div>
+              </div>
+            )}
+          </div>
+        </div>
       </CardContent>
     </Card>
   );
