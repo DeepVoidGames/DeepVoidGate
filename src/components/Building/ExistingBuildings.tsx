@@ -1,9 +1,8 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import BuildingCard from "@/components/Building/BuildingCard";
-import { UpgradeData } from "@/store/types";
+import { ResourceType, UpgradeData } from "@/store/types";
 
-// Dodajemy interfejs dla propsów
 interface ExistingBuildingsProps {
   activeTab: string;
   setActiveTab: (tab: string) => void;
@@ -35,6 +34,8 @@ const ExistingBuildings: React.FC<ExistingBuildingsProps> = ({
   ResourcesIcon,
   getUpgradeData,
 }) => {
+  const [selectedResource, setSelectedResource] = useState<string>("oxygen");
+
   // Kolory dla poszczególnych tierów
   const tierColors: Record<number, string> = {
     1: "text-gray-400",
@@ -60,6 +61,100 @@ const ExistingBuildings: React.FC<ExistingBuildingsProps> = ({
     </div>
   );
 
+  // Funkcja, która znajduje kategorię budynku
+  const getBuildingCategory = (building: any): string => {
+    // Najpierw spróbuj znaleźć w building
+    if (building.category) return building.category;
+
+    // Jeśli nie ma, sprawdź w buildingConfig
+    const config = buildingConfig.find((b) => b.type === building.type);
+    if (config?.category) return config.category;
+
+    // Domyślnie zwróć 'all'
+    return "all";
+  };
+
+  // Funkcja określająca typ zasobu dla budynku
+  const getResourceType = (building: any): string | null => {
+    // Sprawdź tag w budynku
+    if (building.tag) return building.tag;
+
+    // Sprawdź w konfiguracji
+    const config = buildingConfig.find((b) => b.type === building.type);
+    if (config?.tag) return config.tag;
+
+    // Sprawdź baseProduction w budynku
+    if (
+      building.baseProduction &&
+      Object.keys(building.baseProduction).length > 0
+    ) {
+      return Object.keys(building.baseProduction)[0];
+    }
+
+    // Sprawdź baseProduction w konfiguracji
+    if (
+      config?.baseProduction &&
+      Object.keys(config.baseProduction).length > 0
+    ) {
+      return Object.keys(config.baseProduction)[0];
+    }
+
+    // Próba określenia na podstawie nazwy typu
+    const lowerType = building.type.toLowerCase();
+    const resourceTypes = ["oxygen", "food", "energy", "metals"];
+    for (const resource of resourceTypes) {
+      if (lowerType.includes(resource)) {
+        return resource;
+      }
+    }
+
+    // Domyślnie zwróć oxygen
+    return "oxygen";
+  };
+
+  useEffect(() => {
+    if (activeTab !== "production") {
+      setSelectedResource("oxygen");
+    } else {
+      // Filtruj budynki produkcyjne
+      const productionBuildings = filteredBuildings.filter(
+        (building) => getBuildingCategory(building) === "production"
+      );
+
+      if (productionBuildings.length > 0) {
+        const availableResources = productionBuildings.reduce(
+          (acc, building) => {
+            const res = getResourceType(building);
+            return res && !acc.includes(res) ? [...acc, res] : acc;
+          },
+          [] as string[]
+        );
+
+        if (
+          availableResources.length > 0 &&
+          !availableResources.includes(selectedResource)
+        ) {
+          setSelectedResource(availableResources[0]);
+        }
+      }
+    }
+  }, [activeTab, filteredBuildings, selectedResource]);
+
+  // Funkcja sprawdzająca, czy budynek powinien być wyświetlony
+  const shouldDisplayBuilding = (building: any, categoryId: string) => {
+    const buildingCategory = getBuildingCategory(building);
+
+    const isCategoryMatch =
+      categoryId === "all" || buildingCategory === categoryId;
+
+    if (categoryId === "production") {
+      const resourceType = getResourceType(building);
+      return isCategoryMatch && resourceType === selectedResource;
+    }
+
+    return isCategoryMatch;
+  };
+
   return (
     <div className="space-y-4">
       <Tabs value={activeTab} onValueChange={setActiveTab}>
@@ -76,17 +171,45 @@ const ExistingBuildings: React.FC<ExistingBuildingsProps> = ({
           ))}
         </TabsList>
 
-        {categories.map((category) => (
-          <TabsContent key={category.id} value={category.id} className="mt-4">
-            <div className="grid grid-cols-1 gap-4">
-              {filteredBuildings
-                .filter(
-                  (building) =>
-                    category.id === "all" ||
-                    buildingConfig.find((b) => b.type === building.type)
-                      ?.category === category.id
-                )
-                .map((building) => {
+        {activeTab === "production" && (
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-2 w-full h-full py-2 my-2 items-center justify-center rounded-md bg-muted p-1 text-muted-foreground">
+            {["oxygen", "food", "energy", "metals"].map((resource) => (
+              <button
+                key={resource}
+                onClick={() => setSelectedResource(resource)}
+                className={`inline-flex items-center justify-center whitespace-nowrap rounded-sm px-3 py-1.5 text-sm font-medium ring-offset-background transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 data-[state=active]:bg-background data-[state=active]:text-foreground data-[state=active]:shadow-sm ${
+                  selectedResource === resource
+                    ? "bg-background text-white"
+                    : ""
+                }`}
+              >
+                {<ResourcesIcon resource={resource} />}{" "}
+                {resource.charAt(0).toUpperCase() + resource.slice(1)}
+              </button>
+            ))}
+          </div>
+        )}
+
+        {categories.map((category) => {
+          const displayableBuildings = filteredBuildings.filter((building) =>
+            shouldDisplayBuilding(building, category.id)
+          );
+
+          return (
+            <TabsContent key={category.id} value={category.id} className="mt-4">
+              <div className="grid grid-cols-1 gap-4">
+                {displayableBuildings.length === 0 && (
+                  <div className="text-center p-4 bg-gray-800 rounded-md">
+                    <p>
+                      Nie znaleziono budynków dla tej kategorii.{" "}
+                      {category.id === "production"
+                        ? `(Zasób: ${selectedResource})`
+                        : ""}
+                    </p>
+                  </div>
+                )}
+
+                {displayableBuildings.map((building) => {
                   const isMaxTier =
                     building.tier >= 5 && building.upgrades >= 10;
                   const upgradeData = getUpgradeData[building.id];
@@ -114,9 +237,10 @@ const ExistingBuildings: React.FC<ExistingBuildingsProps> = ({
                     />
                   );
                 })}
-            </div>
-          </TabsContent>
-        ))}
+              </div>
+            </TabsContent>
+          );
+        })}
       </Tabs>
     </div>
   );

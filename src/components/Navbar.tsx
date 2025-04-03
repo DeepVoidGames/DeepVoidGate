@@ -174,7 +174,7 @@ export const MobileTopNav = () => {
 
   return (
     <nav
-      className={`fixed left-0 z-50 w-full border-b bg-background/95 min-[700px]:p-2 ${
+      className={`fixed left-0 z-50 w-full min-[700px]:p-2 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 ${
         settings?.compactUIOptions?.doubleNavbar &&
         !settings?.compactUIOptions?.alwaysMobileNavbar &&
         !isMobile
