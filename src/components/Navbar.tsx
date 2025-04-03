@@ -176,7 +176,8 @@ export const MobileTopNav = () => {
     <nav
       className={`fixed left-0 z-50 w-full border-b bg-background/95 min-[700px]:p-2 ${
         settings?.compactUIOptions?.doubleNavbar &&
-        !settings?.compactUIOptions?.alwaysMobileNavbar
+        !settings?.compactUIOptions?.alwaysMobileNavbar &&
+        !isMobile
           ? " top-[64.5px] "
           : " top-0"
       }`}
