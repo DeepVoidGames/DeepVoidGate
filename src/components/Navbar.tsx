@@ -175,7 +175,10 @@ export const MobileTopNav = () => {
   return (
     <nav
       className={`fixed left-0 z-50 w-full border-b bg-background/95 min-[700px]:p-2 ${
-        settings?.compactUIOptions?.doubleNavbar ? " top-[64.5px] " : " top-0"
+        settings?.compactUIOptions?.doubleNavbar &&
+        !settings?.compactUIOptions?.alwaysMobileNavbar
+          ? " top-[64.5px] "
+          : " top-0"
       }`}
     >
       <div className="grid grid-cols-1 h-12 items-center justify-between px-4">
