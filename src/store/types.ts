@@ -204,9 +204,39 @@ export interface GameState {
   colonistProgress: number;
   userID: string;
   milestones: Milestone[];
+  expeditions: Expedition[];
 }
 
 export interface UpgradeData {
   costs: Record<ResourceType, number>;
   canUpgrade: boolean;
+}
+
+export type ExpeditionType = "planetary" | "cosmic";
+export type MissionType = "resource" | "research" | "combat";
+
+export interface ExpeditionEvent {
+  id: string;
+  description: string;
+  choices: ExpeditionChoice[];
+}
+
+export interface ExpeditionChoice {
+  text: string;
+  cost?: Partial<Record<ResourceType, number>>;
+  outcome: string;
+  outcomeEffects?: Partial<Record<ResourceType, number>>;
+}
+
+export interface Expedition {
+  id: string;
+  type: ExpeditionType;
+  mission: MissionType;
+  duration: number;
+  timeLeft: number;
+  status: "pending" | "active" | "completed" | "failed";
+  assignedResources: Partial<Record<ResourceType, number>>;
+  assignedPersonnel: number;
+  events: ExpeditionEvent[];
+  rewards?: Partial<Record<ResourceType, number>>;
 }

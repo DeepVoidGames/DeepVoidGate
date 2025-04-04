@@ -35,6 +35,7 @@ import {
 } from "@/migrations/migrateGameState";
 import { initialMilestones } from "@/data/milestonesData";
 import { checkMilestones } from "./milestonesReducer";
+import { handleExpeditions } from "./expeditionReducer";
 
 // Initialize the game state
 export const initialState: GameState = {
@@ -51,6 +52,7 @@ export const initialState: GameState = {
   colonistProgress: 0,
   userID: null,
   milestones: initialMilestones,
+  expeditions: [],
 };
 
 // Constants for death timer
@@ -72,6 +74,8 @@ export const gameReducer = (
   switch (action.type) {
     case "TICK": {
       if (state.paused) return state;
+      const expeditionState = handleExpeditions(state, action);
+      if (expeditionState !== state) return expeditionState;
 
       const { currentTime } = action.payload;
       const deltaTime = (currentTime - state.lastUpdate) / 1000; // in seconds

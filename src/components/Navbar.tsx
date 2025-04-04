@@ -11,6 +11,7 @@ import {
   Coins,
   Icon,
   Milestone,
+  Computer,
 } from "lucide-react";
 import { useIsMobile } from "@/hooks/use-mobile"; // Zaimportuj hook z odpowiedniej ścieżki
 import { ResourceData, ResourceType } from "@/store/types";
@@ -18,6 +19,7 @@ import { useGame } from "@/context/GameContext";
 import { ResourcesIcon } from "@/config";
 import { formatNumber } from "@/lib/utils";
 import { getSettings } from "@/pages/Settings";
+import { link } from "fs";
 
 const links = [
   { path: "/", label: "Home", icon: <Home className="h-5 w-5" /> },
@@ -150,6 +152,23 @@ const DesktopNav = () => {
 const Navbar = () => {
   const isMobile = useIsMobile();
   const settings = getSettings();
+  const { state } = useGame();
+
+  // Check technoloige for id advanced_hub_integration to unlock Hub
+  const hasHubIntegration = state.technologies.some(
+    (tech) => tech.id === "advanced_hub_integration" && tech.isResearched
+  );
+
+  // Add hub to nav bar one time
+  React.useEffect(() => {
+    if (hasHubIntegration) {
+      links.push({
+        path: "/hub",
+        label: "Hub",
+        icon: <Computer className="h-5 w-5" />,
+      });
+    }
+  }, [hasHubIntegration]);
 
   if (isMobile === undefined) return null; // Możesz dodać placeholder ładowania
   return isMobile || settings.compactUIOptions?.alwaysMobileNavbar ? (

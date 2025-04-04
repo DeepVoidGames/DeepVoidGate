@@ -161,7 +161,19 @@ const TechnologiesManager: React.FC = () => {
         tech.description?.toLowerCase().includes(search)
       );
     })
-    .sort((a, b) => a.researchCost.science - b.researchCost.science);
+    .sort((a, b) => {
+      const aIsPrerequisite = technologies.some((tech) =>
+        tech.prerequisites.includes(a.id)
+      );
+      const bIsPrerequisite = technologies.some((tech) =>
+        tech.prerequisites.includes(b.id)
+      );
+
+      if (aIsPrerequisite && !bIsPrerequisite) return -1;
+      if (!aIsPrerequisite && bIsPrerequisite) return 1;
+
+      return a.researchCost.science - b.researchCost.science;
+    });
 
   return (
     <div className="glass-panel p-4 space-y-6 animate-fade-in">
@@ -209,7 +221,7 @@ const TechnologiesManager: React.FC = () => {
           return (
             <div
               key={tech.id}
-              className={`p-4 rounded-lg border transition-all duration-200 h-[250px] relative ${
+              className={`p-4 rounded-lg border transition-all duration-200 h-[300px] relative ${
                 isResearched
                   ? "bg-green-900/20 border-green-800"
                   : `bg-background/50 border-muted/30 ${

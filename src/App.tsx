@@ -10,6 +10,8 @@ import { GameProvider } from "./context/GameContext";
 import Navbar from "./components/Navbar";
 import Settings from "./pages/Settings";
 import Milestones from "./pages/Milestones";
+import Hub from "./pages/Hub";
+import ExpeditionUI from "./pages/Expedition";
 
 const queryClient = new QueryClient();
 
@@ -25,6 +27,8 @@ const App = () => (
             <Route path="/" element={<Index />} />
             <Route path="/tech" element={<Technologies />} />
             <Route path="/milestones" element={<Milestones />} />
+            <Route path="/hub" element={<Hub />} />
+            <Route path="/expedition" element={<ExpeditionUI />} />
             <Route path="/settings" element={<Settings />} />
             {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
             <Route path="*" element={<NotFound />} />
