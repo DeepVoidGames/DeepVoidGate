@@ -5,7 +5,7 @@ import {
   BuildingType,
   BuildingCategory,
   Technology,
-  Expedition,
+  ExpeditionState as Expedition,
 } from "@/store/types";
 import buildingData from "../data/buildings.json";
 

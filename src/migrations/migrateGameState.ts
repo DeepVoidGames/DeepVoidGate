@@ -18,12 +18,10 @@ export const migrateGameState = (savedState: any): GameState => {
 
   // Migracje wersji
   if (typeof currentState.version === "string") currentState.version = 0;
-  if (currentState.version === undefined || currentState.version === 0) {
+  if (currentState.version === undefined || currentState.version === 0)
     currentState = migrateV0ToV1(currentState);
-  }
-  if (currentState.version === 1) {
-    currentState = migrateV1ToV2(currentState);
-  }
+
+  if (currentState.version === 1) currentState = migrateV1ToV2(currentState);
 
   // Merge technologii (bez zmian)
   const mergedTechnologies = initialTechnologies.map((tech) => ({
