@@ -61,9 +61,6 @@ export interface ExpeditionEvent {
   outcomes: Record<string, EventOutcome>; // Map of choiceId_outcomeType to outcome
 }
 
-// src/data/expeditions/expeditionEventData.ts
-import { ExpeditionEvent } from "./expeditionEvents";
-
 export const expeditionEvents: ExpeditionEvent[] = [
   {
     id: "resource_vein",

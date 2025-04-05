@@ -18,10 +18,16 @@ export type GameAction =
   | { type: "RESET_GAME" }
   | {
       type: "START_EXPEDITION";
-      payload: { expeditionType: ExpeditionType; missionType: MissionType };
+      payload: { expeditionType: string; missionType: string };
     }
-  | { type: "UPDATE_EXPEDITION"; payload: { currentTime: number } }
+  | {
+      type: "UPDATE_EXPEDITION";
+      payload: { expeditionId: string; progress: number };
+    }
   | {
       type: "HANDLE_EXPEDITION_EVENT";
-      payload: { expeditionId: string; choiceIndex: number };
-    };
+      payload: { expeditionId: string; choiceId: string };
+    }
+  | { type: "UPDATE_EXPEDITIONS"; payload: { currentTime: number } }
+  | { type: "RECALL_EXPEDITION"; payload: { expeditionId: string } }
+  | { type: "DISMISS_EXPEDITION"; payload: { expeditionId: string } };

@@ -204,7 +204,7 @@ export interface GameState {
   colonistProgress: number;
   userID: string;
   milestones: Milestone[];
-  expeditions: Expedition[];
+  expeditions: ExpeditionState[];
 }
 
 export interface UpgradeData {
@@ -212,31 +212,141 @@ export interface UpgradeData {
   canUpgrade: boolean;
 }
 
-export type ExpeditionType = "planetary" | "cosmic";
-export type MissionType = "resource" | "research" | "combat";
+export type EventOutcomeType =
+  | "success"
+  | "partial_success"
+  | "failure"
+  | "critical_failure"
+  | "critical_success";
+
+export interface EventChoice {
+  id: string;
+  text: string;
+  requiresSkill?: {
+    skill: string;
+    level: number;
+  };
+  requiresEquipment?: {
+    itemId: string;
+    consumed?: boolean;
+  };
+  requiresResource?: Partial<Record<ResourceType, number>>;
+  requiresPersonnel?: number;
+  outcomeChances: {
+    [key in EventOutcomeType]?: number; // Probability of this outcome (0-100)
+  };
+}
+
+export interface EventOutcome {
+  type: EventOutcomeType;
+  description: string;
+  effects: {
+    resources?: Partial<Record<ResourceType, number>>;
+    personnel?: number; // Negative for losses
+    equipment?: {
+      gain?: { [key: string]: number };
+      loss?: { [key: string]: number };
+    };
+    expedition?: {
+      timeModifier?: number; // Percentage (e.g., -20 means expedition is 20% shorter)
+      successChanceModifier?: number; // Percentage points (e.g., -10 means success chance is 10pp lower)
+    };
+    unlockEvent?: string; // ID of an event that becomes available after this outcome
+  };
+}
 
 export interface ExpeditionEvent {
   id: string;
+  title: string;
   description: string;
-  choices: ExpeditionChoice[];
+  image?: string;
+  applicationConditions?: {
+    expeditionTypes?: string[];
+    missionTypes?: string[];
+    requiredTechnology?: string[];
+    minDuration?: number;
+    personnelCount?: { min?: number; max?: number };
+    resourcesRequired?: Partial<Record<ResourceType, number>>;
+    chance?: number; // Percentage chance this event occurs when eligible
+  };
+  choices: EventChoice[];
+  outcomes: Record<string, EventOutcome>; // Map of choiceId_outcomeType to outcome
 }
 
-export interface ExpeditionChoice {
-  text: string;
-  cost?: Partial<Record<ResourceType, number>>;
-  outcome: string;
-  outcomeEffects?: Partial<Record<ResourceType, number>>;
+export interface ExpeditionConfig {
+  type: ExpeditionType;
+  name: string;
+  icon: string;
+  description: string;
+  unlockRequirement?: {
+    technology?: string;
+    milestoneId?: string;
+    resourceAmount?: Record<ResourceType, number>;
+  };
+  baseStats: {
+    duration: number; // in seconds
+    successChance: number;
+    baseRewardMultiplier: number;
+  };
+  missions: MissionConfig[];
 }
 
-export interface Expedition {
+export interface MissionConfig {
+  type: MissionType;
+  name: string;
+  icon: string;
+  description: string;
+  imageUrl?: string;
+  requirements: {
+    resources: Partial<Record<ResourceType, number>>;
+    personnel: number;
+    equipment?: Record<string, number>;
+    technology?: string[];
+  };
+  rewards: {
+    guaranteed: Partial<Record<ResourceType, number>>;
+    random: Array<{
+      resource: ResourceType;
+      min: number;
+      max: number;
+      chance: number; // 0-100%
+    }>;
+    rareTechnology?: Array<{
+      id: string;
+      chance: number; // 0-100%
+    }>;
+    equipment?: Array<{
+      id: string;
+      chance: number; // 0-100%
+    }>;
+  };
+  eventChance: number; // Chance of an event occurring during the expedition (0-100%)
+  eventPool: string[]; // IDs of potential events that can occur during this mission
+}
+
+export type ExpeditionType = "planetary" | "cosmic";
+export type MissionType = "resource" | "research" | "combat";
+
+export interface ExpeditionState {
   id: string;
   type: ExpeditionType;
   mission: MissionType;
   duration: number;
   timeLeft: number;
-  status: "pending" | "active" | "completed" | "failed";
+  status:
+    | "pending"
+    | "active"
+    | "completed"
+    | "failed"
+    | "returning"
+    | "event_pending";
   assignedResources: Partial<Record<ResourceType, number>>;
   assignedPersonnel: number;
   events: ExpeditionEvent[];
+  currentEvent?: ExpeditionEvent;
   rewards?: Partial<Record<ResourceType, number>>;
+  successChance: number;
+  missionName: string;
+  missionIcon: string;
+  eventChance?: number;
 }
