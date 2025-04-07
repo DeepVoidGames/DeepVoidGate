@@ -35,7 +35,13 @@ import {
 } from "@/migrations/migrateGameState";
 import { initialMilestones } from "@/data/milestonesData";
 import { checkMilestones } from "./milestonesReducer";
-import { handleExpeditions } from "./expeditionReducer";
+import {
+  startExpedition,
+  launchExpedition,
+  handleExpeditionTick,
+  handleExpeditionEventChoice,
+  cancelExpedition,
+} from "./expeditionReducer";
 
 // Initialize the game state
 export const initialState: GameState = {
@@ -343,15 +349,22 @@ export const gameReducer = (
         resources: newResources,
       });
 
-      return {
+      // Najpierw stwórz nowy stan ze wszystkimi dotychczasowymi zmianami
+      let newState = {
         ...state,
         resources: newMilestones.resources,
         buildings,
         population: newPopulation,
-        colonistProgress: newColonistProgress, // Ustaw zaktualizowany progres
+        colonistProgress: newColonistProgress,
         milestones: newMilestones.milestones,
         lastUpdate: currentTime,
       };
+
+      // Następnie przetwórz ekspedycje na tym nowym stanie
+      newState = handleExpeditionTick(newState, deltaTime);
+
+      // Na końcu zwróć ostateczny stan
+      return newState;
     }
 
     case "CONSTRUCT_BUILDING": {
@@ -448,6 +461,31 @@ export const gameReducer = (
       }
 
       return state;
+    }
+
+    case "START_EXPEDITION": {
+      const { type, tier } = action.payload;
+      return startExpedition(state, type, tier);
+    }
+
+    case "LAUNCH_EXPEDITION": {
+      const { expeditionId } = action.payload;
+      return launchExpedition(state, expeditionId);
+    }
+
+    case "HANDLE_EXPEDITION_EVENT": {
+      const { expeditionId, eventIndex, optionIndex } = action.payload;
+      return handleExpeditionEventChoice(
+        state,
+        expeditionId,
+        eventIndex,
+        optionIndex
+      );
+    }
+
+    case "CANCEL_EXPEDITION": {
+      const { expeditionId } = action.payload;
+      return cancelExpedition(state, expeditionId);
     }
 
     case "SAVE_GAME": {

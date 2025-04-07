@@ -1,9 +1,5 @@
-import {
-  BuildingType,
-  ExpeditionType,
-  MissionType,
-  ResourceType,
-} from "./types";
+import { ExpeditionType } from "@/types/expedition";
+import { BuildingType, ResourceType } from "./types";
 
 export type GameAction =
   | { type: "TICK"; payload: { currentTime: number } }
@@ -18,16 +14,15 @@ export type GameAction =
   | { type: "RESET_GAME" }
   | {
       type: "START_EXPEDITION";
-      payload: { expeditionType: string; missionType: string };
+      payload: { type: ExpeditionType; tier: number };
     }
-  | {
-      type: "UPDATE_EXPEDITION";
-      payload: { expeditionId: string; progress: number };
-    }
+  | { type: "LAUNCH_EXPEDITION"; payload: { expeditionId: string } }
   | {
       type: "HANDLE_EXPEDITION_EVENT";
-      payload: { expeditionId: string; choiceId: string };
+      payload: {
+        expeditionId: string;
+        eventIndex: number;
+        optionIndex: number;
+      };
     }
-  | { type: "UPDATE_EXPEDITIONS"; payload: { currentTime: number } }
-  | { type: "RECALL_EXPEDITION"; payload: { expeditionId: string } }
-  | { type: "DISMISS_EXPEDITION"; payload: { expeditionId: string } };
+  | { type: "CANCEL_EXPEDITION"; payload: { expeditionId: string } };
