@@ -85,12 +85,32 @@ const applyEventEffects = (
         }
         break;
 
-      case "crew":
-        newExpedition.crew = Math.max(
-          1,
-          newExpedition.crew + (value as number)
-        );
+      case "crew": {
+        const crewChange = value as number;
+        const originalCrew = newExpedition.crew;
+        newExpedition.crew = Math.max(1, newExpedition.crew + crewChange);
+
+        // Oblicz ilość straconych kolonistów
+        const crewLost = originalCrew - newExpedition.crew;
+        if (crewLost > 0) {
+          // Aktualizuj globalną populację
+          newState.population.total = Math.max(
+            0,
+            newState.population.total - crewLost
+          );
+          newState.population.available = Math.max(
+            0,
+            newState.population.available - crewLost
+          );
+
+          toast({
+            title: "Crew Members Lost",
+            description: `${crewLost} colonists have perished during the expedition.`,
+            variant: "destructive",
+          });
+        }
         break;
+      }
 
       case "reward":
         if (!newExpedition.rewards) newExpedition.rewards = {};
