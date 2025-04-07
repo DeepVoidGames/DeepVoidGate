@@ -12,10 +12,10 @@ import { expeditionEvents } from "@/data/expeditionEvents";
 import { toast } from "@/components/ui/use-toast";
 
 // Stałe
-const BASE_EXPEDITION_TIME = 30; // 30 minut dla tier 0
-const TIME_PER_TIER = 15; // +15 minut na każdy tier
-const CREW_PER_TIER = 1; // +1 załogant na każdy tier
-const EVENT_INTERVAL = 10; // zdarzenie co 10 minut
+export const BASE_EXPEDITION_TIME = 15; // 30 minut dla tier 0
+export const TIME_PER_TIER = 15; // +15 minut na każdy tier
+export const CREW_PER_TIER = 5; // +1 załogant na każdy tier
+export const EVENT_INTERVAL = 10; // zdarzenie co 10 minut
 
 // Helpery
 const calculateExpeditionDuration = (tier: number): number => {
@@ -372,4 +372,10 @@ export const cancelExpedition = (
     expeditions: newExpeditions,
     population: newPopulation,
   };
+};
+
+export const isExpedtionUnlocked = (state) => {
+  return state.technologies.some(
+    (tech) => tech.id === "advanced_hub_integration" && tech.isResearched
+  );
 };

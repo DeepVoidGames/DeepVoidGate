@@ -23,6 +23,11 @@ import {
   XCircle,
 } from "lucide-react";
 import { MobileTopNav } from "@/components/Navbar";
+import {
+  BASE_EXPEDITION_TIME,
+  CREW_PER_TIER,
+  isExpedtionUnlocked,
+} from "@/store/reducers/expeditionReducer";
 
 const Expedition = () => {
   const { state, dispatch } = useGame();
@@ -30,6 +35,8 @@ const Expedition = () => {
     useState<ExpeditionType>("scientific");
   const [selectedTier, setSelectedTier] = useState(0);
   const [error, setError] = useState("");
+
+  if (!isExpedtionUnlocked(state)) return;
 
   const expeditionTypes = [
     {
@@ -49,7 +56,7 @@ const Expedition = () => {
   ];
 
   const handleStartExpedition = () => {
-    const requiredCrew = 2 + selectedTier * 1;
+    const requiredCrew = CREW_PER_TIER + selectedTier * 1;
     if (state.population.available < requiredCrew) {
       setError(`Not enough crew members! Required: ${requiredCrew}`);
       return;
@@ -165,12 +172,13 @@ const Expedition = () => {
                 <div className="flex items-center gap-2">
                   <Clock className="w-4 h-4" />
                   <span>
-                    Duration: {formatDuration(30 + selectedTier * 15)}
+                    Duration:{" "}
+                    {formatDuration(BASE_EXPEDITION_TIME + selectedTier * 15)}
                   </span>
                 </div>
                 <div className="flex items-center gap-2">
                   <Users className="w-4 h-4" />
-                  <span>Crew: {2 + selectedTier * 1}</span>
+                  <span>Crew: {CREW_PER_TIER + selectedTier * 1}</span>
                 </div>
               </div>
             </div>
