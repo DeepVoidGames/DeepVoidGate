@@ -14,8 +14,114 @@ import { toast } from "@/components/ui/use-toast";
 // Stałe
 export const BASE_EXPEDITION_TIME = 15; // 30 minut dla tier 0
 export const TIME_PER_TIER = 15; // +15 minut na każdy tier
-export const CREW_PER_TIER = 5; // +1 załogant na każdy tier
+export const CREW_PER_TIER = 5; // +5 załogant na każdy tier
 export const EVENT_INTERVAL = 10; // zdarzenie co 10 minut
+export const TIER_MULTIPLIER = 1.5; // mnożnik dla nagród za każdy tier
+
+const BASE_REWARDS: Record<ExpeditionType, ResourceAmount> = {
+  mining: { metals: 5000 },
+  scientific: { science: 5000 },
+};
+
+export const getBaseExpeditionReward = (
+  type: ExpeditionType,
+  tier: number
+): ResourceAmount => {
+  const baseRewards = BASE_REWARDS[type];
+  const multipliedRewards: ResourceAmount = {};
+
+  for (const [resource, amount] of Object.entries(baseRewards)) {
+    multipliedRewards[resource as ResourceType] = Math.round(
+      amount * Math.pow(TIER_MULTIPLIER, tier)
+    );
+  }
+
+  return multipliedRewards;
+};
+
+export const getExpectedExpeditionRewards = (
+  type: ExpeditionType,
+  tier: number
+) => {
+  const base = getBaseExpeditionReward(type, tier);
+  return {
+    base: base,
+    min: Object.fromEntries(
+      Object.entries(base).map(([res, val]) => [res, Math.round(val * 0)])
+    ),
+    max: Object.fromEntries(
+      Object.entries(base).map(([res, val]) => [res, Math.round(val * 3)])
+    ),
+  };
+};
+
+export const getCurrentExpeditionRewards = (
+  expedition: Expedition
+): ResourceAmount => {
+  return {
+    ...getBaseExpeditionReward(expedition.type, expedition.tier),
+    ...expedition.rewards,
+  };
+};
+
+export const calculateReward = (
+  type: ExpeditionType,
+  tier: number
+): ResourceAmount => {
+  const base = getBaseExpeditionReward(type, tier);
+  return Object.fromEntries(
+    Object.entries(base).map(([res, amount]) => [
+      res,
+      Math.round(amount * (Math.random() * 3)),
+    ])
+  );
+};
+
+export const formatRewardsForUI = (rewards: ResourceAmount) => {
+  return Object.entries(rewards)
+    .filter(([_, amount]) => amount > 0)
+    .map(([resource, amount]) => ({
+      type: resource as ResourceType,
+      amount: amount.toLocaleString(),
+    }));
+};
+
+const getReward = (expedition: Expedition, state: GameState): GameState => {
+  let newState = { ...state };
+
+  // Zbierz wszystkie nagrody - zarówno bazowe jak i z eventów
+  const totalRewards: ResourceAmount = {
+    ...calculateReward(expedition.type, expedition.tier),
+    ...expedition.rewards,
+  };
+
+  // Dodaj nagrody do stanu gry
+  for (const [res, amount] of Object.entries(totalRewards)) {
+    if (newState.resources[res as ResourceType]) {
+      newState.resources[res as ResourceType].amount += Number(amount);
+    }
+  }
+
+  // Zwróć załogantów
+  newState.population.available += expedition.crew;
+
+  // Wyczyść nagrody w ekspedycji
+  const cleanExpedition = { ...expedition, rewards: undefined };
+  const expeditionIndex = newState.expeditions.findIndex(
+    (e) => e.id === expedition.id
+  );
+
+  if (expeditionIndex > -1) {
+    newState.expeditions[expeditionIndex] = cleanExpedition;
+  }
+
+  toast({
+    title: "Expedition Completed",
+    description: `Your ${expedition.type} expedition has returned!`,
+  });
+
+  return newState;
+};
 
 // Helpery
 const calculateExpeditionDuration = (tier: number): number => {
@@ -157,6 +263,7 @@ export const startExpedition = (
     status: "preparing",
     events: [],
     nextEventTime: EVENT_INTERVAL, // pierwsze zdarzenie po 10 minutach
+    rewards: calculateReward(type, tier),
   };
 
   // Zatwierdź ekspedycję (zmniejsz liczbę dostępnych kolonistów)
@@ -250,19 +357,7 @@ export const handleExpeditionTick = (
     // Sprawdź czy ekspedycja się zakończyła
     if (newExpedition.elapsed >= newExpedition.duration) {
       newExpedition.status = "completed";
-
-      // Dodaj nagrody
-      if (newExpedition.rewards) {
-        for (const [res, amount] of Object.entries(newExpedition.rewards)) {
-          if (newState.resources[res as ResourceType]) {
-            newState.resources[res as ResourceType].amount += Number(amount);
-          }
-        }
-      }
-
-      // Zwróć załogantów
-      newState.population.available += newExpedition.crew;
-
+      newState = getReward(newExpedition, newState);
       toast({
         title: "Expedition Completed",
         description: `Your ${newExpedition.type} expedition has returned!`,

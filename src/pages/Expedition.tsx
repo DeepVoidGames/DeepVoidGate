@@ -21,13 +21,25 @@ import {
   AlertTriangle,
   CheckCircle2,
   XCircle,
+  Info,
+  Package,
 } from "lucide-react";
 import { MobileTopNav } from "@/components/Navbar";
 import {
   BASE_EXPEDITION_TIME,
   CREW_PER_TIER,
+  getBaseExpeditionReward,
+  getExpectedExpeditionRewards,
   isExpedtionUnlocked,
+  TIME_PER_TIER,
 } from "@/store/reducers/expeditionReducer";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
+import { ResourceType } from "@/store/types";
+import { formatNumber } from "@/lib/utils";
 
 const Expedition = () => {
   const { state, dispatch } = useGame();
@@ -35,6 +47,7 @@ const Expedition = () => {
     useState<ExpeditionType>("scientific");
   const [selectedTier, setSelectedTier] = useState(0);
   const [error, setError] = useState("");
+  const [showCompleted, setShowCompleted] = useState(true);
 
   if (!isExpedtionUnlocked(state)) return;
 
@@ -72,7 +85,7 @@ const Expedition = () => {
   const formatDuration = (minutes: number) => {
     const hours = Math.floor(minutes / 60);
     const mins = minutes % 60;
-    return `${hours}h ${mins.toFixed(2)}m`.replace(/\b0h\s?/, "");
+    return `${hours}h ${mins.toFixed(1)}m`.replace(/\b0h\s?/, "");
   };
 
   const ResourcesIcon = ({ resource }) => {
@@ -86,6 +99,10 @@ const Expedition = () => {
       rareMinerals: "💎",
     };
     return icons[resource] || "?";
+  };
+
+  const toggleCompleted = () => {
+    setShowCompleted(!showCompleted);
   };
 
   return (
@@ -140,7 +157,6 @@ const Expedition = () => {
             <CardContent className="p-0">
               <div className="grid grid-cols-6 gap-2">
                 {[...Array(11)].map((_, tier) => {
-                  const requiredCrew = 2 + tier * 1;
                   return (
                     <button
                       key={tier}
@@ -152,9 +168,9 @@ const Expedition = () => {
                       }`}
                     >
                       <span className="font-bold text-lg">{tier}</span>
-                      <span className="text-xs text-muted-foreground">
+                      {/* <span className="text-xs text-muted-foreground">
                         {requiredCrew} <Users className="inline w-3 h-3" />
-                      </span>
+                      </span> */}
                     </button>
                   );
                 })}
@@ -173,12 +189,66 @@ const Expedition = () => {
                   <Clock className="w-4 h-4" />
                   <span>
                     Duration:{" "}
-                    {formatDuration(BASE_EXPEDITION_TIME + selectedTier * 15)}
+                    {formatDuration(
+                      BASE_EXPEDITION_TIME + selectedTier * TIME_PER_TIER
+                    )}
                   </span>
                 </div>
                 <div className="flex items-center gap-2">
                   <Users className="w-4 h-4" />
-                  <span>Crew: {CREW_PER_TIER + selectedTier * 1}</span>
+                  <span>Crew: {2 + selectedTier * CREW_PER_TIER}</span>
+                </div>
+                <div className="flex items-center gap-2">
+                  <Package className="w-4 h-4" />
+                  <Tooltip>
+                    <TooltipTrigger className="flex items-center gap-1">
+                      <span>Rewards:</span>
+                      <Info className="w-3 h-3" />
+                    </TooltipTrigger>
+                    <TooltipContent>
+                      <div className="grid gap-2">
+                        {Object.entries(
+                          getBaseExpeditionReward(selectedType, selectedTier)
+                        ).map(([resource, amount]) => {
+                          const rewards = getExpectedExpeditionRewards(
+                            selectedType,
+                            selectedTier
+                          );
+                          return (
+                            <div
+                              key={resource}
+                              className="flex justify-between gap-4"
+                            >
+                              <span className="flex items-center gap-2">
+                                <ResourcesIcon
+                                  resource={resource as ResourceType}
+                                />
+                                {resource}:
+                              </span>
+                              <div className="text-right">
+                                <div className="text-sm text-muted-foreground">
+                                  Bonus: Min{" "}
+                                  {rewards.min[resource].toLocaleString()} - Max{" "}
+                                  {rewards.max[resource].toLocaleString()}
+                                </div>
+                                <div>Base: {amount.toLocaleString()}</div>
+                              </div>
+                            </div>
+                          );
+                        })}
+                      </div>
+                    </TooltipContent>
+                  </Tooltip>
+                  <div className="flex gap-2">
+                    {Object.entries(
+                      getBaseExpeditionReward(selectedType, selectedTier)
+                    ).map(([resource, amount]) => (
+                      <span key={resource} className="flex items-center gap-1">
+                        <ResourcesIcon resource={resource as ResourceType} />
+                        {formatNumber(amount)}
+                      </span>
+                    ))}
+                  </div>
                 </div>
               </div>
             </div>
@@ -200,170 +270,183 @@ const Expedition = () => {
 
         {/* Ongoing Expeditions */}
         <div className="glass-panel p-6 space-y-3 animate-fade-in bg-secondary/40 mb-24">
-          <h2 className="text-2xl font-bold">Active Missions</h2>
+          <div className="flex items-center justify-between mb-4">
+            <h2 className="text-2xl font-bold">Active Missions</h2>
+            <button
+              className="text-sm text-muted-foreground hover:text-primary"
+              onClick={toggleCompleted}
+            >
+              {showCompleted ? "Hide Completed" : "Show Completed"}
+            </button>
+          </div>
           <div className="grid md:grid-cols-2 gap-4">
-            {state.expeditions.map((expedition) => (
-              <Card key={expedition.id} className="relative bg-secondary/80">
-                <CardHeader className="pb-4">
-                  <div className="flex items-center justify-between">
-                    <CardTitle className="flex items-center gap-2">
-                      {expedition.type === "scientific" ? (
-                        <FlaskConical className="w-5 h-5 text-purple-500" />
-                      ) : (
-                        <Pickaxe className="w-5 h-5 text-amber-500" />
+            {state.expeditions
+              .filter(
+                (expedition) =>
+                  showCompleted || expedition.status !== "completed"
+              )
+              .map((expedition) => (
+                <Card key={expedition.id} className="relative bg-secondary/80">
+                  <CardHeader className="pb-4">
+                    <div className="flex items-center justify-between">
+                      <CardTitle className="flex items-center gap-2">
+                        {expedition.type === "scientific" ? (
+                          <FlaskConical className="w-5 h-5 text-purple-500" />
+                        ) : (
+                          <Pickaxe className="w-5 h-5 text-amber-500" />
+                        )}
+                        <span className="capitalize">
+                          {expedition.type} Mission
+                        </span>
+                      </CardTitle>
+                      <div className="flex items-center gap-2">
+                        <span className="text-sm bg-muted px-2 py-1 rounded-full">
+                          <Users className="inline w-4 h-4 mr-1" />
+                          {expedition.crew}
+                        </span>
+                        <span className="text-sm bg-muted px-2 py-1 rounded-full">
+                          Tier {expedition.tier}
+                        </span>
+                      </div>
+                    </div>
+                  </CardHeader>
+
+                  <CardContent className="space-y-4">
+                    {/* Progress Section */}
+                    <div className="space-y-2">
+                      <div className="flex justify-between text-sm">
+                        <span className="flex items-center gap-1">
+                          <Clock className="w-4 h-4" />
+                          {formatDuration(expedition.elapsed)}
+                        </span>
+                        <span>{formatDuration(expedition.duration)}</span>
+                      </div>
+                      <Progress
+                        value={(expedition.elapsed / expedition.duration) * 100}
+                        className="h-2"
+                      />
+                    </div>
+
+                    {/* Nagrody */}
+                    {expedition.rewards &&
+                      Object.keys(expedition.rewards).length > 0 && (
+                        <div className="p-4 bg-muted/10 rounded-lg">
+                          <h4 className="font-medium flex items-center gap-2 mb-2">
+                            Expected Rewards
+                          </h4>
+                          <div className="flex flex-wrap gap-2">
+                            {Object.entries(expedition.rewards).map(
+                              ([resource, amount]) => (
+                                <div
+                                  key={resource}
+                                  className="flex items-center gap-1 px-2 py-1 bg-background rounded text-sm"
+                                >
+                                  <ResourcesIcon resource={resource} />
+                                  <span>
+                                    {Number(amount)} {resource}
+                                  </span>
+                                </div>
+                              )
+                            )}
+                          </div>
+                        </div>
                       )}
-                      <span className="capitalize">
-                        {expedition.type} Mission
-                      </span>
-                    </CardTitle>
-                    <div className="flex items-center gap-2">
-                      <span className="text-sm bg-muted px-2 py-1 rounded-full">
-                        <Users className="inline w-4 h-4 mr-1" />
-                        {expedition.crew}
-                      </span>
-                      <span className="text-sm bg-muted px-2 py-1 rounded-full">
-                        Tier {expedition.tier}
-                      </span>
-                    </div>
-                  </div>
-                </CardHeader>
 
-                <CardContent className="space-y-4">
-                  {/* Progress Section */}
-                  <div className="space-y-2">
-                    <div className="flex justify-between text-sm">
-                      <span className="flex items-center gap-1">
-                        <Clock className="w-4 h-4" />
-                        {formatDuration(expedition.elapsed)}
-                      </span>
-                      <span>{formatDuration(expedition.duration)}</span>
-                    </div>
-                    <Progress
-                      value={(expedition.elapsed / expedition.duration) * 100}
-                      className="h-2"
-                    />
-                  </div>
+                    {/* Events */}
+                    {expedition.events.map((event, index) => {
+                      const eventDef = expeditionEvents.find(
+                        (e) => e.id === event.eventId
+                      );
+                      if (!eventDef) return null;
 
-                  {/* Nagrody */}
-                  {expedition.rewards &&
-                    Object.keys(expedition.rewards).length > 0 && (
-                      <div className="p-4 bg-muted/10 rounded-lg">
-                        <h4 className="font-medium flex items-center gap-2 mb-2">
-                          Expected Rewards
-                        </h4>
-                        <div className="flex flex-wrap gap-2">
-                          {Object.entries(expedition.rewards).map(
-                            ([resource, amount]) => (
-                              <div
-                                key={resource}
-                                className="flex items-center gap-1 px-2 py-1 bg-background rounded text-sm"
-                              >
-                                <ResourcesIcon resource={resource} />
-                                <span>
-                                  {Number(amount)} {resource}
-                                </span>
-                              </div>
-                            )
+                      return (
+                        <div key={index} className="p-4 bg-muted/10 rounded-lg">
+                          <div className="flex items-center gap-2 mb-2">
+                            <AlertTriangle className="w-4 h-4 text-yellow-500" />
+                            <h4 className="font-medium">{eventDef.title}</h4>
+                          </div>
+                          <p className="text-sm text-muted-foreground mb-4">
+                            {eventDef.description}
+                          </p>
+
+                          {event.chosenOptionIndex === -1 ? (
+                            <div className="space-y-2">
+                              {eventDef.options.map((option, optionIndex) => (
+                                <Button
+                                  key={optionIndex}
+                                  variant="outline"
+                                  className="w-full justify-start"
+                                  onClick={() =>
+                                    dispatch({
+                                      type: "HANDLE_EXPEDITION_EVENT",
+                                      payload: {
+                                        expeditionId: expedition.id,
+                                        eventIndex: index,
+                                        optionIndex: optionIndex,
+                                      },
+                                    })
+                                  }
+                                >
+                                  {option.text}
+                                </Button>
+                              ))}
+                            </div>
+                          ) : (
+                            <div className="flex items-center gap-2 text-sm text-green-500">
+                              <CheckCircle2 className="w-4 h-4" />
+                              {eventDef.options[event.chosenOptionIndex].text}
+                            </div>
                           )}
                         </div>
+                      );
+                    })}
+                  </CardContent>
+
+                  {/* Przyciski akcji */}
+                  {expedition.status === "preparing" && (
+                    <CardFooter className="flex gap-2 pt-4">
+                      <Button
+                        variant="default"
+                        className="flex-1"
+                        onClick={() =>
+                          dispatch({
+                            type: "LAUNCH_EXPEDITION",
+                            payload: { expeditionId: expedition.id },
+                          })
+                        }
+                      >
+                        Launch Now
+                      </Button>
+                      <Button
+                        variant="destructive"
+                        className="flex-1"
+                        onClick={() =>
+                          dispatch({
+                            type: "CANCEL_EXPEDITION",
+                            payload: { expeditionId: expedition.id },
+                          })
+                        }
+                      >
+                        Cancel
+                      </Button>
+                    </CardFooter>
+                  )}
+
+                  {/* Status Badge */}
+                  <div className="absolute top-4 right-4">
+                    {expedition.status === "completed" && (
+                      <div className="flex items-center gap-1 bg-green-500/90 text-green-100 px-3 py-1 rounded-full text-sm">
+                        <CheckCircle2 className="w-4 h-4" /> Completed
                       </div>
                     )}
-
-                  {/* Events */}
-                  {expedition.events.map((event, index) => {
-                    const eventDef = expeditionEvents.find(
-                      (e) => e.id === event.eventId
-                    );
-                    if (!eventDef) return null;
-
-                    return (
-                      <div key={index} className="p-4 bg-muted/10 rounded-lg">
-                        <div className="flex items-center gap-2 mb-2">
-                          <AlertTriangle className="w-4 h-4 text-yellow-500" />
-                          <h4 className="font-medium">{eventDef.title}</h4>
-                        </div>
-                        <p className="text-sm text-muted-foreground mb-4">
-                          {eventDef.description}
-                        </p>
-
-                        {event.chosenOptionIndex === -1 ? (
-                          <div className="space-y-2">
-                            {eventDef.options.map((option, optionIndex) => (
-                              <Button
-                                key={optionIndex}
-                                variant="outline"
-                                className="w-full justify-start"
-                                onClick={() =>
-                                  dispatch({
-                                    type: "HANDLE_EXPEDITION_EVENT",
-                                    payload: {
-                                      expeditionId: expedition.id,
-                                      eventIndex: index,
-                                      optionIndex: optionIndex,
-                                    },
-                                  })
-                                }
-                              >
-                                {option.text}
-                              </Button>
-                            ))}
-                          </div>
-                        ) : (
-                          <div className="flex items-center gap-2 text-sm text-green-500">
-                            <CheckCircle2 className="w-4 h-4" />
-                            {eventDef.options[event.chosenOptionIndex].text}
-                          </div>
-                        )}
+                    {expedition.status === "failed" && (
+                      <div className="flex items-center gap-1 bg-red-500/20 text-red-500 px-3 py-1 rounded-full text-sm">
+                        <XCircle className="w-4 h-4" /> Failed
                       </div>
-                    );
-                  })}
-                </CardContent>
-
-                {/* Przyciski akcji */}
-                {expedition.status === "preparing" && (
-                  <CardFooter className="flex gap-2 pt-4">
-                    <Button
-                      variant="default"
-                      className="flex-1"
-                      onClick={() =>
-                        dispatch({
-                          type: "LAUNCH_EXPEDITION",
-                          payload: { expeditionId: expedition.id },
-                        })
-                      }
-                    >
-                      Launch Now
-                    </Button>
-                    <Button
-                      variant="destructive"
-                      className="flex-1"
-                      onClick={() =>
-                        dispatch({
-                          type: "CANCEL_EXPEDITION",
-                          payload: { expeditionId: expedition.id },
-                        })
-                      }
-                    >
-                      Cancel
-                    </Button>
-                  </CardFooter>
-                )}
-
-                {/* Status Badge */}
-                <div className="absolute top-4 right-4">
-                  {expedition.status === "completed" && (
-                    <div className="flex items-center gap-1 bg-green-500/20 text-green-500 px-3 py-1 rounded-full text-sm">
-                      <CheckCircle2 className="w-4 h-4" /> Completed
-                    </div>
-                  )}
-                  {expedition.status === "failed" && (
-                    <div className="flex items-center gap-1 bg-red-500/20 text-red-500 px-3 py-1 rounded-full text-sm">
-                      <XCircle className="w-4 h-4" /> Failed
-                    </div>
-                  )}
-                </div>
-              </Card>
-            ))}
+                    )}
+                  </div>
+                </Card>
+              ))}
           </div>
 
           {state.expeditions.length === 0 && (
