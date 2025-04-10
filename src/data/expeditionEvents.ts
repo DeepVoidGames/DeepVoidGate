@@ -21,46 +21,6 @@ export const expeditionEvents: ExpeditionEvent[] = [
     ],
   },
 
-  // Zdarzenia dla ekspedycji naukowych
-  {
-    id: "anomaly_discovery",
-    title: "Anomaly Discovery",
-    description:
-      "The team has discovered a strange energy anomaly. Investigating it could yield valuable data but is risky.",
-    type: ["scientific"],
-    image: "anomaly.png",
-    options: [
-      {
-        text: "Investigate the anomaly (risky but potentially rewarding)",
-        effects: [
-          { type: "time", value: 20 },
-          {
-            type: "reward",
-            value: (expedition) => ({ research: 100 * (1 + expedition.tier) }),
-          },
-          { type: "fail", value: 0.2 }, // 20% szans na porażkę
-        ],
-        weight: 2,
-      },
-      {
-        text: "Document from a safe distance (small reward)",
-        effects: [
-          {
-            type: "reward",
-            value: (expedition) => ({
-              research: 50 * (1 + expedition.tier),
-            }),
-          },
-        ],
-        weight: 3,
-      },
-      {
-        text: "Avoid it completely (safe but no reward)",
-        effects: [],
-      },
-    ],
-  },
-
   // Zdarzenia dla ekspedycji górniczych
   {
     id: "cave_in",
@@ -145,6 +105,41 @@ export const expeditionEvents: ExpeditionEvent[] = [
           {
             type: "time",
             value: Math.random() > 0.5 ? -10 : 10,
+          },
+        ],
+      },
+    ],
+  },
+
+  {
+    id: "alien_tech_discovery",
+    title: "Ancient Alien Technology",
+    description:
+      "Your team has discovered remnants of advanced alien technology!",
+    type: ["scientific"],
+    minTier: 3,
+    weight: 5,
+    options: [
+      {
+        text: "Attempt to reverse engineer",
+        effects: [
+          {
+            type: "technology",
+            technologyId: "alien_alloys",
+            value: 0,
+          },
+          {
+            type: "time",
+            value: 30, // +30 minut do czasu misji
+          },
+        ],
+      },
+      {
+        text: "Destroy dangerous technology",
+        effects: [
+          {
+            type: "reward",
+            value: { science: 1000 },
           },
         ],
       },

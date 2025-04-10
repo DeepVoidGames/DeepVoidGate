@@ -409,6 +409,22 @@ export const initialTechnologies: Technology[] = [
     isResearched: false,
     unlocksBuildings: [],
   },
+  {
+    id: "alien_alloys",
+    name: "Alien Alloys",
+    category: "Production",
+    description:
+      "Reverse-engineered from extraterrestrial artifacts, these advanced materials offer unprecedented strength-to-weight ratios.",
+    researchCost: {
+      metals: 25000,
+      science: 1500,
+    },
+    prerequisites: [], // Wymaga badań nad obcymi
+    unlocksBuildings: [], // Specjalny budynek do produkcji
+    researchDuration: 600, // 10 minut - długa bo skomplikowana
+    isResearched: false,
+    locked: true, // Na początku zablokowane
+  },
 ];
 
 export const initialExpeditions: Expedition[] = [];

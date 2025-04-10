@@ -1,3 +1,4 @@
+import { Expedition } from "@/types/expedition";
 import { ReactNode } from "react";
 
 // Resource types
@@ -70,6 +71,7 @@ export interface Technology {
   isResearched: boolean;
   researchDuration: number; // w sekundach
   researchStartTime?: number;
+  locked?: boolean; // czy technologia jest zablokowana
 }
 
 // Resource data structure

@@ -22,12 +22,13 @@ export interface ExpeditionEventOption {
 }
 
 export interface ExpeditionEventEffect {
-  type: "time" | "resources" | "crew" | "reward" | "fail";
+  type: "time" | "resources" | "crew" | "reward" | "fail" | "technology";
   value:
     | number
     | ResourceAmount
     | ((expedition: Expedition) => number | ResourceAmount);
   resourceType?: ResourceType;
+  technologyId?: string;
 }
 
 export interface Expedition {
@@ -41,6 +42,7 @@ export interface Expedition {
   events: ExpeditionEventLog[]; // zdarzenia, które już wystąpiły
   nextEventTime: number; // czas do następnego zdarzenia (w minutach)
   rewards?: ResourceAmount; // nagrody za ukończenie
+  unlockedTechnologies?: string[];
 }
 
 export interface ExpeditionEventLog {

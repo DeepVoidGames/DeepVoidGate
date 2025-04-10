@@ -227,8 +227,16 @@ const TechnologiesManager: React.FC = () => {
                   : `bg-background/50 border-muted/30 ${
                       canResearch ? "hover:border-primary hover:shadow-lg" : ""
                     }`
-              }`}
+              } `}
             >
+              {tech?.locked ? (
+                <div className="absolute inset-0 bg-black/90 rounded-lg backdrop-blur-sm">
+                  <div className="absolute inset-0 flex items-center justify-center text-white text-lg font-bold">
+                    <Lock className="w-8" />
+                  </div>
+                </div>
+              ) : null}
+
               <div className="flex justify-between items-start mb-3">
                 <div>
                   <h3 className="font-medium text-foreground/90 text-sm">
@@ -265,7 +273,11 @@ const TechnologiesManager: React.FC = () => {
                 </div>
               ) : null}
 
-              <div className=" bottom-0 left-0 right-0 absolute p-4 rounded-b-lg">
+              <div
+                className={`bottom-0 left-0 right-0 absolute p-4 rounded-b-lg ${
+                  tech?.locked ? "hidden" : ""
+                }`}
+              >
                 {tech.prerequisites.length > 0 && (
                   <div className="text-xs text-[10px] text-muted-foreground mb-3">
                     <Lock className="inline mr-1 h-3 w-3" />

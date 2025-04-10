@@ -102,6 +102,18 @@ const getReward = (expedition: Expedition, state: GameState): GameState => {
     }
   }
 
+  if (expedition.unlockedTechnologies) {
+    expedition.unlockedTechnologies.forEach((techId) => {
+      const techIndex = newState.technologies.findIndex((t) => t.id === techId);
+      if (techIndex !== -1) {
+        newState.technologies[techIndex] = {
+          ...newState.technologies[techIndex],
+          isResearched: true,
+        };
+      }
+    });
+  }
+
   // Zwróć załogantów
   newState.population.available += expedition.crew;
 
@@ -227,6 +239,32 @@ const applyEventEffects = (
         }
         break;
 
+      case "technology": {
+        const techId = effect.technologyId;
+        if (!techId) break;
+
+        const techIndex = newState.technologies.findIndex(
+          (t) => t.id === techId
+        );
+        if (techIndex === -1) break;
+
+        if (!newState.technologies[techIndex].isResearched) {
+          // Odblokuj technologię nawet bez spełnienia wymagań
+          newState.technologies[techIndex] = {
+            ...newState.technologies[techIndex],
+            isResearched: true,
+            researchStartTime: undefined,
+            locked: false,
+          };
+
+          toast({
+            title: "Technology Discovered!",
+            description: `Acquired ${newState.technologies[techIndex].name} technology`,
+          });
+        }
+        break;
+      }
+
       case "fail":
         newExpedition.status = "failed";
         break;
@@ -252,6 +290,8 @@ export const startExpedition = (
     });
     return state;
   }
+
+  state.population.available -= requiredCrew; // Zmniejsz liczbę dostępnych kolonistów
 
   const newExpedition: Expedition = {
     id: generateId(),

@@ -23,6 +23,7 @@ import {
   XCircle,
   Info,
   Package,
+  Book,
 } from "lucide-react";
 import { MobileTopNav } from "@/components/Navbar";
 import {
@@ -283,7 +284,9 @@ const Expedition = () => {
             {state.expeditions
               .filter(
                 (expedition) =>
-                  showCompleted || expedition.status !== "completed"
+                  showCompleted ||
+                  (expedition.status !== "completed" &&
+                    expedition.status !== "failed")
               )
               .map((expedition) => (
                 <Card key={expedition.id} className="relative bg-secondary/80">
@@ -348,6 +351,32 @@ const Expedition = () => {
                                 </div>
                               )
                             )}
+                          </div>
+                        </div>
+                      )}
+
+                    {expedition.unlockedTechnologies &&
+                      expedition.unlockedTechnologies.length > 0 && (
+                        <div className="p-4 bg-muted/10 rounded-lg">
+                          <h4 className="font-medium flex items-center gap-2 mb-2">
+                            <FlaskConical className="w-4 h-4" />
+                            Unlocked Technologies
+                          </h4>
+                          <div className="flex flex-wrap gap-2">
+                            {expedition.unlockedTechnologies.map((techId) => {
+                              const tech = state.technologies.find(
+                                (t) => t.id === techId
+                              );
+                              return tech ? (
+                                <div
+                                  key={techId}
+                                  className="flex items-center gap-1 px-2 py-1 bg-background rounded text-sm"
+                                >
+                                  <Book className="w-4 h-4 text-blue-500" />
+                                  <span>{tech.name}</span>
+                                </div>
+                              ) : null;
+                            })}
                           </div>
                         </div>
                       )}
