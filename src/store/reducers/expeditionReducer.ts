@@ -1,6 +1,6 @@
 // expeditionReducer.ts
 import { generateId } from "../initialData";
-import { GameState, ResourceType } from "../types";
+import { GameState, ResourceType, Technology } from "../types";
 import {
   Expedition,
   ExpeditionEvent,
@@ -62,6 +62,22 @@ export const getCurrentExpeditionRewards = (
     ...getBaseExpeditionReward(expedition.type, expedition.tier),
     ...expedition.rewards,
   };
+};
+
+export const getPossibleTechnologies = (
+  type: ExpeditionType,
+  technologies: Technology[]
+): Technology[] => {
+  if (type !== "scientific") return [];
+
+  return technologies.filter(
+    (tech) =>
+      !tech.isResearched &&
+      tech.locked === true &&
+      tech.prerequisites.every((prereq) =>
+        technologies.some((t) => t.id === prereq && t.isResearched)
+      )
+  );
 };
 
 export const calculateReward = (
