@@ -291,8 +291,6 @@ export const startExpedition = (
     return state;
   }
 
-  state.population.available -= requiredCrew; // Zmniejsz liczbę dostępnych kolonistów
-
   const newExpedition: Expedition = {
     id: generateId(),
     type,
