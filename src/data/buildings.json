@@ -988,5 +988,111 @@
     "upgrades": 0,
     "uniqueBonus": {},
     "tag": "habitation"
-  }
+  },
+  [
+    {
+      "type": "exoforge_foundry",
+      "category": "production",
+      "name": "Exoforge Foundry",
+      "description": "Harnesses alien alloys to create hyper-dense metallic composites through dimensional phase-shifting.",
+      "workerCapacity": 15,
+      "baseCost": {
+        "metals": 800,
+        "energy": 300,
+        "science": 100
+      },
+      "baseProduction": {
+        "metals": 4.2
+      },
+      "baseConsumption": {
+        "energy": 1.8,
+        "oxygen": 0.5,
+        "water": 0.4
+      },
+      "requirements": {},
+      "requiredTechnology": "alien_alloys",
+      "costMultiplier": 1.9,
+      "productionMultiplier": 1.6,
+      "maxInstances": 1,
+      "tier": 1,
+      "maxTier": 5,
+      "upgrades": 0,
+      "uniqueBonus": {
+        "production": { "metals": 35 },
+        "storage": { "metals": 12000 }
+      },
+      "tag": "metals"
+    },
+    {
+      "type": "quantum_alloy_energy_core",
+      "category": "production",
+      "name": "Quantum Alloy Energy Core",
+      "description": "Self-sustaining energy reactor with alien alloy containment vessels enabling zero-point energy extraction.",
+      "workerCapacity": 8,
+      "baseCost": {
+        "metals": 1200,
+        "energy": 500,
+        "science": 200
+      },
+      "baseProduction": {
+        "energy": 7.5
+      },
+      "baseConsumption": {
+        "metals": 0.5,
+        "water": 0.3
+      },
+      "requirements": {},
+      "requiredTechnology": "alien_alloys",
+      "costMultiplier": 2.1,
+      "productionMultiplier": 1.7,
+      "maxInstances": 1,
+      "tier": 1,
+      "maxTier": 5,
+      "upgrades": 0,
+      "uniqueBonus": {
+        "production": { "energy": 75 },
+        "storage": { "energy": 15000 }
+      },
+      "tag": "energy"
+    },
+    {
+      "type": "xeno_carbon_agro_complex",
+      "category": "production",
+      "name": "Xeno-Carbon Agro Complex",
+      "description": "Bio-mechanical hybrid ecosystem using alien crystal lattices to hyper-accelerate photosynthetic processes.",
+      "workerCapacity": 10,
+      "baseCost": {
+        "metals": 600,
+        "energy": 400,
+        "science": 150
+      },
+      "baseProduction": {
+        "food": 5.5,
+        "oxygen": 2.0
+      },
+      "baseConsumption": {
+        "energy": 1.5,
+        "water": 0.6
+      },
+      "requirements": {},
+      "requiredTechnology": "alien_alloys",
+      "costMultiplier": 2.0,
+      "productionMultiplier": 1.8,
+      "maxInstances": 1,
+      "tier": 1,
+      "maxTier": 5,
+      "upgrades": 0,
+      "uniqueBonus": {
+        "production": {
+          "food": 30,
+          "oxygen": 15
+        },
+        "storage": {
+          "food": 2500,
+          "oxygen": 3000
+        }
+      },
+      "tag": "food"
+    }
+  ]
 ]
