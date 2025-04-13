@@ -254,24 +254,29 @@ const Expedition = () => {
           </div>
 
           <div className="mt-4 p-4 bg-muted/10 rounded-lg">
-            <h4 className="font-medium flex items-center gap-2 mb-2">
-              <Book className="w-4 h-4 text-blue-500" />
-              Possible Technologies
-            </h4>
+            {selectedType === "scientific" ? (
+              <h4 className="font-medium flex items-center gap-2 mb-2">
+                <Book className="w-4 h-4 text-blue-500" />
+                Possible Technologies
+              </h4>
+            ) : (
+              ""
+            )}
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
-              {getPossibleTechnologies(selectedType, state.technologies).map(
-                (tech) =>
-                  (tech?.expedtionMinTier || 0) <= selectedTier && (
-                    <div
-                      key={tech.id}
-                      className="p-3 bg-background/50 rounded-lg border"
-                    >
-                      <div className="font-medium">{tech.name}</div>
-                      <div className="text-sm text-muted-foreground">
-                        {tech.description}
-                      </div>
-                      <div className="mt-2 flex flex-wrap gap-1">
-                        {/* {Object.entries(tech.researchCost).map(
+              {selectedType === "scientific"
+                ? getPossibleTechnologies(selectedType, state.technologies).map(
+                    (tech) =>
+                      (tech?.expedtionMinTier || 0) <= selectedTier ? (
+                        <div
+                          key={tech.id}
+                          className="p-3 bg-background/50 rounded-lg border"
+                        >
+                          <div className="font-medium">{tech.name}</div>
+                          <div className="text-sm text-muted-foreground">
+                            {tech.description}
+                          </div>
+                          <div className="mt-2 flex flex-wrap gap-1">
+                            {/* {Object.entries(tech.researchCost).map(
                         ([resource, amount]) => (
                           <span
                             key={resource}
@@ -284,17 +289,16 @@ const Expedition = () => {
                           </span>
                         )
                       )} */}
-                      </div>
-                    </div>
+                          </div>
+                        </div>
+                      ) : (
+                        <div className="text-sm text-muted-foreground">
+                          No technologies available for this tier
+                        </div>
+                      )
                   )
-              )}
+                : ""}
             </div>
-            {getPossibleTechnologies(selectedType, state.technologies)
-              .length === 0 && (
-              <div className="text-center text-sm text-muted-foreground py-2">
-                No researchable technologies available at this tier
-              </div>
-            )}
           </div>
 
           {error && (
