@@ -8,23 +8,26 @@ import {
   ExpeditionState as Expedition,
 } from "@/store/types";
 import buildingData from "../data/buildings.json";
+import buildingExpeditionData from "../data/buildingExpeditions.json";
 
 // Generate a unique ID
 export const generateId = (lenght: number = 9): string => {
   return Math.random().toString(36).substr(2, lenght);
 };
 
-// Initialize buildings from JSON data
-export const initialBuildings: Omit<BuildingData, "id">[] = buildingData.map(
-  (building) => ({
+// Połącz obie tablice danych budynków
+const allBuildingsData = [...buildingData, ...buildingExpeditionData];
+
+// Initialize buildings from combined JSON data
+export const initialBuildings: Omit<BuildingData, "id">[] =
+  allBuildingsData.map((building) => ({
     ...building,
     type: building.type as BuildingType,
     category: building.category as BuildingCategory,
     assignedWorkers: 0,
     efficiency: 0,
     functioning: true,
-  })
-);
+  }));
 
 // Resource alert thresholds
 export const resourceAlertThresholds: ResourceAlertThresholds = {
