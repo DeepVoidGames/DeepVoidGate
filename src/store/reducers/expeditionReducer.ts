@@ -12,10 +12,10 @@ import { expeditionEvents } from "@/data/expeditionEvents";
 import { toast } from "@/components/ui/use-toast";
 
 // Stałe
-export const BASE_EXPEDITION_TIME = 2; // 30 minut dla tier 0
-export const TIME_PER_TIER = 2; // +15 minut na każdy tier
-export const CREW_PER_TIER = 1; // +5 załogant na każdy tier
-export const EVENT_INTERVAL = 15; // zdarzenie co 10 minut
+export const BASE_EXPEDITION_TIME = 15; // 30 minut dla tier 0
+export const TIME_PER_TIER = 15; // +15 minut na każdy tier
+export const CREW_PER_TIER = 5; // +5 załogant na każdy tier
+export const EVENT_INTERVAL = 10; // zdarzenie co 10 minut
 export const TIER_MULTIPLIER = 1.5; // mnożnik dla nagród za każdy tier
 
 const BASE_REWARDS: Record<ExpeditionType, ResourceAmount> = {
@@ -90,7 +90,7 @@ export const calculateReward = (
   for (const [resource, amount] of Object.entries(base)) {
     // Zapewniamy, że nagroda nie będzie zerowa (min. 20% bazowej wartości)
     const minAmount = Math.round(amount * 0.2);
-    const randomMultiplier = 0.2 + Math.random() * 2.8; // Od 0.2 do 3.0
+    const randomMultiplier = 0.2 + Math.random() * 1.8; // Od 0.2 do 2.0
     rewards[resource as ResourceType] = Math.max(
       minAmount,
       Math.round(amount * randomMultiplier)
