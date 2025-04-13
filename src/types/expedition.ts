@@ -43,6 +43,7 @@ export interface Expedition {
   nextEventTime: number; // czas do następnego zdarzenia (w minutach)
   rewards?: ResourceAmount; // nagrody za ukończenie
   unlockedTechnologies?: string[];
+  rewardsCollected?: boolean; // czy nagrody zostały już odebrane
 }
 
 export interface ExpeditionEventLog {

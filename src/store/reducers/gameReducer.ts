@@ -349,22 +349,27 @@ export const gameReducer = (
         resources: newResources,
       });
 
-      // Najpierw stwórz nowy stan ze wszystkimi dotychczasowymi zmianami
-      let newState = {
+      const intermediateState = {
         ...state,
         resources: newMilestones.resources,
         buildings,
         population: newPopulation,
         colonistProgress: newColonistProgress,
         milestones: newMilestones.milestones,
-        lastUpdate: currentTime,
+        // Nie aktualizujemy jeszcze lastUpdate!
       };
 
-      // Następnie przetwórz ekspedycje na tym nowym stanie
-      newState = handleExpeditionTick(newState, deltaTime);
+      // Przetwórz ekspedycje na tym stanie
+      const stateAfterExpeditions = handleExpeditionTick(
+        intermediateState,
+        deltaTime
+      );
 
-      // Na końcu zwróć ostateczny stan
-      return newState;
+      // Teraz zaktualizuj lastUpdate na końcowym stanie
+      return {
+        ...stateAfterExpeditions,
+        lastUpdate: currentTime,
+      };
     }
 
     case "CONSTRUCT_BUILDING": {

@@ -17,13 +17,15 @@ export const calculateResourceChanges = (
 
     // Oblicz zmianę z uwzględnieniem czasu
     const netRate = resource.production - resource.consumption;
-    const delta = netRate * deltaTime;
-
+    let delta = 0;
+    if (resource.amount < resource.capacity) {
+      delta = netRate * deltaTime;
+    }
     // Oblicz nową ilość z uwzględnieniem pojemności
     let newAmount = resource.amount + delta;
 
     // Zastosuj limity (0 < amount < capacity)
-    newAmount = Math.max(0, Math.min(newAmount, resource.capacity));
+    // newAmount = Math.max(0, Math.min(newAmount, resource.capacity));
 
     // Aktualizuj stan tylko jeśli jest zmiana
     if (Math.abs(delta) > 0.0001) {

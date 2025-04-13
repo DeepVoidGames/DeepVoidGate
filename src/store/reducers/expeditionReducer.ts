@@ -12,10 +12,10 @@ import { expeditionEvents } from "@/data/expeditionEvents";
 import { toast } from "@/components/ui/use-toast";
 
 // Stałe
-export const BASE_EXPEDITION_TIME = 15; // 30 minut dla tier 0
-export const TIME_PER_TIER = 15; // +15 minut na każdy tier
-export const CREW_PER_TIER = 5; // +5 załogant na każdy tier
-export const EVENT_INTERVAL = 10; // zdarzenie co 10 minut
+export const BASE_EXPEDITION_TIME = 2; // 30 minut dla tier 0
+export const TIME_PER_TIER = 2; // +15 minut na każdy tier
+export const CREW_PER_TIER = 1; // +5 załogant na każdy tier
+export const EVENT_INTERVAL = 15; // zdarzenie co 10 minut
 export const TIER_MULTIPLIER = 1.5; // mnożnik dla nagród za każdy tier
 
 const BASE_REWARDS: Record<ExpeditionType, ResourceAmount> = {
@@ -85,12 +85,19 @@ export const calculateReward = (
   tier: number
 ): ResourceAmount => {
   const base = getBaseExpeditionReward(type, tier);
-  return Object.fromEntries(
-    Object.entries(base).map(([res, amount]) => [
-      res,
-      Math.round(amount * (Math.random() * 3)),
-    ])
-  );
+  const rewards: ResourceAmount = {};
+
+  for (const [resource, amount] of Object.entries(base)) {
+    // Zapewniamy, że nagroda nie będzie zerowa (min. 20% bazowej wartości)
+    const minAmount = Math.round(amount * 0.2);
+    const randomMultiplier = 0.2 + Math.random() * 2.8; // Od 0.2 do 3.0
+    rewards[resource as ResourceType] = Math.max(
+      minAmount,
+      Math.round(amount * randomMultiplier)
+    );
+  }
+
+  return rewards;
 };
 
 export const formatRewardsForUI = (rewards: ResourceAmount) => {
@@ -105,18 +112,42 @@ export const formatRewardsForUI = (rewards: ResourceAmount) => {
 const getReward = (expedition: Expedition, state: GameState): GameState => {
   let newState = { ...state };
 
+  // Sprawdź czy nagroda została już przyznana
+  if (expedition.rewardsCollected) {
+    return newState;
+  }
+
   // Zbierz wszystkie nagrody - zarówno bazowe jak i z eventów
-  const totalRewards: ResourceAmount = {
-    ...calculateReward(expedition.type, expedition.tier),
-    ...expedition.rewards,
-  };
+  const totalRewards: ResourceAmount = calculateReward(
+    expedition.type,
+    expedition.tier
+  );
+
+  // Połącz z nagrodami z wydarzeń (jeśli istnieją)
+  if (expedition.rewards) {
+    Object.entries(expedition.rewards).forEach(([resource, amount]) => {
+      const resourceType = resource as ResourceType;
+      totalRewards[resourceType] = (totalRewards[resourceType] || 0) + amount;
+    });
+  }
+
+  // Logowanie dla debugowania
+  console.log("Expedition rewards to add:", totalRewards);
+  console.log("Before adding rewards:", newState.resources);
 
   // Dodaj nagrody do stanu gry
-  for (const [res, amount] of Object.entries(totalRewards)) {
-    if (newState.resources[res as ResourceType]) {
-      newState.resources[res as ResourceType].amount += Number(amount);
+  for (const [resource, amount] of Object.entries(totalRewards)) {
+    const resourceType = resource as ResourceType;
+    if (newState.resources[resourceType]) {
+      const numAmount = Number(amount);
+      if (!isNaN(numAmount) && numAmount > 0) {
+        newState.resources[resourceType].amount += numAmount;
+        console.log(`Adding ${numAmount} to ${resourceType}`);
+      }
     }
   }
+
+  console.log("After adding rewards:", newState.resources);
 
   if (expedition.unlockedTechnologies) {
     expedition.unlockedTechnologies.forEach((techId) => {
@@ -133,19 +164,22 @@ const getReward = (expedition: Expedition, state: GameState): GameState => {
   // Zwróć załogantów
   newState.population.available += expedition.crew;
 
-  // Wyczyść nagrody w ekspedycji
-  const cleanExpedition = { ...expedition, rewards: undefined };
+  // Oznacz ekspedycję jako przetworzoną
   const expeditionIndex = newState.expeditions.findIndex(
     (e) => e.id === expedition.id
   );
 
   if (expeditionIndex > -1) {
-    newState.expeditions[expeditionIndex] = cleanExpedition;
+    newState.expeditions[expeditionIndex] = {
+      ...expedition,
+      rewards: undefined,
+      rewardsCollected: true, // dodana flaga
+    };
   }
 
   toast({
     title: "Expedition Completed",
-    description: `Your ${expedition.type} expedition has returned!`,
+    description: `Your ${expedition.type} expedition has returned with resources!`,
   });
 
   return newState;
@@ -371,7 +405,9 @@ export const handleExpeditionTick = (
   const deltaMinutes = deltaTime / 60;
   let newState = { ...state };
   let updatedExpeditions = [...state.expeditions];
+  let expeditionsToProcess = [];
 
+  // Najpierw aktualizujemy stan wszystkich ekspedycji
   for (let i = 0; i < updatedExpeditions.length; i++) {
     const expedition = updatedExpeditions[i];
 
@@ -409,33 +445,48 @@ export const handleExpeditionTick = (
     }
 
     // Sprawdź czy ekspedycja się zakończyła
-    if (newExpedition.elapsed >= newExpedition.duration) {
+    if (
+      newExpedition.elapsed >= newExpedition.duration &&
+      newExpedition.status === "in_progress"
+    ) {
       newExpedition.status = "completed";
-      newState = getReward(newExpedition, newState);
-      toast({
-        title: "Expedition Completed",
-        description: `Your ${newExpedition.type} expedition has returned!`,
-      });
+      // Dodaj do listy ekspedycji do przetworzenia
+      expeditionsToProcess.push(newExpedition);
     }
 
     updatedExpeditions[i] = newExpedition;
   }
 
+  // Zaktualizuj ekspedycje w stanie
+  newState = {
+    ...newState,
+    expeditions: updatedExpeditions,
+  };
+
+  // Teraz przetwórz zakończone ekspedycje
+  for (const expedition of expeditionsToProcess) {
+    if (!expedition.rewardsCollected) {
+      newState = getReward(expedition, newState);
+    }
+  }
+
   // Usuń zakończone ekspedycje po minucie (dla efektu wizualnego)
   if (state.lastUpdate % 60 === 0) {
-    updatedExpeditions = updatedExpeditions.filter(
+    const newExpeditions = newState.expeditions.filter(
       (e) =>
         e.status === "preparing" ||
         e.status === "in_progress" ||
         (e.status === "completed" && e.elapsed - e.duration < 1) ||
         (e.status === "failed" && e.elapsed - e.duration < 1)
     );
+
+    newState = {
+      ...newState,
+      expeditions: newExpeditions,
+    };
   }
 
-  return {
-    ...newState,
-    expeditions: updatedExpeditions,
-  };
+  return newState;
 };
 
 export const handleExpeditionEventChoice = (
