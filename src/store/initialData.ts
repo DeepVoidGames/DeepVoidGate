@@ -424,6 +424,7 @@ export const initialTechnologies: Technology[] = [
     researchDuration: 600, // 10 minut - długa bo skomplikowana
     isResearched: false,
     locked: true, // Na początku zablokowane
+    expedtionMinTier: 1,
   },
 ];
 

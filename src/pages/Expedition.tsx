@@ -42,6 +42,7 @@ import {
 } from "@/components/ui/tooltip";
 import { ResourceType } from "@/store/types";
 import { formatNumber } from "@/lib/utils";
+import { ResourcesIcon } from "@/config";
 
 const Expedition = () => {
   const { state, dispatch } = useGame();
@@ -88,19 +89,6 @@ const Expedition = () => {
     const hours = Math.floor(minutes / 60);
     const mins = minutes % 60;
     return `${hours}h ${mins.toFixed(1)}m`.replace(/\b0h\s?/, "");
-  };
-
-  const ResourcesIcon = ({ resource }) => {
-    const icons = {
-      oxygen: "O₂",
-      food: "🌱",
-      energy: "⚡",
-      metals: "⛏️",
-      science: "🔬",
-      research: "📡",
-      rareMinerals: "💎",
-    };
-    return icons[resource] || "?";
   };
 
   const toggleCompleted = () => {
@@ -198,7 +186,9 @@ const Expedition = () => {
                 </div>
                 <div className="flex items-center gap-2">
                   <Users className="w-4 h-4" />
-                  <span>Crew: {2 + selectedTier * CREW_PER_TIER}</span>
+                  <span>
+                    Crew: {CREW_PER_TIER + selectedTier * CREW_PER_TIER}
+                  </span>
                 </div>
                 <div className="flex items-center gap-2">
                   <Package className="w-4 h-4" />
@@ -270,17 +260,18 @@ const Expedition = () => {
             </h4>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
               {getPossibleTechnologies(selectedType, state.technologies).map(
-                (tech) => (
-                  <div
-                    key={tech.id}
-                    className="p-3 bg-background/50 rounded-lg border"
-                  >
-                    <div className="font-medium">{tech.name}</div>
-                    <div className="text-sm text-muted-foreground">
-                      {tech.description}
-                    </div>
-                    <div className="mt-2 flex flex-wrap gap-1">
-                      {Object.entries(tech.researchCost).map(
+                (tech) =>
+                  (tech?.expedtionMinTier || 0) <= selectedTier && (
+                    <div
+                      key={tech.id}
+                      className="p-3 bg-background/50 rounded-lg border"
+                    >
+                      <div className="font-medium">{tech.name}</div>
+                      <div className="text-sm text-muted-foreground">
+                        {tech.description}
+                      </div>
+                      <div className="mt-2 flex flex-wrap gap-1">
+                        {/* {Object.entries(tech.researchCost).map(
                         ([resource, amount]) => (
                           <span
                             key={resource}
@@ -292,10 +283,10 @@ const Expedition = () => {
                             {amount}
                           </span>
                         )
-                      )}
+                      )} */}
+                      </div>
                     </div>
-                  </div>
-                )
+                  )
               )}
             </div>
             {getPossibleTechnologies(selectedType, state.technologies)

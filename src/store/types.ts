@@ -72,6 +72,7 @@ export interface Technology {
   researchDuration: number; // w sekundach
   researchStartTime?: number;
   locked?: boolean; // czy technologia jest zablokowana
+  expedtionMinTier?: number; // minimalny poziom technologii do odblokowania
 }
 
 // Resource data structure

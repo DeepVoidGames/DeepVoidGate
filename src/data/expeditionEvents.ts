@@ -274,7 +274,7 @@ export const expeditionEvents: ExpeditionEvent[] = [
     description:
       "Your team has discovered remnants of advanced alien technology!",
     type: ["scientific"],
-    minTier: 3,
+    minTier: 1,
     weight: 5,
     options: [
       {
