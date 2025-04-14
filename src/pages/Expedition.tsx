@@ -291,11 +291,7 @@ const Expedition = () => {
                       )} */}
                           </div>
                         </div>
-                      ) : (
-                        <div className="text-sm text-muted-foreground">
-                          No technologies available for this tier
-                        </div>
-                      )
+                      ) : null
                   )
                 : ""}
             </div>

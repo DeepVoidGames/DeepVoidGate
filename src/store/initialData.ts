@@ -457,7 +457,7 @@ export const initialTechnologies: Technology[] = [
       science: 5000,
       food: 3000,
     },
-    prerequisites: ["alien_alloys"],
+    prerequisites: [],
     unlocksBuildings: ["qmet_biofarm", "qmet_oxyplant"],
     researchDuration: 900, // 15 minut
     isResearched: false,
@@ -474,7 +474,7 @@ export const initialTechnologies: Technology[] = [
       science: 9000,
       energy: 6000,
     },
-    prerequisites: ["quantum_metabolism"],
+    prerequisites: [],
     unlocksBuildings: ["harmonic_core_generator", "resonant_fabricator"],
     researchDuration: 1200, // 20 minut
     isResearched: false,
@@ -492,7 +492,7 @@ export const initialTechnologies: Technology[] = [
       metals: 6000,
       food: 5000,
     },
-    prerequisites: ["harmonic_energy_matrices"],
+    prerequisites: [],
     unlocksBuildings: ["symbio_colony_hub", "symbio_resource_loop"],
     researchDuration: 1500, // 25 minut
     isResearched: false,
@@ -510,7 +510,7 @@ export const initialTechnologies: Technology[] = [
       energy: 8000,
       metals: 7000,
     },
-    prerequisites: ["symbiotic_processing_units"],
+    prerequisites: [],
     unlocksBuildings: ["chrono_turbine"],
     researchDuration: 1800, // 30 minut
     isResearched: false,
