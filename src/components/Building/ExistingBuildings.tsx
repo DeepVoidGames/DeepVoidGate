@@ -201,7 +201,7 @@ const ExistingBuildings: React.FC<ExistingBuildingsProps> = ({
                 {displayableBuildings.length === 0 && (
                   <div className="text-center p-4 bg-gray-800 rounded-md">
                     <p>
-                      Nie znaleziono budynków dla tej kategorii.{" "}
+                      No buildings found for this category.{" "}
                       {category.id === "production"
                         ? `(Zasób: ${selectedResource})`
                         : ""}
