@@ -413,6 +413,23 @@ export const initialTechnologies: Technology[] = [
     unlocksBuildings: [],
   },
   {
+    id: "primitive_bioreactor",
+    name: "Primitive Bioreactor",
+    category: "Production",
+    description:
+      "Early organic processing using native flora and microbial cultures for sustainable food and oxygen generation.",
+    researchCost: {
+      science: 200,
+      food: 500,
+    },
+    prerequisites: [],
+    unlocksBuildings: [],
+    researchDuration: 120, // 2 min
+    isResearched: false,
+    locked: true,
+    expedtionMinTier: 0,
+  },
+  {
     id: "alien_alloys",
     name: "Alien Alloys",
     category: "Production",
@@ -428,6 +445,77 @@ export const initialTechnologies: Technology[] = [
     isResearched: false,
     locked: true, // Na początku zablokowane
     expedtionMinTier: 1,
+  },
+
+  {
+    id: "quantum_metabolism",
+    name: "Quantum Metabolism",
+    category: "Production",
+    description:
+      "Harnessing quantum uncertainty in biological systems leads to radically accelerated nutrient cycles and oxygen production.",
+    researchCost: {
+      science: 5000,
+      food: 3000,
+    },
+    prerequisites: ["alien_alloys"],
+    unlocksBuildings: ["qmet_biofarm", "qmet_oxyplant"],
+    researchDuration: 900, // 15 minut
+    isResearched: false,
+    locked: true,
+    expedtionMinTier: 2,
+  },
+  {
+    id: "harmonic_energy_matrices",
+    name: "Harmonic Energy Matrices",
+    category: "Energy",
+    description:
+      "Utilizing alien harmonic fields to amplify energy generation and resource efficiency via synchronized quantum resonators.",
+    researchCost: {
+      science: 9000,
+      energy: 6000,
+    },
+    prerequisites: ["quantum_metabolism"],
+    unlocksBuildings: ["harmonic_core_generator", "resonant_fabricator"],
+    researchDuration: 1200, // 20 minut
+    isResearched: false,
+    locked: true,
+    expedtionMinTier: 3,
+  },
+  {
+    id: "symbiotic_processing_units",
+    name: "Symbiotic Processing Units",
+    category: "Advanced",
+    description:
+      "Integrates bio-mechanical constructs with industrial systems to enable co-dependent, ultra-efficient resource generation.",
+    researchCost: {
+      science: 14000,
+      metals: 6000,
+      food: 5000,
+    },
+    prerequisites: ["harmonic_energy_matrices"],
+    unlocksBuildings: ["symbio_colony_hub", "symbio_resource_loop"],
+    researchDuration: 1500, // 25 minut
+    isResearched: false,
+    locked: true,
+    expedtionMinTier: 4,
+  },
+  {
+    id: "chrono_synchronization",
+    name: "Chrono Synchronization",
+    category: "Energy",
+    description:
+      "Advanced manipulation of time itself allows for synchronized production cycles, dramatically increasing efficiency across all systems.",
+    researchCost: {
+      science: 20000,
+      energy: 8000,
+      metals: 7000,
+    },
+    prerequisites: ["symbiotic_processing_units"],
+    unlocksBuildings: ["chrono_turbine"],
+    researchDuration: 1800, // 30 minut
+    isResearched: false,
+    locked: true,
+    expedtionMinTier: 5,
   },
 ];
 

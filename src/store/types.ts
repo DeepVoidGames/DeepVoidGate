@@ -49,7 +49,18 @@ export type BuildingType =
   | "cryoUniversalDepot"
   | "quantumFluxMetalForge"
   | "fusionEdgeMetallizer"
-  | "nanoDismantlerFoundry";
+  | "nanoDismantlerFoundry"
+  | "myco_grow_chamber"
+  | "exoforge_foundry"
+  | "quantum_alloy_energy_core"
+  | "xeno_carbon_agro_complex"
+  | "qmet_biofarm"
+  | "qmet_oxyplant"
+  | "harmonic_core_generator"
+  | "resonant_fabricator"
+  | "symbio_colony_hub"
+  | "symbio_resource_loop"
+  | "chrono_turbine";
 
 export type TechnologyCategory =
   | "Infrastructure"

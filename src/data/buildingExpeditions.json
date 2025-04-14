@@ -1,5 +1,42 @@
 [
   {
+    "type": "myco_grow_chamber",
+    "category": "production",
+    "name": "Myco Grow Chamber",
+    "description": "Cultivates fungal protein in low-light, high-humidity environments.",
+    "workerCapacity": 4,
+    "baseCost": {
+      "food": 150,
+      "energy": 50
+    },
+    "baseProduction": {
+      "food": 1.5,
+      "oxygen": 0.3
+    },
+    "baseConsumption": {
+      "water": 0.2
+    },
+    "requirements": {},
+    "requiredTechnology": "primitive_bioreactor",
+    "costMultiplier": 1.3,
+    "productionMultiplier": 1.4,
+    "maxInstances": 3,
+    "tier": 1,
+    "maxTier": 5,
+    "upgrades": 0,
+    "uniqueBonus": {
+      "production": {
+        "food": 5,
+        "oxygen": 1
+      },
+      "storage": {
+        "food": 500,
+        "oxygen": 300
+      }
+    },
+    "tag": "food"
+  },
+  {
     "type": "exoforge_foundry",
     "category": "production",
     "name": "Exoforge Foundry",
@@ -102,5 +139,249 @@
       }
     },
     "tag": "food"
+  },
+  {
+    "type": "qmet_biofarm",
+    "category": "production",
+    "name": "Quantum Biofarm",
+    "description": "Food production is no longer linear—quantum phase acceleration enables exponential biomass replication.",
+    "workerCapacity": 12,
+    "baseCost": {
+      "metals": 1200,
+      "energy": 600,
+      "science": 250
+    },
+    "baseProduction": {
+      "food": 10.2
+    },
+    "baseConsumption": {
+      "water": 1.2,
+      "energy": 2.5
+    },
+    "requirements": {},
+    "requiredTechnology": "quantum_metabolism",
+    "costMultiplier": 2.2,
+    "productionMultiplier": 1.8,
+    "maxInstances": 2,
+    "tier": 1,
+    "maxTier": 5,
+    "upgrades": 0,
+    "uniqueBonus": {
+      "production": { "food": 85 },
+      "storage": { "food": 4000 }
+    },
+    "tag": "food"
+  },
+  {
+    "type": "qmet_oxyplant",
+    "category": "production",
+    "name": "Oxy-Fusion Plant",
+    "description": "Synthesizes breathable air using high-efficiency carbon fractals and phase-driven electrolysis.",
+    "workerCapacity": 10,
+    "baseCost": {
+      "metals": 1000,
+      "energy": 400,
+      "science": 150
+    },
+    "baseProduction": {
+      "oxygen": 4.8
+    },
+    "baseConsumption": {
+      "water": 1.0,
+      "energy": 1.8
+    },
+    "requirements": {},
+    "requiredTechnology": "quantum_metabolism",
+    "costMultiplier": 2.0,
+    "productionMultiplier": 1.9,
+    "maxInstances": 2,
+    "tier": 1,
+    "maxTier": 5,
+    "upgrades": 0,
+    "uniqueBonus": {
+      "production": { "oxygen": 55 },
+      "storage": { "oxygen": 5000 }
+    },
+    "tag": "oxygen"
+  },
+  {
+    "type": "harmonic_core_generator",
+    "category": "production",
+    "name": "Harmonic Core Generator",
+    "description": "Generates massive energy output by amplifying quantum field oscillations in harmonic chambers.",
+    "workerCapacity": 10,
+    "baseCost": {
+      "metals": 2000,
+      "science": 300,
+      "energy": 800
+    },
+    "baseProduction": {
+      "energy": 15.5
+    },
+    "baseConsumption": {
+      "water": 0.6,
+      "oxygen": 0.3
+    },
+    "requirements": {},
+    "requiredTechnology": "harmonic_energy_matrices",
+    "costMultiplier": 2.5,
+    "productionMultiplier": 1.9,
+    "maxInstances": 2,
+    "tier": 1,
+    "maxTier": 5,
+    "upgrades": 0,
+    "uniqueBonus": {
+      "production": { "energy": 150 },
+      "storage": { "energy": 20000 }
+    },
+    "tag": "energy"
+  },
+  {
+    "type": "resonant_fabricator",
+    "category": "production",
+    "name": "Resonant Fabricator",
+    "description": "Uses resonance-aligned nanofracturing to convert metals into ultra-efficient structures with minimal waste.",
+    "workerCapacity": 14,
+    "baseCost": {
+      "metals": 2500,
+      "energy": 1000,
+      "science": 500
+    },
+    "baseProduction": {
+      "metals": 8.8
+    },
+    "baseConsumption": {
+      "energy": 3.2,
+      "water": 0.9
+    },
+    "requirements": {},
+    "requiredTechnology": "harmonic_energy_matrices",
+    "costMultiplier": 2.6,
+    "productionMultiplier": 1.85,
+    "maxInstances": 1,
+    "tier": 1,
+    "maxTier": 5,
+    "upgrades": 0,
+    "uniqueBonus": {
+      "production": { "metals": 95 },
+      "storage": { "metals": 18000 }
+    },
+    "tag": "metals"
+  },
+  {
+    "type": "symbio_colony_hub",
+    "category": "production",
+    "name": "Symbio Colony Hub",
+    "description": "A living structure that generates food, oxygen, and water through a closed-loop biosystem based on alien symbiosis.",
+    "workerCapacity": 18,
+    "baseCost": {
+      "metals": 2500,
+      "energy": 1200,
+      "science": 600
+    },
+    "baseProduction": {
+      "food": 7.5,
+      "oxygen": 4.5,
+      "water": 3.0
+    },
+    "baseConsumption": {
+      "energy": 2.0
+    },
+    "requirements": {},
+    "requiredTechnology": "symbiotic_processing_units",
+    "costMultiplier": 2.4,
+    "productionMultiplier": 2.0,
+    "maxInstances": 2,
+    "tier": 1,
+    "maxTier": 5,
+    "upgrades": 0,
+    "uniqueBonus": {
+      "production": {
+        "food": 65,
+        "oxygen": 40,
+        "water": 30
+      },
+      "storage": {
+        "food": 5000,
+        "oxygen": 6000,
+        "water": 4000
+      }
+    },
+    "tag": "multi"
+  },
+  {
+    "type": "symbio_resource_loop",
+    "category": "production",
+    "name": "Symbio Resource Loop",
+    "description": "Converts input resources into high-value outputs through recursive, organic-alien synthesis.",
+    "workerCapacity": 16,
+    "baseCost": {
+      "metals": 3000,
+      "science": 800,
+      "energy": 1500
+    },
+    "baseProduction": {
+      "metals": 5.0,
+      "energy": 6.5,
+      "science": 3.5
+    },
+    "baseConsumption": {
+      "food": 2.5,
+      "oxygen": 1.8,
+      "water": 1.5
+    },
+    "requirements": {},
+    "requiredTechnology": "symbiotic_processing_units",
+    "costMultiplier": 2.6,
+    "productionMultiplier": 1.9,
+    "maxInstances": 1,
+    "tier": 1,
+    "maxTier": 5,
+    "upgrades": 0,
+    "uniqueBonus": {
+      "production": {
+        "metals": 70,
+        "energy": 90,
+        "science": 50
+      },
+      "storage": {
+        "science": 4000,
+        "metals": 7000,
+        "energy": 10000
+      }
+    },
+    "tag": "conversion"
+  },
+  {
+    "type": "chrono_turbine",
+    "category": "production",
+    "name": "Chrono Turbine",
+    "description": "A device that taps into the time-stream, accelerating energy production by syncing with the universe’s natural rhythms.",
+    "workerCapacity": 8,
+    "baseCost": {
+      "metals": 5000,
+      "energy": 2000,
+      "science": 1000
+    },
+    "baseProduction": {
+      "energy": 30.0
+    },
+    "baseConsumption": {
+      "oxygen": 0.8,
+      "water": 0.5
+    },
+    "requirements": {},
+    "requiredTechnology": "chrono_synchronization",
+    "costMultiplier": 3.0,
+    "productionMultiplier": 2.2,
+    "maxInstances": 1,
+    "tier": 5,
+    "maxTier": 5,
+    "upgrades": 0,
+    "uniqueBonus": {
+      "production": { "energy": 500 },
+      "storage": { "energy": 50000 }
+    },
+    "tag": "energy"
   }
 ]

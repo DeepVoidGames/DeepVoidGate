@@ -302,4 +302,183 @@ export const expeditionEvents: ExpeditionEvent[] = [
       },
     ],
   },
+  {
+    id: "ancient_fungal_culture",
+    title: "Forgotten Fungal Culture",
+    description:
+      "Your expedition uncovers an ancient cave filled with glowing fungal structures.",
+    type: ["scientific"],
+    minTier: 0,
+    weight: 6,
+    options: [
+      {
+        text: "Study the ecosystem",
+        effects: [
+          {
+            type: "technology",
+            technologyId: "primitive_bioreactor",
+            value: 0,
+          },
+          {
+            type: "time",
+            value: 10,
+          },
+        ],
+      },
+      {
+        text: "Harvest samples for immediate use",
+        effects: [
+          {
+            type: "reward",
+            value: { food: 200, oxygen: 50 },
+          },
+        ],
+      },
+    ],
+  },
+  {
+    id: "quantum_biomass_field",
+    title: "Quantum Biomass Field",
+    description:
+      "Your explorers encounter a field of pulsating biomass, flickering in and out of phase with reality.",
+    type: ["scientific"],
+    minTier: 2,
+    weight: 4,
+    options: [
+      {
+        text: "Study its metabolic cycle",
+        effects: [
+          {
+            type: "technology",
+            technologyId: "quantum_metabolism",
+            value: 0,
+          },
+          {
+            type: "time",
+            value: 45,
+          },
+        ],
+      },
+      {
+        text: "Harvest biomass",
+        effects: [
+          {
+            type: "reward",
+            value: { food: 2000, science: 500 },
+          },
+        ],
+      },
+    ],
+  },
+
+  {
+    id: "resonant_crystal_field",
+    title: "Resonant Crystal Field",
+    description:
+      "Your team encounters a landscape filled with vibrating crystal arrays pulsing with rhythmic energy.",
+    type: ["scientific"],
+    minTier: 3,
+    weight: 4,
+    options: [
+      {
+        text: "Analyze harmonic patterns",
+        effects: [
+          {
+            type: "technology",
+            technologyId: "harmonic_energy_matrices",
+            value: 0,
+          },
+          {
+            type: "time",
+            value: 60,
+          },
+        ],
+      },
+      {
+        text: "Extract energy pulses",
+        effects: [
+          {
+            type: "reward",
+            value: { energy: 4000, science: 800 },
+          },
+        ],
+      },
+    ],
+  },
+  {
+    id: "symbiotic_megastructure",
+    title: "Symbiotic Megastructure",
+    description:
+      "An enormous, breathing organism interwoven with alien machinery pulses in sync with planetary rhythms.",
+    type: ["scientific"],
+    minTier: 4,
+    weight: 3,
+    options: [
+      {
+        text: "Interface and observe",
+        effects: [
+          {
+            type: "technology",
+            technologyId: "symbiotic_processing_units",
+            value: 0,
+          },
+          {
+            type: "time",
+            value: 60,
+          },
+        ],
+      },
+      {
+        text: "Harvest organic material",
+        effects: [
+          {
+            type: "reward",
+            value: {
+              food: 3000,
+              oxygen: 1500,
+              science: 1000,
+            },
+          },
+        ],
+      },
+    ],
+  },
+  {
+    id: "time_distortion_field",
+    title: "Time Distortion Field",
+    description:
+      "A temporal anomaly warps space and time, creating a rift where past, present, and future converge.",
+    type: ["scientific"],
+    minTier: 5,
+    weight: 3,
+    options: [
+      {
+        text: "Investigate the anomaly",
+        effects: [
+          {
+            type: "technology",
+            technologyId: "chrono_synchronization",
+            value: 0,
+          },
+          {
+            type: "time",
+            value: 90,
+          },
+        ],
+      },
+      {
+        text: "Extract temporal energy",
+        effects: [
+          {
+            type: "reward",
+            value: {
+              energy: 5000,
+              metals: 3000,
+              science: 2000,
+            },
+          },
+        ],
+      },
+    ],
+  },
 ];
