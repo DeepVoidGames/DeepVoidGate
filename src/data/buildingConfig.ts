@@ -222,4 +222,72 @@ export const buildingConfig = [
     category: "housing" as BuildingCategory,
     icon: React.createElement(Home, { className: "h-5 w-5 text-blue-400" }),
   },
+  {
+    type: "myco_grow_chamber" as BuildingType,
+    name: "Myco Grow Chamber",
+    category: "production" as BuildingCategory,
+    icon: React.createElement(Leaf, { className: "h-5 w-5 text-green-400" }),
+  },
+  {
+    type: "exoforge_foundry" as BuildingType,
+    name: "Exoforge Foundry",
+    category: "production" as BuildingCategory,
+    icon: React.createElement(Factory, { className: "h-5 w-5 text-zinc-400" }),
+  },
+  {
+    type: "quantum_alloy_energy_core" as BuildingType,
+    name: "Quantum Alloy Energy Core",
+    category: "production" as BuildingCategory,
+    icon: React.createElement(Zap, { className: "h-5 w-5 text-yellow-400" }),
+  },
+  {
+    type: "xeno_carbon_agro_complex" as BuildingType,
+    name: "Xeno-Carbon Agro Complex",
+    category: "production" as BuildingCategory,
+    icon: React.createElement(Leaf, { className: "h-5 w-5 text-green-400" }),
+  },
+  {
+    type: "qmet_biofarm" as BuildingType,
+    name: "Quantum Biofarm",
+    category: "production" as BuildingCategory,
+    icon: React.createElement(Leaf, { className: "h-5 w-5 text-green-400" }),
+  },
+  {
+    type: "qmet_oxyplant" as BuildingType,
+    name: "Oxy-Fusion Plant",
+    category: "production" as BuildingCategory,
+    icon: React.createElement(Droplets, { className: "h-5 w-5 text-cyan-400" }),
+  },
+  {
+    type: "harmonic_core_generator" as BuildingType,
+    name: "Harmonic Core Generator",
+    category: "production" as BuildingCategory,
+    icon: React.createElement(Zap, { className: "h-5 w-5 text-yellow-400" }),
+  },
+  {
+    type: "resonant_fabricator" as BuildingType,
+    name: "Resonant Fabricator",
+    category: "production" as BuildingCategory,
+    icon: React.createElement(Factory, { className: "h-5 w-5 text-zinc-400" }),
+  },
+  {
+    type: "symbio_colony_hub" as BuildingType,
+    name: "Symbio Colony Hub",
+    category: "production" as BuildingCategory,
+    icon: React.createElement(Users, { className: "h-5 w-5 text-blue-400" }),
+  },
+  {
+    type: "symbio_resource_loop" as BuildingType,
+    name: "Symbio Resource Loop",
+    category: "production" as BuildingCategory,
+    icon: React.createElement(Building, {
+      className: "h-5 w-5 text-indigo-400",
+    }),
+  },
+  {
+    type: "chrono_turbine" as BuildingType,
+    name: "Chrono Turbine",
+    category: "production" as BuildingCategory,
+    icon: React.createElement(Clock, { className: "h-5 w-5 text-violet-400" }),
+  },
 ];
