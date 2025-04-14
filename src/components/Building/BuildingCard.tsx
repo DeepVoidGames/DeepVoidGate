@@ -79,7 +79,7 @@ const BuildingCard = ({
         <img
           src={`/deepvoidgate/demo/buildings/${building.type}.png`}
           alt="Placeholder"
-          className="w-full h-1/3 object-cover blur-sm opacity-15"
+          className="w-full h-1/3 object-cover blur-sm opacity-25"
         />
       </div>
       <CardHeader className="p-4 pb-0">

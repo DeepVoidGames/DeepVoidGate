@@ -42,7 +42,7 @@ const Hub = () => {
       const unlockedIds = unlocked.map((feature) => feature.id);
       setUnlockedFeatures(unlockedIds);
     }
-  }, []);
+  }, [state.technologies]);
 
   const isFeatureUnlocked = (featureId: string) => {
     return unlockedFeatures.includes(featureId);
