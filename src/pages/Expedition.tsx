@@ -50,7 +50,7 @@ const Expedition = () => {
     useState<ExpeditionType>("scientific");
   const [selectedTier, setSelectedTier] = useState(0);
   const [error, setError] = useState("");
-  const [showCompleted, setShowCompleted] = useState(true);
+  const [showCompleted, setShowCompleted] = useState(false);
 
   if (!isExpedtionUnlocked(state)) return;
 
@@ -86,9 +86,13 @@ const Expedition = () => {
   };
 
   const formatDuration = (minutes: number) => {
-    const hours = Math.floor(minutes / 60);
-    const mins = minutes % 60;
-    return `${hours}h ${mins.toFixed(1)}m`.replace(/\b0h\s?/, "");
+    const totalSeconds = Math.floor(minutes * 60);
+    const hours = Math.floor(totalSeconds / 3600);
+    const mins = Math.floor((totalSeconds % 3600) / 60);
+    const secs = totalSeconds % 60;
+
+    const pad = (n: number) => n.toString().padStart(2, "0");
+    return `${pad(hours)}:${pad(mins)}:${pad(secs)}`;
   };
 
   const toggleCompleted = () => {
@@ -187,7 +191,8 @@ const Expedition = () => {
                 <div className="flex items-center gap-2">
                   <Users className="w-4 h-4" />
                   <span>
-                    Crew: {CREW_PER_TIER + selectedTier * CREW_PER_TIER}
+                    Crew: {CREW_PER_TIER + selectedTier * CREW_PER_TIER} |{" "}
+                    Available Crew {state.population.available}{" "}
                   </span>
                 </div>
                 <div className="flex items-center gap-2">
