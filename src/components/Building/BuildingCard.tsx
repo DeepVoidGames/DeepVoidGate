@@ -75,13 +75,13 @@ const BuildingCard = ({
       }`}
     >
       {/* <img src={`/deepvoidgate/demo/buildings/${building.type}.jpg`} /> */}
-      <div className="absolute inset-0 w-full h-full overflow-hidden">
+      {/* <div className="absolute inset-0 w-full h-full overflow-hidden">
         <img
           src={`/deepvoidgate/demo/buildings/${building.type}.png`}
           alt="Placeholder"
           className="w-full h-1/3 object-cover blur-sm opacity-25"
         />
-      </div>
+      </div> */}
       <CardHeader className="p-4 pb-0">
         <div className="flex items-center justify-between">
           <div className="flex items-center space-x-3">
