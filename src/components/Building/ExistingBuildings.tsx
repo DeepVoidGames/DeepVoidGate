@@ -213,14 +213,14 @@ const ExistingBuildings: React.FC<ExistingBuildingsProps> = ({
 
                 {displayableBuildings.map((building) => {
                   const isMaxTier =
-                    building.tier >= 5 && building.upgrades >= 10;
+                    building.tier >= building.maxTier &&
+                    building.upgrades >= 10;
                   const upgradeData = getUpgradeData[building.id];
 
                   if (
                     !showMaxed &&
                     isMaxTier &&
-                    building.assignedWorkers == building.workerCapacity &&
-                    building.upgrades >= 10
+                    building.assignedWorkers == building.workerCapacity
                   )
                     return null;
 
