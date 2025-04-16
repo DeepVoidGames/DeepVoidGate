@@ -28,7 +28,7 @@ const Hub = () => {
       requiredTechnologies: ["intra_planetary_expeditions_enablement"],
     },
     {
-      id: "shipyard",
+      id: "315246",
       name: "3-1-5-2-4-6",
       description: "1⋆2≋1⋆4≋6⋆3≋5⋆2⊛≋2⋆2≋5⋆1≋6⋆1≋6⋆6",
       image: "/deepvoidgate/demo/315246.png",
