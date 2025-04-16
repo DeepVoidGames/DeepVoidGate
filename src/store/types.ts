@@ -62,7 +62,9 @@ export type BuildingType =
   | "symbio_resource_loop"
   | "chrono_turbine"
   | "floating_habitat"
-  | "bio_caverns";
+  | "bio_caverns"
+  | "dimensional_refinery"
+  | "void_storage_core";
 
 export type TechnologyCategory =
   | "Infrastructure"

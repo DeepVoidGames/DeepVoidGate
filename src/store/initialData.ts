@@ -547,6 +547,24 @@ export const initialTechnologies: Technology[] = [
     researchDuration: 3200,
     isResearched: false,
   },
+  {
+    id: "spatial_fabric_manipulation",
+    name: "Spatial Fabric Manipulation",
+    category: "Production",
+    description:
+      "Control over localized space-time enables folding, compressing, and storing resources in non-Euclidean spaces, unlocking extreme production density.",
+    researchCost: {
+      science: 30000,
+      metals: 10000,
+      energy: 12000,
+    },
+    prerequisites: ["chrono_synchronization"],
+    unlocksBuildings: ["dimensional_refinery", "void_storage_core"],
+    researchDuration: 2100,
+    isResearched: false,
+    locked: true,
+    expedtionMinTier: 6,
+  },
 ];
 
 export const initialExpeditions: Expedition[] = [];

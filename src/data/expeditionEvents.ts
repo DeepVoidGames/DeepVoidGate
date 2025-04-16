@@ -481,4 +481,43 @@ export const expeditionEvents: ExpeditionEvent[] = [
       },
     ],
   },
+
+  {
+    id: "folded_space_ruins",
+    title: "Folded Space Ruins",
+    description:
+      "A collapsing structure appears to exist in multiple dimensions at once. Its geometry warps as you observe it.",
+    type: ["scientific"],
+    minTier: 6,
+    weight: 3,
+    options: [
+      {
+        text: "Stabilize the structure and study it",
+        effects: [
+          {
+            type: "technology",
+            technologyId: "spatial_fabric_manipulation",
+            value: 0,
+          },
+          {
+            type: "time",
+            value: 120,
+          },
+        ],
+      },
+      {
+        text: "Extract residual resources",
+        effects: [
+          {
+            type: "reward",
+            value: {
+              science: 4000,
+              energy: 5000,
+              metals: 3000,
+            },
+          },
+        ],
+      },
+    ],
+  },
 ];

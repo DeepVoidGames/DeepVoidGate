@@ -383,5 +383,86 @@
       "storage": { "energy": 50000 }
     },
     "tag": "energy"
+  },
+  {
+    "type": "dimensional_refinery",
+    "category": "production",
+    "name": "Dimensional Refinery",
+    "description": "Uses warped spatial zones to simultaneously refine multiple raw materials with minimal energy loss.",
+    "workerCapacity": 20,
+    "baseCost": {
+      "metals": 7000,
+      "science": 1500,
+      "energy": 2500
+    },
+    "baseProduction": {
+      "metals": 12.0,
+      "energy": 10.0
+    },
+    "baseConsumption": {
+      "water": 2.0,
+      "oxygen": 1.5
+    },
+    "requirements": {},
+    "requiredTechnology": "spatial_fabric_manipulation",
+    "costMultiplier": 3.3,
+    "productionMultiplier": 2.7,
+    "maxInstances": 1,
+    "tier": 1,
+    "maxTier": 5,
+    "upgrades": 0,
+    "uniqueBonus": {
+      "production": {
+        "metals": 130,
+        "energy": 120
+      },
+      "storage": {
+        "metals": 15000,
+        "energy": 20000
+      }
+    },
+    "tag": "metals"
+  },
+  {
+    "type": "void_storage_core",
+    "category": "storage",
+    "name": "Void Storage Core",
+    "description": "A spatially folded chamber that allows storing massive amounts of resources in microdimensions while emitting minor passive production.",
+    "workerCapacity": 0,
+    "baseCost": {
+      "metals": 4000,
+      "science": 2000,
+      "energy": 1800
+    },
+    "baseProduction": {},
+    "baseConsumption": {
+      "water": 0.5,
+      "oxygen": 0.5
+    },
+    "storageBonus": {
+      "metals": 2000,
+      "oxygen": 2000,
+      "food": 2000,
+      "science": 2000
+    },
+    "requirements": {},
+    "requiredTechnology": "spatial_fabric_manipulation",
+    "costMultiplier": 3.0,
+    "productionMultiplier": 1.5,
+    "maxInstances": 1,
+    "tier": 1,
+    "maxTier": 5,
+    "upgrades": 0,
+    "uniqueBonus": {
+      "storage": {
+        "metals": 50000,
+        "energy": 60000,
+        "science": 30000,
+        "water": 8000,
+        "oxygen": 8000,
+        "food": 10000
+      }
+    },
+    "tag": "storage"
   }
 ]

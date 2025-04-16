@@ -302,4 +302,20 @@ export const buildingConfig = [
     category: "housing" as BuildingCategory,
     icon: React.createElement(Home, { className: "h-5 w-5 text-blue-400" }),
   },
+  {
+    type: "dimensional_refinery" as BuildingType,
+    name: "Dimensional Refinery",
+    category: "production" as BuildingCategory,
+    icon: React.createElement(Pickaxe, {
+      className: "h-5 w-5 text-purple-400",
+    }),
+  },
+  {
+    type: "void_storage_core" as BuildingType,
+    name: "Void Storage Core",
+    category: "storage" as BuildingCategory,
+    icon: React.createElement(Package, {
+      className: "h-5 w-5 text-purple-400",
+    }),
+  },
 ];
