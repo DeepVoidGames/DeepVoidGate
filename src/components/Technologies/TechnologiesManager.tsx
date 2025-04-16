@@ -12,6 +12,8 @@ import {
   Lock,
   CheckCircle,
   Clock,
+  Eye,
+  EyeOff,
 } from "lucide-react";
 import { GameProvider, useGame } from "@/context/GameContext";
 import { formatNumber } from "@/lib/utils";
@@ -64,6 +66,7 @@ const TechnologiesManager: React.FC = () => {
   const { resources, technologies } = state;
   const [activeTab, setActiveTab] = useState<string>("Infrastructure");
   const [searchQuery, setSearchQuery] = useState("");
+  const [showResearched, setShowResearched] = useState(false);
   const [now, setNow] = useState(Date.now());
 
   useEffect(() => {
@@ -183,15 +186,33 @@ const TechnologiesManager: React.FC = () => {
         </h2>
 
         <div className="relative max-w-md w-full">
-          <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
-          <input
-            type="text"
-            placeholder="Search technologies..."
-            className="w-full pl-10 pr-4 py-2 bg-background/90 rounded-lg border focus:outline-none focus:ring-2 focus:ring-primary"
-            value={searchQuery}
-            onChange={(e) => setSearchQuery(e.target.value)}
-          />
+          <div>
+            <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+            <input
+              type="text"
+              placeholder="Search technologies..."
+              className="w-full pl-10 pr-4 py-2 bg-background/90 rounded-lg border focus:outline-none focus:ring-2 focus:ring-primary"
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+            />
+          </div>
         </div>
+      </div>
+
+      <div className="flex items-center justify-end mb-4 w-full">
+        <button
+          onClick={() => setShowResearched((prev) => !prev)}
+          className={`flex items-center gap-2 px-4 py-2 rounded-lg transition-colors`}
+        >
+          {showResearched ? (
+            <Eye className="h-4 w-4 text-muted-foreground" />
+          ) : (
+            <EyeOff className="h-4 w-4 text-muted-foreground" />
+          )}
+          <span className="text-muted-foreground text-sm">
+            {showResearched ? "Hide Researched" : "Show Researched"}
+          </span>
+        </button>
       </div>
 
       <div className="flex flex-wrap gap-2 mb-6">
@@ -217,6 +238,8 @@ const TechnologiesManager: React.FC = () => {
           const canResearch = canResearchTech(tech);
           const progressInfo = getResearchProgress(tech);
           const isInProgress = !!progressInfo;
+
+          if (!showResearched && isResearched) return null;
 
           return (
             <div

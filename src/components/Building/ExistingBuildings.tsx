@@ -17,6 +17,7 @@ interface ExistingBuildingsProps {
   formatNumber: (num: number) => string;
   ResourcesIcon: any;
   getUpgradeData: Record<string, UpgradeData>;
+  showMaxed: boolean;
 }
 
 const ExistingBuildings: React.FC<ExistingBuildingsProps> = ({
@@ -33,6 +34,7 @@ const ExistingBuildings: React.FC<ExistingBuildingsProps> = ({
   formatNumber,
   ResourcesIcon,
   getUpgradeData,
+  showMaxed,
 }) => {
   const [selectedResource, setSelectedResource] = useState<string>("oxygen");
 
@@ -213,6 +215,14 @@ const ExistingBuildings: React.FC<ExistingBuildingsProps> = ({
                   const isMaxTier =
                     building.tier >= 5 && building.upgrades >= 10;
                   const upgradeData = getUpgradeData[building.id];
+
+                  if (
+                    !showMaxed &&
+                    isMaxTier &&
+                    building.assignedWorkers == building.workerCapacity &&
+                    building.upgrades >= 10
+                  )
+                    return null;
 
                   return (
                     <BuildingCard

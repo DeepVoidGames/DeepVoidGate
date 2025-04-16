@@ -7,6 +7,8 @@ import {
   Microscope,
   Search,
   Package,
+  Eye,
+  EyeOff,
 } from "lucide-react";
 import { useGame } from "@/context/GameContext";
 import { formatNumber } from "@/lib/utils";
@@ -62,6 +64,7 @@ export const BuildingManager: React.FC = () => {
   const [expandedBuilding, setExpandedBuilding] = useState<string | null>(null);
   const [activeTab, setActiveTab] = useState<string>("production");
   const [searchQuery, setSearchQuery] = useState("");
+  const [showMaxed, setShowMaxed] = useState(true);
 
   // Handlers
   const constructBuilding = useCallback(
@@ -213,6 +216,22 @@ export const BuildingManager: React.FC = () => {
           />
         </div>
 
+        <div className="flex items-center justify-end mb-4 w-full">
+          <button
+            onClick={() => setShowMaxed((prev) => !prev)}
+            className={`flex items-center gap-2 px-4 py-2 rounded-lg transition-colors`}
+          >
+            {showMaxed ? (
+              <Eye className="h-4 w-4 text-muted-foreground" />
+            ) : (
+              <EyeOff className="h-4 w-4 text-muted-foreground" />
+            )}
+            <span className="text-muted-foreground text-sm">
+              {showMaxed ? "Hide Maxed" : "Show Maxed"}
+            </span>
+          </button>
+        </div>
+
         {/* Existing buildings */}
         <ExistingBuildings
           activeTab={activeTab}
@@ -228,6 +247,7 @@ export const BuildingManager: React.FC = () => {
           formatNumber={formatNumber}
           ResourcesIcon={ResourcesIcon}
           getUpgradeData={getUpgradeData}
+          showMaxed={showMaxed}
         />
 
         {/* Construction Section */}
