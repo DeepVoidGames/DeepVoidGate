@@ -221,7 +221,7 @@ const TechnologiesManager: React.FC = () => {
           return (
             <div
               key={tech.id}
-              className={`p-4 rounded-lg border transition-all duration-200 h-[300px] relative ${
+              className={`p-4 rounded-lg border transition-all duration-200 h-[350px] relative ${
                 isResearched
                   ? "bg-green-900/20 border-green-800"
                   : `bg-background/50 border-muted/30 ${

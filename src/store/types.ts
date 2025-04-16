@@ -60,7 +60,9 @@ export type BuildingType =
   | "resonant_fabricator"
   | "symbio_colony_hub"
   | "symbio_resource_loop"
-  | "chrono_turbine";
+  | "chrono_turbine"
+  | "floating_habitat"
+  | "bio_caverns";
 
 export type TechnologyCategory =
   | "Infrastructure"
@@ -151,6 +153,7 @@ export interface BuildingData {
     storage?: Partial<Record<ResourceType, number>>;
   };
   tag?: BuildingTags;
+  housingCapacityMultiplier?: number;
 }
 
 // Alert thresholds

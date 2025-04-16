@@ -290,4 +290,16 @@ export const buildingConfig = [
     category: "production" as BuildingCategory,
     icon: React.createElement(Clock, { className: "h-5 w-5 text-violet-400" }),
   },
+  {
+    type: "floating_habitat" as BuildingType,
+    name: "Floating Habitat",
+    category: "housing" as BuildingCategory,
+    icon: React.createElement(Home, { className: "h-5 w-5 text-blue-400" }),
+  },
+  {
+    type: "bio_caverns" as BuildingType,
+    name: "Symbiotic Bio-Caverns",
+    category: "housing" as BuildingCategory,
+    icon: React.createElement(Home, { className: "h-5 w-5 text-blue-400" }),
+  },
 ];

@@ -517,6 +517,36 @@ export const initialTechnologies: Technology[] = [
     locked: true,
     expedtionMinTier: 5,
   },
+  {
+    id: "hydrostatic_architecture",
+    name: "Hydrostatic Megastructure Theory",
+    category: "Infrastructure",
+    description:
+      "Revolutionary approach to stabilizing dynamic marine environments using corrosion-resistant metamaterials and kilometer-scale pressure management systems. Enables construction of permanent oceanic settlements.",
+    researchCost: {
+      science: 18000,
+      metals: 6500,
+    },
+    prerequisites: [],
+    unlocksBuildings: ["floating_habitat"],
+    researchDuration: 2400,
+    isResearched: false,
+  },
+  {
+    id: "myco_structural_engineering",
+    name: "Myco-Structural Ecosystem Synthesis",
+    category: "Infrastructure",
+    description:
+      "Engineering of living mycelium networks as structural frameworks, integrating photosynthetic lichens and adaptive gas exchange membranes for self-regulating organic habitats.",
+    researchCost: {
+      science: 22000,
+      metals: 20000,
+    },
+    prerequisites: ["hydrostatic_architecture", "quantum_tunneling_synthesis"],
+    unlocksBuildings: ["bio_caverns"],
+    researchDuration: 3200,
+    isResearched: false,
+  },
 ];
 
 export const initialExpeditions: Expedition[] = [];

@@ -970,7 +970,7 @@
     "description": "Multi-level underground habitat with integrated life support systems and radiation shielding.",
     "workerCapacity": 0,
     "baseCost": {
-      "metals": 1500,
+      "metals": 1000,
       "energy": 85
     },
     "baseProduction": {},
@@ -988,5 +988,61 @@
     "upgrades": 0,
     "uniqueBonus": {},
     "tag": "habitation"
+  },
+  {
+    "type": "floating_habitat",
+    "category": "housing",
+    "name": "Floating Habitat",
+    "description": "An oceanic floating structure, designed to withstand harsh water environments and provide sustainable living conditions.",
+    "workerCapacity": 0,
+    "baseCost": {
+      "metals": 1500,
+      "energy": 60
+    },
+    "baseProduction": {},
+    "baseConsumption": {
+      "oxygen": 0.2,
+      "energy": 0.35,
+      "water": 0.15
+    },
+    "requirements": {},
+    "requiredTechnology": "hydrostatic_architecture",
+    "costMultiplier": 1.6,
+    "productionMultiplier": 1,
+    "maxInstances": 1,
+    "tier": 3,
+    "maxTier": 5,
+    "upgrades": 0,
+    "uniqueBonus": {},
+    "tag": "habitation",
+    "housingCapacityMultiplier": 2
+  },
+  {
+    "type": "bio_caverns",
+    "category": "housing",
+    "name": "Symbiotic Bio-Caverns",
+    "description": "Organic living complex integrated with genetically modified fungi providing natural air filtration and bioluminescent lighting.",
+    "workerCapacity": 0,
+    "baseCost": {
+      "metals": 1500,
+      "energy": 60
+    },
+    "baseProduction": {},
+    "baseConsumption": {
+      "oxygen": 0.2,
+      "energy": 0.35,
+      "water": 0.15
+    },
+    "requirements": {},
+    "requiredTechnology": "myco_structural_engineering",
+    "costMultiplier": 1.6,
+    "productionMultiplier": 1,
+    "maxInstances": 1,
+    "tier": 3,
+    "maxTier": 5,
+    "upgrades": 0,
+    "uniqueBonus": {},
+    "tag": "habitation",
+    "housingCapacityMultiplier": 2
   }
 ]
