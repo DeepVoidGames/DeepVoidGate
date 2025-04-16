@@ -8,6 +8,7 @@ import { Link } from "react-router-dom";
 type Feature = {
   id: string;
   name: string;
+  description?: string; // Opis funkcji
   image: string;
   to: string; // Link do podstrony
   requiredTechnologies?: string[]; // Lista wymaganych technologii do odblokowania
@@ -25,6 +26,14 @@ const Hub = () => {
       image: "/deepvoidgate/demo/expeditionIcon.png",
       to: "/expedition",
       requiredTechnologies: ["intra_planetary_expeditions_enablement"],
+    },
+    {
+      id: "shipyard",
+      name: "3-1-5-2-4-6",
+      description: "1⋆2≋1⋆4≋6⋆3≋5⋆2⊛≋2⋆2≋5⋆1≋6⋆1≋6⋆6",
+      image: "/deepvoidgate/demo/315246.png",
+      to: "#",
+      requiredTechnologies: [],
     },
   ];
 
@@ -77,6 +86,11 @@ const Hub = () => {
                         <Link to={feature.to}>{feature.name}</Link>
                       </span>
                     </div>
+                    {feature.description && (
+                      <div className="absolute bottom-0 left-0 right-0 p-2 bg-black/50 text-gray-300 text-sm">
+                        {feature.description}
+                      </div>
+                    )}
                   </div>
 
                   {!isFeatureUnlocked(feature.id) && (

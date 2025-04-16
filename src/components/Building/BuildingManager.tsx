@@ -64,7 +64,7 @@ export const BuildingManager: React.FC = () => {
   const [expandedBuilding, setExpandedBuilding] = useState<string | null>(null);
   const [activeTab, setActiveTab] = useState<string>("production");
   const [searchQuery, setSearchQuery] = useState("");
-  const [showMaxed, setShowMaxed] = useState(true);
+  const [showMaxed, setShowMaxed] = useState(false);
 
   // Handlers
   const constructBuilding = useCallback(
