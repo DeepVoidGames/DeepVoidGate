@@ -377,12 +377,13 @@ export const getProductionByResource = (
     resources.energy?.amount < resourceAlertThresholds.energy.critical &&
     building.baseConsumption?.energy
   ) {
-    production = baseValue + baseValue * totalBonus * building.efficiency * 0.1;
+    production = baseValue + baseValue * totalBonus * 0.1;
   } else {
-    production = baseValue + baseValue * totalBonus * building.efficiency;
+    production = baseValue + baseValue * totalBonus;
   }
 
-  production = production * building.productionMultiplier + bonus;
+  production =
+    (production * building.productionMultiplier + bonus) * building.efficiency;
 
   return production;
 };
@@ -422,7 +423,6 @@ export const getCapacityByResource = (
   return amount + amount * totalBonus + bonus;
 };
 
-// Calculate building efficiency
 export const calculateEfficiency = (
   building: BuildingData,
   resources: ResourcesState
@@ -430,19 +430,27 @@ export const calculateEfficiency = (
   const baseEfficiency = building.efficiency || 0;
   const tierMultiplier = 1 + (building.tier - 1) * 0.2;
 
-  if (building.workerCapacity == 0) {
+  if (building.workerCapacity === 0) {
     return 1;
   }
+
+  const workerRatio = (building.assignedWorkers || 0) / building.workerCapacity;
+
+  let efficiency = baseEfficiency * tierMultiplier * workerRatio;
+
+  const minWorkerEfficiency = 0.1;
+
+  efficiency = Math.max(efficiency, minWorkerEfficiency);
 
   if (
     resourceAlertThresholds.energy &&
     resources.energy?.amount < resourceAlertThresholds.energy.critical &&
     building.baseConsumption?.energy
   ) {
-    return Math.min(baseEfficiency * tierMultiplier, 0.1);
-  } else {
-    return Math.min(baseEfficiency * tierMultiplier, 1);
+    efficiency = Math.min(efficiency, 0.1);
   }
+
+  return Math.min(efficiency, 1);
 };
 
 // Handle worker assignment
