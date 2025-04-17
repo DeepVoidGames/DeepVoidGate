@@ -307,7 +307,7 @@
         "water": 4000
       }
     },
-    "tag": "multi"
+    "tag": "food"
   },
   {
     "type": "symbio_resource_loop",
@@ -350,7 +350,7 @@
         "energy": 10000
       }
     },
-    "tag": "conversion"
+    "tag": "energy"
   },
   {
     "type": "chrono_turbine",
