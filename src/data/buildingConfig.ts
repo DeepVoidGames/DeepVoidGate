@@ -274,13 +274,13 @@ export const buildingConfig = [
     type: "symbio_colony_hub" as BuildingType,
     name: "Symbio Colony Hub",
     category: "production" as BuildingCategory,
-    icon: React.createElement(Users, { className: "h-5 w-5 text-blue-400" }),
+    icon: React.createElement(Leaf, { className: "h-5 w-5 text-blue-400" }),
   },
   {
     type: "symbio_resource_loop" as BuildingType,
     name: "Symbio Resource Loop",
     category: "production" as BuildingCategory,
-    icon: React.createElement(Building, {
+    icon: React.createElement(Zap, {
       className: "h-5 w-5 text-indigo-400",
     }),
   },

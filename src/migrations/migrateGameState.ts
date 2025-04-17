@@ -261,6 +261,7 @@ const migrateBuildingsStats = (savedBuildings: any[]): any[] => {
       maxInstances: template.maxInstances ?? building.maxInstances,
       maxTier: template.maxTier ?? building.maxTier,
       uniqueBonus: template.uniqueBonus || building.uniqueBonus,
+      tag: template.tag || building.tag,
     };
   });
 };
