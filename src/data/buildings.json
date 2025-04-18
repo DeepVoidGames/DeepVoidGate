@@ -1053,7 +1053,6 @@
     "workerCapacity": 0,
     "baseCost": {
       "metals": 500,
-      "crystals": 200,
       "energy": 100
     },
     "baseProduction": {},
@@ -1082,8 +1081,8 @@
     "description": "Stores massive energy using stabilized antimatter fields.",
     "workerCapacity": 0,
     "baseCost": {
-      "metals": 1200,
-      "energy": 300
+      "metals": 2400,
+      "energy": 6000
     },
     "baseProduction": {},
     "baseConsumption": {
@@ -1112,8 +1111,7 @@
     "workerCapacity": 0,
     "baseCost": {
       "metals": 3000,
-
-      "energy": 1000
+      "energy": 7600
     },
     "baseProduction": {},
     "baseConsumption": {

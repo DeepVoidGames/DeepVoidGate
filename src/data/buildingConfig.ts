@@ -343,7 +343,7 @@ export const buildingConfig = [
     }),
   },
   {
-    type: "quantum_storage" as BuildingType,
+    type: "quantumCapacitor" as BuildingType,
     name: "Quantum Capacitor",
     category: "storage" as BuildingCategory,
     icon: React.createElement(Zap, {

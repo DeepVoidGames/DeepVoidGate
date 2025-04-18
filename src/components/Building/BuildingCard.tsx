@@ -200,20 +200,26 @@ const BuildingCard = ({
 
             {(hasStorageBonus ||
               (building?.uniqueBonus?.storage &&
-                building?.tier === building?.maxTier)) && (
-              <div className="grid grid-cols-2 gap-2 text-xs text-cyan-400">
-                {Object.entries(
-                  hasStorageBonus
-                    ? calculateBuildingStorage(building)
-                    : building.uniqueBonus.storage
-                ).map(([resource, bonus]) => (
-                  <div key={resource} className="flex items-center space-x-1">
-                    <span>{ResourcesIcon({ resource })}</span>
-                    <span>+{formatNumber(bonus)}</span>
+                building?.tier === building?.maxTier)) &&
+              (() => {
+                const bonuses = hasStorageBonus
+                  ? calculateBuildingStorage(building)
+                  : building.uniqueBonus.storage;
+
+                return (
+                  <div className="grid grid-cols-2 gap-2 text-xs text-cyan-400">
+                    {Object.entries(bonuses).map(([resource, bonus]) => (
+                      <div
+                        key={resource}
+                        className="flex items-center space-x-1"
+                      >
+                        <span>{ResourcesIcon({ resource })}</span>
+                        <span>+{formatNumber(bonus)}</span>
+                      </div>
+                    ))}
                   </div>
-                ))}
-              </div>
-            )}
+                );
+              })()}
           </div>
 
           {/* Sekcja Production/Consumption */}

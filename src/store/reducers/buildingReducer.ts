@@ -470,7 +470,8 @@ export const calculateBuildingStorage = (
   Object.entries(building.storageBonus).forEach(([resource, bonus]) => {
     const resourceKey = resource as ResourceType;
     const baseValue = Number(bonus) || 0;
-    const value = baseValue + tierBonus(baseValue);
+    const value =
+      baseValue + tierBonus(baseValue) + building.upgrades * baseValue;
     storageBonus[resourceKey] = value;
   });
 
