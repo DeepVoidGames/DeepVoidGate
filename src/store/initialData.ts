@@ -328,7 +328,7 @@ export const initialTechnologies: Technology[] = [
     description: "Subatomic compression fields for mass storage solutions",
     researchCost: { metals: 400, science: 250, energy: 150 },
     prerequisites: ["quantum_computing"],
-    unlocksBuildings: ["cryoUniversalDepot"],
+    unlocksBuildings: ["cryoUniversalDepot", "quantumCapacitor"],
     researchDuration: 120,
     isResearched: false,
   },
@@ -564,6 +564,58 @@ export const initialTechnologies: Technology[] = [
     isResearched: false,
     locked: true,
     expedtionMinTier: 6,
+  },
+  {
+    id: "autonomic_storage_networks",
+    name: "Autonomic Storage Networks",
+    category: "Infrastructure",
+    description:
+      "A self-regulating resource storage architecture based on neural patterns that actively optimize flow, minimize waste, and accelerate distribution.",
+    researchCost: {
+      science: 40000,
+      metals: 15000,
+      energy: 20000,
+    },
+    prerequisites: ["spatial_fabric_manipulation"],
+    unlocksBuildings: [
+      "smart_resource_matrix",
+      "nutrient_reserve_cluster",
+      "aeropulse_vault",
+    ],
+    researchDuration: 2400, // 40 minut
+    isResearched: false,
+    locked: true,
+    expedtionMinTier: 7,
+  },
+  {
+    id: "antimatter_storage",
+    name: "Antimatter Storage",
+    category: "Energy",
+    description:
+      "Enables storage of vast energy through antimatter-based containment.",
+    researchCost: {
+      metals: 1500,
+      science: 700,
+    },
+    prerequisites: ["quantum_storage"],
+    unlocksBuildings: ["antimatterCell"],
+    isResearched: false,
+    researchDuration: 90,
+  },
+  {
+    id: "void_singularity",
+    name: "Void Singularity",
+    category: "Energy",
+    description:
+      "Harness singularities to store unimaginable quantities of energy.",
+    researchCost: {
+      metals: 5000,
+      science: 2000,
+    },
+    prerequisites: ["antimatter_storage"],
+    unlocksBuildings: ["voidCore"],
+    isResearched: false,
+    researchDuration: 150,
   },
 ];
 

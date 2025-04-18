@@ -520,4 +520,44 @@ export const expeditionEvents: ExpeditionEvent[] = [
       },
     ],
   },
+
+  {
+    id: "neurostorage_architecture",
+    title: "Neural Storage Blueprint",
+    description:
+      "Your team uncovers a vault embedded with a living AI designed to manage interdimensional supply chains.",
+    type: ["scientific"],
+    minTier: 7,
+    weight: 2,
+    options: [
+      {
+        text: "Integrate the neural systems",
+        effects: [
+          {
+            type: "technology",
+            technologyId: "autonomic_storage_networks",
+            value: 0,
+          },
+          {
+            type: "time",
+            value: 150,
+          },
+        ],
+      },
+      {
+        text: "Extract the resource data",
+        effects: [
+          {
+            type: "reward",
+            value: {
+              food: 5000,
+              water: 4000,
+              oxygen: 4000,
+              science: 3000,
+            },
+          },
+        ],
+      },
+    ],
+  },
 ];

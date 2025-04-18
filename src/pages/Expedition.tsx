@@ -419,6 +419,7 @@ const Expedition = () => {
                           </div>
                         </div>
                       )}
+
                     {/* Events */}
                     {expedition.events
                       .filter((event) => event.chosenOptionIndex === -1)
@@ -462,7 +463,9 @@ const Expedition = () => {
                                     });
                                   }}
                                 >
-                                  {option.text}
+                                  <span className="text-sm font-medium  line-clamp-6">
+                                    {option.text}
+                                  </span>
                                 </Button>
                               ))}
                             </div>

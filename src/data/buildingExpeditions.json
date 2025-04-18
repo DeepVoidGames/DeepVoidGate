@@ -464,5 +464,121 @@
       }
     },
     "tag": "storage"
+  },
+  {
+    "type": "smart_resource_matrix",
+    "category": "storage",
+    "name": "Smart Resource Matrix",
+    "description": "An AI-managed hub that dynamically allocates stored resources, boosting global production efficiency and minimizing idle cycles.",
+    "workerCapacity": 0,
+    "baseCost": {
+      "metals": 7000,
+      "science": 2500,
+      "energy": 3000
+    },
+    "baseProduction": {},
+    "baseConsumption": {
+      "energy": 1.2,
+      "water": 0.8
+    },
+    "storageBonus": {
+      "metals": 15000,
+      "oxygen": 10000,
+      "food": 10000,
+      "science": 10000
+    },
+    "requirements": {},
+    "requiredTechnology": "autonomic_storage_networks",
+    "costMultiplier": 3.5,
+    "productionMultiplier": 1.0,
+    "maxInstances": 1,
+    "tier": 1,
+    "maxTier": 5,
+    "upgrades": 0,
+    "uniqueBonus": {
+      "storage": {
+        "metals": 100000,
+        "energy": 120000,
+        "science": 60000
+      }
+    },
+    "tag": "storage"
+  },
+  {
+    "type": "nutrient_reserve_cluster",
+    "category": "storage",
+    "name": "Nutrient Reserve Cluster",
+    "description": "Advanced bio-storage chambers that prolong shelf life and enhance food-related productivity through constant nutrient rebalancing.",
+    "workerCapacity": 0,
+    "baseCost": {
+      "metals": 5500,
+      "science": 1800,
+      "energy": 2000
+    },
+    "baseProduction": {},
+    "baseConsumption": {
+      "energy": 1.0,
+      "water": 1.5
+    },
+    "storageBonus": {
+      "metals": 20000,
+      "oxygen": 15000,
+      "food": 15000,
+      "science": 15000
+    },
+    "requirements": {},
+    "requiredTechnology": "autonomic_storage_networks",
+    "costMultiplier": 3.4,
+    "productionMultiplier": 1.0,
+    "maxInstances": 1,
+    "tier": 1,
+    "maxTier": 5,
+    "upgrades": 0,
+    "uniqueBonus": {
+      "storage": {
+        "food": 80000,
+        "water": 60000,
+        "oxygen": 40000
+      }
+    },
+    "tag": "storage"
+  },
+  {
+    "type": "aeropulse_vault",
+    "category": "storage",
+    "name": "Aeropulse Vault",
+    "description": "Atmospheric compression vaults that store gases in phase-altered states, reducing consumption and stabilizing life support systems.",
+    "workerCapacity": 0,
+    "baseCost": {
+      "metals": 6000,
+      "science": 2200,
+      "energy": 2400
+    },
+    "baseProduction": {},
+    "baseConsumption": {
+      "energy": 1.1,
+      "water": 0.6
+    },
+    "storageBonus": {
+      "metals": 25000,
+      "oxygen": 20000,
+      "food": 20000,
+      "science": 20000
+    },
+    "requirements": {},
+    "requiredTechnology": "autonomic_storage_networks",
+    "costMultiplier": 3.3,
+    "productionMultiplier": 1.0,
+    "maxInstances": 1,
+    "tier": 1,
+    "maxTier": 5,
+    "upgrades": 0,
+    "uniqueBonus": {
+      "storage": {
+        "oxygen": 70000,
+        "water": 60000
+      }
+    },
+    "tag": "storage"
   }
 ]

@@ -318,4 +318,52 @@ export const buildingConfig = [
       className: "h-5 w-5 text-purple-400",
     }),
   },
+  {
+    type: "smart_resource_matrix" as BuildingType,
+    name: "Smart Resource Matrix",
+    category: "storage" as BuildingCategory,
+    icon: React.createElement(Package, {
+      className: "h-5 w-5 text-purple-400",
+    }),
+  },
+  {
+    type: "nutrient_reserve_cluster" as BuildingType,
+    name: "Nutrient Reserve Cluster",
+    category: "storage" as BuildingCategory,
+    icon: React.createElement(Package, {
+      className: "h-5 w-5 text-purple-400",
+    }),
+  },
+  {
+    type: "aeropulse_vault" as BuildingType,
+    name: "Aeropulse Vault",
+    category: "storage" as BuildingCategory,
+    icon: React.createElement(Package, {
+      className: "h-5 w-5 text-purple-400",
+    }),
+  },
+  {
+    type: "quantum_storage" as BuildingType,
+    name: "Quantum Capacitor",
+    category: "storage" as BuildingCategory,
+    icon: React.createElement(Zap, {
+      className: "h-5 w-5 text-purple-400",
+    }),
+  },
+  {
+    type: "antimatterCell" as BuildingType,
+    name: "Antimatter Cell",
+    category: "storage" as BuildingCategory,
+    icon: React.createElement(Zap, {
+      className: "h-5 w-5 text-purple-400",
+    }),
+  },
+  {
+    type: "voidCore" as BuildingType,
+    name: "Void Singularity Core",
+    category: "storage" as BuildingCategory,
+    icon: React.createElement(Zap, {
+      className: "h-5 w-5 text-purple-400",
+    }),
+  },
 ];

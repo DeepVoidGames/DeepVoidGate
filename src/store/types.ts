@@ -64,7 +64,13 @@ export type BuildingType =
   | "floating_habitat"
   | "bio_caverns"
   | "dimensional_refinery"
-  | "void_storage_core";
+  | "void_storage_core"
+  | "smart_resource_matrix"
+  | "nutrient_reserve_cluster"
+  | "aeropulse_vault"
+  | "quantumCapacitor"
+  | "antimatterCell"
+  | "voidCore";
 
 export type TechnologyCategory =
   | "Infrastructure"
