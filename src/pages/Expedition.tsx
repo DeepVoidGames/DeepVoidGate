@@ -386,9 +386,7 @@ const Expedition = () => {
                                   className="flex items-center gap-1 px-2 py-1 bg-background rounded text-sm"
                                 >
                                   <ResourcesIcon resource={resource} />
-                                  <span>
-                                    {Number(amount)} {resource}
-                                  </span>
+                                  <span>{formatNumber(Number(amount))}</span>
                                 </div>
                               )
                             )}
@@ -424,7 +422,7 @@ const Expedition = () => {
                     {/* Events */}
                     {expedition.events
                       .filter((event) => event.chosenOptionIndex === -1)
-                      .map((event, index) => {
+                      .map((event) => {
                         const eventDef = expeditionEvents.find(
                           (e) => e.id === event.eventId
                         );
@@ -432,45 +430,42 @@ const Expedition = () => {
 
                         return (
                           <div
-                            key={index}
-                            className="p-4 bg-muted/10 rounded-lg"
+                            key={event.id} // Używamy unikalnego ID wydarzenia jako klucza
+                            className="p-4 bg-muted/10 rounded-lg mb-3"
                           >
                             <div className="flex items-center gap-2 mb-2">
                               <AlertTriangle className="w-4 h-4 text-yellow-500" />
                               <h4 className="font-medium">{eventDef.title}</h4>
                             </div>
+
                             <p className="text-sm text-muted-foreground mb-4">
                               {eventDef.description}
                             </p>
 
-                            {event.chosenOptionIndex === -1 ? (
-                              <div className="space-y-2">
-                                {eventDef.options.map((option, optionIndex) => (
-                                  <Button
-                                    key={optionIndex}
-                                    variant="outline"
-                                    className="w-full justify-start"
-                                    onClick={() =>
-                                      dispatch({
-                                        type: "HANDLE_EXPEDITION_EVENT",
-                                        payload: {
-                                          expeditionId: expedition.id,
-                                          eventIndex: index,
-                                          optionIndex: optionIndex,
-                                        },
-                                      })
-                                    }
-                                  >
-                                    {option.text}
-                                  </Button>
-                                ))}
-                              </div>
-                            ) : (
-                              <div className="flex items-center gap-2 text-sm text-green-500">
-                                <CheckCircle2 className="w-4 h-4" />
-                                {eventDef.options[event.chosenOptionIndex].text}
-                              </div>
-                            )}
+                            <div className="space-y-2">
+                              {eventDef.options.map((option, optionIndex) => (
+                                <Button
+                                  key={optionIndex}
+                                  variant="outline"
+                                  className="w-full justify-start"
+                                  onClick={() => {
+                                    dispatch({
+                                      type: "HANDLE_EXPEDITION_EVENT",
+                                      payload: {
+                                        expeditionId: expedition.id,
+                                        // Znajdujemy indeks wydarzenia na podstawie jego unikalnego ID
+                                        eventIndex: expedition.events.findIndex(
+                                          (e) => e.id === event.id
+                                        ),
+                                        optionIndex: optionIndex,
+                                      },
+                                    });
+                                  }}
+                                >
+                                  {option.text}
+                                </Button>
+                              ))}
+                            </div>
                           </div>
                         );
                       })}

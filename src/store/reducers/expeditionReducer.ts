@@ -426,10 +426,10 @@ export const handleExpeditionTick = (
       newExpedition.elapsed += deltaMinutes;
       newExpedition.nextEventTime -= deltaMinutes;
 
-      // Sprawdź czy nadszedł czas na nowe zdarzenie
       if (newExpedition.nextEventTime <= 0) {
         const event = getRandomEvent(newExpedition);
         newExpedition.events.push({
+          id: generateId(), // Dodajemy unikalne ID dla każdego wydarzenia
           eventId: event.id,
           chosenOptionIndex: -1, // oznacza wymagającą akcji gracza
           time: newExpedition.elapsed,
@@ -442,6 +442,13 @@ export const handleExpeditionTick = (
           description: "New event requires your attention",
         });
       }
+    } else {
+      newExpedition.events = newExpedition.events.map((event) => {
+        if (!event.id) {
+          return { ...event, id: generateId() };
+        }
+        return event;
+      });
     }
 
     // Sprawdź czy ekspedycja się zakończyła
@@ -499,6 +506,8 @@ export const handleExpeditionEventChoice = (
     (e) => e.id === expeditionId
   );
   if (expeditionIndex === -1) return state;
+  console.log("Expedition index:", expeditionIndex);
+  console.log("Event index:", eventIndex);
 
   const expedition = state.expeditions[expeditionIndex];
   if (eventIndex >= expedition.events.length) return state;

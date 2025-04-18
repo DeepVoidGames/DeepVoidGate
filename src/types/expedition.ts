@@ -47,6 +47,7 @@ export interface Expedition {
 }
 
 export interface ExpeditionEventLog {
+  id?: string; // id zdarzenia, jeśli jest dostępne
   eventId: string;
   chosenOptionIndex: number;
   time: number; // czas ekspedycji, w którym wystąpiło zdarzenie
