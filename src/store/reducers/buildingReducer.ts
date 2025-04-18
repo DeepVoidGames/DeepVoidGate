@@ -85,11 +85,6 @@ export const applyBuildingEffects = (
     if (!building || building.efficiency <= 0) return;
     if ((building.type as BuildingType) == "housing") return;
 
-    // Oblicz bonusy dla tierów i ulepszeń
-    const tierBonus = 1.5 ** (building.tier - 1); // Silniejszy wpływ tierów
-    const upgradeBonus = 1 + building.upgrades * 0.05; // Mniejszy wpływ upgrade'ów
-    const totalBonus = tierBonus * upgradeBonus;
-
     // Produkcja z uwzględnieniem bonusów
     if (building.baseProduction) {
       Object.entries(building.baseProduction).forEach(([resource, amount]) => {
@@ -111,6 +106,16 @@ export const applyBuildingEffects = (
         newResources[resourceKey].consumption +=
           (consumption + consumption * building.tier * 0.1) *
           building.efficiency;
+      });
+    }
+
+    // Magazynowanie
+    const storageBonus = calculateBuildingStorage(building);
+    if (storageBonus) {
+      Object.entries(storageBonus).forEach(([resource, amount]) => {
+        const resourceKey = resource as ResourceType;
+        const bonus = Number(amount) || 0;
+        newResources[resourceKey].capacity += bonus;
       });
     }
 
@@ -138,16 +143,6 @@ export const applyBuildingEffects = (
           }
         );
       }
-    }
-
-    // Bonusy do magazynowania z poziomu budynku (niezależne od T5)
-    if (building.storageBonus) {
-      Object.entries(building.storageBonus).forEach(([resource, bonus]) => {
-        const resourceKey = resource as ResourceType;
-        const baseValue = Number(bonus) || 0;
-        const value = baseValue + baseValue * totalBonus;
-        newResources[resourceKey].capacity += value;
-      });
     }
   });
 
@@ -352,40 +347,50 @@ export const canUpgradeBuilding = (
   );
 };
 
-// Get production by resource
+// Get production by resource with reduced output
 export const getProductionByResource = (
   building: BuildingData,
   resource: string,
   resources: ResourcesState
 ): number => {
-  // Oblicz bonusy dla tierów i ulepszeń
-  const tierBonus = 1.5 ** (building.tier - 1); // Silniejszy wpływ tierów
-  const upgradeBonus = 1 + building.upgrades * 0.05; // Mniejszy wpływ upgrade'ów
-  const totalBonus = tierBonus * upgradeBonus;
-
   const resourceKey = resource as ResourceType;
   const baseValue = Number(building.baseProduction[resourceKey]) || 0;
-  let production = 0;
-  let bonus = 0;
+  const productionMultiplier = building.productionMultiplier || 1;
+  const upgrades = building.upgrades || 0;
+  const efficiency = building.efficiency || 1;
 
-  if (building.tier == building?.maxTier && building.uniqueBonus?.production) {
-    bonus = building.uniqueBonus?.production[resourceKey] || 0;
+  const tierBonus = (building.tier - 1) * 10 * baseValue * productionMultiplier;
+
+  // Zmniejszenie efektu ulepszeń przez zastosowanie funkcji logarytmicznej
+  // Math.log10(upgrades + 1) daje wartość 0 dla 0 ulepszeń, 1 dla 10 ulepszeń
+  const upgradeBonus =
+    Math.log10(upgrades + 1) * 10 * baseValue * productionMultiplier;
+
+  // Całkowita produkcja bazowa
+  let production = baseValue + tierBonus + upgradeBonus;
+
+  // Zastosowanie pierwiastka kwadratowego do całkowitej produkcji aby zredukować duże wartości
+  production = Math.sqrt(production) * baseValue;
+
+  // Obliczenie bonusu za maksymalny poziom - również zredukowane
+  let uniqueBonus = 0;
+  if (building.tier === building?.maxTier && building.uniqueBonus?.production) {
+    // Redukujemy wartość unikalnego bonusu o połowę
+    uniqueBonus = (building.uniqueBonus?.production[resourceKey] || 0) * 0.5;
   }
 
-  if (
+  // Sprawdzenie kryzysu energetycznego
+  const hasEnergyCrisis =
     resourceAlertThresholds.energy &&
-    resources.energy?.amount < resourceAlertThresholds.energy.critical &&
-    building.baseConsumption?.energy
-  ) {
-    production = baseValue + baseValue * totalBonus * 0.1;
-  } else {
-    production = baseValue + baseValue * totalBonus;
+    resources.energy?.amount < resourceAlertThresholds.energy.critical;
+  const consumesEnergy = Boolean(building.baseConsumption?.energy);
+
+  if (hasEnergyCrisis && consumesEnergy) {
+    production = production * 0.1;
   }
 
-  production =
-    (production * building.productionMultiplier + bonus) * building.efficiency;
-
-  return production;
+  // Zastosowanie efektywności i dodanie bonusu za maksymalny poziom
+  return production * efficiency + uniqueBonus;
 };
 
 // Get building upgrade cost
@@ -451,6 +456,25 @@ export const calculateEfficiency = (
   }
 
   return Math.min(efficiency, 1);
+};
+
+export const calculateBuildingStorage = (
+  building: BuildingData
+): BuildingData["storageBonus"] => {
+  // Bonusy do magazynowania z poziomu budynku (niezależne od T5)
+  if (!building.storageBonus) return {};
+
+  const tierBonus = (baseValue) => (building.tier - 1) * 10 * baseValue;
+  let storageBonus = {} as BuildingData["storageBonus"];
+
+  Object.entries(building.storageBonus).forEach(([resource, bonus]) => {
+    const resourceKey = resource as ResourceType;
+    const baseValue = Number(bonus) || 0;
+    const value = baseValue + tierBonus(baseValue);
+    storageBonus[resourceKey] = value;
+  });
+
+  return storageBonus;
 };
 
 // Handle worker assignment

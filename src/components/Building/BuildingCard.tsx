@@ -25,6 +25,7 @@ import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
 import { Badge } from "@/components/ui/badge";
 import {
+  calculateBuildingStorage,
   calculateEfficiency,
   getBuildingUpgradeCost,
   getCapacityByResource,
@@ -196,29 +197,19 @@ const BuildingCard = ({
               building?.tier === building?.maxTier) ? (
               <h4 className="text-xs text-foreground/70">Storage Capacity:</h4>
             ) : null}
+
             {(hasStorageBonus ||
               (building?.uniqueBonus?.storage &&
                 building?.tier === building?.maxTier)) && (
               <div className="grid grid-cols-2 gap-2 text-xs text-cyan-400">
                 {Object.entries(
                   hasStorageBonus
-                    ? building.storageBonus
+                    ? calculateBuildingStorage(building)
                     : building.uniqueBonus.storage
                 ).map(([resource, bonus]) => (
                   <div key={resource} className="flex items-center space-x-1">
                     <span>{ResourcesIcon({ resource })}</span>
-                    <span>
-                      +
-                      {formatNumber(
-                        hasStorageBonus
-                          ? getCapacityByResource(
-                              building,
-                              Number(bonus),
-                              resource
-                            )
-                          : bonus
-                      )}
-                    </span>
+                    <span>+{formatNumber(bonus)}</span>
                   </div>
                 ))}
               </div>

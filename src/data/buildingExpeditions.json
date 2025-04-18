@@ -440,7 +440,7 @@
       "oxygen": 0.5
     },
     "storageBonus": {
-      "metals": 5000,
+      "metals": 10000,
       "oxygen": 5000,
       "food": 5000,
       "science": 5000
