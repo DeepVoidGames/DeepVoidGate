@@ -35,6 +35,14 @@ const Hub = () => {
       to: "#",
       requiredTechnologies: [],
     },
+    {
+      id: "642513",
+      name: "6-4-2-5-1-3",
+      description: "1⋆5≋5⋆5≋5⋆5⊛≋2⋆1≋3⋆5≋2⋆4≋1⋆1⊛≋6⋆1≋5⋆4",
+      image: "/deepvoidgate/demo/642513.png",
+      to: "#",
+      requiredTechnologies: [],
+    },
   ];
 
   useEffect(() => {

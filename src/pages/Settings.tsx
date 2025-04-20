@@ -405,13 +405,24 @@ function Settings() {
             <h2 className="text-xl font-semibold text-gray-100 mb-2">
               Community
             </h2>
-            <div className="p-3 bg-white/5 rounded-lg">
-              <a href="https://discord.gg/JEbcXgaWzB" target="_blank">
-                <img
-                  src={`${"/deepvoidgate/demo/"}/discord.svg`}
-                  className="w-8"
-                />
-              </a>
+            <div className="p-3 bg-white/5 rounded-lg flex">
+              <div className="flex items-center">
+                <a href="https://discord.gg/JEbcXgaWzB" target="_blank">
+                  <img
+                    src={`${"/deepvoidgate/demo/"}/discord.svg`}
+                    className="w-8"
+                  />
+                </a>
+              </div>
+              <div className="flex items-center ml-4">
+                <a href="https://www.buymeacoffee.com/mrjacob" target="_blank">
+                  <img
+                    src="https://cdn.buymeacoffee.com/buttons/v2/default-yellow.png"
+                    alt="Buy Me A Coffee"
+                    style={{ height: "30px", width: "108.5px" }}
+                  />
+                </a>
+              </div>
             </div>
           </div>
 
