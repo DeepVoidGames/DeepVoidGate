@@ -230,6 +230,8 @@ export interface GameState {
   userID: string;
   milestones: Milestone[];
   expeditions: Expedition[];
+  playtime: number; // w sekundach
+  sessionLength: number; // w sekundach
 }
 
 export interface UpgradeData {

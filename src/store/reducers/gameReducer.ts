@@ -59,6 +59,8 @@ export const initialState: GameState = {
   userID: null,
   milestones: initialMilestones,
   expeditions: [],
+  playtime: 0,
+  sessionLength: 0,
 };
 
 // Constants for death timer
@@ -83,6 +85,7 @@ export const gameReducer = (
 
       const { currentTime } = action.payload;
       const deltaTime = (currentTime - state.lastUpdate) / 1000; // in seconds
+      const newSessionLength = (state.sessionLength || 0) + deltaTime;
 
       // Reset production and consumption rates
       let newResources = resetProductionCounters(state.resources);
@@ -359,6 +362,7 @@ export const gameReducer = (
         population: newPopulation,
         colonistProgress: newColonistProgress,
         milestones: newMilestones.milestones,
+        sessionLength: newSessionLength,
         // Nie aktualizujemy jeszcze lastUpdate!
       };
 
@@ -501,6 +505,8 @@ export const gameReducer = (
         const stateToSave = {
           ...state,
           version: CURRENT_GAME_VERSION, // Zawsze zapisuj z aktualną wersją
+          playtime: (state.playtime || 0) + (state.sessionLength || 0),
+          sessionLength: 0,
           lastUpdate: Date.now(),
         };
 
