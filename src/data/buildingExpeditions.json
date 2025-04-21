@@ -443,7 +443,8 @@
       "metals": 10000,
       "oxygen": 5000,
       "food": 5000,
-      "science": 5000
+      "science": 5000,
+      "water": 0
     },
     "requirements": {},
     "requiredTechnology": "spatial_fabric_manipulation",
@@ -524,7 +525,8 @@
       "metals": 20000,
       "oxygen": 15000,
       "food": 15000,
-      "science": 15000
+      "science": 15000,
+      "water": 0
     },
     "requirements": {},
     "requiredTechnology": "autonomic_storage_networks",
@@ -563,7 +565,8 @@
       "metals": 25000,
       "oxygen": 20000,
       "food": 20000,
-      "science": 20000
+      "science": 20000,
+      "water": 0
     },
     "requirements": {},
     "requiredTechnology": "autonomic_storage_networks",

@@ -32,6 +32,7 @@ import {
   getProductionByResource,
 } from "@/store/reducers/buildingReducer";
 import { buildingConfig } from "./BuildingManager";
+import { format } from "path";
 
 const BuildingCard = ({
   building,
@@ -62,6 +63,7 @@ const BuildingCard = ({
 
   const hasStorageBonus =
     building.storageBonus && Object.keys(building.storageBonus).length > 0;
+
   const isMaxTier =
     building.tier >= building.maxTier && building.upgrades >= 10;
 
@@ -213,8 +215,25 @@ const BuildingCard = ({
                         key={resource}
                         className="flex items-center space-x-1"
                       >
-                        <span>{ResourcesIcon({ resource })}</span>
-                        <span>+{formatNumber(bonus)}</span>
+                        <span>
+                          {Number(bonus) > 0 ||
+                          (Number(building?.uniqueBonus?.storage[resource]) >
+                            0 &&
+                            building?.tier === building?.maxTier)
+                            ? ResourcesIcon({ resource })
+                            : null}
+                        </span>
+                        <span>
+                          {hasStorageBonus &&
+                          building?.uniqueBonus?.storage &&
+                          building?.tier === building?.maxTier
+                            ? formatNumber(
+                                Number(
+                                  building?.uniqueBonus?.storage[resource] || 0
+                                ) + Number(bonus)
+                              )
+                            : Number(bonus) > 0 && `+${formatNumber(bonus)}`}
+                        </span>
                       </div>
                     ))}
                   </div>
