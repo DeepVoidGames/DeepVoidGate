@@ -269,7 +269,7 @@ const migrateBuildingsStats = (savedBuildings: any[]): any[] => {
 };
 
 const migrateArtifactsStats = (savedArtifacts: any[]): any[] => {
-  return savedArtifacts.map((artifact) => {
+  const migratedArtifacts = savedArtifacts.map((artifact) => {
     // Szukamy w initial artifactsData
     const template = artifactsData.find((a) => a.name === artifact.name) || {};
 
@@ -285,6 +285,14 @@ const migrateArtifactsStats = (savedArtifacts: any[]): any[] => {
       expedtionTier: template.expedtionTier ?? -1,
     };
   });
+
+  if (migratedArtifacts.length === 0) {
+    return artifactsData.map((artifact) => ({
+      ...artifact,
+      stars: 0,
+      isLocked: true,
+    }));
+  }
 };
 const migrateTechnologiesStats = (savedTechnologies: any[]): any[] => {
   return savedTechnologies.map((tech) => {
