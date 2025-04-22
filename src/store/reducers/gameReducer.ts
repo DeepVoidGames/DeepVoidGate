@@ -42,6 +42,8 @@ import {
   handleExpeditionEventChoice,
   cancelExpedition,
 } from "./expeditionReducer";
+import { artifactsData } from "@/data/artifacts";
+import { upgradeArtifact } from "./artifactsReducer";
 
 // Initialize the game state
 export const initialState: GameState = {
@@ -61,6 +63,7 @@ export const initialState: GameState = {
   expeditions: [],
   playtime: 0,
   sessionLength: 0,
+  artifacts: artifactsData,
 };
 
 // Constants for death timer
@@ -498,6 +501,11 @@ export const gameReducer = (
     case "CANCEL_EXPEDITION": {
       const { expeditionId } = action.payload;
       return cancelExpedition(state, expeditionId);
+    }
+
+    case "UPGRADE_ARTIFACT": {
+      const { artifactName } = action.payload;
+      return upgradeArtifact(artifactName, state);
     }
 
     case "SAVE_GAME": {

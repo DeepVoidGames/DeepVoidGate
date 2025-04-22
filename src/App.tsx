@@ -12,6 +12,7 @@ import Settings from "./pages/Settings";
 import Milestones from "./pages/Milestones";
 import Hub from "./pages/Hub";
 import ExpeditionUI from "./pages/Expedition";
+import ArtifactsDisplay from "./pages/Artifacts";
 
 const queryClient = new QueryClient();
 
@@ -29,6 +30,7 @@ const App = () => (
             <Route path="/milestones" element={<Milestones />} />
             <Route path="/hub" element={<Hub />} />
             <Route path="/expedition" element={<ExpeditionUI />} />
+            <Route path="/artifacts" element={<ArtifactsDisplay />} />
             <Route path="/settings" element={<Settings />} />
             {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
             <Route path="*" element={<NotFound />} />

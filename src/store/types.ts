@@ -1,3 +1,4 @@
+import { Artifact } from "@/types/artifacts";
 import { Expedition } from "@/types/expedition";
 import { ReactNode } from "react";
 
@@ -232,6 +233,7 @@ export interface GameState {
   expeditions: Expedition[];
   playtime: number; // w sekundach
   sessionLength: number; // w sekundach
+  artifacts: Artifact[];
 }
 
 export interface UpgradeData {

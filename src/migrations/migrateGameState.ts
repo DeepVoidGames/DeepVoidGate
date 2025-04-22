@@ -1,3 +1,4 @@
+import { artifactsData } from "@/data/artifacts";
 import { initialMilestones } from "@/data/milestonesData";
 import {
   generateId,
@@ -78,6 +79,7 @@ export const migrateGameState = (savedState: any): GameState => {
     technologies: tech,
     milestones: mergedMilestones,
     version: CURRENT_GAME_VERSION,
+    artifacts: migrateArtifactsStats(currentState.artifacts || []),
   };
 };
 
@@ -266,6 +268,23 @@ const migrateBuildingsStats = (savedBuildings: any[]): any[] => {
   });
 };
 
+const migrateArtifactsStats = (savedArtifacts: any[]): any[] => {
+  return savedArtifacts.map((artifact) => {
+    // Szukamy w initial artifactsData
+    const template = artifactsData.find((a) => a.name === artifact.name) || {};
+
+    return {
+      ...template, // Wartości domyślne z szablonu
+      ...artifact, // Nadpisujemy wartościami z zapisu
+      name: artifact.name || template.name,
+      description: artifact.description || template.description,
+      image: artifact.image || template.image,
+      stars: artifact.stars ?? template.stars ?? 1,
+      upgrades: artifact.upgrades ?? template.upgrades ?? 0,
+      isLocked: artifact.isLocked ?? template.isLocked ?? true,
+    };
+  });
+};
 const migrateTechnologiesStats = (savedTechnologies: any[]): any[] => {
   return savedTechnologies.map((tech) => {
     // Znajdź szablon technologii
