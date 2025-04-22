@@ -276,12 +276,12 @@ const migrateArtifactsStats = (savedArtifacts: any[]): any[] => {
     return {
       ...template, // Wartości domyślne z szablonu
       ...artifact, // Nadpisujemy wartościami z zapisu
-      name: template.name,
-      description: template.description,
-      image: template.image,
+      name: template.name ?? artifact.name,
+      description: template.description ?? artifact.description,
+      image: template.image ?? artifact.image,
       stars: artifact.stars ?? template.stars ?? 1,
       isLocked: artifact.isLocked ?? template.isLocked ?? true,
-      effect: template.effect,
+      effect: template.effect ?? artifact.effect,
       expedtionTier: template.expedtionTier ?? -1,
     };
   });
@@ -293,6 +293,8 @@ const migrateArtifactsStats = (savedArtifacts: any[]): any[] => {
       isLocked: true,
     }));
   }
+
+  return migratedArtifacts;
 };
 const migrateTechnologiesStats = (savedTechnologies: any[]): any[] => {
   return savedTechnologies.map((tech) => {
