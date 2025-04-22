@@ -42,7 +42,7 @@ const ArtifactsDisplay = () => {
       </div>
 
       <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 px-4 glass-panel p-4 space-y-6 animate-fade-in">
-        {state.artifacts.map((artifact) => {
+        {state?.artifacts?.map((artifact) => {
           const requiredCopies = Math.pow(2, artifact.stars);
           const canUpgrade =
             !artifact.isLocked &&

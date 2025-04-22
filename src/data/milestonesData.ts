@@ -1091,14 +1091,14 @@ export const initialMilestones: Milestone[] = [
       "Discover the secrets of gravity manipulation and unlock new possibilities.",
     condition: function (state: GameState): boolean {
       return (
-        state.artifacts.filter(
+        state?.artifacts?.filter(
           (artifact) =>
             artifact.name === "Gravity Artifact" && !artifact.isLocked
         ).length > 0
       );
     },
     progress: function (state: GameState): number {
-      const artifactCount = state.artifacts.filter(
+      const artifactCount = state?.artifacts?.filter(
         (artifact) => artifact.name === "Gravity Artifact" && !artifact.isLocked
       ).length;
       return Math.min((artifactCount / 1) * 100, 100);
@@ -1114,7 +1114,7 @@ export const initialMilestones: Milestone[] = [
     description: "Max out the Gravity Artifact to unlock its full potential.",
     condition: function (state: GameState): boolean {
       return (
-        state.artifacts.filter(
+        state?.artifacts?.filter(
           (artifact) =>
             artifact.name === "Gravity Artifact" &&
             artifact.stars >= 5 &&
@@ -1123,7 +1123,7 @@ export const initialMilestones: Milestone[] = [
       );
     },
     progress: function (state: GameState): number {
-      const artifactCount = state.artifacts.filter(
+      const artifactCount = state?.artifacts?.filter(
         (artifact) =>
           artifact.name === "Gravity Artifact" &&
           artifact.stars >= 5 &&
