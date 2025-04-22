@@ -69,6 +69,7 @@ export const applyArtifactEffect = (state: GameState): GameState => {
       artifact.effect.forEach((effect) => {
         switch (effect.type) {
           case "production" as ArtifactEffectType:
+            if (artifact.isLocked) return;
             Object.values(state.resources).forEach((resource) => {
               resource.production =
                 resource.production *
@@ -83,4 +84,11 @@ export const applyArtifactEffect = (state: GameState): GameState => {
   });
 
   return state;
+};
+
+export const getArtifactsByExpeditionsTier = (
+  state: GameState,
+  tier: number
+): Artifact[] => {
+  return state.artifacts.filter((artifact) => artifact.expedtionTier === tier);
 };

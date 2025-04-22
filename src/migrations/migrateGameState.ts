@@ -282,6 +282,7 @@ const migrateArtifactsStats = (savedArtifacts: any[]): any[] => {
       stars: artifact.stars ?? template.stars ?? 1,
       isLocked: artifact.isLocked ?? template.isLocked ?? true,
       effect: template.effect,
+      expedtionTier: template.expedtionTier ?? -1,
     };
   });
 };

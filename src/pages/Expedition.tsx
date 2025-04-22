@@ -236,6 +236,7 @@ const Expedition = () => {
                       </div>
                     </TooltipContent>
                   </Tooltip>
+
                   <div className="flex gap-2">
                     {Object.entries(
                       getBaseExpeditionReward(selectedType, selectedTier)
@@ -259,29 +260,27 @@ const Expedition = () => {
           </div>
 
           <div className="mt-4 p-4 bg-muted/10 rounded-lg">
-            {selectedType === "scientific" ? (
+            {selectedType === "scientific" && (
               <h4 className="font-medium flex items-center gap-2 mb-2">
                 <Book className="w-4 h-4 text-blue-500" />
                 Possible Technologies
               </h4>
-            ) : (
-              ""
             )}
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
-              {selectedType === "scientific"
-                ? getPossibleTechnologies(selectedType, state.technologies).map(
-                    (tech) =>
-                      (tech?.expedtionMinTier || 0) <= selectedTier ? (
-                        <div
-                          key={tech.id}
-                          className="p-3 bg-background/50 rounded-lg border"
-                        >
-                          <div className="font-medium">{tech.name}</div>
-                          <div className="text-sm text-muted-foreground">
-                            {tech.description}
-                          </div>
-                          <div className="mt-2 flex flex-wrap gap-1">
-                            {/* {Object.entries(tech.researchCost).map(
+              {selectedType === "scientific" &&
+                getPossibleTechnologies(selectedType, state.technologies).map(
+                  (tech) =>
+                    (tech?.expedtionMinTier || 0) <= selectedTier ? (
+                      <div
+                        key={tech.id}
+                        className="p-3 bg-background/50 rounded-lg border"
+                      >
+                        <div className="font-medium">{tech.name}</div>
+                        <div className="text-sm text-muted-foreground">
+                          {tech.description}
+                        </div>
+                        <div className="mt-2 flex flex-wrap gap-1">
+                          {/* {Object.entries(tech.researchCost).map(
                         ([resource, amount]) => (
                           <span
                             key={resource}
@@ -294,11 +293,35 @@ const Expedition = () => {
                           </span>
                         )
                       )} */}
-                          </div>
                         </div>
-                      ) : null
-                  )
-                : ""}
+                      </div>
+                    ) : null
+                )}
+            </div>
+
+            {selectedType === "mining" && (
+              <h4 className="font-medium flex items-center gap-2 mb-2">
+                <Package className="w-4 h-4 text-amber-500" />
+                Possible Artifacts
+              </h4>
+            )}
+
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
+              {selectedType === "mining" &&
+                state.artifacts.map(
+                  (artifact) =>
+                    artifact.isLocked &&
+                    artifact?.expedtionTier == selectedTier && (
+                      <div
+                        key={artifact.name}
+                        className="mt-2 flex flex-wrap gap-1"
+                      >
+                        <span className="text-xs flex items-center gap-1 px-2 py-1 bg-muted rounded">
+                          {artifact.name}
+                        </span>
+                      </div>
+                    )
+                )}
             </div>
           </div>
 

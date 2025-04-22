@@ -10,6 +10,7 @@ import {
 } from "@/types/expedition";
 import { expeditionEvents } from "@/data/expeditionEvents";
 import { toast } from "@/components/ui/use-toast";
+import { addArtifact, getArtifactsByExpeditionsTier } from "./artifactsReducer";
 
 // Stałe
 export const BASE_EXPEDITION_TIME = 15; // 30 minut dla tier 0
@@ -132,8 +133,8 @@ const getReward = (expedition: Expedition, state: GameState): GameState => {
   }
 
   // Logowanie dla debugowania
-  console.log("Expedition rewards to add:", totalRewards);
-  console.log("Before adding rewards:", newState.resources);
+  // console.log("Expedition rewards to add:", totalRewards);
+  // console.log("Before adding rewards:", newState.resources);
 
   // Dodaj nagrody do stanu gry
   for (const [resource, amount] of Object.entries(totalRewards)) {
@@ -175,6 +176,29 @@ const getReward = (expedition: Expedition, state: GameState): GameState => {
       rewards: undefined,
       rewardsCollected: true, // dodana flaga
     };
+  }
+
+  // Artefkaty
+  if (expedition.type === "mining") {
+    const rng = Math.random();
+    // 10% szans na artefakt
+
+    if (rng < 0.1) {
+      const artifacts = getArtifactsByExpeditionsTier(
+        newState,
+        expedition.tier
+      );
+
+      const artifactIndex = Math.floor(Math.random() * artifacts.length);
+      const artifact = artifacts[artifactIndex];
+      const artifactAmount = Math.floor(Math.random() * 5) + 1; // 1-5 sztuk
+      const artifactName = artifact.name;
+      newState = addArtifact(artifactName, artifactAmount, newState);
+      toast({
+        title: "Artifact Found!",
+        description: `You have found an ${artifact.name}`,
+      });
+    }
   }
 
   toast({
