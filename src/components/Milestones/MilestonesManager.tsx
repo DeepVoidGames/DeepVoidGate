@@ -28,6 +28,21 @@ const milestoneCategories = [
     name: "Population",
     icon: <User className="h-4 w-4 text-green-400" />,
   },
+  {
+    id: "technology",
+    name: "Technology",
+    icon: <Trophy className="h-4 w-4 text-purple-400" />,
+  },
+  {
+    id: "expeditions",
+    name: "Expeditions",
+    icon: <Trophy className="h-4 w-4 text-orange-400" />,
+  },
+  {
+    id: "artifacts",
+    name: "Artifacts",
+    icon: <Trophy className="h-4 w-4 text-pink-400" />,
+  },
 ];
 
 const groupMilestonesByBase = (milestones) => {
@@ -137,7 +152,7 @@ const MilestonesManager = () => {
           <button
             key={category.id}
             onClick={() => setActiveTab(category.id)}
-            className={`flex items-center gap-2 px-4 py-2 rounded-lg transition-colors ${
+            className={`flex items-center gap-2 px-4 py-2 rounded-lg transition-colors w-[150px] ${
               activeTab === category.id
                 ? "bg-primary text-primary-foreground"
                 : "bg-background/50 hover:bg-accent"
