@@ -1,5 +1,6 @@
 import { stat } from "fs";
 import { GameState } from "../types";
+import { Artifact, ArtifactEffectType } from "@/types/artifacts";
 
 export const upgradeArtifact = (
   artifactName: string,
@@ -50,4 +51,36 @@ export const addArtifact = (
       return a;
     }),
   };
+};
+
+export const getArtifact = (
+  artifactName: string,
+  state: GameState
+): Artifact | undefined => {
+  return state.artifacts.find((a) => a.name === artifactName);
+};
+
+export const applyArtifactEffect = (state: GameState): GameState => {
+  if (!state.artifacts) return state;
+  if (state.artifacts.length === 0) return state;
+
+  state.artifacts.forEach((artifact) => {
+    if (artifact.effect) {
+      artifact.effect.forEach((effect) => {
+        switch (effect.type) {
+          case "production" as ArtifactEffectType:
+            Object.values(state.resources).forEach((resource) => {
+              resource.production =
+                resource.production *
+                (effect.value + (artifact.stars + 1) / 10);
+            });
+            break;
+          default:
+            break;
+        }
+      });
+    }
+  });
+
+  return state;
 };

@@ -10,6 +10,7 @@ import {
 } from "../initialData";
 import { canAffordCost, applyResourceCost } from "./resourceReducer";
 import { ResourcesState } from "./resourceReducer";
+import { getArtifact } from "./artifactsReducer";
 
 // Calculate building efficiency based on worker assignment and resource requirements
 export const calculateBuildingEfficiency = (

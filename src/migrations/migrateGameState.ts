@@ -276,12 +276,12 @@ const migrateArtifactsStats = (savedArtifacts: any[]): any[] => {
     return {
       ...template, // Wartości domyślne z szablonu
       ...artifact, // Nadpisujemy wartościami z zapisu
-      name: artifact.name || template.name,
-      description: artifact.description || template.description,
-      image: artifact.image || template.image,
+      name: template.name,
+      description: template.description,
+      image: template.image,
       stars: artifact.stars ?? template.stars ?? 1,
-      upgrades: artifact.upgrades ?? template.upgrades ?? 0,
       isLocked: artifact.isLocked ?? template.isLocked ?? true,
+      effect: template.effect,
     };
   });
 };

@@ -52,7 +52,7 @@ const ArtifactsDisplay = () => {
           return (
             <Card
               key={artifact.name}
-              className={`relative overflow-hidden transition-transform w-[400px] ${
+              className={`relative overflow-hidden transition-transform w-[450px] ${
                 artifact.isLocked ? "opacity-60 grayscale" : ""
               }`}
             >
@@ -63,7 +63,7 @@ const ArtifactsDisplay = () => {
               )}
 
               <CardHeader className="pb-2">
-                <div className="flex justify-between items-start">
+                <div className="flex justify-between items-center">
                   <CardTitle className="flex items-center gap-2">
                     {artifact.name}
                     <div className="flex gap-1">
@@ -102,26 +102,50 @@ const ArtifactsDisplay = () => {
                     {artifact.description}
                   </p>
 
-                  <div className="space-y-2">
-                    <div className="flex justify-between text-sm">
-                      <span className="flex items-center gap-1">
-                        <Zap className="w-4 h-4" />
-                        Next Tier Requirement
-                      </span>
-                      <span>
-                        {requiredCopies} {artifact.stars < 5 ? "Copies" : "MAX"}
-                      </span>
+                  {artifact.stars < 5 ? (
+                    <div className="space-y-2">
+                      <div className="flex justify-between text-sm">
+                        <span className="flex items-center gap-1">
+                          <Zap className="w-4 h-4" />
+                          Next Tier Requirement
+                        </span>
+                        <span>
+                          {requiredCopies}{" "}
+                          {artifact.stars < 5 ? "Copies" : "MAX"}
+                        </span>
+                      </div>
+                      <Progress
+                        value={(artifact.amount / requiredCopies) * 100}
+                        className="h-2 bg-primary/20"
+                      />
                     </div>
-                    <Progress
-                      value={(artifact.amount / requiredCopies) * 100}
-                      className="h-2 bg-primary/20"
-                    />
-                  </div>
+                  ) : null}
 
                   <div className="grid gap-2">
                     <div className="flex justify-between text-sm">
                       <span>Current Tier</span>
                       <span>{artifact.stars}★</span>
+                    </div>
+                    <div>
+                      {artifact.effect?.map((effect, index) => (
+                        <Alert
+                          key={index}
+                          variant="default"
+                          className="bg-muted/20 text-muted-foreground"
+                        >
+                          <div className="flex items-center gap-2">
+                            <Zap className="w-4 h-4" />
+                            <AlertDescription className="text-sm">
+                              {effect.description?.(artifact.stars) ||
+                                `Effect: ${effect.value}`}
+                            </AlertDescription>
+                          </div>
+                        </Alert>
+                      )) ?? (
+                        <p className="text-sm text-muted-foreground">
+                          No effects available
+                        </p>
+                      )}
                     </div>
                   </div>
                 </div>

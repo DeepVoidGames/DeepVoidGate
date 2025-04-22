@@ -43,7 +43,7 @@ import {
   cancelExpedition,
 } from "./expeditionReducer";
 import { artifactsData } from "@/data/artifacts";
-import { upgradeArtifact } from "./artifactsReducer";
+import { applyArtifactEffect, upgradeArtifact } from "./artifactsReducer";
 
 // Initialize the game state
 export const initialState: GameState = {
@@ -375,9 +375,10 @@ export const gameReducer = (
         deltaTime
       );
 
+      const state_afterArtifacts = applyArtifactEffect(stateAfterExpeditions);
       // Teraz zaktualizuj lastUpdate na końcowym stanie
       return {
-        ...stateAfterExpeditions,
+        ...state_afterArtifacts,
         lastUpdate: currentTime,
       };
     }

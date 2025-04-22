@@ -7,4 +7,13 @@ export type Artifact = {
   amount: number;
   isLocked: boolean;
   expedtionTier?: number;
+  effect?: ArtifactEffect[];
 };
+
+export type ArtifactEffect = {
+  type: ArtifactEffectType;
+  description?: (stars: number) => string;
+  value: number;
+};
+
+export type ArtifactEffectType = "produciton";
