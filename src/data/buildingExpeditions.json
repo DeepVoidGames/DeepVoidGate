@@ -591,9 +591,8 @@
     "description": "Programmable core that alternates between high-efficiency metal or energy output based on colony needs.",
     "workerCapacity": 12,
     "baseCost": {
-      "metals": 10000,
-      "energy": 5000,
-      "science": 3000
+      "metals": 5000,
+      "energy": 8000
     },
     "baseProduction": {
       "metals": 7.0,
@@ -613,7 +612,7 @@
     "upgrades": 0,
     "uniqueBonus": {
       "production": {
-        "metals": 190,
+        "metals": 360,
         "energy": 160
       },
       "storage": {
@@ -630,9 +629,8 @@
     "description": "Organic-conversion facility that shifts between food and oxygen generation based on biological system needs.",
     "workerCapacity": 10,
     "baseCost": {
-      "metals": 8000,
-      "energy": 4500,
-      "science": 2800
+      "metals": 4000,
+      "energy": 8500
     },
     "baseProduction": {
       "food": 6.0,
@@ -647,7 +645,7 @@
     "costMultiplier": 3.6,
     "productionMultiplier": 2.2,
     "maxInstances": 1,
-    "tier": 0,
+    "tier": 1,
     "maxTier": 5,
     "upgrades": 0,
     "uniqueBonus": {
