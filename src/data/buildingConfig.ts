@@ -366,4 +366,20 @@ export const buildingConfig = [
       className: "h-5 w-5 text-purple-400",
     }),
   },
+  {
+    type: "morpho_core" as BuildingType,
+    name: "Morpho-Core",
+    category: "production" as BuildingCategory,
+    icon: React.createElement(Pickaxe, {
+      className: "h-5 w-5 text-purple-400",
+    }),
+  },
+  {
+    type: "nutri_flux_hub" as BuildingType,
+    name: "Nutri-Flux Hub",
+    category: "production" as BuildingCategory,
+    icon: React.createElement(Leaf, {
+      className: "h-5 w-5 text-purple-400",
+    }),
+  },
 ];

@@ -583,5 +583,83 @@
       }
     },
     "tag": "storage"
+  },
+  {
+    "type": "morpho_core",
+    "category": "production",
+    "name": "Morpho-Core",
+    "description": "Programmable core that alternates between high-efficiency metal or energy output based on colony needs.",
+    "workerCapacity": 12,
+    "baseCost": {
+      "metals": 10000,
+      "energy": 5000,
+      "science": 3000
+    },
+    "baseProduction": {
+      "metals": 7.0,
+      "energy": 6.0
+    },
+    "baseConsumption": {
+      "water": 1.0,
+      "oxygen": 1.0
+    },
+    "requirements": {},
+    "requiredTechnology": "adaptive_matter_engineering",
+    "costMultiplier": 3.8,
+    "productionMultiplier": 2.0,
+    "maxInstances": 1,
+    "tier": 1,
+    "maxTier": 5,
+    "upgrades": 0,
+    "uniqueBonus": {
+      "production": {
+        "metals": 190,
+        "energy": 160
+      },
+      "storage": {
+        "metals": 15000,
+        "energy": 15000
+      }
+    },
+    "tag": "metals"
+  },
+  {
+    "type": "nutri_flux_hub",
+    "category": "production",
+    "name": "Nutri-Flux Hub",
+    "description": "Organic-conversion facility that shifts between food and oxygen generation based on biological system needs.",
+    "workerCapacity": 10,
+    "baseCost": {
+      "metals": 8000,
+      "energy": 4500,
+      "science": 2800
+    },
+    "baseProduction": {
+      "food": 6.0,
+      "oxygen": 3.5
+    },
+    "baseConsumption": {
+      "energy": 2.2,
+      "water": 1.0
+    },
+    "requirements": {},
+    "requiredTechnology": "adaptive_matter_engineering",
+    "costMultiplier": 3.6,
+    "productionMultiplier": 2.2,
+    "maxInstances": 1,
+    "tier": 0,
+    "maxTier": 5,
+    "upgrades": 0,
+    "uniqueBonus": {
+      "production": {
+        "food": 190,
+        "oxygen": 160
+      },
+      "storage": {
+        "food": 9000,
+        "oxygen": 9000
+      }
+    },
+    "tag": "food"
   }
 ]

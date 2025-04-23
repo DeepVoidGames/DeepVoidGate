@@ -560,4 +560,44 @@ export const expeditionEvents: ExpeditionEvent[] = [
       },
     ],
   },
+
+  {
+    id: "programmable_matter_discovery",
+    title: "Programmable Matter Cache",
+    description:
+      "Your expedition has discovered an alien vault with programmable matter adapting to environmental needs.",
+    type: ["scientific"],
+    minTier: 8,
+    weight: 2,
+    options: [
+      {
+        text: "Harvest and analyze the matter",
+        effects: [
+          {
+            type: "technology",
+            technologyId: "adaptive_matter_engineering",
+            value: 0,
+          },
+          {
+            type: "time",
+            value: 180,
+          },
+        ],
+      },
+      {
+        text: "Use it for immediate utility",
+        effects: [
+          {
+            type: "reward",
+            value: {
+              metals: 7000,
+              energy: 5000,
+              food: 4000,
+              oxygen: 3000,
+            },
+          },
+        ],
+      },
+    ],
+  },
 ];

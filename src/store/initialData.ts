@@ -617,6 +617,24 @@ export const initialTechnologies: Technology[] = [
     isResearched: false,
     researchDuration: 150,
   },
+  {
+    id: "adaptive_matter_engineering",
+    name: "Adaptive Matter Engineering",
+    category: "Production",
+    description:
+      "Harnessing quantum-bound programmable matter that reshapes itself to fulfill immediate production needs.",
+    researchCost: {
+      science: 50000,
+      metals: 20000,
+      energy: 30000,
+    },
+    prerequisites: ["autonomic_storage_networks"],
+    unlocksBuildings: ["morpho_core", "nutri_flux_hub"],
+    researchDuration: 3000,
+    isResearched: false,
+    locked: true,
+    expedtionMinTier: 8,
+  },
 ];
 
 export const initialExpeditions: Expedition[] = [];

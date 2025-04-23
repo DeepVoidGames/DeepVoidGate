@@ -71,7 +71,9 @@ export type BuildingType =
   | "aeropulse_vault"
   | "quantumCapacitor"
   | "antimatterCell"
-  | "voidCore";
+  | "voidCore"
+  | "morpho_core"
+  | "nutri_flux_hub";
 
 export type TechnologyCategory =
   | "Infrastructure"
