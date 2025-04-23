@@ -36,7 +36,7 @@ export const artifactsData: Artifact[] = [
           `Increases storage capacity of all resources by ${
             (starts + 1) * 10
           }%`,
-        value: 1.1,
+        value: 0.1,
       },
     ],
   },
