@@ -48,7 +48,7 @@
       "science": 100
     },
     "baseProduction": {
-      "metals": 4.2
+      "metals": 6.2
     },
     "baseConsumption": {
       "energy": 1.8,
@@ -64,7 +64,7 @@
     "maxTier": 5,
     "upgrades": 0,
     "uniqueBonus": {
-      "production": { "metals": 35 },
+      "production": { "metals": 50 },
       "storage": { "metals": 12000 }
     },
     "tag": "metals"
@@ -248,7 +248,7 @@
       "science": 500
     },
     "baseProduction": {
-      "metals": 8.8
+      "metals": 9.8
     },
     "baseConsumption": {
       "energy": 3.2,
@@ -263,7 +263,7 @@
     "maxTier": 5,
     "upgrades": 0,
     "uniqueBonus": {
-      "production": { "metals": 95 },
+      "production": { "metals": 100 },
       "storage": { "metals": 18000 }
     },
     "tag": "metals"
@@ -321,7 +321,7 @@
       "energy": 1500
     },
     "baseProduction": {
-      "metals": 5.0,
+      "metals": 6.0,
       "energy": 6.5,
       "science": 3.5
     },
@@ -340,7 +340,7 @@
     "upgrades": 0,
     "uniqueBonus": {
       "production": {
-        "metals": 70,
+        "metals": 80,
         "energy": 90,
         "science": 50
       },
@@ -396,7 +396,7 @@
       "energy": 2500
     },
     "baseProduction": {
-      "metals": 12.0,
+      "metals": 13.0,
       "energy": 10.0
     },
     "baseConsumption": {
@@ -413,7 +413,7 @@
     "upgrades": 0,
     "uniqueBonus": {
       "production": {
-        "metals": 130,
+        "metals": 140,
         "energy": 120
       },
       "storage": {
@@ -595,7 +595,7 @@
       "energy": 8000
     },
     "baseProduction": {
-      "metals": 7.0,
+      "metals": 8.0,
       "energy": 6.0
     },
     "baseConsumption": {
@@ -612,7 +612,7 @@
     "upgrades": 0,
     "uniqueBonus": {
       "production": {
-        "metals": 360,
+        "metals": 370,
         "energy": 160
       },
       "storage": {
