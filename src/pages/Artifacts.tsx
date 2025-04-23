@@ -128,7 +128,7 @@ const ArtifactsDisplay = () => {
                         className={
                           artifact.stars < 5
                             ? `h-2 bg-primary/20`
-                            : "h-2 bg-primary/0"
+                            : "h-2 bg-primary/0 opacity-0"
                         }
                       />
                     </div>
