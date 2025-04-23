@@ -160,33 +160,38 @@ const ExistingBuildings: React.FC<ExistingBuildingsProps> = ({
   return (
     <div className="space-y-4">
       <Tabs value={activeTab} onValueChange={setActiveTab}>
-        <TabsList className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-2 w-full h-full py-2 my-2">
+        <TabsList className="grid grid-cols-4 gap-2 w-full h-full py-2 my-2">
           {categories.map((category) => (
             <TabsTrigger
               key={category.id}
               value={category.id}
-              className="flex items-center justify-center gap-2"
+              className="flex items-center justify-center p-1.5 sm:px-3 sm:py-1.5 gap-1"
             >
-              {category.icon}
-              {category.name}
+              {/* Zwiększamy rozmiar ikon na mobile */}
+              <div className="text-lg sm:text-base">{category.icon}</div>
+              {/* Tekst widoczny tylko na desktopach */}
+              <span className="hidden sm:inline">{category.name}</span>
             </TabsTrigger>
           ))}
         </TabsList>
 
         {activeTab === "production" && (
-          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-2 w-full h-full py-2 my-2 items-center justify-center rounded-md bg-muted p-1 text-muted-foreground">
+          <div className="grid grid-cols-4 gap-2 w-full h-full py-2 my-2 items-center justify-center rounded-md bg-muted p-1 text-muted-foreground">
             {["oxygen", "food", "energy", "metals"].map((resource) => (
               <button
                 key={resource}
                 onClick={() => setSelectedResource(resource)}
-                className={`inline-flex items-center justify-center whitespace-nowrap rounded-sm px-3 py-1.5 text-sm font-medium ring-offset-background transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 data-[state=active]:bg-background data-[state=active]:text-foreground data-[state=active]:shadow-sm ${
+                className={`inline-flex items-center justify-center whitespace-nowrap rounded-sm p-1.5 sm:px-3 sm:py-1.5 text-sm font-medium ring-offset-background transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 data-[state=active]:bg-background data-[state=active]:text-foreground data-[state=active]:shadow-sm ${
                   selectedResource === resource
                     ? "bg-background text-white"
                     : ""
                 }`}
               >
-                {<ResourcesIcon resource={resource} />}{" "}
-                {resource.charAt(0).toUpperCase() + resource.slice(1)}
+                {<ResourcesIcon resource={resource} />}
+                {/* Tekst widoczny tylko na większych ekranach */}
+                <span className="hidden sm:inline ml-1">
+                  {resource.charAt(0).toUpperCase() + resource.slice(1)}
+                </span>
               </button>
             ))}
           </div>

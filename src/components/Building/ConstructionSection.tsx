@@ -42,15 +42,17 @@ const ConstructionSection = ({
         </h2>
 
         <Tabs defaultValue="production">
-          <TabsList className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-2 w-full h-full py-2 my-2">
+          <TabsList className="grid grid-cols-4 gap-2 w-full h-full py-2 my-2">
             {categories.map((category) => (
               <TabsTrigger
                 key={category.id}
                 value={category.id}
-                className="flex items-center justify-center gap-2"
+                className="flex items-center justify-center p-1.5 sm:px-3 sm:py-1.5 gap-1"
               >
-                {category.icon}
-                {category.name}
+                {/* Zwiększamy rozmiar ikon na mobile */}
+                <div className="text-lg sm:text-base">{category.icon}</div>
+                {/* Tekst widoczny tylko na desktopach */}
+                <span className="hidden sm:inline">{category.name}</span>
               </TabsTrigger>
             ))}
           </TabsList>

@@ -215,19 +215,23 @@ const TechnologiesManager: React.FC = () => {
         </button>
       </div>
 
-      <div className="flex flex-wrap gap-2 mb-6">
+      <div className="flex flex-wrap gap-2 mb-6 w-full">
         {techCategories.map((category) => (
           <button
             key={category.id}
             onClick={() => setActiveTab(category.id)}
-            className={`flex items-center gap-2 px-4 py-2 rounded-lg transition-colors w-full md:w-fit ${
+            className={`flex items-center min-w-0 justify-center gap-1 sm:gap-2 px-2 sm:px-4 py-2 rounded-lg transition-colors flex-1 basis-[calc(50%-4px)] sm:basis-auto sm:w-full md:w-fit ${
               activeTab === category.id
                 ? "bg-primary text-primary-foreground"
                 : "bg-background/50 hover:bg-accent"
             }`}
           >
-            {category.icon}
-            <span>{category.name}</span>
+            <div className="flex-shrink-0 text-xl sm:text-base">
+              {category.icon}
+            </div>
+            <span className="min-w-0 overflow-hidden whitespace-nowrap text-ellipsis text-sm sm:text-base">
+              {category.name}
+            </span>
           </button>
         ))}
       </div>
