@@ -860,13 +860,16 @@ export const initialMilestones: Milestone[] = [
     description: "Finish the 0 expedition tier.",
     condition: function (state: GameState): boolean {
       return (
-        state.expeditions.filter((expedition) => expedition.tier === 0).length >
-        0
+        state.expeditions.filter(
+          (expedition) =>
+            expedition.tier === 0 && expedition.status === "completed"
+        ).length > 0
       );
     },
     progress: function (state: GameState): number {
       const expeditionCount = state.expeditions.filter(
-        (expedition) => expedition.tier === 0
+        (expedition) =>
+          expedition.tier === 0 && expedition.status === "completed"
       ).length;
       return Math.min((expeditionCount / 1) * 100, 100);
     },
@@ -881,13 +884,16 @@ export const initialMilestones: Milestone[] = [
     description: "Finish the 1 expedition tier.",
     condition: function (state: GameState): boolean {
       return (
-        state.expeditions.filter((expedition) => expedition.tier === 1).length >
-        0
+        state.expeditions.filter(
+          (expedition) =>
+            expedition.tier === 1 && expedition.status === "completed"
+        ).length > 0
       );
     },
     progress: function (state: GameState): number {
       const expeditionCount = state.expeditions.filter(
-        (expedition) => expedition.tier === 1
+        (expedition) =>
+          expedition.tier === 1 && expedition.status === "completed"
       ).length;
       return Math.min((expeditionCount / 1) * 100, 100);
     },
@@ -902,13 +908,16 @@ export const initialMilestones: Milestone[] = [
     description: "Finish the 2 expedition tier.",
     condition: function (state: GameState): boolean {
       return (
-        state.expeditions.filter((expedition) => expedition.tier === 2).length >
-        0
+        state.expeditions.filter(
+          (expedition) =>
+            expedition.tier === 2 && expedition.status === "completed"
+        ).length > 0
       );
     },
     progress: function (state: GameState): number {
       const expeditionCount = state.expeditions.filter(
-        (expedition) => expedition.tier === 2
+        (expedition) =>
+          expedition.tier === 2 && expedition.status === "completed"
       ).length;
       return Math.min((expeditionCount / 1) * 100, 100);
     },
@@ -923,13 +932,16 @@ export const initialMilestones: Milestone[] = [
     description: "Finish the 3 expedition tier.",
     condition: function (state: GameState): boolean {
       return (
-        state.expeditions.filter((expedition) => expedition.tier === 3).length >
-        0
+        state.expeditions.filter(
+          (expedition) =>
+            expedition.tier === 3 && expedition.status === "completed"
+        ).length > 0
       );
     },
     progress: function (state: GameState): number {
       const expeditionCount = state.expeditions.filter(
-        (expedition) => expedition.tier === 3
+        (expedition) =>
+          expedition.tier === 3 && expedition.status === "completed"
       ).length;
       return Math.min((expeditionCount / 1) * 100, 100);
     },
@@ -944,13 +956,16 @@ export const initialMilestones: Milestone[] = [
     description: "Finish the 4 expedition tier.",
     condition: function (state: GameState): boolean {
       return (
-        state.expeditions.filter((expedition) => expedition.tier === 4).length >
-        0
+        state.expeditions.filter(
+          (expedition) =>
+            expedition.tier === 4 && expedition.status === "completed"
+        ).length > 0
       );
     },
     progress: function (state: GameState): number {
       const expeditionCount = state.expeditions.filter(
-        (expedition) => expedition.tier === 4
+        (expedition) =>
+          expedition.tier === 4 && expedition.status === "completed"
       ).length;
       return Math.min((expeditionCount / 1) * 100, 100);
     },
@@ -965,13 +980,16 @@ export const initialMilestones: Milestone[] = [
     description: "Finish the 5 expedition tier.",
     condition: function (state: GameState): boolean {
       return (
-        state.expeditions.filter((expedition) => expedition.tier === 5).length >
-        0
+        state.expeditions.filter(
+          (expedition) =>
+            expedition.tier === 5 && expedition.status === "completed"
+        ).length > 0
       );
     },
     progress: function (state: GameState): number {
       const expeditionCount = state.expeditions.filter(
-        (expedition) => expedition.tier === 5
+        (expedition) =>
+          expedition.tier === 5 && expedition.status === "completed"
       ).length;
       return Math.min((expeditionCount / 1) * 100, 100);
     },
@@ -986,13 +1004,16 @@ export const initialMilestones: Milestone[] = [
     description: "Finish the 6 expedition tier.",
     condition: function (state: GameState): boolean {
       return (
-        state.expeditions.filter((expedition) => expedition.tier === 6).length >
-        0
+        state.expeditions.filter(
+          (expedition) =>
+            expedition.tier === 6 && expedition.status === "completed"
+        ).length > 0
       );
     },
     progress: function (state: GameState): number {
       const expeditionCount = state.expeditions.filter(
-        (expedition) => expedition.tier === 6
+        (expedition) =>
+          expedition.tier === 6 && expedition.status === "completed"
       ).length;
       return Math.min((expeditionCount / 1) * 100, 100);
     },
@@ -1007,13 +1028,16 @@ export const initialMilestones: Milestone[] = [
     description: "Finish the 7 expedition tier.",
     condition: function (state: GameState): boolean {
       return (
-        state.expeditions.filter((expedition) => expedition.tier === 7).length >
-        0
+        state.expeditions.filter(
+          (expedition) =>
+            expedition.tier === 7 && expedition.status === "completed"
+        ).length > 0
       );
     },
     progress: function (state: GameState): number {
       const expeditionCount = state.expeditions.filter(
-        (expedition) => expedition.tier === 7
+        (expedition) =>
+          expedition.tier === 7 && expedition.status === "completed"
       ).length;
       return Math.min((expeditionCount / 1) * 100, 100);
     },
@@ -1028,13 +1052,16 @@ export const initialMilestones: Milestone[] = [
     description: "Finish the 8 expedition tier.",
     condition: function (state: GameState): boolean {
       return (
-        state.expeditions.filter((expedition) => expedition.tier === 8).length >
-        0
+        state.expeditions.filter(
+          (expedition) =>
+            expedition.tier === 8 && expedition.status === "completed"
+        ).length > 0
       );
     },
     progress: function (state: GameState): number {
       const expeditionCount = state.expeditions.filter(
-        (expedition) => expedition.tier === 8
+        (expedition) =>
+          expedition.tier === 8 && expedition.status === "completed"
       ).length;
       return Math.min((expeditionCount / 1) * 100, 100);
     },
@@ -1049,13 +1076,16 @@ export const initialMilestones: Milestone[] = [
     description: "Finish the 9 expedition tier.",
     condition: function (state: GameState): boolean {
       return (
-        state.expeditions.filter((expedition) => expedition.tier === 9).length >
-        0
+        state.expeditions.filter(
+          (expedition) =>
+            expedition.tier === 9 && expedition.status === "completed"
+        ).length > 0
       );
     },
     progress: function (state: GameState): number {
       const expeditionCount = state.expeditions.filter(
-        (expedition) => expedition.tier === 9
+        (expedition) =>
+          expedition.tier === 9 && expedition.status === "completed"
       ).length;
       return Math.min((expeditionCount / 1) * 100, 100);
     },
@@ -1070,13 +1100,16 @@ export const initialMilestones: Milestone[] = [
     description: "Finish the 10 expedition tier.",
     condition: function (state: GameState): boolean {
       return (
-        state.expeditions.filter((expedition) => expedition.tier === 10)
-          .length > 0
+        state.expeditions.filter(
+          (expedition) =>
+            expedition.tier === 10 && expedition.status === "completed"
+        ).length > 0
       );
     },
     progress: function (state: GameState): number {
       const expeditionCount = state.expeditions.filter(
-        (expedition) => expedition.tier === 10
+        (expedition) =>
+          expedition.tier === 10 && expedition.status === "completed"
       ).length;
       return Math.min((expeditionCount / 1) * 100, 100);
     },
