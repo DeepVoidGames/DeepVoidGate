@@ -30,7 +30,7 @@ const ArtifactsDisplay = () => {
   };
 
   return (
-    <div className="max-w-6xl mx-auto p-4 space-y-8">
+    <div className="max-w-7xl mx-auto p-4 space-y-8">
       <div className="text-center space-y-2 my-20">
         <h1 className="text-4xl font-bold flex items-center justify-center gap-3">
           <div className="relative">
@@ -41,7 +41,7 @@ const ArtifactsDisplay = () => {
         </h1>
       </div>
 
-      <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 px-4 glass-panel p-4 space-y-6 animate-fade-in">
+      <div className="flex flex-wrap gap-4 justify-start items-center glass-panel  animate-fade-in p-4">
         {state?.artifacts?.map((artifact) => {
           const requiredCopies = Math.pow(2, artifact.stars);
           const canUpgrade =
@@ -52,18 +52,18 @@ const ArtifactsDisplay = () => {
           return (
             <Card
               key={artifact.name}
-              className={`relative overflow-hidden transition-transform w-[450px] ${
+              className={`relative transition-transform w-[450px] max-[495px]:w-full h-[740px]  ${
                 artifact.isLocked ? "opacity-60 grayscale" : ""
               }`}
             >
               {artifact.isLocked && (
-                <div className="absolute inset-0 bg-black/60 flex items-center justify-center z-30">
+                <div className="absolute inset-0 bg-black/60 flex items-center justify-center z-30 rounded-md">
                   <Lock className="w-12 h-12 text-primary" />
                 </div>
               )}
 
               <CardHeader className="pb-2">
-                <div className="flex justify-between items-center">
+                <div className="flex justify-between items-center max-[495px]:flex-col">
                   <CardTitle className="flex items-center gap-2">
                     {artifact.name}
                     <div className="flex gap-1">
@@ -75,34 +75,37 @@ const ArtifactsDisplay = () => {
                       ))}
                     </div>
                   </CardTitle>
-                  <div className="flex items-center gap-2 px-2 py-1 bg-muted rounded-full">
-                    <Package className="w-4 h-4 text-primary" />
-                    <span className="text-sm">{artifact.amount} Copies</span>
+
+                  <div className="flex max-[495px]:w-full max-[495px]:justify-end max-[495px]:gap-2">
+                    <div className="flex items-center gap-2 px-2 py-1 my-1 bg-muted rounded-full">
+                      <Package className="w-4 h-4 text-primary" />
+                      <span className="text-sm">{artifact.amount} Copies</span>
+                    </div>
                   </div>
                 </div>
               </CardHeader>
 
-              <CardContent className="space-y-4">
-                <div className="rounded-lg overflow-hidden bg-gradient-to-br from-blue-500/20 to-purple-500/20 h-[350px] relative">
-                  {artifact.image ? (
-                    <img
-                      src={artifact.image}
-                      alt={artifact.name}
-                      className="w-full h-full object-cover transform transition-transform duration-300"
-                    />
-                  ) : (
-                    <div className="absolute inset-0 flex items-center justify-center text-muted-foreground">
-                      No image available
-                    </div>
-                  )}
-                </div>
+              <div className="flex-1 flex flex-col justify-between h-[650px]">
+                <CardContent className="space-y-4">
+                  <div className="rounded-lg overflow-hidden bg-gradient-to-br from-blue-500/20 to-purple-500/20 h-[350px] relative">
+                    {artifact.image ? (
+                      <img
+                        src={artifact.image}
+                        alt={artifact.name}
+                        className="w-full h-full object-cover transform transition-transform duration-300"
+                      />
+                    ) : (
+                      <div className="absolute inset-0 flex items-center justify-center text-muted-foreground">
+                        No image available
+                      </div>
+                    )}
+                  </div>
 
-                <div className="space-y-3">
-                  <p className="text-sm text-muted-foreground">
-                    {artifact.description}
-                  </p>
+                  <div className="space-y-3">
+                    <p className="text-sm text-muted-foreground">
+                      {artifact.description}
+                    </p>
 
-                  {artifact.stars < 5 ? (
                     <div className="space-y-2">
                       <div className="flex justify-between text-sm">
                         <span className="flex items-center gap-1">
@@ -110,65 +113,76 @@ const ArtifactsDisplay = () => {
                           Next Tier Requirement
                         </span>
                         <span>
-                          {requiredCopies}{" "}
-                          {artifact.stars < 5 ? "Copies" : "MAX"}
+                          {artifact.stars < 5 ? requiredCopies : ""}{" "}
+                          {artifact.stars < 5 ? (
+                            "Copies"
+                          ) : (
+                            <span className="text-muted-foreground">
+                              Max Tier
+                            </span>
+                          )}
                         </span>
                       </div>
                       <Progress
                         value={(artifact.amount / requiredCopies) * 100}
-                        className="h-2 bg-primary/20"
+                        className={
+                          artifact.stars < 5
+                            ? `h-2 bg-primary/20`
+                            : "h-2 bg-muted/0 "
+                        }
                       />
                     </div>
-                  ) : null}
 
-                  <div className="grid gap-2">
-                    <div className="flex justify-between text-sm">
-                      <span>Current Tier</span>
-                      <span>{artifact.stars}★</span>
-                    </div>
-                    <div>
-                      {artifact.effect?.map((effect, index) => (
-                        <Alert
-                          key={index}
-                          variant="default"
-                          className="bg-muted/20 text-muted-foreground"
-                        >
-                          <div className="flex items-center gap-2">
-                            <Zap className="w-4 h-4" />
-                            <AlertDescription className="text-sm">
-                              {effect.description?.(artifact.stars) ||
-                                `Effect: ${effect.value}`}
-                            </AlertDescription>
-                          </div>
-                        </Alert>
-                      )) ?? (
-                        <p className="text-sm text-muted-foreground">
-                          No effects available
-                        </p>
-                      )}
+                    <div className="grid gap-2">
+                      <div className="flex justify-between text-sm">
+                        <span>Current Tier</span>
+                        <span>{artifact.stars}★</span>
+                      </div>
+                      <div>
+                        {artifact.effect?.map((effect, index) => (
+                          <Alert
+                            key={index}
+                            variant="default"
+                            className="bg-muted/20 text-muted-foreground"
+                          >
+                            <div className="flex items-center gap-2">
+                              <Zap className="w-4 h-4" />
+                              <AlertDescription className="text-sm">
+                                {effect.description?.(artifact.stars) ||
+                                  `Effect: ${effect.value}`}
+                              </AlertDescription>
+                            </div>
+                          </Alert>
+                        )) ?? (
+                          <p className="text-sm text-muted-foreground">
+                            No effects available
+                          </p>
+                        )}
+                      </div>
                     </div>
                   </div>
-                </div>
-              </CardContent>
+                </CardContent>
 
-              <CardFooter>
-                <Button
-                  variant="default"
-                  className="w-full"
-                  size="lg"
-                  disabled={!canUpgrade}
-                  onClick={() => handleUpgrade(artifact.name)}
-                >
-                  <Zap className="w-4 h-4 mr-2" />
-                  {artifact.stars >= 5 ? (
-                    "Max Tier Reached"
-                  ) : (
-                    <>
-                      Upgrade to {artifact.stars + 1}★ ({requiredCopies} Copies)
-                    </>
-                  )}
-                </Button>
-              </CardFooter>
+                <CardFooter>
+                  <Button
+                    variant="default"
+                    className="w-full"
+                    size="lg"
+                    disabled={!canUpgrade}
+                    onClick={() => handleUpgrade(artifact.name)}
+                  >
+                    <Zap className="w-4 h-4 mr-2" />
+                    {artifact.stars >= 5 ? (
+                      "Max Tier Reached"
+                    ) : (
+                      <>
+                        Upgrade to {artifact.stars + 1}★ ({requiredCopies}{" "}
+                        Copies)
+                      </>
+                    )}
+                  </Button>
+                </CardFooter>
+              </div>
             </Card>
           );
         })}

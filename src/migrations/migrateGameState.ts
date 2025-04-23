@@ -286,6 +286,13 @@ const migrateArtifactsStats = (savedArtifacts: any[]): any[] => {
     };
   });
 
+  // Add missing artifacts
+  const missingArtifacts = artifactsData.filter(
+    (artifact) =>
+      !migratedArtifacts.some((a) => a.name === artifact.name) &&
+      artifact.isLocked
+  );
+
   if (migratedArtifacts.length === 0) {
     return artifactsData.map((artifact) => ({
       ...artifact,
@@ -294,7 +301,7 @@ const migrateArtifactsStats = (savedArtifacts: any[]): any[] => {
     }));
   }
 
-  return migratedArtifacts;
+  return [...migratedArtifacts, ...missingArtifacts];
 };
 const migrateTechnologiesStats = (savedTechnologies: any[]): any[] => {
   return savedTechnologies.map((tech) => {

@@ -16,4 +16,4 @@ export type ArtifactEffect = {
   value: number;
 };
 
-export type ArtifactEffectType = "produciton";
+export type ArtifactEffectType = "produciton" | "capacity";

@@ -76,6 +76,14 @@ export const applyArtifactEffect = (state: GameState): GameState => {
                 (effect.value + (artifact.stars + 1) / 10);
             });
             break;
+          case "capacity" as ArtifactEffectType:
+            if (artifact.isLocked) return;
+
+            Object.values(state.resources).forEach((resource) => {
+              resource.capacity =
+                resource.capacity * (effect.value + (artifact.stars + 1) / 10);
+            });
+            break;
           default:
             break;
         }
