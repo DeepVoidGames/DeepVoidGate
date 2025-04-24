@@ -153,7 +153,7 @@ export const BuildingManager: React.FC = () => {
 
         // 2. Sortowanie wewnątrz grupy - po produkcji właściwego zasobu
         const getProduction = (building: typeof a) => {
-          return getProductionByResource(building, building.tag, resources);
+          return building.baseProduction?.[building.tag as ResourceType] || 0;
         };
 
         return getProduction(b) - getProduction(a); // Sortuj malejąco
