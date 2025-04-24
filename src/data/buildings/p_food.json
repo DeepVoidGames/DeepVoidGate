@@ -7,7 +7,7 @@
     "workerCapacity": 3,
     "baseCost": {
       "food": 15,
-      "metals": 5
+      "energy": 5
     },
     "baseProduction": {
       "food": 1.2
@@ -38,7 +38,7 @@
     "workerCapacity": 2,
     "baseCost": {
       "food": 30,
-      "metals": 15,
+      "energy": 15,
       "science": 5
     },
     "baseProduction": {
@@ -71,7 +71,7 @@
     "workerCapacity": 4,
     "baseCost": {
       "food": 112.5,
-      "metals": 58.75,
+      "energy": 58.75,
       "science": 15
     },
     "baseProduction": {
@@ -106,7 +106,7 @@
     "workerCapacity": 3,
     "baseCost": {
       "food": 300,
-      "metals": 180,
+      "energy": 180,
       "science": 30
     },
     "baseProduction": {
@@ -141,7 +141,7 @@
     "workerCapacity": 4,
     "baseCost": {
       "food": 990,
-      "metals": 593,
+      "energy": 593,
       "science": 60
     },
     "baseProduction": {
@@ -174,7 +174,7 @@
     "workerCapacity": 10,
     "baseCost": {
       "food": 1485,
-      "metals": 839.5,
+      "energy": 839.5,
       "oxygen": 250,
       "science": 120
     },
@@ -215,7 +215,7 @@
     "workerCapacity": 12,
     "baseCost": {
       "food": 1185,
-      "metals": 739.5,
+      "energy": 739.5,
       "science": 120
     },
     "baseProduction": {
@@ -248,7 +248,7 @@
     "workerCapacity": 18,
     "baseCost": {
       "food": 1485,
-      "metals": 939.5,
+      "energy": 939.5,
       "oxygen": 450,
       "water": 180,
       "science": 140
@@ -292,7 +292,7 @@
     "workerCapacity": 10,
     "baseCost": {
       "food": 1685,
-      "metals": 939.5,
+      "energy": 939.5,
       "oxygen": 450,
       "science": 140
     },

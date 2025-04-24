@@ -6,9 +6,8 @@
     "description": "Produces oxygen from the planet's thin atmosphere",
     "workerCapacity": 2,
     "baseCost": {
-      "metals": 30,
-      "energy": 20,
-      "oxygen": 50
+      "oxygen": 50,
+      "energy": 20
     },
     "baseProduction": {
       "oxygen": 2.0
@@ -37,9 +36,8 @@
     "description": "Uses fast-growing algae to convert CO2 into breathable oxygen through photosynthesis.",
     "workerCapacity": 2,
     "baseCost": {
-      "metals": 45,
-      "energy": 30,
-      "oxygen": 75
+      "oxygen": 75,
+      "energy": 30
     },
     "baseProduction": {
       "oxygen": 2.5
@@ -68,9 +66,8 @@
     "description": "Splits water molecules into oxygen and hydrogen through electrolysis for industrial-scale production.",
     "workerCapacity": 3,
     "baseCost": {
-      "metals": 67.5,
-      "energy": 45,
       "oxygen": 112.5,
+      "energy": 45,
       "science": 5
     },
     "baseProduction": {
@@ -103,9 +100,8 @@
     "description": "Superheats mineral oxides into plasma state, then magnetically filters pure oxygen from molten slag.",
     "workerCapacity": 4,
     "baseCost": {
-      "metals": 168.75,
-      "energy": 112.5,
       "oxygen": 281.25,
+      "energy": 112.5,
       "science": 12.5
     },
     "baseProduction": {
@@ -137,9 +133,8 @@
     "description": "Synthesizes breathable air using high-efficiency carbon fractals and phase-driven electrolysis.",
     "workerCapacity": 10,
     "baseCost": {
-      "metals": 506.25,
-      "energy": 393.75,
       "oxygen": 843.75,
+      "energy": 393.75,
       "science": 43.75
     },
     "baseProduction": {
