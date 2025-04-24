@@ -94,64 +94,124 @@ class BuildingAnalyzer:
             for r in RESOURCE_TYPES
             if building["baseCost"].get(r, 0) > 0
         }
+
     def plot_separate_production_and_costs(self):
-        """Tworzy osobne wykresy produkcji i kosztów w oddzielnych oknach"""
+        """Tworzy osobne wykresy produkcji i kosztów z markerami co 10 poziomów i podsumowaniami kosztów"""
         buildings = self.all_data["building"].unique()
         if len(buildings) == 0:
             print("Brak danych do wyświetlenia")
             return
 
-        # Utwórz siatkę wykresów dla produkcji
-        fig1, axes1 = plt.subplots(len(buildings), 1, figsize=(12, 6*len(buildings)))
-        fig1.suptitle("Produkcja", y=1.02, fontsize=14)
+        # Utwórz siatkę wykresów
+        fig, axes = plt.subplots(len(buildings), 2, figsize=(20, 6*len(buildings)))
+        fig.suptitle("Analiza budynków", y=1.02, fontsize=16)
         
-        # Utwórz siatkę wykresów dla kosztów
-        fig2, axes2 = plt.subplots(len(buildings), 1, figsize=(12, 6*len(buildings)))
-        fig2.suptitle("Koszty", y=1.02, fontsize=14)
-
         if len(buildings) == 1:
-            axes1 = [axes1]
-            axes2 = [axes2]
+            axes = [axes]
 
         for idx, building_type in enumerate(buildings):
             bldg_data = self.all_data[self.all_data["building"] == building_type]
             
             # Wykres produkcji
-            ax1 = axes1[idx]
+            ax_prod = axes[idx][0]
             resources = [r for r in RESOURCE_TYPES if r in bldg_data.columns]
             for resource in resources:
-                ax1.plot(
+                ax_prod.plot(
                     bldg_data["total_upgrades"],
                     bldg_data[resource],
                     label=f"{resource}",
                     marker="o",
+                    markersize=6,
                     linewidth=2
                 )
-            ax1.set_title(building_type, fontsize=12)
-            ax1.set_xlabel("Łączne ulepszenia")
-            ax1.set_ylabel("Produkcja")
-            ax1.grid(True, alpha=0.3)
-            ax1.legend()
+            ax_prod.set_title(f"{building_type} - Produkcja", fontsize=12)
+            ax_prod.set_xlabel("Łączne ulepszenia")
+            ax_prod.set_ylabel("Produkcja")
+            ax_prod.grid(True, alpha=0.3)
+            ax_prod.legend()
             
-            # Wykres kosztów
-            ax2 = axes2[idx]
+            # Wykres kosztów z dodatkowymi elementami
+            ax_cost = axes[idx][1]
             cost_columns = [c for c in bldg_data.columns if c.startswith("cost_")]
+            
+            # Oblicz koszty skumulowane
+            milestones = range(0, bldg_data["total_upgrades"].max()+1, 10)
+            cumulative_costs = {}
+            
             for cost_col in cost_columns:
                 resource = cost_col.replace("cost_", "")
-                ax2.plot(
-                    bldg_data["total_upgrades"],
-                    bldg_data[cost_col],
-                    label=f"{resource}",
-                    linestyle="--",
-                    linewidth=2
+                costs = bldg_data[cost_col]
+                
+                # Zaznacz co 10 poziom tylko jeśli istnieją dane
+                mask = (bldg_data["total_upgrades"] % 10 == 0) & (~np.isnan(costs))
+                if mask.any():
+                    ax_cost.scatter(
+                        bldg_data[mask]["total_upgrades"],
+                        costs[mask],
+                        marker="D",
+                        s=80,
+                        edgecolors='red',
+                        facecolors='none',
+                        zorder=3
+                    )
+                
+                # Oblicz koszty skumulowane pomijając NaN
+                cumulative = []
+                current_sum = 0
+                for level in milestones:
+                    if level >= len(costs) or np.isnan(costs.iloc[level]):
+                        break
+                    current_sum += costs.iloc[level]
+                    cumulative.append(current_sum)
+                
+                if cumulative:  # Dodaj tylko jeśli są jakieś koszty
+                    cumulative_costs[resource] = cumulative
+            
+            # Dodaj tekst z podsumowaniem tylko dla zasobów z kosztami
+            summary_text = "Koszt całkowity do poziomu:\n"
+            for resource, costs in cumulative_costs.items():
+                summary_text += f"\n{resource.capitalize()}:\n"
+                for i, (level, cost) in enumerate(zip(milestones, costs)):
+                    if i >= len(costs):
+                        break
+                    if i % 2 == 0:
+                        summary_text += f"{level:3}: {cost:,.0f}  "
+                    else:
+                        summary_text += f"{level:3}: {cost:,.0f}\n"
+            
+            # Wykres liniowy kosztów z filtracją NaN
+            for cost_col in cost_columns:
+                resource = cost_col.replace("cost_", "")
+                clean_data = bldg_data[~np.isnan(bldg_data[cost_col])]
+                if not clean_data.empty:
+                    ax_cost.plot(
+                        clean_data["total_upgrades"],
+                        clean_data[cost_col],
+                        label=f"{resource}",
+                        linestyle="--",
+                        linewidth=2,
+                        alpha=0.8
+                    )
+            
+            ax_cost.set_title(f"{building_type} - Koszty", fontsize=12)
+            ax_cost.set_xlabel("Łączne ulepszenia")
+            ax_cost.set_ylabel("Koszt")
+            ax_cost.grid(True, alpha=0.3)
+            ax_cost.legend()
+            
+            # Dodaj tekst z podsumowaniem tylko jeśli są dane
+            if cumulative_costs:
+                ax_cost.text(
+                    1.05, 0.5,
+                    summary_text,
+                    transform=ax_cost.transAxes,
+                    fontsize=9,
+                    verticalalignment='center',
+                    bbox=dict(facecolor='white', alpha=0.8)
                 )
-            ax2.set_title(building_type, fontsize=12)
-            ax2.set_xlabel("Łączne ulepszenia")
-            ax2.set_ylabel("Koszt")
-            ax2.grid(True, alpha=0.3)
-            ax2.legend()
 
         plt.tight_layout()
+        plt.subplots_adjust(right=0.85, hspace=0.4)
         plt.show()
 
     def simulate_development(self, steps=100, energy_critical=50):
@@ -228,7 +288,7 @@ class BuildingAnalyzer:
 
 # Przykład użycia
 if __name__ == "__main__":
-    building_config = json.loads(open("buildings/p_food.json").read())
+    building_config = json.loads(open("buildings/p_energy.json").read())
     
     analyzer = BuildingAnalyzer(building_config)
     analyzer.generate_data()

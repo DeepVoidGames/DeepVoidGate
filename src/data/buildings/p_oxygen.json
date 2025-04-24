@@ -151,7 +151,7 @@
     },
     "requirements": {},
     "requiredTechnology": "quantum_metabolism",
-    "costMultiplier": 2.0,
+    "costMultiplier": 1.85,
     "productionMultiplier": 1.9,
     "maxInstances": 1,
     "tier": 1,

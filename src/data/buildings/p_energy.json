@@ -6,14 +6,15 @@
     "description": "Captures energy from the nearby star",
     "workerCapacity": 1,
     "baseCost": {
-      "metals": 60
+      "energy": 60,
+      "metals": 30
     },
     "baseProduction": {
       "energy": 1.5
     },
     "baseConsumption": {},
     "requirements": {},
-    "costMultiplier": 1.6,
+    "costMultiplier": 1.3,
     "productionMultiplier": 1.3,
     "maxInstances": 1,
     "tier": 1,
@@ -21,7 +22,7 @@
     "upgrades": 0,
     "uniqueBonus": {
       "production": { "energy": 15 },
-      "storage": { "energy": 1000 }
+      "storage": { "energy": 10000 }
     },
     "tag": "energy"
   },
@@ -32,8 +33,8 @@
     "description": "Harnesses geothermal energy from the planet's core for stable power generation.",
     "workerCapacity": 2,
     "baseCost": {
-      "metals": 80,
-      "energy": 30
+      "energy": 90,
+      "metals": 45
     },
     "baseProduction": {
       "energy": 2.0
@@ -43,15 +44,15 @@
     },
     "requirements": {},
     "requiredTechnology": "geothermal_energy",
-    "costMultiplier": 1.7,
-    "productionMultiplier": 1.25,
+    "costMultiplier": 1.4,
+    "productionMultiplier": 1.35,
     "maxInstances": 1,
     "tier": 1,
     "maxTier": 5,
     "upgrades": 0,
     "uniqueBonus": {
       "production": { "energy": 20 },
-      "storage": { "energy": 1500 }
+      "storage": { "energy": 15000 }
     },
     "tag": "energy"
   },
@@ -62,9 +63,9 @@
     "description": "Generates energy through controlled nuclear fission reactions, providing high output.",
     "workerCapacity": 3,
     "baseCost": {
-      "metals": 120,
-      "energy": 50,
-      "science": 20
+      "energy": 135,
+      "metals": 67.5,
+      "science": 5
     },
     "baseProduction": {
       "energy": 3.5
@@ -76,15 +77,15 @@
     },
     "requirements": {},
     "requiredTechnology": "nuclear_fission",
-    "costMultiplier": 1.8,
-    "productionMultiplier": 1.3,
+    "costMultiplier": 1.65,
+    "productionMultiplier": 1.35,
     "maxInstances": 1,
     "tier": 1,
     "maxTier": 5,
     "upgrades": 0,
     "uniqueBonus": {
       "production": { "energy": 30 },
-      "storage": { "energy": 2500 }
+      "storage": { "energy": 25000 }
     },
     "tag": "energy"
   },
@@ -95,9 +96,9 @@
     "description": "Utilizes nuclear fusion to produce vast amounts of clean energy with minimal waste.",
     "workerCapacity": 4,
     "baseCost": {
-      "metals": 200,
-      "energy": 100,
-      "science": 50
+      "energy": 270,
+      "metals": 135,
+      "science": 10
     },
     "baseProduction": {
       "energy": 5.0
@@ -108,7 +109,7 @@
     },
     "requirements": {},
     "requiredTechnology": "fusion_energy",
-    "costMultiplier": 2.0,
+    "costMultiplier": 1.8,
     "productionMultiplier": 1.4,
     "maxInstances": 1,
     "tier": 1,
@@ -116,7 +117,7 @@
     "upgrades": 0,
     "uniqueBonus": {
       "production": { "energy": 50 },
-      "storage": { "energy": 5000 }
+      "storage": { "energy": 50000 }
     },
     "tag": "energy"
   },
@@ -128,9 +129,9 @@
     "description": "Self-sustaining energy reactor with alien alloy containment vessels enabling zero-point energy extraction.",
     "workerCapacity": 8,
     "baseCost": {
-      "metals": 1200,
-      "energy": 500,
-      "science": 200
+      "energy": 810,
+      "metals": 405,
+      "science": 30
     },
     "baseProduction": {
       "energy": 7.5
@@ -141,7 +142,7 @@
     },
     "requirements": {},
     "requiredTechnology": "alien_alloys",
-    "costMultiplier": 2.1,
+    "costMultiplier": 1.8,
     "productionMultiplier": 1.7,
     "maxInstances": 1,
     "tier": 1,
@@ -149,7 +150,7 @@
     "upgrades": 0,
     "uniqueBonus": {
       "production": { "energy": 75 },
-      "storage": { "energy": 15000 }
+      "storage": { "energy": 150000 }
     },
     "tag": "energy"
   }
