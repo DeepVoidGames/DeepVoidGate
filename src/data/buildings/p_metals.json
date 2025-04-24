@@ -6,8 +6,8 @@
     "description": "Extracts metal ores from the planetary crust",
     "workerCapacity": 3,
     "baseCost": {
-      "energy": 30,
-      "metals": 20
+      "energy": 15,
+      "metals": 10
     },
     "baseProduction": {
       "metals": 0.9

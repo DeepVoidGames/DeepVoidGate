@@ -7,8 +7,14 @@ import {
   Technology,
   ExpeditionState as Expedition,
 } from "@/store/types";
-import buildingData from "../data/buildings.json";
-import buildingExpeditionData from "../data/buildingExpeditions.json";
+
+import oxygenBuildingData from "@/data/buildings/p_oxygen.json";
+import foodBuildingData from "@/data/buildings/p_food.json";
+import energyBuildingData from "@/data/buildings/p_energy.json";
+import metalsBuildingData from "@/data/buildings/p_metals.json";
+import scienceBuildingData from "@/data/buildings/s_science.json";
+import housingBuildingData from "@/data/buildings/h_housing.json";
+import storageBuildingData from "@/data/buildings/s_storage.json";
 
 // Generate a unique ID
 export const generateId = (lenght: number = 9): string => {
@@ -16,7 +22,15 @@ export const generateId = (lenght: number = 9): string => {
 };
 
 // Połącz obie tablice danych budynków
-const allBuildingsData = [...buildingData, ...buildingExpeditionData];
+const allBuildingsData = [
+  ...oxygenBuildingData,
+  ...foodBuildingData,
+  ...energyBuildingData,
+  ...metalsBuildingData,
+  ...scienceBuildingData,
+  ...housingBuildingData,
+  ...storageBuildingData,
+];
 
 // Initialize buildings from combined JSON data
 export const initialBuildings: Omit<BuildingData, "id">[] =

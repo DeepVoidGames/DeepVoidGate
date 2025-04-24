@@ -6,11 +6,11 @@
     "description": "Captures energy from the nearby star",
     "workerCapacity": 1,
     "baseCost": {
-      "energy": 60,
-      "metals": 30
+      "energy": 30,
+      "metals": 15
     },
     "baseProduction": {
-      "energy": 1.5
+      "energy": 1.65
     },
     "baseConsumption": {},
     "requirements": {},
