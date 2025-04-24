@@ -32,38 +32,7 @@
     },
     "tag": "metals"
   },
-  {
-    "type": "quantum_alloy_energy_core",
-    "category": "production",
-    "name": "Quantum Alloy Energy Core",
-    "description": "Self-sustaining energy reactor with alien alloy containment vessels enabling zero-point energy extraction.",
-    "workerCapacity": 8,
-    "baseCost": {
-      "metals": 1200,
-      "energy": 500,
-      "science": 200
-    },
-    "baseProduction": {
-      "energy": 7.5
-    },
-    "baseConsumption": {
-      "metals": 0.5,
-      "water": 0.3
-    },
-    "requirements": {},
-    "requiredTechnology": "alien_alloys",
-    "costMultiplier": 2.1,
-    "productionMultiplier": 1.7,
-    "maxInstances": 1,
-    "tier": 1,
-    "maxTier": 5,
-    "upgrades": 0,
-    "uniqueBonus": {
-      "production": { "energy": 75 },
-      "storage": { "energy": 15000 }
-    },
-    "tag": "energy"
-  },
+
   {
     "type": "xeno_carbon_agro_complex",
     "category": "production",

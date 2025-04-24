@@ -423,7 +423,7 @@ export const initialTechnologies: Technology[] = [
       food: 500,
     },
     prerequisites: [],
-    unlocksBuildings: [],
+    unlocksBuildings: ["myco_grow_chamber"],
     researchDuration: 120, // 2 min
     isResearched: false,
     locked: true,

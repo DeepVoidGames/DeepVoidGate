@@ -64,6 +64,7 @@
     "tag": "food"
   },
   {
+    "isFromExpedition": true,
     "type": "myco_grow_chamber",
     "category": "production",
     "name": "Myco Grow Chamber",

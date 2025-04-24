@@ -130,6 +130,7 @@
     "tag": "oxygen"
   },
   {
+    "isFromExpedition": true,
     "type": "qmet_oxyplant",
     "category": "production",
     "name": "Oxy-Fusion Plant",
