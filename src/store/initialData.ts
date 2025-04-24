@@ -67,7 +67,7 @@ export const initialResourcesState = {
     capacity: 100,
     icon: "O₂",
     color: "cyan",
-    baseCapacity: 100,
+    baseCapacity: 2000,
   },
   water: {
     amount: 50,
@@ -76,7 +76,7 @@ export const initialResourcesState = {
     capacity: 100,
     icon: "💧",
     color: "blue",
-    baseCapacity: 100,
+    baseCapacity: 2000,
   },
   food: {
     amount: 50,
@@ -85,7 +85,7 @@ export const initialResourcesState = {
     capacity: 100,
     icon: "🌱",
     color: "green",
-    baseCapacity: 100,
+    baseCapacity: 2000,
   },
   energy: {
     amount: 100,
@@ -94,7 +94,7 @@ export const initialResourcesState = {
     capacity: 200,
     icon: "⚡",
     color: "yellow",
-    baseCapacity: 200,
+    baseCapacity: 2000,
   },
   metals: {
     amount: 200,
@@ -103,7 +103,7 @@ export const initialResourcesState = {
     capacity: 200,
     icon: "⛏️",
     color: "zinc",
-    baseCapacity: 200,
+    baseCapacity: 2000,
   },
   science: {
     amount: 0,
@@ -112,7 +112,7 @@ export const initialResourcesState = {
     capacity: 100,
     icon: "🔬",
     color: "purple",
-    baseCapacity: 100,
+    baseCapacity: 1000,
   },
 };
 
@@ -129,9 +129,9 @@ export const initialTechnologies: Technology[] = [
     name: "Basic Energy",
     category: "Energy",
     description: "Unlocks essential energy storage",
-    researchCost: { metals: 150, science: 75 },
+    researchCost: { energy: 1500, metals: 200 },
     prerequisites: [],
-    unlocksBuildings: [],
+    unlocksBuildings: ["basicBattery"],
     isResearched: false,
     researchDuration: 30,
   },
@@ -141,11 +141,12 @@ export const initialTechnologies: Technology[] = [
     category: "Production",
     description: "Enables access to 深层 metal deposits with advanced drills.",
     researchCost: {
-      metals: 300,
-      science: 150,
+      energy: 510,
+      metals: 1900,
+      science: 500,
     },
     prerequisites: ["basic_energy"],
-    unlocksBuildings: [],
+    unlocksBuildings: ["advancedMetalExtractor"],
     researchDuration: 90,
     isResearched: false,
   },
@@ -155,12 +156,12 @@ export const initialTechnologies: Technology[] = [
     category: "Production",
     description: "Detects high-density ore clusters using resonance waves.",
     researchCost: {
-      metals: 600,
-      science: 300,
-      energy: 100,
+      energy: 870,
+      metals: 3080,
+      science: 870,
     },
     prerequisites: ["deep_core_mining"],
-    unlocksBuildings: [],
+    unlocksBuildings: ["highYieldMetalFracturer"],
     researchDuration: 180,
     isResearched: false,
   },
@@ -170,11 +171,12 @@ export const initialTechnologies: Technology[] = [
     category: "Production",
     description: "Harnesses plasma to break down ores at the atomic level.",
     researchCost: {
-      metals: 1200,
-      science: 800,
+      energy: 1480,
+      science: 1480,
+      metals: 5000,
     },
     prerequisites: ["seismic_ore_mapping"],
-    unlocksBuildings: [],
+    unlocksBuildings: ["plasmaCoreMetalSynthesizer"],
     researchDuration: 300,
     isResearched: false,
   },
@@ -185,8 +187,9 @@ export const initialTechnologies: Technology[] = [
     description:
       "Unlocks the ability to harness geothermal energy from the planet's core.",
     researchCost: {
-      metals: 600,
-      science: 700,
+      energy: 900,
+      metals: 450,
+      science: 450,
     },
     prerequisites: ["basic_energy"],
     unlocksBuildings: ["geothermalPlant"],
@@ -200,9 +203,9 @@ export const initialTechnologies: Technology[] = [
     description:
       "Enables the use of nuclear fission reactors for high-energy output.",
     researchCost: {
-      metals: 1200,
-      science: 950,
-      energy: 150,
+      energy: 1350,
+      metals: 670,
+      science: 50,
     },
     prerequisites: ["geothermal_energy"],
     unlocksBuildings: ["fissionReactor"],
@@ -216,9 +219,9 @@ export const initialTechnologies: Technology[] = [
     description:
       "Achieves sustainable energy production through nuclear fusion technology.",
     researchCost: {
-      metals: 2000,
-      science: 1500,
-      energy: 300,
+      energy: 2700,
+      metals: 1350,
+      science: 1000,
     },
     prerequisites: ["nuclear_fission", "plasma_refining"],
     unlocksBuildings: ["fusionReactor"],
@@ -232,9 +235,9 @@ export const initialTechnologies: Technology[] = [
     description:
       "Enables large-scale separation of compounds through electrical current.",
     researchCost: {
-      metals: 400,
-      science: 250,
-      energy: 100,
+      oxygen: 1120,
+      energy: 450,
+      science: 500,
     },
     prerequisites: ["basic_energy"],
     unlocksBuildings: ["electrolyticOxygenPlant"],
@@ -247,7 +250,7 @@ export const initialTechnologies: Technology[] = [
     category: "Production",
     description:
       "Unlocks foundational food production systems for colony sustainability.",
-    researchCost: { metals: 100, science: 50 },
+    researchCost: { food: 300, energy: 150, science: 50 },
     prerequisites: [],
     unlocksBuildings: ["fungalFarm"],
     researchDuration: 45,
@@ -259,7 +262,7 @@ export const initialTechnologies: Technology[] = [
     category: "Production",
     description:
       "Enables space-efficient stacked growing systems with automated nutrient delivery.",
-    researchCost: { metals: 200, science: 100, energy: 30 },
+    researchCost: { food: 3000, energy: 1800, science: 300 },
     prerequisites: ["basic_agriculture"],
     unlocksBuildings: ["hydroponicTower"],
     researchDuration: 90,
@@ -271,7 +274,7 @@ export const initialTechnologies: Technology[] = [
     category: "Production",
     description:
       "Advanced microbial cultivation and synthetic nutrition technologies.",
-    researchCost: { metals: 350, science: 200, food: 50 },
+    researchCost: { food: 9900, energy: 5930, science: 600 },
     prerequisites: ["vertical_farming"],
     unlocksBuildings: ["proteinSynthesizer"],
     researchDuration: 180,
@@ -283,7 +286,7 @@ export const initialTechnologies: Technology[] = [
     category: "Research",
     description:
       "Enables big data analysis techniques for research optimization",
-    researchCost: { metals: 250, science: 100 },
+    researchCost: { science: 800, metals: 800, energy: 500 },
     prerequisites: ["basic_energy"],
     unlocksBuildings: ["dataAnalysisCenter"],
     researchDuration: 90,
@@ -294,7 +297,7 @@ export const initialTechnologies: Technology[] = [
     name: "Quantum Computing",
     category: "Research",
     description: "Unlocks quantum-based calculation systems",
-    researchCost: { metals: 400, science: 500, energy: 80 },
+    researchCost: { science: 2500, metals: 1800, energy: 850 },
     prerequisites: ["data_processing"],
     unlocksBuildings: ["quantumComputer"],
     researchDuration: 180,
@@ -306,7 +309,7 @@ export const initialTechnologies: Technology[] = [
     category: "Research",
     description:
       "Advanced neural network architectures for autonomous research",
-    researchCost: { metals: 600, science: 1000, energy: 150 },
+    researchCost: { science: 8860, metals: 4960, energy: 2870 },
     prerequisites: ["quantum_computing"],
     unlocksBuildings: ["neuralSimulationLab"],
     researchDuration: 300,
@@ -318,7 +321,13 @@ export const initialTechnologies: Technology[] = [
     category: "Infrastructure",
     description:
       "Automated storage management systems for bulk material handling",
-    researchCost: { metals: 180, science: 80 },
+    researchCost: {
+      metals: 5630,
+      oxygen: 2810,
+      energy: 1400,
+      food: 1000,
+      science: 500,
+    },
     prerequisites: ["basic_energy"],
     unlocksBuildings: ["modularStorageHub"],
     researchDuration: 60,
@@ -329,7 +338,7 @@ export const initialTechnologies: Technology[] = [
     name: "Composite Alloys",
     category: "Infrastructure",
     description: "Advanced metal compression and stacking techniques",
-    researchCost: { metals: 250, science: 120 },
+    researchCost: { metals: 5630, energy: 1400, science: 500 },
     prerequisites: ["deep_core_mining"],
     unlocksBuildings: ["metallicCompactionVault"],
     researchDuration: 75,
@@ -340,7 +349,13 @@ export const initialTechnologies: Technology[] = [
     name: "Quantum Storage",
     category: "Infrastructure",
     description: "Subatomic compression fields for mass storage solutions",
-    researchCost: { metals: 400, science: 250, energy: 150 },
+    researchCost: {
+      metals: 5630,
+      oxygen: 15100,
+      energy: 1400,
+      food: 1000,
+      science: 500,
+    },
     prerequisites: ["quantum_computing"],
     unlocksBuildings: ["cryoUniversalDepot", "quantumCapacitor"],
     researchDuration: 120,
@@ -353,9 +368,9 @@ export const initialTechnologies: Technology[] = [
     description:
       "Quantum tunneling manipulation to extract metals from quantum vacuum.",
     researchCost: {
-      metals: 2600,
-      science: 950,
-      energy: 200,
+      energy: 1650,
+      metals: 4500,
+      science: 500,
     },
     prerequisites: ["plasma_refining"],
     unlocksBuildings: ["quantumFluxMetalForge"],
@@ -369,9 +384,9 @@ export const initialTechnologies: Technology[] = [
     description:
       "Plasma stabilization under extreme pressure conditions for the synthesis of metallic isotopes.",
     researchCost: {
-      metals: 2450,
-      science: 1100,
-      energy: 180,
+      energy: 1350,
+      metals: 5200,
+      science: 1000,
     },
     prerequisites: ["quantum_tunneling_synthesis"],
     unlocksBuildings: ["fusionEdgeMetallizer"],
@@ -385,9 +400,9 @@ export const initialTechnologies: Technology[] = [
     description:
       "Programmable nanobot swarms to deconstruct matter at the atomic level.",
     researchCost: {
-      metals: 5750,
-      science: 1300,
-      energy: 250,
+      energy: 1800,
+      metals: 4800,
+      science: 2000,
     },
     prerequisites: ["mhd_fusion_confinement"],
     unlocksBuildings: ["nanoDismantlerFoundry"],
@@ -433,8 +448,9 @@ export const initialTechnologies: Technology[] = [
     description:
       "Early organic processing using native flora and microbial cultures for sustainable food and oxygen generation.",
     researchCost: {
-      science: 200,
-      food: 500,
+      food: 1120,
+      energy: 580,
+      science: 150,
     },
     prerequisites: [],
     unlocksBuildings: ["myco_grow_chamber"],
@@ -538,8 +554,11 @@ export const initialTechnologies: Technology[] = [
     description:
       "Revolutionary approach to stabilizing dynamic marine environments using corrosion-resistant metamaterials and kilometer-scale pressure management systems. Enables construction of permanent oceanic settlements.",
     researchCost: {
-      science: 18000,
-      metals: 6500,
+      metals: 11000,
+      energy: 4000,
+      food: 1500,
+      oxygen: 1250,
+      science: 2000,
     },
     prerequisites: [],
     unlocksBuildings: ["floating_habitat"],
@@ -553,8 +572,11 @@ export const initialTechnologies: Technology[] = [
     description:
       "Engineering of living mycelium networks as structural frameworks, integrating photosynthetic lichens and adaptive gas exchange membranes for self-regulating organic habitats.",
     researchCost: {
-      science: 22000,
-      metals: 20000,
+      metals: 15000,
+      energy: 6000,
+      food: 2500,
+      oxygen: 2250,
+      science: 3000,
     },
     prerequisites: ["hydrostatic_architecture", "quantum_tunneling_synthesis"],
     unlocksBuildings: ["bio_caverns"],
@@ -568,9 +590,9 @@ export const initialTechnologies: Technology[] = [
     description:
       "Control over localized space-time enables folding, compressing, and storing resources in non-Euclidean spaces, unlocking extreme production density.",
     researchCost: {
-      science: 30000,
-      metals: 10000,
-      energy: 12000,
+      metals: 60000,
+      science: 40000,
+      energy: 28000,
     },
     prerequisites: ["chrono_synchronization"],
     unlocksBuildings: ["dimensional_refinery", "void_storage_core"],
@@ -586,9 +608,9 @@ export const initialTechnologies: Technology[] = [
     description:
       "A self-regulating resource storage architecture based on neural patterns that actively optimize flow, minimize waste, and accelerate distribution.",
     researchCost: {
+      metals: 60000,
       science: 40000,
-      metals: 15000,
-      energy: 20000,
+      energy: 28000,
     },
     prerequisites: ["spatial_fabric_manipulation"],
     unlocksBuildings: [
@@ -608,8 +630,9 @@ export const initialTechnologies: Technology[] = [
     description:
       "Enables storage of vast energy through antimatter-based containment.",
     researchCost: {
-      metals: 1500,
-      science: 700,
+      energy: 20000,
+      metals: 4700,
+      science: 2000,
     },
     prerequisites: ["quantum_storage"],
     unlocksBuildings: ["antimatterCell"],
@@ -623,8 +646,9 @@ export const initialTechnologies: Technology[] = [
     description:
       "Harness singularities to store unimaginable quantities of energy.",
     researchCost: {
-      metals: 5000,
-      science: 2000,
+      energy: 25000,
+      metals: 5700,
+      science: 3000,
     },
     prerequisites: ["antimatter_storage"],
     unlocksBuildings: ["voidCore"],

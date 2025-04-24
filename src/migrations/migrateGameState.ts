@@ -340,6 +340,7 @@ const migrateResources = (
       capacity: savedResource?.capacity ?? defaultResource.capacity,
       bonusCapacity:
         savedResource?.bonusCapacity ?? (defaultResource.bonusCapacity || 0),
+      baseCapacity: defaultResource.baseCapacity || 0,
     };
   });
 
