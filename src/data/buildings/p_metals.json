@@ -326,8 +326,8 @@
     "workerCapacity": 20,
     "baseCost": {
       "metals": 7000,
-      "science": 1500,
-      "energy": 2500
+      "energy": 2500,
+      "science": 1500
     },
     "baseProduction": {
       "metals": 13.0,
@@ -339,8 +339,8 @@
     },
     "requirements": {},
     "requiredTechnology": "spatial_fabric_manipulation",
-    "costMultiplier": 3.3,
-    "productionMultiplier": 2.7,
+    "costMultiplier": 1.95,
+    "productionMultiplier": 1.9,
     "maxInstances": 1,
     "tier": 1,
     "maxTier": 5,
@@ -365,12 +365,13 @@
     "description": "Programmable core that alternates between high-efficiency metal or energy output based on colony needs.",
     "workerCapacity": 12,
     "baseCost": {
-      "metals": 5000,
-      "energy": 8000
+      "metals": 8500,
+      "energy": 3000,
+      "science": 2000
     },
     "baseProduction": {
-      "metals": 8.0,
-      "energy": 6.0
+      "metals": 13.0,
+      "energy": 10.0
     },
     "baseConsumption": {
       "water": 1.0,
@@ -378,7 +379,7 @@
     },
     "requirements": {},
     "requiredTechnology": "adaptive_matter_engineering",
-    "costMultiplier": 3.8,
+    "costMultiplier": 1.95,
     "productionMultiplier": 2.0,
     "maxInstances": 1,
     "tier": 1,
