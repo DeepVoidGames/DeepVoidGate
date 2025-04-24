@@ -1,0 +1,116 @@
+[
+  {
+    "type": "housing",
+    "category": "housing",
+    "name": "Habitat Dome",
+    "description": "Living quarters for the colony's population",
+    "workerCapacity": 0,
+    "baseCost": {
+      "metals": 80,
+      "energy": 20,
+      "food": 10,
+      "oxygen": 5
+    },
+    "baseProduction": {},
+    "baseConsumption": {
+      "oxygen": 0.2,
+      "energy": 0.3
+    },
+    "requirements": {},
+    "costMultiplier": 1.3,
+    "productionMultiplier": 1,
+    "maxInstances": 1,
+    "tier": 1,
+    "maxTier": 5,
+    "upgrades": 0,
+    "uniqueBonus": {}
+  },
+  {
+    "type": "subterranean_arcology",
+    "category": "housing",
+    "name": "Subterranean Arcology",
+    "description": "Multi-level underground habitat with integrated life support systems and radiation shielding.",
+    "workerCapacity": 0,
+    "baseCost": {
+      "metals": 500,
+      "energy": 100,
+      "food": 50,
+      "oxygen": 25
+    },
+    "baseProduction": {},
+    "baseConsumption": {
+      "oxygen": 0.25,
+      "energy": 0.4,
+      "water": 0.1
+    },
+    "requirements": {},
+    "costMultiplier": 1.7,
+    "productionMultiplier": 1,
+    "maxInstances": 1,
+    "tier": 1,
+    "maxTier": 5,
+    "upgrades": 0,
+    "uniqueBonus": {},
+    "tag": "habitation"
+  },
+  {
+    "type": "floating_habitat",
+    "category": "housing",
+    "name": "Floating Habitat",
+    "description": "An oceanic floating structure, designed to withstand harsh water environments and provide sustainable living conditions.",
+    "workerCapacity": 0,
+    "baseCost": {
+      "metals": 1100,
+      "energy": 400,
+      "food": 150,
+      "oxygen": 125
+    },
+    "baseProduction": {},
+    "baseConsumption": {
+      "oxygen": 0.2,
+      "energy": 0.35,
+      "water": 0.15
+    },
+    "requirements": {},
+    "requiredTechnology": "hydrostatic_architecture",
+    "costMultiplier": 1.6,
+    "productionMultiplier": 1,
+    "maxInstances": 1,
+    "tier": 3,
+    "maxTier": 5,
+    "upgrades": 0,
+    "uniqueBonus": {},
+    "tag": "habitation",
+    "housingCapacityMultiplier": 2
+  },
+  {
+    "type": "bio_caverns",
+    "category": "housing",
+    "name": "Symbiotic Bio-Caverns",
+    "description": "Organic living complex integrated with genetically modified fungi providing natural air filtration and bioluminescent lighting.",
+    "workerCapacity": 0,
+    "baseCost": {
+      "metals": 1500,
+      "energy": 600,
+      "food": 250,
+      "oxygen": 225
+    },
+    "baseProduction": {},
+    "baseConsumption": {
+      "oxygen": 0.2,
+      "energy": 0.35,
+      "water": 0.15
+    },
+    "requirements": {},
+    "requiredTechnology": "myco_structural_engineering",
+    "costMultiplier": 1.7,
+    "productionMultiplier": 1,
+    "maxInstances": 1,
+    "tier": 3,
+    "maxTier": 5,
+    "upgrades": 0,
+    "uniqueBonus": {},
+    "tag": "habitation",
+    "housingCapacityMultiplier": 2
+  }
+]

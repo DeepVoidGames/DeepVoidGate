@@ -288,7 +288,7 @@ class BuildingAnalyzer:
 
 # Przykład użycia
 if __name__ == "__main__":
-    building_config = json.loads(open("buildings/p_energy.json").read())
+    building_config = json.loads(open("buildings/s_storage.json").read())
     
     analyzer = BuildingAnalyzer(building_config)
     analyzer.generate_data()

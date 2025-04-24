@@ -1,0 +1,465 @@
+[
+  {
+    "type": "basicStorage",
+    "category": "storage",
+    "name": "Basic Storage",
+    "description": "Basic resource storage facility",
+    "workerCapacity": 0,
+    "baseCost": {
+      "metals": 80,
+      "oxygen": 40,
+      "energy": 20
+    },
+    "baseProduction": {},
+    "baseConsumption": {
+      "energy": 0.2
+    },
+    "storageBonus": {
+      "metals": 1000,
+      "oxygen": 500
+    },
+    "requirements": {},
+    "costMultiplier": 1.4,
+    "productionMultiplier": 1,
+    "maxInstances": 1,
+    "tier": 1,
+    "maxTier": 5,
+    "upgrades": 0,
+    "uniqueBonus": {
+      "storage": {
+        "metals": 10000,
+        "oxygen": 10000,
+        "energy": 5000
+      }
+    }
+  },
+  {
+    "type": "advancedStorage",
+    "category": "storage",
+    "name": "Advanced Storage",
+    "description": "Advanced cryogenic storage complex",
+    "workerCapacity": 0,
+    "baseCost": {
+      "metals": 256,
+      "oxygen": 128,
+      "energy": 64
+    },
+    "baseProduction": {},
+    "baseConsumption": {
+      "energy": 0.5,
+      "oxygen": 0.1
+    },
+    "storageBonus": {
+      "metals": 2000,
+      "oxygen": 1500
+    },
+    "requirements": {
+      "basicStorage": 1
+    },
+    "costMultiplier": 1.6,
+    "productionMultiplier": 1,
+    "maxInstances": 1,
+    "tier": 1,
+    "maxTier": 5,
+    "upgrades": 0,
+    "uniqueBonus": {
+      "storage": {
+        "metals": 15000,
+        "oxygen": 15000,
+        "energy": 10000
+      }
+    }
+  },
+  {
+    "type": "basicBattery",
+    "category": "storage",
+    "name": "Basic Battery",
+    "description": "Stores excess energy for later use",
+    "workerCapacity": 0,
+    "baseCost": {
+      "energy": 150,
+      "metals": 20
+    },
+    "baseProduction": {},
+    "baseConsumption": {
+      "energy": 0.1
+    },
+    "storageBonus": {
+      "energy": 1000
+    },
+    "requirements": {},
+    "costMultiplier": 1.5,
+    "productionMultiplier": 1,
+    "maxInstances": 1,
+    "requiredTechnology": "basic_energy",
+    "tier": 1,
+    "maxTier": 5,
+    "upgrades": 0,
+    "uniqueBonus": {
+      "storage": { "energy": 10000 }
+    }
+  },
+  {
+    "type": "modularStorageHub",
+    "category": "storage",
+    "name": "Modular Storage Hub",
+    "description": "Flexible storage complex with adjustable compartments for multiple resource types",
+    "workerCapacity": 0,
+    "baseCost": {
+      "metals": 563,
+      "oxygen": 281,
+      "energy": 140,
+      "food": 100,
+      "science": 50
+    },
+    "baseProduction": {},
+    "baseConsumption": {
+      "energy": 0.3
+    },
+    "storageBonus": {
+      "metals": 3000,
+      "oxygen": 2500,
+      "food": 1000,
+      "science": 1000
+    },
+    "requirements": {
+      "basicStorage": 1
+    },
+    "requiredTechnology": "industrial_automation",
+    "costMultiplier": 1.7,
+    "maxInstances": 1,
+    "tier": 1,
+    "maxTier": 3,
+    "uniqueBonus": {
+      "storage": {
+        "metals": 20000,
+        "oxygen": 20000,
+        "food": 20000,
+        "science": 20000
+      }
+    }
+  },
+  {
+    "type": "metallicCompactionVault",
+    "category": "storage",
+    "name": "Metallic Compaction Vault",
+    "description": "High-density storage using molecular compression for bulk metal storage",
+    "workerCapacity": 0,
+    "baseCost": {
+      "metals": 563,
+      "energy": 140
+    },
+    "baseProduction": {},
+    "baseConsumption": {
+      "energy": 0.4
+    },
+    "storageBonus": {
+      "metals": 5000
+    },
+    "requirements": {},
+    "requiredTechnology": "composite_alloys",
+    "costMultiplier": 1.65,
+    "maxInstances": 1,
+    "tier": 1,
+    "maxTier": 6,
+    "uniqueBonus": {
+      "storage": {
+        "metals": 25000
+      }
+    }
+  },
+  {
+    "type": "cryoUniversalDepot",
+    "category": "storage",
+    "name": "Cryo-Universal Depot",
+    "description": "Cryogenically stabilized megawarehouse with multi-resource preservation systems",
+    "workerCapacity": 0,
+    "baseCost": {
+      "metals": 563,
+      "oxygen": 281,
+      "energy": 140,
+      "food": 100,
+      "science": 50
+    },
+    "baseProduction": {},
+    "baseConsumption": {
+      "energy": 0.8
+    },
+    "storageBonus": {
+      "metals": 4000,
+      "oxygen": 3000,
+      "food": 2500,
+      "science": 2500,
+      "energy": 1000
+    },
+    "requirements": {
+      "modularStorageHub": 1
+    },
+    "requiredTechnology": "quantum_computing",
+    "costMultiplier": 1.8,
+    "maxInstances": 1,
+    "tier": 1,
+    "maxTier": 5,
+    "uniqueBonus": {
+      "storage": {
+        "metals": 25000,
+        "oxygen": 25000,
+        "food": 25000,
+        "science": 25000,
+        "energy": 25000
+      }
+    }
+  },
+  {
+    "type": "quantumCapacitor",
+    "category": "storage",
+    "name": "Quantum Capacitor",
+    "description": "A high-efficiency energy storage unit using quantum entanglement.",
+    "workerCapacity": 0,
+    "baseCost": {
+      "energy": 1000,
+      "metals": 470
+    },
+    "baseProduction": {},
+    "baseConsumption": {
+      "energy": 0.2
+    },
+    "storageBonus": {
+      "energy": 5000
+    },
+    "requirements": {},
+    "costMultiplier": 1.6,
+    "productionMultiplier": 1,
+    "maxInstances": 1,
+    "requiredTechnology": "quantum_storage",
+    "tier": 1,
+    "maxTier": 5,
+    "upgrades": 0,
+    "uniqueBonus": {
+      "storage": { "energy": 50000 }
+    }
+  },
+  {
+    "type": "antimatterCell",
+    "category": "storage",
+    "name": "Antimatter Cell",
+    "description": "Stores massive energy using stabilized antimatter fields.",
+    "workerCapacity": 0,
+    "baseCost": {
+      "energy": 2000,
+      "metals": 470
+    },
+    "baseProduction": {},
+    "baseConsumption": {
+      "energy": 0.5
+    },
+    "storageBonus": {
+      "energy": 15000
+    },
+    "requirements": {},
+    "costMultiplier": 1.7,
+    "productionMultiplier": 1,
+    "maxInstances": 1,
+    "requiredTechnology": "antimatter_storage",
+    "tier": 1,
+    "maxTier": 6,
+    "upgrades": 0,
+    "uniqueBonus": {
+      "storage": { "energy": 100000 }
+    }
+  },
+  {
+    "type": "voidCore",
+    "category": "storage",
+    "name": "Void Singularity Core",
+    "description": "An experimental storage device that uses micro-singularities to compress energy data.",
+    "workerCapacity": 0,
+    "baseCost": {
+      "energy": 2500,
+      "metals": 570
+    },
+    "baseProduction": {},
+    "baseConsumption": {
+      "energy": 2
+    },
+    "storageBonus": {
+      "energy": 25000
+    },
+    "requirements": {},
+    "costMultiplier": 1.8,
+    "productionMultiplier": 1,
+    "maxInstances": 1,
+    "requiredTechnology": "void_singularity",
+    "tier": 1,
+    "maxTier": 7,
+    "upgrades": 0,
+    "uniqueBonus": {
+      "storage": { "energy": 200000 }
+    }
+  },
+  {
+    "isFromExpedition": true,
+    "type": "void_storage_core",
+    "category": "storage",
+    "name": "Void Storage Core",
+    "description": "A spatially folded chamber that allows storing massive amounts of resources in microdimensions while emitting minor passive production.",
+    "workerCapacity": 0,
+    "baseCost": {
+      "metals": 6000,
+      "science": 4000,
+      "energy": 2800
+    },
+    "baseProduction": {},
+    "baseConsumption": {
+      "water": 0.5,
+      "oxygen": 0.5
+    },
+    "storageBonus": {
+      "metals": 10000,
+      "oxygen": 5000,
+      "food": 5000,
+      "science": 5000,
+      "water": 0
+    },
+    "requirements": {},
+    "requiredTechnology": "spatial_fabric_manipulation",
+    "costMultiplier": 1.8,
+    "productionMultiplier": 2.0,
+    "maxInstances": 1,
+    "tier": 1,
+    "maxTier": 5,
+    "upgrades": 0,
+    "uniqueBonus": {
+      "storage": {
+        "metals": 50000,
+        "energy": 50000,
+        "science": 50000,
+        "water": 50000,
+        "oxygen": 50000,
+        "food": 50000
+      }
+    },
+    "tag": "storage"
+  },
+  {
+    "isFromExpedition": true,
+    "type": "smart_resource_matrix",
+    "category": "storage",
+    "name": "Smart Resource Matrix",
+    "description": "An AI-managed hub that dynamically allocates stored resources, boosting global production efficiency and minimizing idle cycles.",
+    "workerCapacity": 0,
+    "baseCost": {
+      "metals": 6000,
+      "science": 4000,
+      "energy": 2800
+    },
+    "baseProduction": {},
+    "baseConsumption": {
+      "energy": 1.2,
+      "water": 0.8
+    },
+    "storageBonus": {
+      "metals": 15000,
+      "oxygen": 10000,
+      "food": 10000,
+      "science": 10000
+    },
+    "requirements": {},
+    "requiredTechnology": "autonomic_storage_networks",
+    "costMultiplier": 2.0,
+    "productionMultiplier": 1.0,
+    "maxInstances": 1,
+    "tier": 1,
+    "maxTier": 5,
+    "upgrades": 0,
+    "uniqueBonus": {
+      "storage": {
+        "metals": 100000,
+        "energy": 120000,
+        "science": 60000
+      }
+    },
+    "tag": "storage"
+  },
+  {
+    "isFromExpedition": true,
+    "type": "nutrient_reserve_cluster",
+    "category": "storage",
+    "name": "Nutrient Reserve Cluster",
+    "description": "Advanced bio-storage chambers that prolong shelf life and enhance food-related productivity through constant nutrient rebalancing.",
+    "workerCapacity": 0,
+    "baseCost": {
+      "metals": 6000,
+      "science": 4000,
+      "energy": 2800
+    },
+    "baseProduction": {},
+    "baseConsumption": {
+      "energy": 1.0,
+      "water": 1.5
+    },
+    "storageBonus": {
+      "metals": 20000,
+      "oxygen": 15000,
+      "food": 15000,
+      "science": 15000,
+      "water": 0
+    },
+    "requirements": {},
+    "requiredTechnology": "autonomic_storage_networks",
+    "costMultiplier": 2.15,
+    "productionMultiplier": 1.0,
+    "maxInstances": 1,
+    "tier": 1,
+    "maxTier": 5,
+    "upgrades": 0,
+    "uniqueBonus": {
+      "storage": {
+        "food": 100000,
+        "water": 100000,
+        "oxygen": 50000
+      }
+    },
+    "tag": "storage"
+  },
+  {
+    "isFromExpedition": true,
+    "type": "aeropulse_vault",
+    "category": "storage",
+    "name": "Aeropulse Vault",
+    "description": "Atmospheric compression vaults that store gases in phase-altered states, reducing consumption and stabilizing life support systems.",
+    "workerCapacity": 0,
+    "baseCost": {
+      "metals": 6000,
+      "science": 4000,
+      "energy": 2800
+    },
+    "baseProduction": {},
+    "baseConsumption": {
+      "energy": 1.1,
+      "water": 0.6
+    },
+    "storageBonus": {
+      "metals": 25000,
+      "oxygen": 20000,
+      "food": 20000,
+      "science": 20000,
+      "water": 0
+    },
+    "requirements": {},
+    "requiredTechnology": "autonomic_storage_networks",
+    "costMultiplier": 2.25,
+    "productionMultiplier": 1.0,
+    "maxInstances": 1,
+    "tier": 1,
+    "maxTier": 5,
+    "upgrades": 0,
+    "uniqueBonus": {
+      "storage": {
+        "oxygen": 100000,
+        "water": 50000
+      }
+    },
+    "tag": "storage"
+  }
+]

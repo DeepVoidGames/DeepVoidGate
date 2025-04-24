@@ -1,0 +1,139 @@
+[
+  {
+    "type": "researchLab",
+    "category": "research",
+    "name": "Research Lab",
+    "description": "Scientists work to advance colony technology",
+    "workerCapacity": 2,
+    "baseCost": {
+      "metals": 80,
+      "energy": 40
+    },
+    "baseProduction": {
+      "science": 1.0
+    },
+    "baseConsumption": {
+      "energy": 1,
+      "oxygen": 0.3
+    },
+    "storageBonus": {
+      "science": 150
+    },
+    "requirements": {},
+    "costMultiplier": 1.4,
+    "productionMultiplier": 1.3,
+    "maxInstances": 1,
+    "tier": 1,
+    "maxTier": 5,
+    "upgrades": 0,
+    "uniqueBonus": {
+      "production": { "science": 3 },
+      "storage": { "science": 10000 }
+    },
+    "tag": "science"
+  },
+  {
+    "type": "dataAnalysisCenter",
+    "category": "research",
+    "name": "Data Analysis Center",
+    "description": "Processes experimental data using advanced algorithms to accelerate discoveries.",
+    "workerCapacity": 3,
+    "baseCost": {
+      "science": 80,
+      "metals": 80,
+      "energy": 50
+    },
+    "baseProduction": {
+      "science": 2.5
+    },
+    "baseConsumption": {
+      "energy": 0.8,
+      "oxygen": 0.3
+    },
+    "storageBonus": {
+      "science": 1000
+    },
+    "requirements": {
+      "researchLab": 1
+    },
+    "requiredTechnology": "data_processing",
+    "costMultiplier": 1.6,
+    "productionMultiplier": 1.25,
+    "maxInstances": 1,
+    "tier": 1,
+    "maxTier": 5,
+    "upgrades": 1,
+    "uniqueBonus": {
+      "production": { "science": 8 },
+      "storage": { "science": 15000 }
+    },
+    "tag": "science"
+  },
+  {
+    "type": "quantumComputer",
+    "category": "research",
+    "name": "Quantum Computer Array",
+    "description": "Performs complex simulations using quantum entanglement principles.",
+    "workerCapacity": 4,
+    "baseCost": {
+      "science": 250,
+      "metals": 180,
+      "energy": 85
+    },
+    "baseProduction": {
+      "science": 4.2
+    },
+    "baseConsumption": {
+      "energy": 1.5,
+      "oxygen": 0.5
+    },
+    "storageBonus": {
+      "science": 5000
+    },
+    "requirements": {},
+    "requiredTechnology": "quantum_computing",
+    "costMultiplier": 1.7,
+    "productionMultiplier": 1.3,
+    "maxInstances": 1,
+    "tier": 1,
+    "maxTier": 5,
+    "upgrades": 2,
+    "uniqueBonus": {
+      "production": { "science": 15 },
+      "storage": { "science": 25000 }
+    },
+    "tag": "science"
+  },
+  {
+    "type": "neuralSimulationLab",
+    "category": "research",
+    "name": "Neural Simulation Lab",
+    "description": "Emulates organic brain patterns using photonic neural networks.",
+    "workerCapacity": 5,
+    "baseCost": {
+      "science": 886,
+      "metals": 496,
+      "energy": 287
+    },
+    "baseProduction": {
+      "science": 6.0
+    },
+    "baseConsumption": {
+      "energy": 2.2,
+      "oxygen": 0.7
+    },
+    "requirements": {},
+    "requiredTechnology": "ai_development",
+    "costMultiplier": 1.7,
+    "productionMultiplier": 1.35,
+    "maxInstances": 1,
+    "tier": 1,
+    "maxTier": 5,
+    "upgrades": 3,
+    "uniqueBonus": {
+      "production": { "science": 25 },
+      "storage": { "science": 50000 }
+    },
+    "tag": "science"
+  }
+]
