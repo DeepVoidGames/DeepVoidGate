@@ -27,6 +27,33 @@
     "tag": "energy"
   },
   {
+    "type": "advancedSolarPanel",
+    "category": "production",
+    "name": "Advanced Solar Array",
+    "description": "High-efficiency panels capture more energy from the star",
+    "workerCapacity": 1,
+    "baseCost": {
+      "energy": 35,
+      "metals": 18
+    },
+    "baseProduction": {
+      "energy": 2.0
+    },
+    "baseConsumption": {},
+    "requirements": {},
+    "costMultiplier": 1.3,
+    "productionMultiplier": 1.35,
+    "maxInstances": 1,
+    "tier": 1,
+    "maxTier": 5,
+    "upgrades": 0,
+    "uniqueBonus": {
+      "production": { "energy": 20 },
+      "storage": { "energy": 12000 }
+    },
+    "tag": "energy"
+  },
+  {
     "type": "geothermalPlant",
     "category": "production",
     "name": "Geothermal Plant",

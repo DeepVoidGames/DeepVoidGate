@@ -30,6 +30,36 @@
     "tag": "metals"
   },
   {
+    "type": "deepMetalMine",
+    "category": "production",
+    "name": "Deep Metal Extractor",
+    "description": "Uses advanced drills to reach richer metal veins deeper underground",
+    "workerCapacity": 3,
+    "baseCost": {
+      "energy": 10,
+      "metals": 24
+    },
+    "baseProduction": {
+      "metals": 1.2
+    },
+    "baseConsumption": {
+      "energy": 0.7,
+      "oxygen": 0.2
+    },
+    "requirements": {},
+    "costMultiplier": 1.7,
+    "productionMultiplier": 1.3,
+    "maxInstances": 1,
+    "tier": 2,
+    "maxTier": 5,
+    "upgrades": 0,
+    "uniqueBonus": {
+      "production": { "metals": 10 },
+      "storage": { "metals": 12000 }
+    },
+    "tag": "metals"
+  },
+  {
     "type": "advancedMetalExtractor",
     "category": "production",
     "name": "Advanced Metal Extractor",

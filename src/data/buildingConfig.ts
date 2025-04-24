@@ -382,4 +382,28 @@ export const buildingConfig = [
       className: "h-5 w-5 text-purple-400",
     }),
   },
+  {
+    type: "aeroponicFarm" as BuildingType,
+    name: "Aeroponic Farm",
+    category: "production" as BuildingCategory,
+    icon: React.createElement(Leaf, {
+      className: "h-5 w-5 text-green-400",
+    }),
+  },
+  {
+    type: "advancedSolarPanel" as BuildingType,
+    name: "Advanced Solar Array",
+    category: "production" as BuildingCategory,
+    icon: React.createElement(Zap, {
+      className: "h-5 w-5 text-yellow-400",
+    }),
+  },
+  {
+    type: "deepMetalMine" as BuildingType,
+    name: "Deep Metal Extractor",
+    category: "production" as BuildingCategory,
+    icon: React.createElement(Pickaxe, {
+      className: "h-5 w-5 text-gray-400",
+    }),
+  },
 ];

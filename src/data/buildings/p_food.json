@@ -31,6 +31,38 @@
     "tag": "food"
   },
   {
+    "type": "aeroponicFarm",
+    "category": "production",
+    "name": "Aeroponic Farm",
+    "description": "Grows food using mist environments, increasing efficiency",
+    "workerCapacity": 3,
+    "baseCost": {
+      "food": 18,
+      "energy": 6
+    },
+    "baseProduction": {
+      "food": 1.5
+    },
+    "baseConsumption": {
+      "oxygen": 0.25,
+      "energy": 0.35,
+      "water": 0.15
+    },
+    "requirements": {},
+    "costMultiplier": 1.4,
+    "productionMultiplier": 1.25,
+    "maxInstances": 1,
+    "tier": 1,
+    "maxTier": 5,
+    "upgrades": 0,
+    "uniqueBonus": {
+      "production": { "food": 5 },
+      "storage": { "food": 12000 }
+    },
+    "tag": "food"
+  },
+
+  {
     "type": "fungalFarm",
     "category": "production",
     "name": "Fungal Farm",

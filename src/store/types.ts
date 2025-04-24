@@ -73,7 +73,10 @@ export type BuildingType =
   | "antimatterCell"
   | "voidCore"
   | "morpho_core"
-  | "nutri_flux_hub";
+  | "nutri_flux_hub"
+  | "aeroponicFarm"
+  | "advancedSolarPanel"
+  | "deepMetalMine";
 
 export type TechnologyCategory =
   | "Infrastructure"
