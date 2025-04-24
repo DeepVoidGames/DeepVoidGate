@@ -1,34 +1,5 @@
 [
-  {
-    "type": "metalMine",
-    "category": "production",
-    "name": "Metal Extractor",
-    "description": "Extracts metal ores from the planetary crust",
-    "workerCapacity": 3,
-    "baseCost": {
-      "energy": 30,
-      "metals": 20
-    },
-    "baseProduction": {
-      "metals": 0.9
-    },
-    "baseConsumption": {
-      "energy": 0.6,
-      "oxygen": 0.2
-    },
-    "requirements": {},
-    "costMultiplier": 1.7,
-    "productionMultiplier": 1.25,
-    "maxInstances": 1,
-    "tier": 1,
-    "maxTier": 5,
-    "upgrades": 0,
-    "uniqueBonus": {
-      "production": { "metals": 8 },
-      "storage": { "metals": 1500 }
-    },
-    "tag": "metals"
-  },
+  
   {
     "type": "researchLab",
     "category": "research",
@@ -187,100 +158,9 @@
       "storage": { "energy": 2000 }
     }
   },
-  {
-    "type": "advancedMetalExtractor",
-    "category": "production",
-    "name": "Advanced Metal Extractor",
-    "description": "Uses enhanced drilling techniques for 25% faster ore extraction.",
-    "workerCapacity": 5,
-    "baseCost": {
-      "energy": 51,
-      "metals": 190
-    },
-    "baseProduction": {
-      "metals": 1.0
-    },
-    "baseConsumption": {
-      "energy": 0.8,
-      "oxygen": 0.25
-    },
-    "requirements": {},
-    "requiredTechnology": "deep_core_mining",
-    "costMultiplier": 1.7,
-    "productionMultiplier": 1.3,
-    "maxInstances": 1,
-    "tier": 1,
-    "maxTier": 5,
-    "upgrades": 1,
-    "uniqueBonus": {
-      "production": { "metals": 12 },
-      "storage": { "metals": 3000 }
-    },
-    "tag": "metals"
-  },
-  {
-    "type": "highYieldMetalFracturer",
-    "category": "production",
-    "name": "High-Yield Metal Fracturer",
-    "description": "Seismic resonance cracks deep ore veins for exponential yields.",
-    "workerCapacity": 9,
-    "baseCost": {
-      "energy": 87,
-      "metals": 308
-    },
-    "baseProduction": {
-      "metals": 1.8
-    },
-    "baseConsumption": {
-      "energy": 1.1,
-      "oxygen": 0.3
-    },
-    "requirements": {},
-    "requiredTechnology": "seismic_ore_mapping",
-    "costMultiplier": 1.7,
-    "productionMultiplier": 1.35,
-    "maxInstances": 1,
-    "tier": 1,
-    "maxTier": 5,
-    "upgrades": 2,
-    "uniqueBonus": {
-      "production": { "metals": 18 },
-      "storage": { "metals": 5000 }
-    },
-    "tag": "metals"
-  },
-  {
-    "type": "plasmaCoreMetalSynthesizer",
-    "category": "production",
-    "name": "Plasma-Core Metal Synthesizer",
-    "description": "Molecular disassembly and fusion to transmute base elements into pure metal.",
-    "workerCapacity": 12,
-    "baseCost": {
-      "energy": 148,
-      "metals": 500
-    },
-    "baseProduction": {
-      "metals": 2.95
-    },
-    "baseConsumption": {
-      "energy": 1.35,
-      "oxygen": 0.4,
-      "water": 0.2
-    },
-    "requirements": {},
-    "requiredTechnology": "plasma_refining",
-    "costMultiplier": 1.7,
-    "productionMultiplier": 1.4,
-    "maxInstances": 1,
-    "tier": 1,
-    "maxTier": 5,
-    "upgrades": 3,
-    "uniqueBonus": {
-      "production": { "metals": 20 },
-      "storage": { "metals": 8000 }
-    },
-    "tag": "metals"
-  },
+  
+ 
+ 
 
   {
     "type": "proteinSynthesizer",
@@ -524,102 +404,8 @@
       }
     }
   },
-  {
-    "type": "quantumFluxMetalForge",
-    "category": "production",
-    "name": "Quantum-Flux Metal Forge",
-    "description": "Utilizes quantum tunneling to extract metal isotopes from subatomic particle fluctuations.",
-    "workerCapacity": 10,
-    "baseCost": {
-      "energy": 165,
-      "metals": 450
-    },
-    "baseProduction": {
-      "metals": 3.2
-    },
-    "baseConsumption": {
-      "energy": 1.6,
-      "oxygen": 0.35,
-      "water": 0.25
-    },
-    "requirements": {},
-    "requiredTechnology": "quantum_tunneling_synthesis",
-    "costMultiplier": 1.65,
-    "productionMultiplier": 1.45,
-    "maxInstances": 1,
-    "tier": 1,
-    "maxTier": 5,
-    "upgrades": 0,
-    "uniqueBonus": {
-      "production": { "metals": 25 },
-      "storage": { "metals": 7000 }
-    },
-    "tag": "metals"
-  },
-  {
-    "type": "fusionEdgeMetallizer",
-    "category": "production",
-    "name": "Fusion-Edge Metallizer",
-    "description": "Magnetohydrodynamic confinement fuses light elements into dense metallic matrices.",
-    "workerCapacity": 14,
-    "baseCost": {
-      "energy": 135,
-      "metals": 520
-    },
-    "baseProduction": {
-      "metals": 2.8
-    },
-    "baseConsumption": {
-      "energy": 1.2,
-      "oxygen": 0.6,
-      "water": 0.1
-    },
-    "requirements": {},
-    "requiredTechnology": "mhd_fusion_confinement",
-    "costMultiplier": 1.8,
-    "productionMultiplier": 1.3,
-    "maxInstances": 1,
-    "tier": 1,
-    "maxTier": 5,
-    "upgrades": 0,
-    "uniqueBonus": {
-      "production": { "metals": 18 },
-      "storage": { "metals": 9500 }
-    },
-    "tag": "metals"
-  },
-  {
-    "type": "nanoDismantlerFoundry",
-    "category": "production",
-    "name": "Nano-Dismantler Foundry",
-    "description": "Swarm nanobots systematically deconstruct matter at picoscale for atomic recycling.",
-    "workerCapacity": 8,
-    "baseCost": {
-      "energy": 180,
-      "metals": 480
-    },
-    "baseProduction": {
-      "metals": 3.5
-    },
-    "baseConsumption": {
-      "energy": 1.8,
-      "oxygen": 0.2,
-      "water": 0.35
-    },
-    "requirements": {},
-    "requiredTechnology": "nano_scale_dismantling",
-    "costMultiplier": 1.55,
-    "productionMultiplier": 1.55,
-    "maxInstances": 1,
-    "tier": 1,
-    "maxTier": 5,
-    "upgrades": 0,
-    "uniqueBonus": {
-      "production": { "metals": 28 },
-      "storage": { "metals": 5000 }
-    },
-    "tag": "metals"
-  },
+
+ 
   {
     "type": "subterranean_arcology",
     "category": "housing",

@@ -150,7 +150,114 @@
     "upgrades": 0,
     "uniqueBonus": {
       "production": { "energy": 75 },
+      "storage": { "energy": 100000 }
+    },
+    "tag": "energy"
+  },
+  {
+    "isFromExpedition": true,
+    "type": "harmonic_core_generator",
+    "category": "production",
+    "name": "Harmonic Core Generator",
+    "description": "Generates massive energy output by amplifying quantum field oscillations in harmonic chambers.",
+    "workerCapacity": 10,
+    "baseCost": {
+      "energy": 1493.5,
+      "metals": 450.75,
+      "science": 60
+    },
+    "baseProduction": {
+      "energy": 11
+    },
+    "baseConsumption": {
+      "water": 0.6,
+      "oxygen": 0.3
+    },
+    "requirements": {},
+    "requiredTechnology": "harmonic_energy_matrices",
+    "costMultiplier": 1.9,
+    "productionMultiplier": 1.9,
+    "maxInstances": 1,
+    "tier": 1,
+    "maxTier": 5,
+    "upgrades": 0,
+    "uniqueBonus": {
+      "production": { "energy": 125 },
       "storage": { "energy": 150000 }
+    },
+    "tag": "energy"
+  },
+  {
+    "isFromExpedition": true,
+    "type": "symbio_resource_loop",
+    "category": "production",
+    "name": "Symbio Resource Loop",
+    "description": "Converts input resources into high-value outputs through recursive, organic-alien synthesis.",
+    "workerCapacity": 16,
+    "baseCost": {
+      "energy": 1693.5,
+      "metals": 450.75,
+      "science": 60
+    },
+    "baseProduction": {
+      "energy": 13.25,
+      "metals": 6.0
+    },
+    "baseConsumption": {
+      "food": 2.5,
+      "oxygen": 1.8,
+      "water": 1.5
+    },
+    "requirements": {},
+    "requiredTechnology": "symbiotic_processing_units",
+    "costMultiplier": 2.0,
+    "productionMultiplier": 1.9,
+    "maxInstances": 1,
+    "tier": 1,
+    "maxTier": 5,
+    "upgrades": 0,
+    "uniqueBonus": {
+      "production": {
+        "metals": 40,
+        "energy": 150
+      },
+      "storage": {
+        "energy": 200000,
+        "metals": 50000
+      }
+    },
+    "tag": "energy"
+  },
+  {
+    "isFromExpedition": true,
+    "type": "chrono_turbine",
+    "category": "production",
+    "name": "Chrono Turbine",
+    "description": "A device that taps into the time-stream, accelerating energy production by syncing with the universe’s natural rhythms.",
+    "workerCapacity": 8,
+    "baseCost": {
+      "energy": 2540.25,
+      "metals": 676.125,
+      "science": 120
+    },
+    "baseProduction": {
+      "energy": 15.0
+    },
+    "baseConsumption": {
+      "oxygen": 0.8,
+      "water": 0.5
+    },
+    "requirements": {},
+    "requiredTechnology": "chrono_synchronization",
+    "costMultiplier": 2.0,
+    "productionMultiplier": 2.2,
+    "maxInstances": 1,
+    "tier": 5,
+    "maxTier": 5,
+    "upgrades": 0,
+    "uniqueBonus": {
+      "production": { "energy": 200 },
+      "storage": { "energy": 250000 }
     },
     "tag": "energy"
   }

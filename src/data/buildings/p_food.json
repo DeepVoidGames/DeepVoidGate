@@ -7,8 +7,7 @@
     "workerCapacity": 3,
     "baseCost": {
       "food": 15,
-      "metals": 5,
-      "energy": 2.5
+      "metals": 5
     },
     "baseProduction": {
       "food": 1.2
@@ -27,7 +26,7 @@
     "upgrades": 0,
     "uniqueBonus": {
       "production": { "food": 4 },
-      "storage": { "food": 1500 }
+      "storage": { "food": 10000 }
     },
     "tag": "food"
   },
@@ -39,8 +38,8 @@
     "workerCapacity": 2,
     "baseCost": {
       "food": 30,
-      "metals": 20,
-      "energy": 15
+      "metals": 15,
+      "science": 5
     },
     "baseProduction": {
       "food": 1.5
@@ -59,7 +58,7 @@
     "upgrades": 0,
     "uniqueBonus": {
       "production": { "food": 8 },
-      "storage": { "food": 2000 }
+      "storage": { "food": 15000 }
     },
     "tag": "food"
   },
@@ -72,8 +71,8 @@
     "workerCapacity": 4,
     "baseCost": {
       "food": 112.5,
-      "metals": 78.75,
-      "energy": 61.875
+      "metals": 58.75,
+      "science": 15
     },
     "baseProduction": {
       "food": 2
@@ -94,7 +93,7 @@
         "food": 16
       },
       "storage": {
-        "food": 5000
+        "food": 20000
       }
     },
     "tag": "food"
@@ -107,8 +106,8 @@
     "workerCapacity": 3,
     "baseCost": {
       "food": 300,
-      "metals": 210,
-      "energy": 165
+      "metals": 180,
+      "science": 30
     },
     "baseProduction": {
       "food": 3.5
@@ -130,7 +129,7 @@
     "upgrades": 1,
     "uniqueBonus": {
       "production": { "food": 25 },
-      "storage": { "food": 6000 }
+      "storage": { "food": 25000 }
     },
     "tag": "food"
   },
@@ -142,8 +141,8 @@
     "workerCapacity": 4,
     "baseCost": {
       "food": 990,
-      "metals": 693,
-      "energy": 544.5
+      "metals": 593,
+      "science": 60
     },
     "baseProduction": {
       "food": 6.5
@@ -162,7 +161,166 @@
     "upgrades": 2,
     "uniqueBonus": {
       "production": { "food": 35 },
-      "storage": { "food": 12000 }
+      "storage": { "food": 50000 }
+    },
+    "tag": "food"
+  },
+  {
+    "isFromExpedition": true,
+    "type": "xeno_carbon_agro_complex",
+    "category": "production",
+    "name": "Xeno-Carbon Agro Complex",
+    "description": "Bio-mechanical hybrid ecosystem using alien crystal lattices to hyper-accelerate photosynthetic processes.",
+    "workerCapacity": 10,
+    "baseCost": {
+      "food": 1485,
+      "metals": 839.5,
+      "oxygen": 250,
+      "science": 120
+    },
+    "baseProduction": {
+      "food": 7.5,
+      "oxygen": 2.0
+    },
+    "baseConsumption": {
+      "energy": 1.5,
+      "water": 0.6
+    },
+    "requirements": {},
+    "requiredTechnology": "alien_alloys",
+    "costMultiplier": 1.7,
+    "productionMultiplier": 1.85,
+    "maxInstances": 1,
+    "tier": 1,
+    "maxTier": 5,
+    "upgrades": 0,
+    "uniqueBonus": {
+      "production": {
+        "food": 30,
+        "oxygen": 15
+      },
+      "storage": {
+        "food": 25000,
+        "oxygen": 30000
+      }
+    },
+    "tag": "food"
+  },
+  {
+    "isFromExpedition": true,
+    "type": "qmet_biofarm",
+    "category": "production",
+    "name": "Quantum Biofarm",
+    "description": "Food production is no longer linear—quantum phase acceleration enables exponential biomass replication.",
+    "workerCapacity": 12,
+    "baseCost": {
+      "food": 1185,
+      "metals": 739.5,
+      "science": 120
+    },
+    "baseProduction": {
+      "food": 10.2
+    },
+    "baseConsumption": {
+      "water": 1.2,
+      "energy": 2.5
+    },
+    "requirements": {},
+    "requiredTechnology": "quantum_metabolism",
+    "costMultiplier": 2.0,
+    "productionMultiplier": 1.9,
+    "maxInstances": 1,
+    "tier": 1,
+    "maxTier": 5,
+    "upgrades": 0,
+    "uniqueBonus": {
+      "production": { "food": 85 },
+      "storage": { "food": 100000 }
+    },
+    "tag": "food"
+  },
+  {
+    "isFromExpedition": true,
+    "type": "symbio_colony_hub",
+    "category": "production",
+    "name": "Symbio Colony Hub",
+    "description": "A living structure that generates food, oxygen, and water through a closed-loop biosystem based on alien symbiosis.",
+    "workerCapacity": 18,
+    "baseCost": {
+      "food": 1485,
+      "metals": 939.5,
+      "oxygen": 450,
+      "water": 180,
+      "science": 140
+    },
+    "baseProduction": {
+      "food": 10.5,
+      "oxygen": 4.5,
+      "water": 3.0
+    },
+    "baseConsumption": {
+      "energy": 2.0
+    },
+    "requirements": {},
+    "requiredTechnology": "symbiotic_processing_units",
+    "costMultiplier": 2.0,
+    "productionMultiplier": 2.0,
+    "maxInstances": 1,
+    "tier": 1,
+    "maxTier": 5,
+    "upgrades": 0,
+    "uniqueBonus": {
+      "production": {
+        "food": 65,
+        "oxygen": 40,
+        "water": 30
+      },
+      "storage": {
+        "food": 150000,
+        "oxygen": 50000,
+        "water": 50000
+      }
+    },
+    "tag": "food"
+  },
+  {
+    "isFromExpedition": true,
+    "type": "nutri_flux_hub",
+    "category": "production",
+    "name": "Nutri-Flux Hub",
+    "description": "Organic-conversion facility that shifts between food and oxygen generation based on biological system needs.",
+    "workerCapacity": 10,
+    "baseCost": {
+      "food": 1685,
+      "metals": 939.5,
+      "oxygen": 450,
+      "science": 140
+    },
+    "baseProduction": {
+      "food": 12.0,
+      "oxygen": 3.5
+    },
+    "baseConsumption": {
+      "energy": 2.2,
+      "water": 1.0
+    },
+    "requirements": {},
+    "requiredTechnology": "adaptive_matter_engineering",
+    "costMultiplier": 2.0,
+    "productionMultiplier": 2.2,
+    "maxInstances": 1,
+    "tier": 1,
+    "maxTier": 5,
+    "upgrades": 0,
+    "uniqueBonus": {
+      "production": {
+        "food": 190,
+        "oxygen": 160
+      },
+      "storage": {
+        "food": 200000,
+        "oxygen": 50000
+      }
     },
     "tag": "food"
   }

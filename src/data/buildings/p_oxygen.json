@@ -26,7 +26,7 @@
     "upgrades": 0,
     "uniqueBonus": {
       "production": { "oxygen": 10 },
-      "storage": { "oxygen": 500 }
+      "storage": { "oxygen": 10000 }
     },
     "tag": "oxygen"
   },
@@ -57,7 +57,7 @@
     "upgrades": 0,
     "uniqueBonus": {
       "production": { "oxygen": 8 },
-      "storage": { "oxygen": 400 }
+      "storage": { "oxygen": 15000 }
     },
     "tag": "oxygen"
   },
@@ -92,7 +92,7 @@
     "upgrades": 1,
     "uniqueBonus": {
       "production": { "oxygen": 15 },
-      "storage": { "oxygen": 1000 }
+      "storage": { "oxygen": 25000 }
     },
     "tag": "oxygen"
   },
@@ -125,7 +125,7 @@
     "upgrades": 2,
     "uniqueBonus": {
       "production": { "oxygen": 25 },
-      "storage": { "oxygen": 2000 }
+      "storage": { "oxygen": 50000 }
     },
     "tag": "oxygen"
   },
@@ -159,7 +159,7 @@
     "upgrades": 0,
     "uniqueBonus": {
       "production": { "oxygen": 55 },
-      "storage": { "oxygen": 5000 }
+      "storage": { "oxygen": 100000 }
     },
     "tag": "oxygen"
   }
