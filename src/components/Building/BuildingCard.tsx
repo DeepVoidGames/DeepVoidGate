@@ -117,29 +117,33 @@ const BuildingCard = ({
       <CardContent className="p-4 pt-2">
         <div className="flex items-center justify-between text-sm mb-2">
           <div className="flex items-center space-x-1">
-            <Users className="h-4 w-4 text-blue-400" />
-            <span>
-              {building.assignedWorkers} / {building.workerCapacity} workers
-            </span>
-            {/* Przeniesione i zmodyfikowane przyciski */}
-            <div className="flex gap-2 ml-2">
-              <Button
-                size="sm"
-                variant="outline"
-                onClick={() => onAdjustWorkers(building.id, 1)}
-                className="p-1 h-7 w-7 border-green-800/30 bg-green-950/30 hover:bg-green-900/20"
-              >
-                <ArrowUp className="h-3 w-3" />
-              </Button>
-              <Button
-                size="sm"
-                variant="outline"
-                onClick={() => onAdjustWorkers(building.id, -1)}
-                className="p-1 h-7 w-7 border-red-800/30 bg-red-950/30 hover:bg-red-900/20"
-              >
-                <ArrowDown className="h-3 w-3" />
-              </Button>
-            </div>
+            {building.workerCapacity > 0 && (
+              <>
+                <Users className="h-4 w-4 text-blue-400" />
+                <span>
+                  {building.assignedWorkers} / {building.workerCapacity} workers
+                </span>
+                {/* Przeniesione i zmodyfikowane przyciski */}
+                <div className="flex gap-2 ml-2">
+                  <Button
+                    size="sm"
+                    variant="outline"
+                    onClick={() => onAdjustWorkers(building.id, 1)}
+                    className="p-1 h-7 w-7 border-green-800/30 bg-green-950/30 hover:bg-green-900/20"
+                  >
+                    <ArrowUp className="h-3 w-3" />
+                  </Button>
+                  <Button
+                    size="sm"
+                    variant="outline"
+                    onClick={() => onAdjustWorkers(building.id, -1)}
+                    className="p-1 h-7 w-7 border-red-800/30 bg-red-950/30 hover:bg-red-900/20"
+                  >
+                    <ArrowDown className="h-3 w-3" />
+                  </Button>
+                </div>
+              </>
+            )}
           </div>
           <div
             className={
