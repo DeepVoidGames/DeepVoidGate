@@ -49,7 +49,7 @@ export const resetProductionCounters = (
     const resourceKey = key as ResourceType;
     newResources[resourceKey] = {
       ...newResources[resourceKey],
-      production: 0,
+      production: 1,
       consumption: 0,
     };
   });

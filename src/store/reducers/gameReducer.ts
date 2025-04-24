@@ -49,12 +49,7 @@ import { applyArtifactEffect, upgradeArtifact } from "./artifactsReducer";
 export const initialState: GameState = {
   version: CURRENT_GAME_VERSION.toString(),
   resources: initialResourcesState,
-  buildings: [
-    initialBuildings.find((building) => building.type === "oxygenGenerator"),
-    initialBuildings.find((building) => building.type === "hydroponicFarm"),
-    initialBuildings.find((building) => building.type === "solarPanel"),
-    initialBuildings.find((building) => building.type === "metalMine"),
-  ],
+  buildings: [],
   population: initialPopulationState,
   technologies: initialTechnologies,
   lastUpdate: Date.now(),

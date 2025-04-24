@@ -62,7 +62,7 @@ export const resourceAlertThresholds: ResourceAlertThresholds = {
 export const initialResourcesState = {
   oxygen: {
     amount: 50,
-    production: 0,
+    production: 1,
     consumption: 0,
     capacity: 100,
     icon: "O₂",
@@ -80,7 +80,7 @@ export const initialResourcesState = {
   },
   food: {
     amount: 50,
-    production: 0,
+    production: 1,
     consumption: 0,
     capacity: 100,
     icon: "🌱",

@@ -72,7 +72,10 @@ export const applyBuildingEffects = (
       ...acc,
       [key]: {
         ...resources[key as ResourceType],
-        production: 0,
+        production:
+          (key as ResourceType) == "water" || (key as ResourceType) == "science"
+            ? 0
+            : 1, // Ustaw produkcję na 1 dla wody i tlenu, 0 dla innych zasobów
         consumption: 0,
         capacity:
           resources[key as ResourceType].baseCapacity +

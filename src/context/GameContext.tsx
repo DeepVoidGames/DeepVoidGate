@@ -8,6 +8,7 @@ import React, {
 import { GameState } from "@/store/types";
 import { GameAction } from "@/store/actions";
 import { gameReducer, initialState } from "@/store/reducers/gameReducer";
+import { stat } from "fs";
 
 // Create the game context
 interface GameContextType {
@@ -42,6 +43,7 @@ export const GameProvider: React.FC<GameProviderProps> = ({ children }) => {
       dispatch({ type: "LOAD_GAME" });
     } else {
       // Start with some initial buildings for new game
+      state.buildings
     }
 
     return () => {
