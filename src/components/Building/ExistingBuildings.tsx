@@ -210,7 +210,7 @@ const ExistingBuildings: React.FC<ExistingBuildingsProps> = ({
                     <p>
                       No buildings found for this category.{" "}
                       {category.id === "production"
-                        ? `(Zasób: ${selectedResource})`
+                        ? `(Resource: ${selectedResource})`
                         : ""}
                     </p>
                   </div>

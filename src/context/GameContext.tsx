@@ -42,22 +42,6 @@ export const GameProvider: React.FC<GameProviderProps> = ({ children }) => {
       dispatch({ type: "LOAD_GAME" });
     } else {
       // Start with some initial buildings for new game
-      dispatch({
-        type: "CONSTRUCT_BUILDING",
-        payload: { buildingType: "oxygenGenerator" },
-      });
-      dispatch({
-        type: "CONSTRUCT_BUILDING",
-        payload: { buildingType: "hydroponicFarm" },
-      });
-      dispatch({
-        type: "CONSTRUCT_BUILDING",
-        payload: { buildingType: "solarPanel" },
-      });
-      dispatch({
-        type: "CONSTRUCT_BUILDING",
-        payload: { buildingType: "metalMine" },
-      });
     }
 
     return () => {
