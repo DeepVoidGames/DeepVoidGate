@@ -1,0 +1,168 @@
+[
+  {
+    "type": "hydroponicFarm",
+    "category": "production",
+    "name": "Hydroponic Farm",
+    "description": "Grows nutritious food in controlled environments",
+    "workerCapacity": 3,
+    "baseCost": {
+      "food": 15,
+      "metals": 5,
+      "energy": 2.5
+    },
+    "baseProduction": {
+      "food": 1.2
+    },
+    "baseConsumption": {
+      "oxygen": 0.2,
+      "energy": 0.3,
+      "water": 0.2
+    },
+    "requirements": {},
+    "costMultiplier": 1.4,
+    "productionMultiplier": 1.2,
+    "maxInstances": 1,
+    "tier": 1,
+    "maxTier": 5,
+    "upgrades": 0,
+    "uniqueBonus": {
+      "production": { "food": 4 },
+      "storage": { "food": 1500 }
+    },
+    "tag": "food"
+  },
+  {
+    "type": "fungalFarm",
+    "category": "production",
+    "name": "Fungal Farm",
+    "description": "Cultivates fast-growing mushrooms in dark chambers using recycled organic waste.",
+    "workerCapacity": 2,
+    "baseCost": {
+      "food": 30,
+      "metals": 20,
+      "energy": 15
+    },
+    "baseProduction": {
+      "food": 1.5
+    },
+    "baseConsumption": {
+      "oxygen": 0.1,
+      "energy": 0.2
+    },
+    "requirements": {},
+    "requiredTechnology": "basic_agriculture",
+    "costMultiplier": 1.4,
+    "productionMultiplier": 1.1,
+    "maxInstances": 1,
+    "tier": 1,
+    "maxTier": 5,
+    "upgrades": 0,
+    "uniqueBonus": {
+      "production": { "food": 8 },
+      "storage": { "food": 2000 }
+    },
+    "tag": "food"
+  },
+  {
+    "type": "myco_grow_chamber",
+    "category": "production",
+    "name": "Myco Grow Chamber",
+    "description": "Cultivates fungal protein in low-light, high-humidity environments.",
+    "workerCapacity": 4,
+    "baseCost": {
+      "food": 112.5,
+      "metals": 78.75,
+      "energy": 61.875
+    },
+    "baseProduction": {
+      "food": 2
+    },
+    "baseConsumption": {
+      "water": 0.2
+    },
+    "requirements": {},
+    "requiredTechnology": "primitive_bioreactor",
+    "costMultiplier": 1.6,
+    "productionMultiplier": 1.4,
+    "maxInstances": 1,
+    "tier": 1,
+    "maxTier": 5,
+    "upgrades": 0,
+    "uniqueBonus": {
+      "production": {
+        "food": 16
+      },
+      "storage": {
+        "food": 5000
+      }
+    },
+    "tag": "food"
+  },
+  {
+    "type": "hydroponicTower",
+    "category": "production",
+    "name": "Hydroponic Tower",
+    "description": "Vertical farms with automated irrigation maximizing yield in limited space.",
+    "workerCapacity": 3,
+    "baseCost": {
+      "food": 300,
+      "metals": 210,
+      "energy": 165
+    },
+    "baseProduction": {
+      "food": 3.5
+    },
+    "baseConsumption": {
+      "oxygen": 0.3,
+      "energy": 0.5,
+      "water": 0.4
+    },
+    "requirements": {
+      "hydroponicFarm": 1
+    },
+    "requiredTechnology": "vertical_farming",
+    "costMultiplier": 1.7,
+    "productionMultiplier": 1.2,
+    "maxInstances": 1,
+    "tier": 1,
+    "maxTier": 5,
+    "upgrades": 1,
+    "uniqueBonus": {
+      "production": { "food": 25 },
+      "storage": { "food": 6000 }
+    },
+    "tag": "food"
+  },
+  {
+    "type": "proteinSynthesizer",
+    "category": "production",
+    "name": "Protein Synthesizer",
+    "description": "Processes microorganisms into high-protein food paste using advanced biotechnology.",
+    "workerCapacity": 4,
+    "baseCost": {
+      "food": 990,
+      "metals": 693,
+      "energy": 544.5
+    },
+    "baseProduction": {
+      "food": 6.5
+    },
+    "baseConsumption": {
+      "energy": 1.2,
+      "oxygen": 0.4
+    },
+    "requirements": {},
+    "requiredTechnology": "biotech_engineering",
+    "costMultiplier": 1.8,
+    "productionMultiplier": 1.82,
+    "maxInstances": 1,
+    "tier": 1,
+    "maxTier": 5,
+    "upgrades": 2,
+    "uniqueBonus": {
+      "production": { "food": 35 },
+      "storage": { "food": 12000 }
+    },
+    "tag": "food"
+  }
+]

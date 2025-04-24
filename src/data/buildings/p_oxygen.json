@@ -1,0 +1,165 @@
+[
+  {
+    "type": "oxygenGenerator",
+    "category": "production",
+    "name": "Oxygen Generator",
+    "description": "Produces oxygen from the planet's thin atmosphere",
+    "workerCapacity": 2,
+    "baseCost": {
+      "metals": 30,
+      "energy": 20,
+      "oxygen": 50
+    },
+    "baseProduction": {
+      "oxygen": 2.0
+    },
+    "baseConsumption": {
+      "energy": 0.5,
+      "water": 0.2
+    },
+    "requirements": {},
+    "costMultiplier": 1.25,
+    "productionMultiplier": 1.3,
+    "maxInstances": 1,
+    "tier": 1,
+    "maxTier": 5,
+    "upgrades": 0,
+    "uniqueBonus": {
+      "production": { "oxygen": 10 },
+      "storage": { "oxygen": 500 }
+    },
+    "tag": "oxygen"
+  },
+  {
+    "type": "algaeOxygenFarm",
+    "category": "production",
+    "name": "Algae Oxygen Farm",
+    "description": "Uses fast-growing algae to convert CO2 into breathable oxygen through photosynthesis.",
+    "workerCapacity": 2,
+    "baseCost": {
+      "metals": 45,
+      "energy": 30,
+      "oxygen": 75
+    },
+    "baseProduction": {
+      "oxygen": 2.5
+    },
+    "baseConsumption": {
+      "energy": 0.4,
+      "water": 0.3
+    },
+    "requirements": {},
+    "costMultiplier": 1.4,
+    "productionMultiplier": 1.3,
+    "maxInstances": 1,
+    "tier": 1,
+    "maxTier": 5,
+    "upgrades": 0,
+    "uniqueBonus": {
+      "production": { "oxygen": 8 },
+      "storage": { "oxygen": 400 }
+    },
+    "tag": "oxygen"
+  },
+  {
+    "type": "electrolyticOxygenPlant",
+    "category": "production",
+    "name": "Electrolytic Oxygen Plant",
+    "description": "Splits water molecules into oxygen and hydrogen through electrolysis for industrial-scale production.",
+    "workerCapacity": 3,
+    "baseCost": {
+      "metals": 67.5,
+      "energy": 45,
+      "oxygen": 112.5,
+      "science": 5
+    },
+    "baseProduction": {
+      "oxygen": 2.5
+    },
+    "baseConsumption": {
+      "energy": 1.2,
+      "water": 0.8
+    },
+    "requirements": {
+      "basicStorage": 1
+    },
+    "requiredTechnology": "electrolytic_processing",
+    "costMultiplier": 1.6,
+    "productionMultiplier": 1.35,
+    "maxInstances": 1,
+    "tier": 1,
+    "maxTier": 5,
+    "upgrades": 1,
+    "uniqueBonus": {
+      "production": { "oxygen": 15 },
+      "storage": { "oxygen": 1000 }
+    },
+    "tag": "oxygen"
+  },
+  {
+    "type": "plasmaOxygenRefinery",
+    "category": "production",
+    "name": "Plasma Oxygen Refinery",
+    "description": "Superheats mineral oxides into plasma state, then magnetically filters pure oxygen from molten slag.",
+    "workerCapacity": 4,
+    "baseCost": {
+      "metals": 168.75,
+      "energy": 112.5,
+      "oxygen": 281.25,
+      "science": 12.5
+    },
+    "baseProduction": {
+      "oxygen": 4.0
+    },
+    "baseConsumption": {
+      "energy": 2.0,
+      "metals": 0.3
+    },
+    "requirements": {},
+    "requiredTechnology": "plasma_refining",
+    "costMultiplier": 1.8,
+    "productionMultiplier": 1.45,
+    "maxInstances": 1,
+    "tier": 1,
+    "maxTier": 5,
+    "upgrades": 2,
+    "uniqueBonus": {
+      "production": { "oxygen": 25 },
+      "storage": { "oxygen": 2000 }
+    },
+    "tag": "oxygen"
+  },
+  {
+    "type": "qmet_oxyplant",
+    "category": "production",
+    "name": "Oxy-Fusion Plant",
+    "description": "Synthesizes breathable air using high-efficiency carbon fractals and phase-driven electrolysis.",
+    "workerCapacity": 10,
+    "baseCost": {
+      "metals": 506.25,
+      "energy": 393.75,
+      "oxygen": 843.75,
+      "science": 43.75
+    },
+    "baseProduction": {
+      "oxygen": 8.8
+    },
+    "baseConsumption": {
+      "water": 1.0,
+      "energy": 1.8
+    },
+    "requirements": {},
+    "requiredTechnology": "quantum_metabolism",
+    "costMultiplier": 2.0,
+    "productionMultiplier": 1.9,
+    "maxInstances": 1,
+    "tier": 1,
+    "maxTier": 5,
+    "upgrades": 0,
+    "uniqueBonus": {
+      "production": { "oxygen": 55 },
+      "storage": { "oxygen": 5000 }
+    },
+    "tag": "oxygen"
+  }
+]

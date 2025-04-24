@@ -1,42 +1,5 @@
 [
   {
-    "type": "myco_grow_chamber",
-    "category": "production",
-    "name": "Myco Grow Chamber",
-    "description": "Cultivates fungal protein in low-light, high-humidity environments.",
-    "workerCapacity": 4,
-    "baseCost": {
-      "food": 150,
-      "energy": 50
-    },
-    "baseProduction": {
-      "food": 1.5,
-      "oxygen": 0.3
-    },
-    "baseConsumption": {
-      "water": 0.2
-    },
-    "requirements": {},
-    "requiredTechnology": "primitive_bioreactor",
-    "costMultiplier": 1.3,
-    "productionMultiplier": 1.4,
-    "maxInstances": 1,
-    "tier": 1,
-    "maxTier": 5,
-    "upgrades": 0,
-    "uniqueBonus": {
-      "production": {
-        "food": 5,
-        "oxygen": 1
-      },
-      "storage": {
-        "food": 500,
-        "oxygen": 300
-      }
-    },
-    "tag": "food"
-  },
-  {
     "type": "exoforge_foundry",
     "category": "production",
     "name": "Exoforge Foundry",
@@ -110,7 +73,8 @@
     "baseCost": {
       "metals": 600,
       "energy": 400,
-      "science": 150
+      "science": 150,
+      "oxygen": 112.5
     },
     "baseProduction": {
       "food": 5.5,
@@ -172,38 +136,7 @@
     },
     "tag": "food"
   },
-  {
-    "type": "qmet_oxyplant",
-    "category": "production",
-    "name": "Oxy-Fusion Plant",
-    "description": "Synthesizes breathable air using high-efficiency carbon fractals and phase-driven electrolysis.",
-    "workerCapacity": 10,
-    "baseCost": {
-      "metals": 1000,
-      "energy": 400,
-      "science": 150
-    },
-    "baseProduction": {
-      "oxygen": 4.8
-    },
-    "baseConsumption": {
-      "water": 1.0,
-      "energy": 1.8
-    },
-    "requirements": {},
-    "requiredTechnology": "quantum_metabolism",
-    "costMultiplier": 2.0,
-    "productionMultiplier": 1.9,
-    "maxInstances": 1,
-    "tier": 1,
-    "maxTier": 5,
-    "upgrades": 0,
-    "uniqueBonus": {
-      "production": { "oxygen": 55 },
-      "storage": { "oxygen": 5000 }
-    },
-    "tag": "oxygen"
-  },
+
   {
     "type": "harmonic_core_generator",
     "category": "production",
