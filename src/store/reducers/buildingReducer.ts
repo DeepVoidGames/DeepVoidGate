@@ -609,6 +609,7 @@ export const canUpgradeMax = (
 ): boolean => {
   if (building.tier >= building.maxTier && building.upgrades >= 10)
     return false;
+  
   const upgradeCost = getBuildingUpgradeCost(building);
   return canAffordCost(resources, upgradeCost);
 };

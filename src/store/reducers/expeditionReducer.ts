@@ -143,12 +143,12 @@ const getReward = (expedition: Expedition, state: GameState): GameState => {
       const numAmount = Number(amount);
       if (!isNaN(numAmount) && numAmount > 0) {
         newState.resources[resourceType].amount += numAmount;
-        console.log(`Adding ${numAmount} to ${resourceType}`);
+        // console.log(`Adding ${numAmount} to ${resourceType}`);
       }
     }
   }
 
-  console.log("After adding rewards:", newState.resources);
+  // console.log("After adding rewards:", newState.resources);
 
   if (expedition.unlockedTechnologies) {
     expedition.unlockedTechnologies.forEach((techId) => {
@@ -530,8 +530,8 @@ export const handleExpeditionEventChoice = (
     (e) => e.id === expeditionId
   );
   if (expeditionIndex === -1) return state;
-  console.log("Expedition index:", expeditionIndex);
-  console.log("Event index:", eventIndex);
+  // console.log("Expedition index:", expeditionIndex);
+  // console.log("Event index:", eventIndex);
 
   const expedition = state.expeditions[expeditionIndex];
   if (eventIndex >= expedition.events.length) return state;

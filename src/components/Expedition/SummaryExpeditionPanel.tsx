@@ -135,13 +135,22 @@ function SummaryExpeditionPanel({
           {selectedType === "mining" &&
             state.artifacts.map(
               (artifact) =>
-                artifact.isLocked &&
                 artifact?.expedtionTier == selectedTier && (
                   <div
                     key={artifact.name}
-                    className="p-2 bg-background/50 rounded-lg border text-xs sm:text-sm"
+                    className="flex items-center justify-center p-2 bg-background/50 rounded-lg border text-xs sm:text-sm max-w-[300px]"
                   >
-                    {artifact.name}
+                    <img
+                      src={artifact.image}
+                      alt={artifact.name}
+                      className="w-6 h-6 mr-2"
+                    />
+                    <span className="font-medium text-sm sm:text-base">
+                      {artifact.name}
+                    </span>
+                    <span className="text-xs sm:text-sm text-muted-foreground ml-1">
+                      1-5 copies
+                    </span>
                   </div>
                 )
             )}
