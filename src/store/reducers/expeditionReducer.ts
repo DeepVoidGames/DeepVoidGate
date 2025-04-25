@@ -181,9 +181,9 @@ const getReward = (expedition: Expedition, state: GameState): GameState => {
   // Artefkaty
   if (expedition.type === "mining") {
     const rng = Math.random();
-    // 10% szans na artefakt
+    // 45% szans na artefakt
 
-    if (rng < 0.1) {
+    if (rng < 0.45) {
       const artifacts = getArtifactsByExpeditionsTier(
         newState,
         expedition.tier

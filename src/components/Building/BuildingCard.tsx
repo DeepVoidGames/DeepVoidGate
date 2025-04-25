@@ -27,12 +27,15 @@ import { Badge } from "@/components/ui/badge";
 import {
   calculateBuildingStorage,
   calculateEfficiency,
+  getBuildingMaxUpgrade,
+  getBuildingMaxUpgradeCost,
   getBuildingUpgradeCost,
   getCapacityByResource,
   getProductionByResource,
 } from "@/store/reducers/buildingReducer";
 import { buildingConfig } from "./BuildingManager";
 import { format } from "path";
+import React from "react";
 
 const BuildingCard = ({
   building,
@@ -42,11 +45,14 @@ const BuildingCard = ({
   onToggleExpand,
   resources,
   onUpgrade,
+  onUpgradeMax,
   canUpgrade,
   ResourcesIcon,
   upgradeCosts,
   tierProgress,
 }) => {
+  const [maxUpgrade, setMaxUpgrade] = React.useState({ tier: 0, upgrades: 0 });
+
   // Kolory dla tierów
   const tierColors: Record<number, string> = {
     1: "bg-gray-400 text-gray-800",
@@ -70,6 +76,17 @@ const BuildingCard = ({
   // Obliczanie efektywności z uwzględnieniem tieru
 
   const currentEfficiency = calculateEfficiency(building, resources);
+
+  const getUpgrademaxData = () => {
+    //getBuildingMaxUpgrade
+    const cost = getBuildingMaxUpgradeCost(building, resources);
+    const a = getBuildingMaxUpgrade(building, resources);
+    setMaxUpgrade(a);
+  };
+
+  React.useEffect(() => {
+    getUpgrademaxData();
+  }, [building, resources]);
 
   return (
     <Card
@@ -310,18 +327,37 @@ const BuildingCard = ({
 
           {/* Przycisk i wymagania ulepszenia */}
           <div className="pt-2">
-            <Button
-              size="sm"
-              onClick={() => onUpgrade(building.id)}
-              disabled={isMaxTier || !canUpgrade}
-              className="w-full button-primary"
-            >
-              {isMaxTier
-                ? "Max Tier Reached"
-                : `Upgrade to ${building.upgrades + 1}/10 (Tier ${
-                    building.tier
-                  })`}
-            </Button>
+            <div className="flex justify-between items-center gap-2 max-[475px]:flex-col">
+              {/* Przycisk pojedynczego ulepszenia */}
+              <div className="w-[60%] max-[475px]:w-full">
+                <Button
+                  size="sm"
+                  onClick={() => onUpgrade(building.id)}
+                  disabled={isMaxTier || !canUpgrade}
+                  className="w-full button-primary"
+                >
+                  {isMaxTier
+                    ? "Max Tier Reached"
+                    : `Upgrade to ${building.upgrades + 1}/10 (Tier ${
+                        building.tier
+                      })`}
+                </Button>
+              </div>
+
+              {/* Przycisk maksymalnego ulepszenia */}
+              <div className="w-[40%] max-[475px]:w-full">
+                <Button
+                  size="sm"
+                  onClick={() => onUpgradeMax(building.id)}
+                  disabled={isMaxTier || !canUpgrade}
+                  className="w-full  bg-purple-800 hover:bg-purple-900 border-purple-800"
+                >
+                  {isMaxTier
+                    ? "Max Tier Reached"
+                    : `Upgrade to ${maxUpgrade?.upgrades}/10 (Tier ${maxUpgrade?.tier})`}
+                </Button>
+              </div>
+            </div>
 
             {!isMaxTier && (
               <div className="space-y-1 mt-2">

@@ -541,3 +541,193 @@ export const assignWorker = (
     success: true,
   };
 };
+
+// Dodaj nowe funkcje do buildingReducer.ts
+
+export const getBuildingMaxUpgrade = (
+  building: BuildingData,
+  resources: ResourcesState
+): {
+  tier: number;
+  upgrades: number;
+} => {
+  const simulatedBuilding = { ...building };
+  let simulatedResources = JSON.parse(JSON.stringify(resources)); // Głęboka kopia
+  const totalCost: Record<ResourceType, number> = {
+    oxygen: 0,
+    water: 0,
+    food: 0,
+    energy: 0,
+    metals: 0,
+    science: 0,
+  };
+  let upgradesApplied = 0;
+  let tier = building.tier;
+  let upgrades = building.upgrades;
+
+  while (true) {
+    if (
+      simulatedBuilding.tier >= simulatedBuilding.maxTier &&
+      simulatedBuilding.upgrades >= 10
+    )
+      break;
+
+    const nextCost = getBuildingUpgradeCost(simulatedBuilding);
+    if (!canAffordCost(simulatedResources, nextCost)) break;
+
+    Object.entries(nextCost).forEach(([resource, amount]) => {
+      const res = resource as ResourceType;
+      totalCost[res] = (totalCost[res] || 0) + amount;
+    });
+
+    simulatedResources = applyResourceCost(simulatedResources, nextCost);
+
+    simulatedBuilding.upgrades += 1;
+    upgradesApplied++;
+    if (
+      simulatedBuilding.upgrades >= 10 &&
+      simulatedBuilding.tier < simulatedBuilding.maxTier
+    ) {
+      tier = simulatedBuilding.tier + 1;
+      upgrades = 0;
+      simulatedBuilding.tier += 1;
+      simulatedBuilding.upgrades = 0;
+    } else {
+      tier = simulatedBuilding.tier;
+      upgrades = simulatedBuilding.upgrades;
+    }
+  }
+  return {
+    tier,
+    upgrades,
+  };
+};
+
+export const canUpgradeMax = (
+  building: BuildingData,
+  resources: ResourcesState
+): boolean => {
+  if (building.tier >= building.maxTier && building.upgrades >= 10)
+    return false;
+  const upgradeCost = getBuildingUpgradeCost(building);
+  return canAffordCost(resources, upgradeCost);
+};
+
+export const getBuildingMaxUpgradeCost = (
+  building: BuildingData,
+  resources: ResourcesState
+): Record<ResourceType, number> => {
+  const simulatedBuilding = { ...building };
+  let simulatedResources = JSON.parse(JSON.stringify(resources)); // Głęboka kopia
+  const totalCost: Record<ResourceType, number> = {
+    oxygen: 0,
+    water: 0,
+    food: 0,
+    energy: 0,
+    metals: 0,
+    science: 0,
+  };
+
+  while (true) {
+    if (
+      simulatedBuilding.tier >= simulatedBuilding.maxTier &&
+      simulatedBuilding.upgrades >= 10
+    )
+      break;
+
+    const nextCost = getBuildingUpgradeCost(simulatedBuilding);
+    if (!canAffordCost(simulatedResources, nextCost)) break;
+
+    // Akumuluj koszty
+    Object.entries(nextCost).forEach(([resource, amount]) => {
+      const res = resource as ResourceType;
+      totalCost[res] = (totalCost[res] || 0) + amount;
+    });
+
+    // Zaktualizuj symulowane zasoby
+    simulatedResources = applyResourceCost(simulatedResources, nextCost);
+
+    // Wykonaj ulepszenie
+    simulatedBuilding.upgrades += 1;
+    if (
+      simulatedBuilding.upgrades >= 10 &&
+      simulatedBuilding.tier < simulatedBuilding.maxTier
+    ) {
+      simulatedBuilding.tier += 1;
+      simulatedBuilding.upgrades = 0;
+    }
+  }
+
+  return totalCost;
+};
+
+export const upgradeBuildingMax = (
+  buildings: BuildingData[],
+  resources: ResourcesState,
+  buildingId: string
+) => {
+  const buildingIndex = buildings.findIndex((b) => b.id === buildingId);
+  if (buildingIndex === -1) return { buildings, resources, success: false };
+
+  const originalBuilding = buildings[buildingIndex];
+  let simulatedBuilding = { ...originalBuilding };
+  let simulatedResources = JSON.parse(JSON.stringify(resources));
+  const totalCost: Record<ResourceType, number> = {
+    oxygen: 0,
+    water: 0,
+    food: 0,
+    energy: 0,
+    metals: 0,
+    science: 0,
+  };
+  let upgradesApplied = 0;
+
+  while (true) {
+    if (
+      simulatedBuilding.tier >= simulatedBuilding.maxTier &&
+      simulatedBuilding.upgrades >= 10
+    )
+      break;
+
+    const nextCost = getBuildingUpgradeCost(simulatedBuilding);
+    if (!canAffordCost(simulatedResources, nextCost)) break;
+
+    Object.entries(nextCost).forEach(([resource, amount]) => {
+      const res = resource as ResourceType;
+      totalCost[res] = (totalCost[res] || 0) + amount;
+    });
+
+    simulatedResources = applyResourceCost(simulatedResources, nextCost);
+
+    simulatedBuilding.upgrades += 1;
+    if (
+      simulatedBuilding.upgrades >= 10 &&
+      simulatedBuilding.tier < simulatedBuilding.maxTier
+    ) {
+      simulatedBuilding.tier += 1;
+      simulatedBuilding.upgrades = 0;
+    }
+
+    upgradesApplied++;
+  }
+
+  if (upgradesApplied === 0 || !canAffordCost(resources, totalCost)) {
+    return { buildings, resources, success: false };
+  }
+
+  const newResources = applyResourceCost(resources, totalCost);
+  const newBuildings = [...buildings];
+  newBuildings[buildingIndex] = simulatedBuilding;
+
+  toast({
+    title: "Mass Upgrade Successful",
+    description: `Applied ${upgradesApplied} upgrades to ${originalBuilding.name}`,
+  });
+
+  return {
+    buildings: newBuildings,
+    resources: newResources,
+    success: true,
+    upgradesApplied,
+  };
+};

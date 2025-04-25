@@ -28,6 +28,7 @@ import {
   canUpgradeBuilding,
   getBuildingUpgradeCost,
   getProductionByResource,
+  upgradeBuildingMax,
 } from "@/store/reducers/buildingReducer";
 import { buildingConfig } from "@/data/buildingConfig";
 
@@ -76,6 +77,10 @@ export const BuildingManager: React.FC = () => {
 
   const upgradeBuilding = (buildingId: string) => {
     dispatch({ type: "UPGRADE_BUILDING", payload: { buildingId } });
+  };
+
+  const upgradeBuildingMax = (buildingId: string) => {
+    dispatch({ type: "UPGRAGE_BUILDING_MAX", payload: { buildingId } });
   };
 
   const adjustWorkers = (buildingId: string, count: number) => {
@@ -248,6 +253,7 @@ export const BuildingManager: React.FC = () => {
           ResourcesIcon={ResourcesIcon}
           getUpgradeData={getUpgradeData}
           showMaxed={showMaxed}
+          upgradeBuildingMax={upgradeBuildingMax}
         />
 
         {/* Construction Section */}

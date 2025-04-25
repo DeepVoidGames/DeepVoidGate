@@ -1,7 +1,12 @@
 import React, { useState, useEffect } from "react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import BuildingCard from "@/components/Building/BuildingCard";
-import { ResourceType, UpgradeData } from "@/store/types";
+import { BuildingData, ResourceType, UpgradeData } from "@/store/types";
+import {
+  canUpgradeMax,
+  upgradeBuildingMax,
+} from "@/store/reducers/buildingReducer";
+import { ResourcesState } from "@/store/reducers/resourceReducer";
 
 interface ExistingBuildingsProps {
   activeTab: string;
@@ -11,6 +16,7 @@ interface ExistingBuildingsProps {
   buildingConfig: any[];
   expandedBuilding: string | null;
   upgradeBuilding: (id: string) => void;
+  upgradeBuildingMax: (id: string) => void;
   adjustWorkers: (id: string, count: number) => void;
   setExpandedBuilding: (id: string | null) => void;
   resources: any;
@@ -28,6 +34,7 @@ const ExistingBuildings: React.FC<ExistingBuildingsProps> = ({
   buildingConfig,
   expandedBuilding,
   upgradeBuilding,
+  upgradeBuildingMax,
   adjustWorkers,
   setExpandedBuilding,
   resources,
@@ -221,7 +228,6 @@ const ExistingBuildings: React.FC<ExistingBuildingsProps> = ({
                     building.tier >= building.maxTier &&
                     building.upgrades >= 10;
                   const upgradeData = getUpgradeData[building.id];
-
                   if (
                     !showMaxed &&
                     isMaxTier &&
@@ -249,6 +255,11 @@ const ExistingBuildings: React.FC<ExistingBuildingsProps> = ({
                       formatNumber={formatNumber}
                       ResourcesIcon={ResourcesIcon}
                       tierProgress={renderTierProgress(building)}
+                      onUpgradeMax={
+                        !isMaxTier && upgradeData?.canUpgrade
+                          ? () => upgradeBuildingMax(building.id)
+                          : undefined
+                      }
                     />
                   );
                 })}

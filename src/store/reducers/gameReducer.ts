@@ -21,6 +21,7 @@ import {
   constructBuilding,
   upgradeBuilding,
   assignWorker,
+  upgradeBuildingMax,
 } from "./buildingReducer";
 import {
   calculatePopulationConsumption,
@@ -404,6 +405,23 @@ export const gameReducer = (
     case "UPGRADE_BUILDING": {
       const { buildingId } = action.payload;
       const result = upgradeBuilding(
+        state.buildings,
+        state.resources,
+        buildingId
+      );
+
+      if (!result.success) return state;
+
+      return {
+        ...state,
+        resources: result.resources,
+        buildings: result.buildings,
+      };
+    }
+
+    case "UPGRAGE_BUILDING_MAX": {
+      const { buildingId } = action.payload;
+      const result = upgradeBuildingMax(
         state.buildings,
         state.resources,
         buildingId

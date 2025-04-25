@@ -26,5 +26,6 @@ export type GameAction =
       };
     }
   | { type: "CANCEL_EXPEDITION"; payload: { expeditionId: string } }
-  | { type: "UPGRADE_ARTIFACT"; payload: { artifactName: string } };
+  | { type: "UPGRADE_ARTIFACT"; payload: { artifactName: string } }
+  | { type: "UPGRAGE_BUILDING_MAX"; payload: { buildingId: string } };
 //

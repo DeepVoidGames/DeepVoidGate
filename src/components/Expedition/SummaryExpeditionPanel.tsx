@@ -93,7 +93,10 @@ function SummaryExpeditionPanel({
         {selectedType === "scientific" && (
           <h4 className="font-medium flex items-center gap-2 mb-2 text-sm sm:text-base">
             <Book className="w-4 h-4 text-blue-500" />
-            Possible Technologies
+            Possible Technologies -{" "}
+            <span className="text-xs sm:text-sm text-gray-400">
+              Technologies can be unlocked from expedition events only
+            </span>
           </h4>
         )}
 
@@ -121,7 +124,10 @@ function SummaryExpeditionPanel({
         {selectedType === "mining" && (
           <h4 className="font-medium flex items-center gap-2 mb-2 text-sm sm:text-base">
             <Package className="w-4 h-4 text-amber-500" />
-            Possible Artifacts
+            Possible Artifacts -{" "}
+            <span className="text-xs sm:text-sm text-gray-400">
+              Artifacts can drop after complete of expedition
+            </span>
           </h4>
         )}
 
