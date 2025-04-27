@@ -87,300 +87,26 @@ export const gameReducer = (
     case "TICK": {
       if (state.paused) return state;
 
-      const { currentTime } = action.payload;
-      const deltaTime = (currentTime - state.lastUpdate) / 1000; // in seconds
-      const newSessionLength = (state.sessionLength || 0) + deltaTime;
+      // Obliczenia podstawowe
+      const basicCalculations = calculateBasicValues(state, action);
+      if (!basicCalculations) return state;
+      const { deltaTime, newSessionLength } = basicCalculations;
 
-      // Reset production and consumption rates
-      let newResources = resetProductionCounters(state.resources);
-
-      // Calculate efficiency for each building
-      const buildings = calculateBuildingEfficiency(
-        state.buildings,
-        newResources
-      );
-
-      // Apply building effects to resources
-      newResources = applyBuildingEffects(buildings, newResources);
-
-      // Apply population consumption
-      newResources = calculatePopulationConsumption(
-        state.population,
-        newResources
-      );
-
-      // Calculate resource changes based on production/consumption
-      newResources = calculateResourceChanges(newResources, deltaTime);
-
-      // Check for critical resource shortages (with cooldown to prevent spam)
-      const currentTime_ms = Date.now();
-      const warningCooldown = 60000; // 1 minute cooldown
-
-      // Death timer logic - check if oxygen or food is critically low
-      let newPopulation = { ...state.population };
-      const hasOxygenShortage =
-        newResources.oxygen.amount <=
-        (resourceAlertThresholds.oxygen?.critical || 0);
-      const hasFoodShortage =
-        newResources.food.amount <=
-        (resourceAlertThresholds.food?.critical || 0);
-
-      if (hasOxygenShortage || hasFoodShortage) {
-        // Start or continue death timer
-        if (!newPopulation.deathTimer) {
-          newPopulation.deathTimer = DEATH_TIMER_START;
-
-          toast({
-            title: hasOxygenShortage
-              ? "CRITICAL: Oxygen Depletion!"
-              : "CRITICAL: Starvation Imminent!",
-            description: `Life support critical! Colonists will start dying in ${Math.floor(
-              DEATH_TIMER_START / 60
-            )} minutes if not resolved.`,
-            variant: "destructive",
-          });
-        } else {
-          // Decrease timer
-          newPopulation.deathTimer -= deltaTime;
-
-          // 1 minute warning
-          if (
-            newPopulation.deathTimer <= DEATH_TIMER_WARNING &&
-            newPopulation.deathTimer > DEATH_TIMER_WARNING - 10
-          ) {
-            toast({
-              title: "EMERGENCY: Colonist Death Imminent!",
-              description: `First colonist will die in ${Math.floor(
-                newPopulation.deathTimer
-              )} seconds!`,
-              variant: "destructive",
-            });
-          }
-
-          // If timer reaches zero, kill a colonist
-          if (newPopulation.deathTimer <= 0) {
-            newPopulation.total = Math.max(0, newPopulation.total - 1);
-            newPopulation.available = Math.max(0, newPopulation.available - 1);
-            newPopulation.deathTimer = DEATH_TIMER_START; // Reset timer for next colonist
-
-            toast({
-              title: "Colony Disaster: Colonist Lost",
-              description:
-                "A colonist has died due to critical life support failure.",
-              variant: "destructive",
-            });
-
-            // If all colonists are dead, game over
-            if (newPopulation.total === 0) {
-              toast({
-                title: "GAME OVER",
-                description:
-                  "All colonists have perished. The colony has failed.",
-                variant: "destructive",
-              });
-            }
-          }
-        }
-      } else {
-        // If resources are restored, clear death timer
-        if (newPopulation.deathTimer) {
-          newPopulation.deathTimer = undefined;
-
-          toast({
-            title: "Life Support Restored",
-            description:
-              "Critical resources restored to safe levels. Colonists are safe for now.",
-          });
-        }
-      }
-
-      // Check oxygen levels
-      if (resourceAlertThresholds.oxygen) {
-        const oxygenLevel = newResources.oxygen.amount;
-        const oxygenNet =
-          newResources.oxygen.production - newResources.oxygen.consumption;
-
-        if (
-          oxygenLevel <= resourceAlertThresholds.oxygen.critical &&
-          oxygenNet < 0
-        ) {
-          if (
-            currentTime_ms - resourceWarnings.oxygen.lastWarned >
-            warningCooldown
-          ) {
-            toast({
-              title: "CRITICAL: Oxygen Shortage!",
-              description:
-                "Your colony is suffocating. Build more oxygen generators immediately!",
-              variant: "destructive",
-            });
-            resourceWarnings.oxygen.lastWarned = currentTime_ms;
-          }
-        } else if (
-          oxygenLevel <= resourceAlertThresholds.oxygen.low &&
-          oxygenNet < 0
-        ) {
-          if (
-            currentTime_ms - resourceWarnings.oxygen.lastWarned >
-            warningCooldown
-          ) {
-            toast({
-              title: "Warning: Low Oxygen",
-              description:
-                "Oxygen levels are dangerously low. Increase production.",
-              variant: "destructive",
-            });
-            resourceWarnings.oxygen.lastWarned = currentTime_ms;
-          }
-        }
-      }
-
-      // Check food levels
-      if (resourceAlertThresholds.food) {
-        const foodLevel = newResources.food.amount;
-        const foodNet =
-          newResources.food.production - newResources.food.consumption;
-
-        if (foodLevel <= resourceAlertThresholds.food.critical && foodNet < 0) {
-          if (
-            currentTime_ms - resourceWarnings.food.lastWarned >
-            warningCooldown
-          ) {
-            toast({
-              title: "CRITICAL: Food Shortage!",
-              description:
-                "Your colonists are starving. Increase food production immediately!",
-              variant: "destructive",
-            });
-            resourceWarnings.food.lastWarned = currentTime_ms;
-          }
-        } else if (
-          foodLevel <= resourceAlertThresholds.food.low &&
-          foodNet < 0
-        ) {
-          if (
-            currentTime_ms - resourceWarnings.food.lastWarned >
-            warningCooldown
-          ) {
-            toast({
-              title: "Warning: Low Food",
-              description:
-                "Food supplies are running low. Increase production.",
-              variant: "destructive",
-            });
-            resourceWarnings.food.lastWarned = currentTime_ms;
-          }
-        }
-      }
-
-      // Check energy levels
-      if (resourceAlertThresholds.energy) {
-        const energyLevel = newResources.energy.amount;
-        const energyNet =
-          newResources.energy.production - newResources.energy.consumption;
-
-        if (
-          energyLevel <= resourceAlertThresholds.energy.critical &&
-          energyNet < 0
-        ) {
-          if (
-            currentTime_ms - resourceWarnings.energy.lastWarned >
-            warningCooldown
-          ) {
-            toast({
-              title: "CRITICAL: Energy Shortage!",
-              description:
-                "Your colony is losing power. Build more energy generators!",
-              variant: "destructive",
-            });
-            resourceWarnings.energy.lastWarned = currentTime_ms;
-          }
-        } else if (
-          energyLevel <= resourceAlertThresholds.energy.low &&
-          energyNet < 0
-        ) {
-          if (
-            currentTime_ms - resourceWarnings.energy.lastWarned >
-            warningCooldown
-          ) {
-            toast({
-              title: "Warning: Low Energy",
-              description:
-                "Energy reserves are running low. Increase production.",
-              variant: "destructive",
-            });
-            resourceWarnings.energy.lastWarned = currentTime_ms;
-          }
-        }
-      }
-
-      // Oblicz całkowitą pojemność mieszkań
-      const totalHousing = buildings
-        .filter((b) => b.category === "housing" && b.functioning)
-        .reduce((sum, building) => {
-          let bonus = 0;
-          if (building?.housingCapacityMultiplier)
-            bonus = building.housingCapacityMultiplier;
-          const baseCapacity = (12 + bonus * 10) * building.tier; // Np. Tier 1: 12*1=12, Tier 2: 12*2=24 itd. 191
-          const upgradeBonus = (1 + bonus) * building.upgrades;
-          return sum + (baseCapacity + upgradeBonus); // Dodajemy pojemność budynku do sumy
-        }, 0);
-
-      // Zaktualizuj populację
-      newPopulation.maxCapacity = Math.floor(totalHousing) + 10;
-
-      // Logika dodawania kolonistów
-      let newColonistProgress = state.colonistProgress ?? 0;
-
-      // Inkrementuj timer tylko jeśli jest miejsce
-      if (newPopulation.total < newPopulation.maxCapacity) {
-        newColonistProgress += deltaTime;
-      } else {
-        newColonistProgress = 0; // Resetuj jeśli brak miejsca
-      }
-
-      // Sprawdź czy czas się skończył i jest miejsce
-      if (
-        newColonistProgress >= 60 * 2 &&
-        newPopulation.total < newPopulation.maxCapacity
-      ) {
-        newPopulation.total += 1;
-        newPopulation.available += 1;
-        newColonistProgress = 0; // Resetuj timer
-
-        toast({
-          title: "New Colonist Arrived",
-          description: "A new colonist has joined your colony!",
-        });
-      }
-
-      const newMilestones = checkMilestones({
+      // Aktualizacja stanu przez kolejne moduły
+      let newState = {
         ...state,
-        resources: newResources,
-      });
-
-      const intermediateState = {
-        ...state,
-        resources: newMilestones.resources,
-        buildings,
-        population: newPopulation,
-        colonistProgress: newColonistProgress,
-        milestones: newMilestones.milestones,
+        ...updateResourceProduction(state, deltaTime),
+        ...calculateHousingAndColonists(state, deltaTime),
         sessionLength: newSessionLength,
-        // Nie aktualizujemy jeszcze lastUpdate!
       };
 
-      // Przetwórz ekspedycje na tym stanie
-      const stateAfterExpeditions = handleExpeditionTick(
-        intermediateState,
-        deltaTime
-      );
+      newState = handleMilestonesAndExpeditions(newState, deltaTime);
+      newState = processCriticalResources(newState, deltaTime);
+      newState = monitorResourceLevels(newState);
 
-      const state_afterArtifacts = applyArtifactEffect(stateAfterExpeditions);
-      // Teraz zaktualizuj lastUpdate na końcowym stanie
       return {
-        ...state_afterArtifacts,
-        lastUpdate: currentTime,
+        ...newState,
+        lastUpdate: action.payload.currentTime,
       };
     }
 
@@ -651,5 +377,258 @@ export const gameReducer = (
 
     default:
       return state;
+  }
+};
+
+// Helper functions
+const calculateBasicValues = (state, action) => {
+  if (state.paused) return null;
+  const { currentTime } = action.payload;
+  const deltaTime = (currentTime - state.lastUpdate) / 1000;
+  return {
+    deltaTime,
+    newSessionLength: (state.sessionLength || 0) + deltaTime,
+  };
+};
+
+const updateResourceProduction = (state, deltaTime) => {
+  let newResources = resetProductionCounters(state.resources);
+  const buildings = calculateBuildingEfficiency(state.buildings, newResources);
+  newResources = applyBuildingEffects(buildings, newResources);
+  newResources = calculatePopulationConsumption(state.population, newResources);
+  return { resources: newResources, buildings };
+};
+
+const calculateHousingAndColonists = (state, deltaTime) => {
+  const totalHousing = calculateHousingCapacity(state.buildings);
+  let newPopulation = updatePopulationCapacity(state.population, totalHousing);
+  const colonistUpdates = processColonistArrival(
+    newPopulation,
+    deltaTime,
+    state.colonistProgress
+  );
+  return {
+    population: colonistUpdates.newPopulation,
+    colonistProgress: colonistUpdates.progress,
+  };
+};
+
+const handleMilestonesAndExpeditions = (state, deltaTime) => {
+  const withMilestones = checkMilestones(state);
+  const afterExpeditions = handleExpeditionTick(withMilestones, deltaTime);
+  return applyArtifactEffect(afterExpeditions);
+};
+
+const processCriticalResources = (state, deltaTime) => {
+  let newResources = calculateResourceChanges(state.resources, deltaTime);
+  const newPopulation = handleDeathTimer(
+    state.population,
+    newResources,
+    deltaTime
+  );
+  return { ...state, resources: newResources, population: newPopulation };
+};
+
+// Szczegółowe funkcje pomocnicze
+const calculateHousingCapacity = (buildings) => {
+  return buildings
+    .filter((b) => b.category === "housing" && b.functioning)
+    .reduce((sum, building) => {
+      const bonus = building?.housingCapacityMultiplier || 0;
+      const baseCapacity = (12 + bonus * 10) * building.tier;
+      const upgradeBonus = (1 + bonus) * building.upgrades;
+      return sum + baseCapacity + upgradeBonus;
+    }, 10); // +10 jako podstawowa pojemność
+};
+
+const updatePopulationCapacity = (population, capacity) => ({
+  ...population,
+  maxCapacity: Math.floor(capacity),
+});
+
+const processColonistArrival = (population, deltaTime, currentProgress) => {
+  let progress = currentProgress || 0;
+  const canAddColonist = population.total < population.maxCapacity;
+
+  if (canAddColonist) progress += deltaTime;
+  else progress = 0;
+
+  if (progress >= 120 && canAddColonist) {
+    return {
+      newPopulation: {
+        ...population,
+        total: population.total + 1,
+        available: population.available + 1,
+      },
+      progress: 0,
+    };
+  }
+  return { newPopulation: population, progress };
+};
+
+const handleDeathTimer = (population, resources, deltaTime) => {
+  const hasOxygenShortage =
+    resources.oxygen.amount <= (resourceAlertThresholds.oxygen?.critical || 0);
+  const hasFoodShortage =
+    resources.food.amount <= (resourceAlertThresholds.food?.critical || 0);
+  let newPopulation = { ...population };
+
+  // Logika timeru śmierci
+  if (hasOxygenShortage || hasFoodShortage) {
+    newPopulation = processDeathTimer(newPopulation, deltaTime);
+  } else if (newPopulation.deathTimer) {
+    newPopulation = clearDeathTimer(newPopulation);
+  }
+  return newPopulation;
+};
+
+const processDeathTimer = (population, deltaTime) => {
+  let newPop = { ...population };
+  if (!newPop.deathTimer) {
+    newPop.deathTimer = DEATH_TIMER_START;
+    showCriticalAlert();
+  } else {
+    newPop.deathTimer -= deltaTime;
+    checkDeathTimerWarning(newPop.deathTimer);
+
+    if (newPop.deathTimer <= 0) {
+      newPop = handleColonistDeath(newPop);
+    }
+  }
+  return newPop;
+};
+
+const monitorResourceLevels = (state) => {
+  const currentTime = Date.now();
+  checkResourceLevel("oxygen", state, currentTime);
+  checkResourceLevel("food", state, currentTime);
+  checkResourceLevel("energy", state, currentTime);
+  return state;
+};
+
+const checkResourceLevel = (resource, state, currentTime) => {
+  const { amount, production, consumption } = state.resources[resource];
+  const thresholds = resourceAlertThresholds[resource];
+  const warnings = resourceWarnings[resource];
+  const net = production - consumption;
+
+  if (!thresholds || net >= 0) return;
+
+  if (
+    amount <= thresholds.critical &&
+    currentTime - warnings.lastWarned > 60000
+  ) {
+    showResourceAlert(resource, "critical");
+  } else if (
+    amount <= thresholds.low &&
+    currentTime - warnings.lastWarned > 60000
+  ) {
+    showResourceAlert(resource, "low");
+  }
+};
+
+// Notification functions
+const showCriticalAlert = () => {
+  toast({
+    title: "CRITICAL: Life Support Failure!",
+    description:
+      "Colonists will start dying soon if resources aren't restored!",
+    variant: "destructive",
+  });
+};
+
+const showResourceAlert = (resource: string, level: "critical" | "low") => {
+  const titles = {
+    oxygen: {
+      critical: "CRITICAL: Oxygen Depletion!",
+      low: "Warning: Low Oxygen",
+    },
+    food: {
+      critical: "CRITICAL: Starvation Imminent!",
+      low: "Warning: Low Food",
+    },
+    energy: {
+      critical: "CRITICAL: Energy Shortage!",
+      low: "Warning: Low Energy",
+    },
+  };
+
+  const descriptions = {
+    oxygen: {
+      critical: "Build more oxygen generators immediately!",
+      low: "Oxygen levels are dangerously low. Increase production.",
+    },
+    food: {
+      critical:
+        "Your colonists are starving. Increase food production immediately!",
+      low: "Food supplies are running low. Increase production.",
+    },
+    energy: {
+      critical: "Your colony is losing power. Build more energy generators!",
+      low: "Energy reserves are running low. Increase production.",
+    },
+  };
+
+  toast({
+    title: titles[resource][level],
+    description: descriptions[resource][level],
+    variant: "destructive",
+  });
+
+  // Update last warning time
+  resourceWarnings[resource].lastWarned = Date.now();
+};
+
+// Population management
+const handleColonistDeath = (population: any): any => {
+  const newPopulation = {
+    ...population,
+    total: Math.max(0, population.total - 1),
+    available: Math.max(0, population.available - 1),
+    deathTimer: DEATH_TIMER_START,
+  };
+
+  toast({
+    title: "Colony Disaster: Colonist Lost",
+    description: "A colonist has died due to critical life support failure.",
+    variant: "destructive",
+  });
+
+  if (newPopulation.total === 0) {
+    toast({
+      title: "GAME OVER",
+      description: "All colonists have perished. The colony has failed.",
+      variant: "destructive",
+    });
+  }
+
+  return newPopulation;
+};
+
+const clearDeathTimer = (population: any): any => {
+  toast({
+    title: "Life Support Restored",
+    description:
+      "Critical resources restored to safe levels. Colonists are safe for now.",
+  });
+
+  const newPopulation = { ...population };
+  delete newPopulation.deathTimer;
+  return newPopulation;
+};
+
+// Timer warnings
+const checkDeathTimerWarning = (deathTimer: number) => {
+  if (
+    deathTimer <= DEATH_TIMER_WARNING &&
+    deathTimer > DEATH_TIMER_WARNING - 10
+  ) {
+    toast({
+      title: "EMERGENCY: Colonist Death Imminent!",
+      description: `First colonist will die in ${Math.floor(
+        deathTimer
+      )} seconds!`,
+      variant: "destructive",
+    });
   }
 };
