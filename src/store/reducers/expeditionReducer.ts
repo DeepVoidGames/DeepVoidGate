@@ -215,7 +215,7 @@ const calculateExpeditionDuration = (tier: number): number => {
 };
 
 const calculateRequiredCrew = (tier: number): number => {
-  return 2 + tier * CREW_PER_TIER; // min 2 załogantów
+  return CREW_PER_TIER + tier * CREW_PER_TIER;
 };
 
 const getRandomEvent = (expedition: Expedition): ExpeditionEvent => {
