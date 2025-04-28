@@ -138,12 +138,12 @@ const Expedition = () => {
         <div className="glass-panel p-6 space-y-3 animate-fade-in bg-secondary/40 mb-24 w-full">
           <div className="flex items-center justify-between mb-4 w-full">
             <h2 className="text-2xl font-bold">Active Missions</h2>
-            <button
+            {/* <button
               className="text-sm text-muted-foreground hover:text-primary"
               onClick={toggleCompleted}
             >
               {showCompleted ? "Hide Completed" : "Show Completed"}
-            </button>
+            </button> */}
           </div>
 
           <div className="grid md:grid-cols-2 gap-4 w-full">
