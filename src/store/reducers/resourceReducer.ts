@@ -89,9 +89,9 @@ export const canAffordCost = (
 
     // Logi diagnostyczne
     if (cost && currentAmount < cost) {
-      console.warn(
-        `Insufficient ${resource}: ${currentAmount.toFixed(2)} < ${cost}`
-      );
+      // console.warn(
+      //   `Insufficient ${resource}: ${currentAmount.toFixed(2)} < ${cost}`
+      // );
       return false;
     }
     return true;
