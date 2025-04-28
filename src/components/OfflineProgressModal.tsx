@@ -9,6 +9,7 @@ import {
 } from "@/components/ui/dialog";
 import { OfflineReport } from "@/store/types";
 import { ResourcesIcon } from "@/config";
+import { formatNumber } from "@/lib/utils";
 
 const formatTime = (milliseconds: number): string => {
   const seconds = Math.floor(milliseconds / 1000);
@@ -72,7 +73,7 @@ export const OfflineProgressModal = ({
                       }`}
                     >
                       {change >= 0 ? "+" : ""}
-                      {change.toFixed(2)}
+                      {formatNumber(change)}
                     </span>
                   </div>
                 )
