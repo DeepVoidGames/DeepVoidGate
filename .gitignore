@@ -11,6 +11,8 @@ maxSave.json
 a.json
 node_modules
 dist
+android
+key.jks
 dist-ssr
 *.local
 
