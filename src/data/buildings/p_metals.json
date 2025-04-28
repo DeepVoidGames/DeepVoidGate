@@ -396,5 +396,45 @@
       }
     },
     "tag": "metals"
+  },
+  {
+    "isFromExpedition": true,
+    "type": "chrono_forge",
+    "category": "production",
+    "name": "Chrono-Forge",
+    "description": "Temporal loops allow metals and energy to be manufactured at vastly accelerated rates.",
+    "workerCapacity": 16,
+    "baseCost": {
+      "metals": 17000,
+      "energy": 7500,
+      "science": 3000
+    },
+    "baseProduction": {
+      "metals": 15.0,
+      "energy": 11.0
+    },
+    "baseConsumption": {
+      "water": 2.0,
+      "oxygen": 1.5
+    },
+    "requirements": {},
+    "requiredTechnology": "temporal_acceleration",
+    "costMultiplier": 1.95,
+    "productionMultiplier": 2.5,
+    "maxInstances": 1,
+    "tier": 1,
+    "maxTier": 5,
+    "upgrades": 0,
+    "uniqueBonus": {
+      "production": {
+        "metals": 420,
+        "energy": 195
+      },
+      "storage": {
+        "metals": 40000,
+        "energy": 25000
+      }
+    },
+    "tag": "metals"
   }
 ]

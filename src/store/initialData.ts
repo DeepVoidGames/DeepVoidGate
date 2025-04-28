@@ -673,6 +673,24 @@ export const initialTechnologies: Technology[] = [
     locked: true,
     expedtionMinTier: 8,
   },
+  {
+    id: "temporal_acceleration",
+    name: "Temporal Acceleration",
+    category: "Production",
+    description:
+      "By stabilizing localized spacetime fields, production cycles are significantly accelerated without material degradation.",
+    researchCost: {
+      science: 100000,
+      metals: 60000,
+      energy: 80000,
+    },
+    prerequisites: ["adaptive_matter_engineering"],
+    unlocksBuildings: ["chrono_forge", "biosurge_chamber"],
+    researchDuration: 4800, // 80 minut
+    isResearched: false,
+    locked: true,
+    expedtionMinTier: 9,
+  },
 ];
 
 export const initialExpeditions: Expedition[] = [];

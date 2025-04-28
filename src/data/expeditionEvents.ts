@@ -600,4 +600,42 @@ export const expeditionEvents: ExpeditionEvent[] = [
       },
     ],
   },
+
+  {
+    id: "temporal_relic_site",
+    title: "Temporal Relic Site",
+    description:
+      "A site where time flows differently has been located. Artifacts within may grant unparalleled control over spacetime.",
+    type: ["scientific"],
+    minTier: 9,
+    weight: 2,
+    options: [
+      {
+        text: "Study the artifacts carefully",
+        effects: [
+          {
+            type: "technology",
+            technologyId: "temporal_acceleration",
+            value: 0,
+          },
+          {
+            type: "time",
+            value: 240,
+          },
+        ],
+      },
+      {
+        text: "Salvage for immediate resources",
+        effects: [
+          {
+            type: "reward",
+            value: {
+              science: 20000,
+              energy: 15000,
+            },
+          },
+        ],
+      },
+    ],
+  },
 ];

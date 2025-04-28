@@ -1,11 +1,19 @@
+import { applyArtifactEffect } from "@/store/reducers/artifactsReducer";
 import {
   applyBuildingEffects,
   calculateBuildingEfficiency,
 } from "@/store/reducers/buildingReducer";
 import { ResourcesState } from "@/store/reducers/resourceReducer";
-import { BuildingData, ResourceType, Technology } from "@/store/types";
+import {
+  BuildingData,
+  GameState,
+  ResourceType,
+  Technology,
+} from "@/store/types";
+import { stat } from "fs";
 
 export const calculateOfflineProduction = (
+  state: GameState,
   buildings: BuildingData[],
   resources: ResourcesState,
   technologies: Technology[],
@@ -39,10 +47,18 @@ export const calculateOfflineProduction = (
       ),
     }));
 
-    const tempResources = applyBuildingEffects(
+    let tempResources = applyBuildingEffects(
       efficientBuildings,
       currentResources
     );
+    console.log("Temp resources after building effects:", tempResources);
+
+    tempResources = applyArtifactEffect({
+      ...state,
+      resources: tempResources,
+    }).resources;
+
+    console.log("Temp resources after artifact effects:", tempResources);
 
     // Dodatkowe ograniczenie produkcji
     Object.keys(tempResources).forEach((resourceKey) => {

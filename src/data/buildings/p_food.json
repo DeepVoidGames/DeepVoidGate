@@ -355,5 +355,45 @@
       }
     },
     "tag": "food"
+  },
+  {
+    "type": "biosurge_chamber",
+    "category": "production",
+    "name": "Biosurge Chamber",
+    "description": "Accelerated biological cycles yield abundant food and oxygen far beyond natural rates.",
+    "workerCapacity": 15,
+    "baseCost": {
+      "food": 5380,
+      "metals": 3006,
+      "oxygen": 1440,
+      "science": 448
+    },
+    "baseProduction": {
+      "food": 16.0,
+      "oxygen": 8.0
+    },
+    "baseConsumption": {
+      "energy": 2.8,
+      "water": 1.8
+    },
+    "requirements": {},
+    "requiredTechnology": "temporal_acceleration",
+    "costMultiplier": 2.1,
+    "productionMultiplier": 2.6,
+    "maxInstances": 1,
+    "tier": 1,
+    "maxTier": 5,
+    "upgrades": 0,
+    "uniqueBonus": {
+      "production": {
+        "food": 220,
+        "oxygen": 160
+      },
+      "storage": {
+        "food": 200000,
+        "oxygen": 50000
+      }
+    },
+    "tag": "food"
   }
 ]

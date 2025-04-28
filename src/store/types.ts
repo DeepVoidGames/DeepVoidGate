@@ -76,7 +76,9 @@ export type BuildingType =
   | "nutri_flux_hub"
   | "aeroponicFarm"
   | "advancedSolarPanel"
-  | "deepMetalMine";
+  | "deepMetalMine"
+  | "chrono_forge"
+  | "biosurge_chamber";
 
 export type TechnologyCategory =
   | "Infrastructure"

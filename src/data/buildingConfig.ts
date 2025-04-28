@@ -406,4 +406,20 @@ export const buildingConfig = [
       className: "h-5 w-5 text-gray-400",
     }),
   },
+  {
+    type: "chrono_forge" as BuildingType,
+    name: "Chrono-Forge",
+    category: "production" as BuildingCategory,
+    icon: React.createElement(Pickaxe, {
+      className: "h-5 w-5 text-red-400",
+    }),
+  },
+  {
+    type: "biosurge_chamber" as BuildingType,
+    name: "Biosurge Chamber",
+    category: "production" as BuildingCategory,
+    icon: React.createElement(Leaf, {
+      className: "h-5 w-5 text-red-400",
+    }),
+  },
 ];

@@ -308,6 +308,7 @@ export const gameReducer = (
 
           // Oblicz progres używając załadowanych budynków i technologii
           const newResources = calculateOfflineProduction(
+            migratedState,
             migratedState.buildings,
             migratedState.resources,
             migratedState.technologies,
