@@ -8,7 +8,7 @@ import {
 } from "../types";
 import { toast } from "@/components/ui/use-toast";
 
-// Check and update milestones with tiered support
+// Check and update milestones with tiered support and revocation
 export const checkMilestones = (state: GameState): GameState => {
   let newState = { ...state };
   let hasChanges = false;
@@ -29,14 +29,11 @@ export const checkMilestones = (state: GameState): GameState => {
   if (completableMilestones.length > 0) {
     hasChanges = true;
 
-    // Sort by tier to ensure lower tiers are completed first
     completableMilestones.sort((a, b) => (a.tier || 0) - (b.tier || 0));
 
     const updatedMilestones = [...newState.milestones];
 
-    // Apply each milestone
     completableMilestones.forEach((milestone) => {
-      // Find and update the milestone in our state
       const index = updatedMilestones.findIndex((m) => m.id === milestone.id);
       if (index !== -1) {
         updatedMilestones[index] = {
@@ -44,16 +41,12 @@ export const checkMilestones = (state: GameState): GameState => {
           completed: true,
         };
 
-        // Apply reward if exists
         if (milestone.reward) {
           newState = milestone.reward(newState);
         }
 
-        // Extract the base name (without roman numerals) for notification
         const baseName = milestone.name.replace(/\s+[IVX]+$/, "");
         const tierText = milestone.tier ? ` (Tier ${milestone.tier})` : "";
-
-        // Show notification
         toast({
           title: `Milestone Unlocked: ${baseName}${tierText}`,
           description: milestone.description,
@@ -64,25 +57,52 @@ export const checkMilestones = (state: GameState): GameState => {
     newState = { ...newState, milestones: updatedMilestones };
   }
 
+  // Third pass: Check and revoke milestones iteratively
+  let revokedAny;
+  do {
+    revokedAny = false;
+    const completedMilestones = newState.milestones.filter((m) => m.completed);
+    const sortedCompleted = [...completedMilestones].sort(
+      (a, b) => (a.tier || 0) - (b.tier || 0)
+    );
+
+    for (const milestone of sortedCompleted) {
+      const conditionMet = milestone.condition(newState);
+      const prereqMet = isPrerequisiteComplete(newState, milestone);
+      if (!conditionMet || !prereqMet) {
+        // Revoke the milestone
+        const updatedMilestones = newState.milestones.map((m) =>
+          m.id === milestone.id ? { ...m, completed: false } : m
+        );
+        newState = { ...newState, milestones: updatedMilestones };
+
+        // Notification
+        const baseName = milestone.name.replace(/\s+[IVX]+$/, "");
+        const tierText = milestone.tier ? ` (Tier ${milestone.tier})` : "";
+
+        hasChanges = true;
+        revokedAny = true;
+        break; // Restart loop to re-check all milestones
+      }
+    }
+  } while (revokedAny);
+
   return newState;
 };
 
-// Helper function to check if prerequisite milestones are completed
+// Helper function to check prerequisites remains the same
 const isPrerequisiteComplete = (
   state: GameState,
   milestone: Milestone
 ): boolean => {
-  if (!milestone.prerequisiteId) {
-    return true; // No prerequisite needed
-  }
-
+  if (!milestone.prerequisiteId) return true;
   const prerequisite = state.milestones.find(
     (m) => m.id === milestone.prerequisiteId
   );
   return prerequisite ? prerequisite.completed : true;
 };
 
-// Helper functions for conditions
+// Helper functions remain unchanged
 export const getBuildingCount = (state: GameState, type: BuildingType) =>
   state.buildings.filter((b) => b.type === type).length;
 
