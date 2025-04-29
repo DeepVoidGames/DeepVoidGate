@@ -21,14 +21,14 @@ export const calculateBuildingEfficiency = (
     // First calculate worker efficiency - minimum 10% if no workers
     let workerEfficiency =
       building.assignedWorkers > 0
-        ? Math.min(1, building.assignedWorkers / building.workerCapacity)
+        ? building.assignedWorkers / building.workerCapacity
         : 0.1; // 10% efficiency with no workers
 
     // Check if all required resources are available
     let resourceEfficiency = 1;
     let functioning = true;
 
-    if (building.requirements) {
+    if (building.baseConsumption) {
       // Check resource requirements
       for (const [resourceKey, amount] of Object.entries(
         building.requirements
@@ -49,9 +49,9 @@ export const calculateBuildingEfficiency = (
     }
 
     // Final efficiency is the minimum of both but only if building is functioning
-    const efficiency = functioning
-      ? Math.min(workerEfficiency, resourceEfficiency)
-      : 0;
+    if (workerEfficiency < 0.1) workerEfficiency = 0.1;
+
+    const efficiency = functioning ? workerEfficiency : 0;
 
     return {
       ...building,
@@ -436,30 +436,14 @@ export const calculateEfficiency = (
   building: BuildingData,
   resources: ResourcesState
 ) => {
-  const baseEfficiency = building.efficiency || 0;
-  const tierMultiplier = 1 + (building.tier - 1) * 0.2;
+  let workerEfficiency =
+    building.assignedWorkers > 0
+      ? building.assignedWorkers / building.workerCapacity
+      : 0.1;
 
-  if (building.workerCapacity === 0) {
-    return 1;
-  }
+  if (workerEfficiency < 0.1) workerEfficiency = 0.1; // 10% efficiency with no workers
 
-  const workerRatio = (building.assignedWorkers || 0) / building.workerCapacity;
-
-  let efficiency = baseEfficiency * tierMultiplier * workerRatio;
-
-  const minWorkerEfficiency = 0.1;
-
-  efficiency = Math.max(efficiency, minWorkerEfficiency);
-
-  if (
-    resourceAlertThresholds.energy &&
-    resources.energy?.amount < resourceAlertThresholds.energy.critical &&
-    building.baseConsumption?.energy
-  ) {
-    efficiency = Math.min(efficiency, 0.1);
-  }
-
-  return Math.min(efficiency, 1);
+  return Math.min(workerEfficiency, 1);
 };
 
 export const calculateBuildingStorage = (
@@ -609,7 +593,7 @@ export const canUpgradeMax = (
 ): boolean => {
   if (building.tier >= building.maxTier && building.upgrades >= 10)
     return false;
-  
+
   const upgradeCost = getBuildingUpgradeCost(building);
   return canAffordCost(resources, upgradeCost);
 };

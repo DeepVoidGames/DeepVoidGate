@@ -51,14 +51,11 @@ export const calculateOfflineProduction = (
       efficientBuildings,
       currentResources
     );
-    console.log("Temp resources after building effects:", tempResources);
 
     tempResources = applyArtifactEffect({
       ...state,
       resources: tempResources,
     }).resources;
-
-    console.log("Temp resources after artifact effects:", tempResources);
 
     // Dodatkowe ograniczenie produkcji
     Object.keys(tempResources).forEach((resourceKey) => {

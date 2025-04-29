@@ -75,9 +75,13 @@ const Expedition = () => {
   ];
 
   const handleStartExpedition = () => {
-    const requiredCrew = CREW_PER_TIER + selectedTier * 1;
+    const requiredCrew = CREW_PER_TIER + selectedTier * CREW_PER_TIER;
     if (state.population.available < requiredCrew) {
-      setError(`Not enough crew members! Required: ${requiredCrew}`);
+      setError(
+        `Not enough crew members! Required: ${requiredCrew}. Need ${
+          requiredCrew - state.population.available
+        } more.`
+      );
       return;
     }
 
