@@ -18,7 +18,7 @@ export const getSettings = (): SettingsType => {
     settings || {
       compactUI: false,
       compactUIOptions: {},
-      analyticsConsent: false,
+      analyticsConsent: true,
       doubleNavbar: false,
     }
   );

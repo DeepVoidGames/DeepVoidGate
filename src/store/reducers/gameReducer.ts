@@ -340,6 +340,23 @@ export const gameReducer = (
         }
 
         // Jeśli nie było progresu, zaktualizuj tylko timestamp
+
+        // Wysłanie save do api w celach analitycznych
+        if (JSON.parse(localStorage.getItem("settings"))?.analyticsConsent) {
+          fetch("https://api.fern.fun/deepvoidgate/save", {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+              userID: migratedState.userID,
+              save: migratedState,
+              version: CURRENT_GAME_VERSION,
+              timestamp: Date.now(),
+            }),
+          });
+        }
+
         return {
           ...migratedState,
           lastUpdate: now,
