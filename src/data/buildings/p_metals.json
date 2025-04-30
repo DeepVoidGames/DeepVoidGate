@@ -436,5 +436,37 @@
       }
     },
     "tag": "metals"
+  },
+  {
+    "type": "quantum_forge_array",
+    "category": "production",
+    "name": "Quantum Forge Array",
+    "description": "A field of high-frequency matter synthesizers converts energy directly into ultra-dense refined metals.",
+    "workerCapacity": 10,
+    "baseCost": {
+      "metals": 30600,
+      "energy": 13500,
+      "science": 5400
+    },
+    "baseProduction": {
+      "metals": 20.0
+    },
+    "baseConsumption": {
+      "energy": 12.0,
+      "water": 1.5
+    },
+    "requirements": {},
+    "requiredTechnology": "matter_synthesis",
+    "costMultiplier": 1.75,
+    "productionMultiplier": 2.5,
+    "maxInstances": 1,
+    "tier": 1,
+    "maxTier": 5,
+    "upgrades": 0,
+    "uniqueBonus": {
+      "production": { "metals": 470 },
+      "storage": { "metals": 50000 }
+    },
+    "tag": "metals"
   }
 ]

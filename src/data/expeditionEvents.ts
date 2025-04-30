@@ -638,4 +638,42 @@ export const expeditionEvents: ExpeditionEvent[] = [
       },
     ],
   },
+
+  {
+    id: "dimensional_breach",
+    title: "Dimensional Breach",
+    description:
+      "A rift in local spacetime has revealed a source of raw matter potential. Tapping it could revolutionize your entire infrastructure.",
+    type: ["scientific"],
+    minTier: 10,
+    weight: 1,
+    options: [
+      {
+        text: "Engage containment and begin synthesis protocols",
+        effects: [
+          {
+            type: "technology",
+            technologyId: "matter_synthesis",
+            value: 0,
+          },
+          {
+            type: "time",
+            value: 300,
+          },
+        ],
+      },
+      {
+        text: "Seal the breach, it's too dangerous",
+        effects: [
+          {
+            type: "reward",
+            value: {
+              science: 50000,
+              energy: 30000,
+            },
+          },
+        ],
+      },
+    ],
+  },
 ];

@@ -395,5 +395,45 @@
       }
     },
     "tag": "food"
+  },
+  {
+    "type": "bio_reconstruction_vat",
+    "category": "production",
+    "name": "Bio-Reconstruction Vat",
+    "description": "An artificially grown biome, fueled by synthesized energy and water, simulates and amplifies photosynthesis at planetary scale.",
+    "workerCapacity": 12,
+    "baseCost": {
+      "food": 8070,
+      "metals": 4509,
+      "oxygen": 2160,
+      "science": 672
+    },
+    "baseProduction": {
+      "food": 20.0,
+      "oxygen": 10.0
+    },
+    "baseConsumption": {
+      "energy": 10.0,
+      "water": 3.0
+    },
+    "requirements": {},
+    "requiredTechnology": "matter_synthesis",
+    "costMultiplier": 2.1,
+    "productionMultiplier": 2.6,
+    "maxInstances": 1,
+    "tier": 1,
+    "maxTier": 5,
+    "upgrades": 0,
+    "uniqueBonus": {
+      "production": {
+        "food": 270,
+        "oxygen": 210
+      },
+      "storage": {
+        "food": 200000,
+        "oxygen": 100000
+      }
+    },
+    "tag": "food"
   }
 ]

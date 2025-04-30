@@ -78,7 +78,8 @@ export type BuildingType =
   | "advancedSolarPanel"
   | "deepMetalMine"
   | "chrono_forge"
-  | "biosurge_chamber";
+  | "biosurge_chamber"
+  | "quantum_forge_array";
 
 export type TechnologyCategory =
   | "Infrastructure"

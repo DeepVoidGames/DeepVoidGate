@@ -422,4 +422,12 @@ export const buildingConfig = [
       className: "h-5 w-5 text-red-400",
     }),
   },
+  {
+    type: "quantum_forge_array" as BuildingType,
+    name: "Quantum Forge Array",
+    category: "production" as BuildingCategory,
+    icon: React.createElement(Pickaxe, {
+      className: "h-5 w-5 text-red-400",
+    }),
+  },
 ];

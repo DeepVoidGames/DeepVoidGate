@@ -691,6 +691,28 @@ export const initialTechnologies: Technology[] = [
     locked: true,
     expedtionMinTier: 9,
   },
+  {
+    id: "matter_synthesis",
+    name: "Matter Synthesis",
+    category: "Production",
+    description:
+      "Unlocking zero-point field manipulation enables the direct creation of matter from energy. Resource limitations become obsolete.",
+    researchCost: {
+      science: 200000,
+      energy: 150000,
+      metals: 100000,
+    },
+    prerequisites: ["temporal_acceleration"],
+    unlocksBuildings: [
+      "quantum_forge_array",
+      "bio_reconstruction_vat",
+      "aetherwell",
+    ],
+    researchDuration: 7200, // 2 godziny
+    isResearched: false,
+    locked: true,
+    expedtionMinTier: 10,
+  },
 ];
 
 export const initialExpeditions: Expedition[] = [];
