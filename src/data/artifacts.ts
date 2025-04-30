@@ -53,7 +53,7 @@ export const artifactsData: Artifact[] = [
       {
         type: "expeditionTime" as ArtifactEffectType,
         description: (starts: number) =>
-          `Decreases expedition time by ${((starts + 1) / 2) * 10}%`,
+          `Decreases expedition base time by ${((starts + 1) / 2) * 10}%`,
         value: 0.05,
       },
     ],
