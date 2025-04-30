@@ -706,7 +706,6 @@ export const initialTechnologies: Technology[] = [
     unlocksBuildings: [
       "quantum_forge_array",
       "bio_reconstruction_vat",
-      "aetherwell",
     ],
     researchDuration: 7200, // 2 godziny
     isResearched: false,

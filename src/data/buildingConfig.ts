@@ -430,4 +430,12 @@ export const buildingConfig = [
       className: "h-5 w-5 text-red-400",
     }),
   },
+  {
+    type: "bio_reconstruction_vat" as BuildingType,
+    name: "Bio-Reconstruction Vat",
+    category: "production" as BuildingCategory,
+    icon: React.createElement(Leaf, {
+      className: "h-5 w-5 text-red-400",
+    }),
+  },
 ];

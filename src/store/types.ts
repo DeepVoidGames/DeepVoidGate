@@ -79,7 +79,8 @@ export type BuildingType =
   | "deepMetalMine"
   | "chrono_forge"
   | "biosurge_chamber"
-  | "quantum_forge_array";
+  | "quantum_forge_array"
+  | "bio_reconstruction_vat";
 
 export type TechnologyCategory =
   | "Infrastructure"
