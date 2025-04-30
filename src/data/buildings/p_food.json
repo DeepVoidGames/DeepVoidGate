@@ -357,6 +357,7 @@
     "tag": "food"
   },
   {
+    "isFromExpedition": true,
     "type": "biosurge_chamber",
     "category": "production",
     "name": "Biosurge Chamber",
@@ -397,6 +398,7 @@
     "tag": "food"
   },
   {
+    "isFromExpedition": true,
     "type": "bio_reconstruction_vat",
     "category": "production",
     "name": "Bio-Reconstruction Vat",

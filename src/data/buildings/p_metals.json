@@ -438,6 +438,7 @@
     "tag": "metals"
   },
   {
+    "isFromExpedition": true,
     "type": "quantum_forge_array",
     "category": "production",
     "name": "Quantum Forge Array",
