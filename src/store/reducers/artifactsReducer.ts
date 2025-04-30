@@ -1,6 +1,7 @@
 import { stat } from "fs";
 import { GameState } from "../types";
 import { Artifact, ArtifactEffectType } from "@/types/artifacts";
+import { TIME_PER_TIER } from "./expeditionReducer";
 
 export const upgradeArtifact = (
   artifactName: string,

@@ -40,4 +40,22 @@ export const artifactsData: Artifact[] = [
       },
     ],
   },
+  {
+    name: "Time Crystal",
+    description: "A crystal that can manipulate time itself.",
+    image: "/deepvoidgate/demo/artifacts_/time_crystal.png",
+    stars: 0,
+    class: "D",
+    isLocked: true,
+    amount: 0,
+    expedtionTier: 3,
+    effect: [
+      {
+        type: "expeditionTime" as ArtifactEffectType,
+        description: (starts: number) =>
+          `Decreases expedition time by ${((starts + 1) / 2) * 10}%`,
+        value: 0.05,
+      },
+    ],
+  },
 ];

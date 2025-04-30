@@ -3,6 +3,8 @@ import { Card } from "../ui/card";
 import { AlertTriangle, Book, Clock, Info, Package, Users } from "lucide-react";
 import {
   BASE_EXPEDITION_TIME,
+  calculateExpeditionDuration,
+  calculateRequiredCrew,
   CREW_PER_TIER,
   getBaseExpeditionReward,
   getExpectedExpeditionRewards,
@@ -37,7 +39,7 @@ function SummaryExpeditionPanel({
               <span className="whitespace-nowrap">
                 Duration:{" "}
                 {formatDuration(
-                  BASE_EXPEDITION_TIME + selectedTier * TIME_PER_TIER
+                  calculateExpeditionDuration(selectedTier, state)
                 )}
               </span>
             </div>
@@ -45,7 +47,7 @@ function SummaryExpeditionPanel({
             <div className="flex items-center gap-2">
               <Users className="w-4 h-4" />
               <span className="break-words">
-                Crew: {CREW_PER_TIER + selectedTier * CREW_PER_TIER} | Available{" "}
+                Crew: {calculateRequiredCrew(selectedTier)} | Available{" "}
                 {state.population.available}
               </span>
             </div>

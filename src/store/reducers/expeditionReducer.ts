@@ -10,11 +10,16 @@ import {
 } from "@/types/expedition";
 import { expeditionEvents } from "@/data/expeditionEvents";
 import { toast } from "@/components/ui/use-toast";
-import { addArtifact, getArtifactsByExpeditionsTier } from "./artifactsReducer";
+import {
+  addArtifact,
+  getArtifact,
+  getArtifactsByExpeditionsTier,
+} from "./artifactsReducer";
+import { stat } from "fs";
 
 // Stałe
 export const BASE_EXPEDITION_TIME = 15; // 30 minut dla tier 0
-export const TIME_PER_TIER = 15; // +15 minut na każdy tier
+export let TIME_PER_TIER = 15; // +15 minut na każdy tier
 export const CREW_PER_TIER = 5; // +5 załogant na każdy tier
 export const EVENT_INTERVAL = 10; // zdarzenie co 10 minut
 export const TIER_MULTIPLIER = 1.5; // mnożnik dla nagród za każdy tier
@@ -210,11 +215,20 @@ const getReward = (expedition: Expedition, state: GameState): GameState => {
 };
 
 // Helpery
-const calculateExpeditionDuration = (tier: number): number => {
+export const calculateExpeditionDuration = (
+  tier: number,
+  state: GameState
+): number => {
+  const artifact = getArtifact("Time Crystal", state);
+
+  if (!artifact?.isLocked) {
+    const time = BASE_EXPEDITION_TIME + tier * TIME_PER_TIER;
+    return time - time * (0.05 * (artifact?.stars + 1));
+  }
   return BASE_EXPEDITION_TIME + tier * TIME_PER_TIER;
 };
 
-const calculateRequiredCrew = (tier: number): number => {
+export const calculateRequiredCrew = (tier: number): number => {
   return CREW_PER_TIER + tier * CREW_PER_TIER;
 };
 
@@ -369,7 +383,7 @@ export const startExpedition = (
     id: generateId(),
     type,
     tier,
-    duration: calculateExpeditionDuration(tier),
+    duration: calculateExpeditionDuration(tier, state),
     elapsed: 0,
     crew: requiredCrew,
     status: "preparing",
