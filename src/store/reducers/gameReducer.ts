@@ -327,6 +327,8 @@ export const gameReducer = (
             {} as Record<ResourceType, number>
           );
 
+          analitisicsSend(migratedState);
+
           return {
             ...migratedState,
             resources: newResources,
@@ -339,23 +341,8 @@ export const gameReducer = (
           };
         }
 
-        // Jeśli nie było progresu, zaktualizuj tylko timestamp
-
         // Wysłanie save do api w celach analitycznych
-        if (JSON.parse(localStorage.getItem("settings"))?.analyticsConsent) {
-          fetch("https://api.fern.fun/deepvoidgate/save", {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json",
-            },
-            body: JSON.stringify({
-              userID: migratedState.userID,
-              save: migratedState,
-              version: CURRENT_GAME_VERSION,
-              timestamp: Date.now(),
-            }),
-          });
-        }
+        analitisicsSend(migratedState);
 
         return {
           ...migratedState,
@@ -648,5 +635,41 @@ const checkDeathTimerWarning = (deathTimer: number) => {
       )} seconds!`,
       variant: "destructive",
     });
+  }
+};
+
+const analitisicsSend = (migratedState: GameState) => {
+  // Wysłanie save do api w celach analitycznych
+  const lastAnalisis = localStorage.getItem("lastAnalisis");
+
+  if (lastAnalisis && Date.now() - parseInt(lastAnalisis) < 1000 * 60 * 10) {
+    return;
+  }
+
+  if (JSON.parse(localStorage.getItem("settings"))?.analyticsConsent) {
+    fetch("https://api.fern.fun/deepvoidgate/save", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        userID: migratedState.userID,
+        save: migratedState,
+        version: CURRENT_GAME_VERSION,
+        timestamp: Date.now(),
+      }),
+    })
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error("Network response was not ok");
+        }
+        localStorage.setItem("lastAnalisis", Date.now().toString());
+      })
+      .then((data) => {
+        console.log("Save data sent successfully:", data);
+      })
+      .catch((error) => {
+        console.error("Error sending save data:", error);
+      });
   }
 };
