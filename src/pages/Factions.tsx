@@ -13,6 +13,7 @@ import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
 import { FactionName } from "@/types/factions";
 import { IMAGE_PATH } from "@/config";
+import { formatNumber } from "@/lib/utils";
 
 const FactionsDisplay = () => {
   const { state, dispatch } = useGame();
@@ -106,21 +107,24 @@ const FactionsDisplay = () => {
                           : "opacity-50 grayscale"
                       }`}
                     >
-                      <div className="flex items-start gap-2">
+                      <div className="flex items-center gap-2 w-full">
                         <Zap className="w-4 h-4 mt-0.5 flex-shrink-0 text-primary" />
                         <div className="flex-1">
                           <div className="flex justify-between items-start">
                             <span className="font-medium text-sm text-primary">
                               {bonus.name}
                             </span>
-                            <span className="text-xs px-2 py-1 bg-muted rounded-full">
-                              Loyalty {bonus.loyaltyReq}+ required
-                            </span>
                           </div>
-                          <AlertDescription className="text-sm mt-1">
-                            {bonus.description}
-                          </AlertDescription>
                         </div>
+                      </div>
+                      <AlertDescription className="text-[12px] text-gray-500 mt-1">
+                        {bonus.description}
+                      </AlertDescription>
+
+                      <div className="flex items-center justify-end w-full p-2">
+                        <span className="text-xs px-2 py-1 bg-muted rounded-full">
+                          Loyalty {formatNumber(bonus.loyaltyReq)}+ required
+                        </span>
                       </div>
                     </Alert>
                   ))}
