@@ -720,7 +720,7 @@ export const initialTechnologies: Technology[] = [
       energy: 100000,
       oxygen: 50000,
     },
-    prerequisites: ["psionic_resonance"],
+    prerequisites: [],
     unlocksBuildings: ["astral_scriptorium"],
     researchDuration: 6600, // 1h 50min
     isResearched: false,

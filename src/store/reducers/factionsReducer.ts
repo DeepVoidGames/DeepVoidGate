@@ -48,6 +48,10 @@ export const applyFactionBonuses = (state: GameState): GameState => {
     case "Biogenesis":
       break;
     case "StarUnderstanding":
+      if (faction.loyalty >= 1000)
+        newState.technologies.find(
+          (tech) => tech.id === "stellar_awareness"
+        ).locked = false;
       break;
   }
 
@@ -94,10 +98,12 @@ export const initialFactions = [
     hostility: 0,
     bonuses: [
       {
-        name: "A",
-        description: "",
+        name: "Embodied Prophet of the Stars",
+        description:
+          "Gain access to the Forbidden Astral Archives, unlocking the ability to construct the Astral Scriptorium and drastically accelerate your scientific progress.",
         loyaltyReq: 1000,
       },
+
       {
         name: "B",
         description: "",

@@ -46,6 +46,7 @@ import {
 import { artifactsData } from "@/data/artifacts";
 import { applyArtifactEffect, upgradeArtifact } from "./artifactsReducer";
 import {
+  applyFactionBonuses,
   handleFactionSelection,
   initialFactions,
   updateFactionLoyalty,
@@ -110,6 +111,7 @@ export const gameReducer = (
       newState = handleMilestonesAndExpeditions(newState, deltaTime);
       newState = processCriticalResources(newState, deltaTime);
       newState = monitorResourceLevels(newState);
+      newState = applyFactionBonuses(newState);
 
       return {
         ...newState,
