@@ -438,4 +438,12 @@ export const buildingConfig = [
       className: "h-5 w-5 text-red-400",
     }),
   },
+  {
+    type: "astral_scriptorium" as BuildingType,
+    name: "Astral Scriptorium",
+    category: "research" as BuildingCategory,
+    icon: React.createElement(FlaskConical, {
+      className: "h-5 w-5 text-red-400",
+    }),
+  },
 ];

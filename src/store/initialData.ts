@@ -703,14 +703,28 @@ export const initialTechnologies: Technology[] = [
       metals: 100000,
     },
     prerequisites: ["temporal_acceleration"],
-    unlocksBuildings: [
-      "quantum_forge_array",
-      "bio_reconstruction_vat",
-    ],
+    unlocksBuildings: ["quantum_forge_array", "bio_reconstruction_vat"],
     researchDuration: 7200, // 2 godziny
     isResearched: false,
     locked: true,
     expedtionMinTier: 10,
+  },
+  {
+    id: "stellar_awareness",
+    name: "Stellar Awareness",
+    category: "Research",
+    description:
+      "Through deep communion with the cosmos, researchers unlock higher-dimensional understanding, enabling the interpretation of astral knowledge into scientific applications.",
+    researchCost: {
+      science: 180000,
+      energy: 100000,
+      oxygen: 50000,
+    },
+    prerequisites: ["psionic_resonance"],
+    unlocksBuildings: ["astral_scriptorium"],
+    researchDuration: 6600, // 1h 50min
+    isResearched: false,
+    locked: true,
   },
 ];
 

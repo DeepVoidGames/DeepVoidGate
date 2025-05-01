@@ -135,5 +135,37 @@
       "storage": { "science": 50000 }
     },
     "tag": "science"
+  },
+  {
+    "type": "astral_scriptorium",
+    "category": "science",
+    "name": "Astral Scriptorium",
+    "description": "An ethereal research nexus where enlightened scholars transcribe cosmic insights received during deep meditation into scientific breakthroughs.",
+    "workerCapacity": 6,
+    "baseCost": {
+      "science": 886,
+      "metals": 496,
+      "energy": 287
+    },
+    "baseProduction": {
+      "science": 12.5
+    },
+    "baseConsumption": {
+      "energy": 1.0,
+      "water": 0.6
+    },
+    "requirements": {},
+    "requiredTechnology": "stellar_awareness",
+    "costMultiplier": 2.1,
+    "productionMultiplier": 2.0,
+    "maxInstances": 1,
+    "tier": 1,
+    "maxTier": 5,
+    "upgrades": 0,
+    "uniqueBonus": {
+      "production": { "science": 150 },
+      "storage": { "science": 150000 }
+    },
+    "tag": "science"
   }
 ]

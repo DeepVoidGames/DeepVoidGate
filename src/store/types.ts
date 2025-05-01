@@ -81,7 +81,8 @@ export type BuildingType =
   | "chrono_forge"
   | "biosurge_chamber"
   | "quantum_forge_array"
-  | "bio_reconstruction_vat";
+  | "bio_reconstruction_vat"
+  | "astral_scriptorium";
 
 export type TechnologyCategory =
   | "Infrastructure"
