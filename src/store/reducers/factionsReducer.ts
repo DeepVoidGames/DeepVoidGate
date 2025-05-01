@@ -43,9 +43,19 @@ export const initialFactions = [
     hostility: 0,
     bonuses: [
       {
-        name: "",
+        name: "A",
         description: "",
-        loyaltyReq: 25,
+        loyaltyReq: 1000,
+      },
+      {
+        name: "B",
+        description: "",
+        loyaltyReq: 5000,
+      },
+      {
+        name: "C",
+        description: "",
+        loyaltyReq: 10000,
       },
     ],
   },

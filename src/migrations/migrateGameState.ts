@@ -350,22 +350,28 @@ const migrateFactionsStats = (savedFactions: any[]): any[] => {
   });
 };
 
-// Pomocnicza funkcja do łączenia bonusów
 const mergeBonuses = (templateBonuses: any[], savedBonuses: any[] = []) => {
-  const bonusMap = new Map(templateBonuses.map((b) => [b.name, b]));
+  // 1. Stwórz mapę bonusów z szablonu
+  const bonusMap = new Map(templateBonuses.map((b) => [b.name, { ...b }]));
 
-  // Aktualizuj zachowane bonusy danymi z szablonu
+  // 2. Zaktualizuj bonusy danymi z zapisu
   savedBonuses.forEach((savedBonus) => {
-    const templateBonus = bonusMap.get(savedBonus.name);
-    if (templateBonus) {
+    const existing = bonusMap.get(savedBonus.name);
+    if (existing) {
+      // 3. Scal właściwości zachowując wartości z zapisu
       bonusMap.set(savedBonus.name, {
-        ...templateBonus,
+        ...existing,
         ...savedBonus,
+        // Specjalna obsługa progresu (np. odblokowane bonusy)
+        unlocked: savedBonus.unlocked || existing.unlocked,
       });
     }
   });
 
-  return Array.from(bonusMap.values());
+  // 4. Zwróć połączoną listę w kolejności z szablonu
+  return templateBonuses.map(
+    (templateBonus) => bonusMap.get(templateBonus.name) || templateBonus
+  );
 };
 
 const migrateResources = (
