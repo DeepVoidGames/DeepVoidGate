@@ -8,6 +8,8 @@ import {
   CheckCircle,
   Factory,
   User,
+  Microscope,
+  FlaskConical,
 } from "lucide-react";
 import { useGame } from "@/context/GameContext";
 import { Progress } from "@/components/ui/progress";
@@ -31,12 +33,12 @@ const milestoneCategories = [
   {
     id: "technology",
     name: "Technology",
-    icon: <Trophy className="h-4 w-4 text-purple-400" />,
+    icon: <Microscope className="h-4 w-4 text-purple-400" />,
   },
   {
     id: "expeditions",
     name: "Expeditions",
-    icon: <Trophy className="h-4 w-4 text-orange-400" />,
+    icon: <FlaskConical className="h-4 w-4 text-orange-400" />,
   },
   {
     id: "artifacts",
