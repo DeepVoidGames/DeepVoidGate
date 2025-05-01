@@ -41,9 +41,9 @@ const FactionsDisplay = () => {
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6 glass-panel animate-fade-in p-4">
         {factions.map((faction) => (
           <Card
-            key={faction.name}
+            key={faction.id}
             className={`relative transition-all ${
-              selectedFaction === faction.name
+              selectedFaction === faction.id
                 ? "border-2 border-primary"
                 : "opacity-90 hover:opacity-100"
             }`}
@@ -95,7 +95,7 @@ const FactionsDisplay = () => {
               </div>
 
               <div className="space-y-2">
-                {selectedFaction === faction.name &&
+                {selectedFaction === faction.id &&
                   faction.bonuses?.map((bonus) => (
                     <Alert
                       key={bonus.name}
@@ -131,15 +131,13 @@ const FactionsDisplay = () => {
               <CardFooter>
                 <Button
                   variant={
-                    selectedFaction === faction.name ? "default" : "outline"
+                    selectedFaction === faction.id ? "default" : "outline"
                   }
                   className="w-full"
-                  onClick={() => handleJoinFaction(faction.name)}
-                  disabled={
-                    !!selectedFaction && selectedFaction !== faction.name
-                  }
+                  onClick={() => handleJoinFaction(faction.id)}
+                  disabled={!!selectedFaction && selectedFaction !== faction.id}
                 >
-                  {selectedFaction === faction.name
+                  {selectedFaction === faction.id
                     ? "Active Alliance"
                     : "Join Faction"}
                 </Button>

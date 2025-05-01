@@ -16,6 +16,8 @@ import {
   getArtifactsByExpeditionsTier,
 } from "./artifactsReducer";
 import { stat } from "fs";
+import { updateFactionLoyalty } from "./factionsReducer";
+import { FactionName } from "@/types/factions";
 
 // Stałe
 export const BASE_EXPEDITION_TIME = 15; // 30 minut dla tier 0
@@ -205,6 +207,15 @@ const getReward = (expedition: Expedition, state: GameState): GameState => {
       });
     }
   }
+
+  // Frakcje
+  if (newState.selectedFaction != null)
+    newState = updateFactionLoyalty(
+      newState,
+      newState.factions.find((f) => f.id == newState.selectedFaction)
+        .id as FactionName,
+      10 * (expedition.tier + 1)
+    );
 
   toast({
     title: "Expedition Completed",
