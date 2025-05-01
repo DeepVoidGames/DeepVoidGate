@@ -1,3 +1,4 @@
+import { IMAGE_PATH } from "@/config";
 import { Artifact, ArtifactEffectType } from "@/types/artifacts";
 import { start } from "repl";
 
@@ -5,7 +6,7 @@ export const artifactsData: Artifact[] = [
   {
     name: "Gravity Artifact",
     description: "A mysterious artifact that defies the laws of physics. ",
-    image: "/deepvoidgate/demo/artifacts_/gravity_artifact.png",
+    image: `${IMAGE_PATH}artifacts_/gravity_artifact.png`,
     stars: 0,
     class: "D",
     isLocked: true,
@@ -23,7 +24,7 @@ export const artifactsData: Artifact[] = [
   {
     name: "Quantum Cube",
     description: "A cube that exists in multiple dimensions at once.",
-    image: "/deepvoidgate/demo/artifacts_/quantum_cube.png",
+    image: `${IMAGE_PATH}artifacts_/quantum_cube.png`,
     stars: 0,
     class: "D",
     isLocked: true,
@@ -43,7 +44,7 @@ export const artifactsData: Artifact[] = [
   {
     name: "Time Crystal",
     description: "A crystal that can manipulate time itself.",
-    image: "/deepvoidgate/demo/artifacts_/time_crystal.png",
+    image: `${IMAGE_PATH}artifacts_/time_crystal.png`,
     stars: 0,
     class: "D",
     isLocked: true,

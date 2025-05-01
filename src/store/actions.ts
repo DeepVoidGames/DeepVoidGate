@@ -1,5 +1,6 @@
 import { ExpeditionType } from "@/types/expedition";
 import { BuildingType, ResourceType } from "./types";
+import { FactionName } from "@/types/factions";
 
 export type GameAction =
   | { type: "TICK"; payload: { currentTime: number } }
@@ -27,5 +28,10 @@ export type GameAction =
     }
   | { type: "CANCEL_EXPEDITION"; payload: { expeditionId: string } }
   | { type: "UPGRADE_ARTIFACT"; payload: { artifactName: string } }
-  | { type: "UPGRAGE_BUILDING_MAX"; payload: { buildingId: string } };
+  | { type: "UPGRAGE_BUILDING_MAX"; payload: { buildingId: string } }
+  | { type: "SELECT_FACTION"; payload: { faction: FactionName } }
+  | {
+      type: "UPDATE_LOYALTY";
+      payload: { faction: FactionName; amount: number };
+    };
 //

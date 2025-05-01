@@ -1,5 +1,6 @@
 import { Artifact } from "@/types/artifacts";
 import { Expedition } from "@/types/expedition";
+import { Faction, FactionName } from "@/types/factions";
 import { ReactNode } from "react";
 
 // Resource types
@@ -243,6 +244,8 @@ export interface GameState {
   playtime: number; // w sekundach
   sessionLength: number; // w sekundach
   artifacts: Artifact[];
+  factions: Faction[];
+  selectedFaction: FactionName | null;
 }
 
 export interface UpgradeData {

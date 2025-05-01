@@ -4,6 +4,7 @@ import { Lock } from "lucide-react";
 import { useGame } from "@/context/GameContext";
 import { MobileTopNav } from "@/components/Navbar";
 import { Link } from "react-router-dom";
+import { IMAGE_PATH } from "@/config";
 
 type Feature = {
   id: string;
@@ -23,7 +24,7 @@ const Hub = () => {
     {
       id: "expedition",
       name: "Expedition",
-      image: "/deepvoidgate/demo/expeditionIcon.png",
+      image: `${IMAGE_PATH}expeditionIcon.png`,
       to: "/expedition",
       requiredTechnologies: ["intra_planetary_expeditions_enablement"],
     },
@@ -31,7 +32,7 @@ const Hub = () => {
       id: "315246",
       name: "3-1-5-2-4-6",
       description: "1⋆2≋1⋆4≋6⋆3≋5⋆2⊛≋2⋆2≋5⋆1≋6⋆1≋6⋆6",
-      image: "/deepvoidgate/demo/315246.png",
+      image: `${IMAGE_PATH}315246.png`,
       to: "#",
       requiredTechnologies: [],
     },
@@ -39,9 +40,17 @@ const Hub = () => {
       id: "642513",
       name: "Artifacts",
       description: "",
-      image: "/deepvoidgate/demo/642513.png",
+      image: `${IMAGE_PATH}642513.png`,
       to: "/artifacts",
       requiredTechnologies: ["intra_planetary_expeditions_enablement"],
+    },
+    {
+      id: "factions",
+      name: "Factions",
+      description: "",
+      image: `${IMAGE_PATH}factions.png`,
+      to: "/factions",
+      requiredTechnologies: [],
     },
   ];
 

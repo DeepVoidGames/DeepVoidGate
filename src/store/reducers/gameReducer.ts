@@ -45,6 +45,11 @@ import {
 } from "./expeditionReducer";
 import { artifactsData } from "@/data/artifacts";
 import { applyArtifactEffect, upgradeArtifact } from "./artifactsReducer";
+import {
+  handleFactionSelection,
+  initialFactions,
+  updateFactionLoyalty,
+} from "./factionsReducer";
 
 // Initialize the game state
 export const initialState: GameState = {
@@ -65,6 +70,8 @@ export const initialState: GameState = {
   playtime: 0,
   sessionLength: 0,
   artifacts: artifactsData,
+  factions: initialFactions,
+  selectedFaction: null,
 };
 
 // Constants for death timer
@@ -252,6 +259,16 @@ export const gameReducer = (
       const { artifactName } = action.payload;
       return upgradeArtifact(artifactName, state);
     }
+
+    case "SELECT_FACTION":
+      return handleFactionSelection(state, action.payload.faction);
+
+    case "UPDATE_LOYALTY":
+      return updateFactionLoyalty(
+        state,
+        action.payload.faction,
+        action.payload.amount
+      );
 
     case "SAVE_GAME": {
       try {

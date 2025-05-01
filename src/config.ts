@@ -9,3 +9,6 @@ export const ResourcesIcon = ({ resource }) => {
   };
   return icons[resource] || "?";
 };
+
+// /deepvoidgate/demo/
+export const IMAGE_PATH = "/";
