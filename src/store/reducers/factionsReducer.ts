@@ -8,18 +8,21 @@ export const initialFactions = [
     id: "Technocrats" as FactionName,
     name: "Technocrat Syndicate",
     loyalty: 0,
+    maxLoyalty: 10000,
     hostility: 0,
   },
   {
     id: "Biogenesis" as FactionName,
     name: "Biogenesis Coalition",
     loyalty: 0,
+    maxLoyalty: 10000,
     hostility: 0,
   },
   {
     id: "StarUnderstanding" as FactionName,
     name: "Order of Stellar Understanding",
     loyalty: 0,
+    maxLoyalty: 10000,
     hostility: 0,
   },
 ];

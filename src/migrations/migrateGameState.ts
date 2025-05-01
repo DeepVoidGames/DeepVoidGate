@@ -5,6 +5,7 @@ import {
   initialBuildings,
   initialTechnologies,
 } from "@/store/initialData";
+import { initialFactions } from "@/store/reducers/factionsReducer";
 import { initialState } from "@/store/reducers/gameReducer";
 import { ResourcesState } from "@/store/reducers/resourceReducer";
 import { GameState, ResourceData } from "@/store/types";
@@ -80,6 +81,7 @@ export const migrateGameState = (savedState: any): GameState => {
     milestones: mergedMilestones,
     version: CURRENT_GAME_VERSION,
     artifacts: migrateArtifactsStats(currentState.artifacts || []),
+    factions: migrateFactionsStats(currentState.factions || []),
   };
 };
 
@@ -303,6 +305,7 @@ const migrateArtifactsStats = (savedArtifacts: any[]): any[] => {
 
   return [...migratedArtifacts, ...missingArtifacts];
 };
+
 const migrateTechnologiesStats = (savedTechnologies: any[]): any[] => {
   return savedTechnologies.map((tech) => {
     // Znajdź szablon technologii
@@ -317,6 +320,19 @@ const migrateTechnologiesStats = (savedTechnologies: any[]): any[] => {
       prerequisites: template.prerequisites || tech.prerequisites,
       unlocksBuildings: template.unlocksBuildings || tech.unlocksBuildings,
       researchDuration: template.researchDuration || tech.researchDuration,
+    };
+  });
+};
+
+const migrateFactionsStats = (savedFactions: any[]): any[] => {
+  return savedFactions.map((faction) => {
+    const template = initialFactions.find((it) => it.id === faction.id) || {};
+
+    return {
+      ...template, // Wartości domyślne z szablonu
+      ...faction, // Nadpisujemy wartościami z zapisanego stanu
+      name: template.name || faction.name,
+      maxLoyalty: template.maxLoyalty || faction.maxLoyalty,
     };
   });
 };
