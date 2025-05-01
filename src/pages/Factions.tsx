@@ -82,7 +82,8 @@ const FactionsDisplay = () => {
                 </div>
                 <Progress
                   value={faction.hostility}
-                  className="h-2 bg-primary/20"
+                  className="h-2 bg-red-600/20"
+                  className2="bg-red-600/80"
                 />
               </div>
 
