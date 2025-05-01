@@ -49,17 +49,22 @@ const FactionsDisplay = () => {
             }`}
           >
             <CardHeader>
-              <CardTitle className="flex items-center gap-3">
-                <div
-                  className={`relative w-12 h-12 rounded-lg backdrop-blur-sm border border-primary/30 p-1 hover:scale-105 active:scale-95 transform-gpu transition-all duration-200`}
-                >
-                  <img
-                    className="w-full h-full object-cover rounded-md saturate-80 hover:saturate-100 transition-all duration-300"
-                    src={`${IMAGE_PATH}factions_/${faction.id}.png`}
-                  />
-                </div>
+              <CardTitle className="flex flex-col gap-3">
+                <div>
+                  <div
+                    className={`relative w-12 h-12 rounded-lg backdrop-blur-sm b p-1 transform-gpu transition-all duration-200`}
+                  >
+                    <img
+                      className="w-full h-full object-cover rounded-md saturate-80 hover:saturate-100 transition-all duration-300"
+                      src={`${IMAGE_PATH}factions_/${faction.id}.png`}
+                    />
+                  </div>
 
-                <span className="text-xl">{faction.name}</span>
+                  <span className="text-xl">{faction.name}</span>
+                </div>
+                <span className="text-sm text-gray-500">
+                  {faction.description}
+                </span>
               </CardTitle>
             </CardHeader>
 
@@ -67,10 +72,12 @@ const FactionsDisplay = () => {
               <div className="space-y-2">
                 <div className="flex items-center justify-between text-sm">
                   <span>Loyalty</span>
-                  <span>{faction.loyalty}%</span>
+                  <span>
+                    {faction.loyalty} / {faction.maxLoyalty}
+                  </span>
                 </div>
                 <Progress
-                  value={faction.loyalty}
+                  value={faction.loyalty / faction.maxLoyalty}
                   className="h-2 bg-primary/20"
                 />
               </div>
@@ -88,38 +95,56 @@ const FactionsDisplay = () => {
               </div>
 
               <div className="space-y-2">
-                {selectedFaction === faction.name && (
-                  <Alert variant="default" className="bg-muted/20 p-3">
-                    <div className="flex items-start gap-2">
-                      <Zap className="w-4 h-4 mt-0.5 flex-shrink-0 text-primary" />
-                      <AlertDescription className="text-sm">
-                        {faction.name === "Technocrats" &&
-                          "+20% Drones Efficiency"}
-                        {faction.name === "Biogenesis" &&
-                          "+30% Population Capacity"}
-                        {faction.name === "StarUnderstanding" &&
-                          "+20% Artifact Power"}
-                      </AlertDescription>
-                    </div>
-                  </Alert>
-                )}
+                {selectedFaction === faction.name &&
+                  faction.bonuses?.map((bonus) => (
+                    <Alert
+                      key={bonus.name}
+                      variant="default"
+                      className={`bg-muted/20 p-3 transition-all ${
+                        faction.loyalty >= bonus.loyaltyReq
+                          ? "opacity-100"
+                          : "opacity-50 grayscale"
+                      }`}
+                    >
+                      <div className="flex items-start gap-2">
+                        <Zap className="w-4 h-4 mt-0.5 flex-shrink-0 text-primary" />
+                        <div className="flex-1">
+                          <div className="flex justify-between items-start">
+                            <span className="font-medium text-sm text-primary">
+                              {bonus.name}
+                            </span>
+                            <span className="text-xs px-2 py-1 bg-muted rounded-full">
+                              Loyalty {bonus.loyaltyReq}+ required
+                            </span>
+                          </div>
+                          <AlertDescription className="text-sm mt-1">
+                            {bonus.description}
+                          </AlertDescription>
+                        </div>
+                      </div>
+                    </Alert>
+                  ))}
               </div>
             </CardContent>
 
-            <CardFooter>
-              <Button
-                variant={
-                  selectedFaction === faction.name ? "default" : "outline"
-                }
-                className="w-full"
-                onClick={() => handleJoinFaction(faction.name)}
-                disabled={!!selectedFaction && selectedFaction !== faction.name}
-              >
-                {selectedFaction === faction.name
-                  ? "Active Alliance"
-                  : "Join Faction"}
-              </Button>
-            </CardFooter>
+            {!selectedFaction && (
+              <CardFooter>
+                <Button
+                  variant={
+                    selectedFaction === faction.name ? "default" : "outline"
+                  }
+                  className="w-full"
+                  onClick={() => handleJoinFaction(faction.name)}
+                  disabled={
+                    !!selectedFaction && selectedFaction !== faction.name
+                  }
+                >
+                  {selectedFaction === faction.name
+                    ? "Active Alliance"
+                    : "Join Faction"}
+                </Button>
+              </CardFooter>
+            )}
           </Card>
         ))}
       </div>

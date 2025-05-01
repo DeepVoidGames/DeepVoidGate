@@ -325,16 +325,47 @@ const migrateTechnologiesStats = (savedTechnologies: any[]): any[] => {
 };
 
 const migrateFactionsStats = (savedFactions: any[]): any[] => {
-  return savedFactions.map((faction) => {
-    const template = initialFactions.find((it) => it.id === faction.id) || {};
+  // Jeśli brak jakichkolwiek danych o frakcjach, zwróć początkowy stan
+  if (!savedFactions || !Array.isArray(savedFactions)) {
+    return initialFactions.map((f) => ({ ...f }));
+  }
 
+  // Stwórz mapę istniejących frakcji do łatwiejszego łączenia
+  const savedFactionsMap = new Map(savedFactions.map((f) => [f.id, f]));
+
+  return initialFactions.map((template) => {
+    const savedFaction = savedFactionsMap.get(template.id) || {};
+
+    // Połącz właściwości zachowując progres gracza
     return {
-      ...template, // Wartości domyślne z szablonu
-      ...faction, // Nadpisujemy wartościami z zapisanego stanu
-      name: template.name || faction.name,
-      maxLoyalty: template.maxLoyalty || faction.maxLoyalty,
+      id: template.id,
+      name: template.name, // Zawsze używaj nazwy z szablonu
+      description: template.description,
+      loyalty: savedFaction.loyalty || template.loyalty || 0,
+      hostility: savedFaction.hostility || template.hostility || 0,
+      maxLoyalty: savedFaction.maxLoyalty || template.maxLoyalty || 100,
+      bonuses: mergeBonuses(template.bonuses, savedFaction.bonuses),
+      // Dodaj inne właściwości według potrzeb
     };
   });
+};
+
+// Pomocnicza funkcja do łączenia bonusów
+const mergeBonuses = (templateBonuses: any[], savedBonuses: any[] = []) => {
+  const bonusMap = new Map(templateBonuses.map((b) => [b.name, b]));
+
+  // Aktualizuj zachowane bonusy danymi z szablonu
+  savedBonuses.forEach((savedBonus) => {
+    const templateBonus = bonusMap.get(savedBonus.name);
+    if (templateBonus) {
+      bonusMap.set(savedBonus.name, {
+        ...templateBonus,
+        ...savedBonus,
+      });
+    }
+  });
+
+  return Array.from(bonusMap.values());
 };
 
 const migrateResources = (

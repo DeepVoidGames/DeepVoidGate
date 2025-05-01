@@ -7,23 +7,47 @@ export const initialFactions = [
   {
     id: "Technocrats" as FactionName,
     name: "Technocrat Syndicate",
+    description: "Production optimization, automation, AI.",
     loyalty: 0,
     maxLoyalty: 10000,
     hostility: 0,
+    bonuses: [
+      {
+        name: "",
+        description: "",
+        loyaltyReq: 25,
+      },
+    ],
   },
   {
     id: "Biogenesis" as FactionName,
     name: "Biogenesis Coalition",
+    description: "Population development, terraforming, breeding.",
     loyalty: 0,
     maxLoyalty: 10000,
     hostility: 0,
+    bonuses: [
+      {
+        name: "",
+        description: "",
+        loyaltyReq: 25,
+      },
+    ],
   },
   {
     id: "StarUnderstanding" as FactionName,
     name: "Order of Stellar Understanding",
+    description: "Artifacts, cosmic energy, ???",
     loyalty: 0,
     maxLoyalty: 10000,
     hostility: 0,
+    bonuses: [
+      {
+        name: "",
+        description: "",
+        loyaltyReq: 25,
+      },
+    ],
   },
 ];
 
@@ -52,7 +76,7 @@ export const updateFactionLoyalty = (
       if (f.id === faction) {
         return {
           ...f,
-          loyalty: Math.min(Math.max(f.loyalty + amount, 0), 100),
+          loyalty: Math.min(Math.max(f.loyalty + amount, 0), f.maxLoyalty),
         };
       }
       return f;
