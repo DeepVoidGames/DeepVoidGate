@@ -6,7 +6,16 @@ import {
   CardContent,
   CardFooter,
 } from "@/components/ui/card";
-import { Users, Cpu, Leaf, Star, Zap, AlertTriangle } from "lucide-react";
+import {
+  Users,
+  Cpu,
+  Leaf,
+  Star,
+  Zap,
+  AlertTriangle,
+  Eye,
+  EyeOff,
+} from "lucide-react";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { useGame } from "@/context/GameContext";
 import { Button } from "@/components/ui/button";
@@ -18,6 +27,18 @@ import { formatNumber } from "@/lib/utils";
 const FactionsDisplay = () => {
   const { state, dispatch } = useGame();
   const { factions, selectedFaction } = state;
+
+  const [hiddenBonuses, setHiddenBonuses] = React.useState<Set<string>>(
+    new Set()
+  );
+
+  const toggleBonuses = (factionId: string) => {
+    setHiddenBonuses((prev) => {
+      const next = new Set(prev);
+      next.has(factionId) ? next.delete(factionId) : next.add(factionId);
+      return next;
+    });
+  };
 
   const handleJoinFaction = (factionName: string) => {
     if (!selectedFaction) {
@@ -96,38 +117,56 @@ const FactionsDisplay = () => {
               </div>
 
               <div className="space-y-2">
-                {selectedFaction === faction.id &&
-                  faction.bonuses?.map((bonus) => (
-                    <Alert
-                      key={bonus.name}
-                      variant="default"
-                      className={`bg-muted/20 p-3 transition-all ${
-                        faction.loyalty >= bonus.loyaltyReq
-                          ? "opacity-100"
-                          : "opacity-50 grayscale"
-                      }`}
-                    >
-                      <div className="flex items-center gap-2 w-full">
-                        <Zap className="w-4 h-4 mt-0.5 flex-shrink-0 text-primary" />
-                        <div className="flex-1">
-                          <div className="flex justify-between items-start">
-                            <span className="font-medium text-sm text-primary">
-                              {bonus.name}
-                            </span>
+                <div className="w-full flex justify-between items-center">
+                  <h2>Faction Bonuses</h2>
+                  <Button
+                    variant="ghost"
+                    size="sm"
+                    className="text-gray-400/80 hover:bg-transparent hover:text-gray-200 flex items-center gap-1"
+                    onClick={() => toggleBonuses(faction.id)}
+                  >
+                    {hiddenBonuses.has(faction.id) ? (
+                      <Eye className="w-4 h-4" />
+                    ) : (
+                      <EyeOff className="w-4 h-4" />
+                    )}
+                    {hiddenBonuses.has(faction.id) ? "Show" : "Hide"}
+                  </Button>
+                </div>
+                <div className="flex flex-col gap-2">
+                  {!hiddenBonuses.has(faction.id) &&
+                    faction.bonuses?.map((bonus) => (
+                      <Alert
+                        key={bonus.name}
+                        variant="default"
+                        className={`bg-muted/20 p-3 transition-all ${
+                          faction.loyalty >= bonus.loyaltyReq
+                            ? "opacity-100"
+                            : "opacity-80 grayscale"
+                        }`}
+                      >
+                        <div className="flex items-center gap-2 w-full">
+                          <Zap className="w-4 h-4 mt-0.5 flex-shrink-0 text-primary" />
+                          <div className="flex-1">
+                            <div className="flex justify-between items-start">
+                              <span className="font-medium text-sm text-primary">
+                                {bonus.name}
+                              </span>
+                            </div>
                           </div>
                         </div>
-                      </div>
-                      <AlertDescription className="text-[12px] text-gray-500 mt-1">
-                        {bonus.description}
-                      </AlertDescription>
+                        <AlertDescription className="text-[12px] text-gray-400/80 mt-1">
+                          {bonus.description}
+                        </AlertDescription>
 
-                      <div className="flex items-center justify-end w-full p-2">
-                        <span className="text-xs px-2 py-1 bg-muted rounded-full">
-                          Loyalty {formatNumber(bonus.loyaltyReq)}+ required
-                        </span>
-                      </div>
-                    </Alert>
-                  ))}
+                        <div className="flex items-center justify-end w-full p-2">
+                          <span className="text-xs px-2 py-1 bg-muted rounded-full">
+                            Loyalty {formatNumber(bonus.loyaltyReq)}+ required
+                          </span>
+                        </div>
+                      </Alert>
+                    ))}
+                </div>
               </div>
             </CardContent>
 
