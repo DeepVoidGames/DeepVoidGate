@@ -319,7 +319,7 @@ const migrateTechnologiesStats = (savedTechnologies: any[]): any[] => {
       researchCost: template.researchCost || tech.researchCost,
       prerequisites: template.prerequisites || tech.prerequisites,
       unlocksBuildings: template.unlocksBuildings || tech.unlocksBuildings,
-      researchDuration: template.researchDuration || tech.researchDuration,
+      researchDuration: tech.researchDuration || template.researchDuration,
     };
   });
 };
