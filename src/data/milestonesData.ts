@@ -46,6 +46,7 @@ export const createTieredMilestone = (
     tier: tierDef.tier,
     // Add an optional prerequisite for tiers > 1
     prerequisiteId: tierDef.tier > 1 ? `${id}_${tierDef.tier - 1}` : undefined,
+    onlyOneTime: true,
   }));
 };
 

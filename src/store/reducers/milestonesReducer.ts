@@ -67,6 +67,7 @@ export const checkMilestones = (state: GameState): GameState => {
     );
 
     for (const milestone of sortedCompleted) {
+      if (milestone?.onlyOneTime) continue;
       const conditionMet = milestone.condition(newState);
       const prereqMet = isPrerequisiteComplete(newState, milestone);
       if (!conditionMet || !prereqMet) {
@@ -77,8 +78,8 @@ export const checkMilestones = (state: GameState): GameState => {
         newState = { ...newState, milestones: updatedMilestones };
 
         // Notification
-        const baseName = milestone.name.replace(/\s+[IVX]+$/, "");
-        const tierText = milestone.tier ? ` (Tier ${milestone.tier})` : "";
+        // const baseName = milestone.name.replace(/\s+[IVX]+$/, "");
+        // const tierText = milestone.tier ? ` (Tier ${milestone.tier})` : "";
 
         hasChanges = true;
         revokedAny = true;

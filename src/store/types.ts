@@ -212,6 +212,7 @@ export type Milestone = {
   rewardDescription?: string;
   tier?: number;
   prerequisiteId?: string;
+  onlyOneTime?: boolean;
 };
 
 export interface OfflineReport {
