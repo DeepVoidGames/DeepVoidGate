@@ -670,6 +670,7 @@ export const initialMilestones: Milestone[] = [
     completed: false,
     category: "buildings",
   },
+
   {
     id: "technology_infrastructure",
     name: "Technology Infrastructure",
@@ -678,12 +679,12 @@ export const initialMilestones: Milestone[] = [
     condition: function (state: GameState): boolean {
       const maxCount = state.technologies.filter(
         (technology) =>
-          technology.category === ("infrastructure" as TechnologyCategory)
+          technology.category === ("Infrastructure" as TechnologyCategory)
       );
 
       const count = state.technologies.filter(
         (technology) =>
-          technology.category === ("infrastructure" as TechnologyCategory) &&
+          technology.category === ("Infrastructure" as TechnologyCategory) &&
           technology.isResearched
       ).length;
 
@@ -692,12 +693,12 @@ export const initialMilestones: Milestone[] = [
     progress: function (state: GameState): number {
       const maxCount = state.technologies.filter(
         (technology) =>
-          technology.category === ("infrastructure" as TechnologyCategory)
+          technology.category === ("Infrastructure" as TechnologyCategory)
       );
 
       const count = state.technologies.filter(
         (technology) =>
-          technology.category === ("infrastructure" as TechnologyCategory) &&
+          technology.category === ("Infrastructure" as TechnologyCategory) &&
           technology.isResearched
       ).length;
 
@@ -714,25 +715,26 @@ export const initialMilestones: Milestone[] = [
 
     condition: function (state: GameState): boolean {
       const maxCount = state.technologies.filter(
-        (technology) => technology.category === ("energy" as TechnologyCategory)
+        (technology) => technology.category === ("Energy" as TechnologyCategory)
       );
 
       const count = state.technologies.filter(
         (technology) =>
-          technology.category === ("energy" as TechnologyCategory) &&
+          technology.category === ("Energy" as TechnologyCategory) &&
           technology.isResearched
       ).length;
 
+      console.log(count, maxCount);
       return count >= maxCount.length;
     },
     progress: function (state: GameState): number {
       const maxCount = state.technologies.filter(
-        (technology) => technology.category === ("energy" as TechnologyCategory)
+        (technology) => technology.category === ("Energy" as TechnologyCategory)
       );
 
       const count = state.technologies.filter(
         (technology) =>
-          technology.category === ("energy" as TechnologyCategory) &&
+          technology.category === ("Energy" as TechnologyCategory) &&
           technology.isResearched
       ).length;
 
@@ -751,12 +753,12 @@ export const initialMilestones: Milestone[] = [
     condition: function (state: GameState): boolean {
       const maxCount = state.technologies.filter(
         (technology) =>
-          technology.category === ("production" as TechnologyCategory)
+          technology.category === ("Production" as TechnologyCategory)
       );
 
       const count = state.technologies.filter(
         (technology) =>
-          technology.category === ("production" as TechnologyCategory) &&
+          technology.category === ("Production" as TechnologyCategory) &&
           technology.isResearched
       ).length;
 
@@ -765,12 +767,12 @@ export const initialMilestones: Milestone[] = [
     progress: function (state: GameState): number {
       const maxCount = state.technologies.filter(
         (technology) =>
-          technology.category === ("production" as TechnologyCategory)
+          technology.category === ("Production" as TechnologyCategory)
       );
 
       const count = state.technologies.filter(
         (technology) =>
-          technology.category === ("production" as TechnologyCategory) &&
+          technology.category === ("Production" as TechnologyCategory) &&
           technology.isResearched
       ).length;
 
@@ -788,12 +790,12 @@ export const initialMilestones: Milestone[] = [
     condition: function (state: GameState): boolean {
       const maxCount = state.technologies.filter(
         (technology) =>
-          technology.category === ("research" as TechnologyCategory)
+          technology.category === ("Research" as TechnologyCategory)
       );
 
       const count = state.technologies.filter(
         (technology) =>
-          technology.category === ("research" as TechnologyCategory) &&
+          technology.category === ("Research" as TechnologyCategory) &&
           technology.isResearched
       ).length;
 
@@ -802,12 +804,12 @@ export const initialMilestones: Milestone[] = [
     progress: function (state: GameState): number {
       const maxCount = state.technologies.filter(
         (technology) =>
-          technology.category === ("research" as TechnologyCategory)
+          technology.category === ("Research" as TechnologyCategory)
       );
 
       const count = state.technologies.filter(
         (technology) =>
-          technology.category === ("research" as TechnologyCategory) &&
+          technology.category === ("Research" as TechnologyCategory) &&
           technology.isResearched
       ).length;
 
@@ -825,12 +827,12 @@ export const initialMilestones: Milestone[] = [
     condition: function (state: GameState): boolean {
       const maxCount = state.technologies.filter(
         (technology) =>
-          technology.category === ("advanced" as TechnologyCategory)
+          technology.category === ("Advanced" as TechnologyCategory)
       );
 
       const count = state.technologies.filter(
         (technology) =>
-          technology.category === ("advanced" as TechnologyCategory) &&
+          technology.category === ("Advanced" as TechnologyCategory) &&
           technology.isResearched
       ).length;
 
@@ -839,12 +841,12 @@ export const initialMilestones: Milestone[] = [
     progress: function (state: GameState): number {
       const maxCount = state.technologies.filter(
         (technology) =>
-          technology.category === ("advanced" as TechnologyCategory)
+          technology.category === ("Advanced" as TechnologyCategory)
       );
 
       const count = state.technologies.filter(
         (technology) =>
-          technology.category === ("advanced" as TechnologyCategory) &&
+          technology.category === ("Advanced" as TechnologyCategory) &&
           technology.isResearched
       ).length;
 
@@ -853,6 +855,7 @@ export const initialMilestones: Milestone[] = [
     completed: false,
     category: "technology",
   },
+
   // Expedtion Tier 0
   {
     id: "expedition_tier_0",
@@ -876,8 +879,8 @@ export const initialMilestones: Milestone[] = [
     completed: false,
     category: "expeditions",
   },
-  // 1
 
+  // 1
   {
     id: "expedition_tier_1",
     name: "Expedition Tier 1",
@@ -1117,6 +1120,7 @@ export const initialMilestones: Milestone[] = [
     category: "expeditions",
   },
 
+  //artifacts_gravity
   {
     id: "artifacts_gravity",
     name: "Gravity Artifact",
@@ -1140,7 +1144,7 @@ export const initialMilestones: Milestone[] = [
     category: "artifacts",
   },
 
-  // Max artifact
+  // artifacts_gravity_max
   {
     id: "artifacts_gravity_max",
     name: "Gravity Artifact Max",
@@ -1168,6 +1172,7 @@ export const initialMilestones: Milestone[] = [
     category: "artifacts",
   },
 
+  // artifacts_quantum_cube
   {
     id: "artifacts_quantum_cube",
     name: "Quantum Cube",
@@ -1190,7 +1195,7 @@ export const initialMilestones: Milestone[] = [
     category: "artifacts",
   },
 
-  // Max artifact
+  // artifacts_quantum_cube_max
   {
     id: "artifacts_quantum_cube_max",
     name: "Quantum Cube Max",
@@ -1218,6 +1223,7 @@ export const initialMilestones: Milestone[] = [
     category: "artifacts",
   },
 
+  // artifacts_Time_crystal
   {
     id: "artifacts_Time_crystal",
     name: "Time Crystal",
@@ -1240,7 +1246,7 @@ export const initialMilestones: Milestone[] = [
     category: "artifacts",
   },
 
-  // Max artifact
+  // artifacts_Time_crystal_max
   {
     id: "artifacts_Time_crystal_max",
     name: "Time Crystal Max",
