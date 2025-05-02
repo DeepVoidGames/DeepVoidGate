@@ -103,10 +103,10 @@ export const initialFactions = [
           "Gain access to the Forbidden Astral Archives, unlocking the ability to construct the Astral Scriptorium and drastically accelerate your scientific progress.",
         loyaltyReq: 1000,
       },
-
       {
-        name: "B",
-        description: "",
+        name: "Temporal Veil",
+        description:
+          "The Order envelops your research centers in a temporal veil, reducing the duration of all technological bans by 50%. Forbidden knowledge is forgotten... faster.",
         loyaltyReq: 5000,
       },
       {

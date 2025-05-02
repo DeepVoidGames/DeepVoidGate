@@ -1,5 +1,5 @@
 import { toast } from "@/components/ui/use-toast";
-import { Technology, TechnologyCategory } from "../types";
+import { GameState, Technology, TechnologyCategory } from "../types";
 import { canAffordCost, applyResourceCost } from "./resourceReducer";
 import { ResourcesState } from "./resourceReducer";
 import { BuildingType } from "../types";
@@ -16,7 +16,8 @@ const checkPrerequisites = (
 export const researchTechnology = (
   technologies: Technology[],
   resources: ResourcesState,
-  techId: string
+  techId: string,
+  state: GameState
 ): {
   technologies: Technology[];
   resources: ResourcesState;
@@ -73,19 +74,32 @@ export const researchTechnology = (
   }
 
   const newResources = applyResourceCost(resources, tech.researchCost);
+
+  const StarUnderstandingFaction = state?.factions?.find(
+    (faction) => faction.id === "StarUnderstanding"
+  );
+
+  const loyaltyReq =
+    StarUnderstandingFaction?.bonuses?.[1]?.loyaltyReq ?? 1000000000;
+
+  const researchDuration =
+    StarUnderstandingFaction?.loyalty ?? 0 >= loyaltyReq
+      ? tech.researchDuration * 0.5
+      : tech.researchDuration;
+
   const newTechs = technologies.map((t) =>
     t.id === techId
       ? {
           ...t,
           researchStartTime: Date.now(),
-          researchDuration: tech.researchDuration,
+          researchDuration: researchDuration,
         }
       : t
   );
 
   toast({
     title: "Research Started",
-    description: `Started researching: ${tech.name} (Duration: ${tech.researchDuration}s)`,
+    description: `Started researching: ${tech.name} (Duration: ${researchDuration}s)`,
   });
 
   return {

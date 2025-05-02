@@ -198,7 +198,8 @@ export const gameReducer = (
       const result = researchTechnology(
         state.technologies,
         state.resources,
-        techId
+        techId,
+        state
       );
 
       if (!result.success) return state;
