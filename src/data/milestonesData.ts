@@ -1167,6 +1167,106 @@ export const initialMilestones: Milestone[] = [
     completed: false,
     category: "artifacts",
   },
+
+  {
+    id: "artifacts_quantum_cube",
+    name: "Quantum Cube",
+    description:
+      "Harness the enigmatic power of quantum fluctuations and bend reality to your will.",
+    condition: function (state: GameState): boolean {
+      return (
+        state?.artifacts?.filter(
+          (artifact) => artifact.name === "Quantum Cube" && !artifact.isLocked
+        ).length > 0
+      );
+    },
+    progress: function (state: GameState): number {
+      const artifactCount = state?.artifacts?.filter(
+        (artifact) => artifact.name === "Quantum Cube" && !artifact.isLocked
+      ).length;
+      return Math.min((artifactCount / 1) * 100, 100);
+    },
+    completed: false,
+    category: "artifacts",
+  },
+
+  // Max artifact
+  {
+    id: "artifacts_quantum_cube_max",
+    name: "Quantum Cube Max",
+    description: "Max out the Quantum Cube to unlock its full potential.",
+    condition: function (state: GameState): boolean {
+      return (
+        state?.artifacts?.filter(
+          (artifact) =>
+            artifact.name === "Quantum Cube" &&
+            artifact.stars >= 5 &&
+            !artifact.isLocked
+        ).length > 0
+      );
+    },
+    progress: function (state: GameState): number {
+      const artifactCount = state?.artifacts?.filter(
+        (artifact) =>
+          artifact.name === "Quantum Cube" &&
+          artifact.stars >= 5 &&
+          !artifact.isLocked
+      ).length;
+      return Math.min((artifactCount / 1) * 100, 100);
+    },
+    completed: false,
+    category: "artifacts",
+  },
+
+  {
+    id: "artifacts_Time_crystal",
+    name: "Time Crystal",
+    description:
+      "Unlock the paradox of frozen time—where every moment bends to your command",
+    condition: function (state: GameState): boolean {
+      return (
+        state?.artifacts?.filter(
+          (artifact) => artifact.name === "Time Crystal" && !artifact.isLocked
+        ).length > 0
+      );
+    },
+    progress: function (state: GameState): number {
+      const artifactCount = state?.artifacts?.filter(
+        (artifact) => artifact.name === "Time Crystal" && !artifact.isLocked
+      ).length;
+      return Math.min((artifactCount / 1) * 100, 100);
+    },
+    completed: false,
+    category: "artifacts",
+  },
+
+  // Max artifact
+  {
+    id: "artifacts_Time_crystal_max",
+    name: "Time Crystal Max",
+    description: "Max out the Time Crystal to unlock its full potential.",
+    condition: function (state: GameState): boolean {
+      return (
+        state?.artifacts?.filter(
+          (artifact) =>
+            artifact.name === "Time Crystal" &&
+            artifact.stars >= 5 &&
+            !artifact.isLocked
+        ).length > 0
+      );
+    },
+    progress: function (state: GameState): number {
+      const artifactCount = state?.artifacts?.filter(
+        (artifact) =>
+          artifact.name === "Time Crystal" &&
+          artifact.stars >= 5 &&
+          !artifact.isLocked
+      ).length;
+      return Math.min((artifactCount / 1) * 100, 100);
+    },
+    completed: false,
+    category: "artifacts",
+  },
 ];
 
 // Export the tier definitions for reuse in other parts of the code
