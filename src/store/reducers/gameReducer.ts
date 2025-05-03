@@ -47,7 +47,6 @@ import { artifactsData } from "@/data/artifacts";
 import { applyArtifactEffect, upgradeArtifact } from "./artifactsReducer";
 import {
   applyFactionBonuses,
-  handleFactionSelection,
   initialFactions,
   updateFactionLoyalty,
 } from "./factionsReducer";
@@ -72,7 +71,6 @@ export const initialState: GameState = {
   sessionLength: 0,
   artifacts: artifactsData,
   factions: initialFactions,
-  selectedFaction: null,
 };
 
 // Constants for death timer
@@ -262,9 +260,6 @@ export const gameReducer = (
       const { artifactName } = action.payload;
       return upgradeArtifact(artifactName, state);
     }
-
-    case "SELECT_FACTION":
-      return handleFactionSelection(state, action.payload.faction);
 
     case "UPDATE_LOYALTY":
       return updateFactionLoyalty(

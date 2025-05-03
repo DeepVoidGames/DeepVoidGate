@@ -249,7 +249,6 @@ export interface GameState {
   sessionLength: number; // w sekundach
   artifacts: Artifact[];
   factions: Faction[];
-  selectedFaction: FactionName | null;
 }
 
 export interface UpgradeData {

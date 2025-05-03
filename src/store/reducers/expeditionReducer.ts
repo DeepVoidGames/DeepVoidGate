@@ -209,13 +209,20 @@ const getReward = (expedition: Expedition, state: GameState): GameState => {
   }
 
   // Frakcje
-  if (newState.selectedFaction != null)
+  if (expedition.type === "scientific") {
     newState = updateFactionLoyalty(
       newState,
-      newState.factions.find((f) => f.id == newState.selectedFaction)
+      newState.factions.find((f) => f.id == "StarUnderstanding")
         .id as FactionName,
       10 * (expedition.tier + 1)
     );
+  } else if (expedition.type === "mining") {
+    newState = updateFactionLoyalty(
+      newState,
+      newState.factions.find((f) => f.id == "Technocrats").id as FactionName,
+      10 * (expedition.tier + 1)
+    );
+  }
 
   toast({
     title: "Expedition Completed",

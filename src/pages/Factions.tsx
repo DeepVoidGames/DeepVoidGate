@@ -26,7 +26,7 @@ import { formatNumber } from "@/lib/utils";
 
 const FactionsDisplay = () => {
   const { state, dispatch } = useGame();
-  const { factions, selectedFaction } = state;
+  const { factions } = state;
 
   const [hiddenBonuses, setHiddenBonuses] = React.useState<Set<string>>(
     new Set()
@@ -38,15 +38,6 @@ const FactionsDisplay = () => {
       next.has(factionId) ? next.delete(factionId) : next.add(factionId);
       return next;
     });
-  };
-
-  const handleJoinFaction = (factionName: string) => {
-    if (!selectedFaction) {
-      dispatch({
-        type: "SELECT_FACTION",
-        payload: { faction: factionName as FactionName },
-      });
-    }
   };
 
   return (
@@ -64,11 +55,7 @@ const FactionsDisplay = () => {
         {factions.map((faction) => (
           <Card
             key={faction.id}
-            className={`relative transition-all ${
-              selectedFaction === faction.id
-                ? "border-2 border-primary"
-                : "opacity-90 hover:opacity-100"
-            }`}
+            className={`relative transition-all ${"opacity-90 hover:opacity-100"}`}
           >
             <CardHeader>
               <CardTitle className="flex flex-col gap-3">
@@ -169,23 +156,6 @@ const FactionsDisplay = () => {
                 </div>
               </div>
             </CardContent>
-
-            {!selectedFaction && (
-              <CardFooter>
-                <Button
-                  variant={
-                    selectedFaction === faction.id ? "default" : "outline"
-                  }
-                  className="w-full"
-                  onClick={() => handleJoinFaction(faction.id)}
-                  disabled={!!selectedFaction && selectedFaction !== faction.id}
-                >
-                  {selectedFaction === faction.id
-                    ? "Active Alliance"
-                    : "Join Faction"}
-                </Button>
-              </CardFooter>
-            )}
           </Card>
         ))}
       </div>

@@ -3,19 +3,19 @@ import { GameState, ResourceType } from "../types";
 import { generateId } from "../initialData";
 import { FactionName } from "@/types/factions";
 
-export const handleFactionSelection = (
-  state: GameState,
-  faction: FactionName
-): GameState => {
-  return {
-    ...state,
-    selectedFaction: faction,
-    factions: state.factions.map((f) => {
-      if (f.id === faction) return { ...f, loyalty: 25 };
-      return { ...f, hostility: 50 };
-    }),
-  };
-};
+// export const handleFactionSelection = (
+//   state: GameState,
+//   faction: FactionName
+// ): GameState => {
+//   return {
+//     ...state,
+//     selectedFaction: faction,
+//     factions: state.factions.map((f) => {
+//       if (f.id === faction) return { ...f, loyalty: 25 };
+//       return { ...f, hostility: 50 };
+//     }),
+//   };
+// };
 
 export const updateFactionLoyalty = (
   state: GameState,
@@ -37,28 +37,23 @@ export const updateFactionLoyalty = (
 };
 
 export const applyFactionBonuses = (state: GameState): GameState => {
-  if (!state.selectedFaction) return state;
-
-  const faction = state.factions.find((f) => f.id === state.selectedFaction)!;
   let newState = { ...state };
 
-  switch (faction.id) {
-    case "Technocrats":
-      break;
-    case "Biogenesis":
-      if (faction.loyalty >= 1000)
-        newState.technologies.find(
-          (tech) => tech.id === "genetic_ecoengineering"
-        ).locked = false;
-
-      break;
-    case "StarUnderstanding":
-      if (faction.loyalty >= 1000)
-        newState.technologies.find(
-          (tech) => tech.id === "stellar_awareness"
-        ).locked = false;
-      break;
+  // Technocrats
+  if (state.factions[0].loyalty >= 1000) {
   }
+
+  // Biogenesis
+  if (state.factions[1].loyalty >= 1000)
+    newState.technologies.find(
+      (tech) => tech.id === "genetic_ecoengineering"
+    ).locked = false;
+
+  // StarUnderstanding
+  if (state.factions[2].loyalty >= 1000)
+    newState.technologies.find(
+      (tech) => tech.id === "stellar_awareness"
+    ).locked = false;
 
   return newState;
 };

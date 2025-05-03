@@ -725,7 +725,6 @@ export const initialMilestones: Milestone[] = [
           technology.isResearched
       ).length;
 
-      console.log(count, maxCount);
       return count >= maxCount.length;
     },
     progress: function (state: GameState): number {
