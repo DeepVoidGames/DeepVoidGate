@@ -46,6 +46,11 @@ export const applyFactionBonuses = (state: GameState): GameState => {
     case "Technocrats":
       break;
     case "Biogenesis":
+      if (faction.loyalty >= 1000)
+        newState.technologies.find(
+          (tech) => tech.id === "genetic_ecoengineering"
+        ).locked = false;
+
       break;
     case "StarUnderstanding":
       if (faction.loyalty >= 1000)
@@ -83,9 +88,10 @@ export const initialFactions = [
     hostility: 0,
     bonuses: [
       {
-        name: "",
-        description: "",
-        loyaltyReq: 25,
+        name: "Avatar of Bloom",
+        description:
+          "Your unwavering devotion to the Biogenesis Coalition grants you access to the Genetic Ecosynth Laboratory a pinnacle of biospheric engineering.",
+        loyaltyReq: 1000,
       },
     ],
   },
@@ -108,11 +114,6 @@ export const initialFactions = [
         description:
           "The Order envelops your research centers in a temporal veil, reducing the duration of all technological bans by 50%. Forbidden knowledge is forgotten... faster.",
         loyaltyReq: 5000,
-      },
-      {
-        name: "C",
-        description: "",
-        loyaltyReq: 10000,
       },
     ],
   },

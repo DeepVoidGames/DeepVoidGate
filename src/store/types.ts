@@ -82,7 +82,8 @@ export type BuildingType =
   | "biosurge_chamber"
   | "quantum_forge_array"
   | "bio_reconstruction_vat"
-  | "astral_scriptorium";
+  | "astral_scriptorium"
+  | "genetic_ecosynth_laboratory";
 
 export type TechnologyCategory =
   | "Infrastructure"

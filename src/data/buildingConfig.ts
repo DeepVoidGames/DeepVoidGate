@@ -446,4 +446,12 @@ export const buildingConfig = [
       className: "h-5 w-5 text-red-400",
     }),
   },
+  {
+    type: "genetic_ecosynth_laboratory" as BuildingType,
+    name: "Genetic Ecosynth Laboratory",
+    category: "production" as BuildingCategory,
+    icon: React.createElement(Leaf, {
+      className: "h-5 w-5 text-red-400",
+    }),
+  },
 ];

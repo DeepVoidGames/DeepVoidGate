@@ -726,6 +726,23 @@ export const initialTechnologies: Technology[] = [
     isResearched: false,
     locked: true,
   },
+  {
+    id: "genetic_ecoengineering",
+    name: "Genetic Ecoengineering",
+    category: "Production",
+    description:
+      "By mastering genomic manipulation of entire ecosystems, researchers can fabricate highly efficient biospheres that exponentially increase food and oxygen production while enhancing population growth.",
+    researchCost: {
+      science: 200000,
+      energy: 80000,
+      oxygen: 60000,
+    },
+    prerequisites: [],
+    unlocksBuildings: ["genetic_ecosynth_laboratory"],
+    researchDuration: 7200, // 2h
+    isResearched: false,
+    locked: true,
+  },
 ];
 
 export const initialExpeditions: Expedition[] = [];
