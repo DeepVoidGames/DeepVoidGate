@@ -743,6 +743,23 @@ export const initialTechnologies: Technology[] = [
     isResearched: false,
     locked: true,
   },
+  {
+    id: "conscious_biofabrication",
+    name: "Conscious Biofabrication",
+    category: "Production",
+    description:
+      "By integrating neural lattice structures with bioengineered matter, entire living systems can be consciously directed. Agriculture, oxygen production, and colony well-being evolve into intelligent ecosystems.",
+    researchCost: {
+      science: 300000,
+      energy: 150000,
+      oxygen: 100000,
+    },
+    prerequisites: ["genetic_ecoengineering"],
+    unlocksBuildings: ["sentient_growth_core"],
+    researchDuration: 10800, // 3h
+    isResearched: false,
+    locked: true,
+  },
 ];
 
 export const initialExpeditions: Expedition[] = [];

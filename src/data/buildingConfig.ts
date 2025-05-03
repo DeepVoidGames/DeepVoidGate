@@ -454,4 +454,12 @@ export const buildingConfig = [
       className: "h-5 w-5 text-red-400",
     }),
   },
+  {
+    type: "sentient_growth_core" as BuildingType,
+    name: "Sentient Growth Core",
+    category: "production" as BuildingCategory,
+    icon: React.createElement(Leaf, {
+      className: "h-5 w-5 text-red-400",
+    }),
+  },
 ];

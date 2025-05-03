@@ -478,5 +478,47 @@
       }
     },
     "tag": "food"
+  },
+  {
+    "type": "sentient_growth_core",
+    "category": "production",
+    "name": "Sentient Growth Core",
+    "description": "A living, semi-conscious biosphere that self-optimizes to meet colony demands. It adapts to fluctuations in needs, enhancing food, oxygen, and growth rates without manual adjustment.",
+    "workerCapacity": 20,
+    "baseCost": {
+      "food": 18000,
+      "metals": 9500,
+      "oxygen": 9000,
+      "science": 2500
+    },
+    "baseProduction": {
+      "food": 40.0,
+      "oxygen": 25.0
+    },
+    "baseConsumption": {
+      "energy": 20.0,
+      "water": 6.0
+    },
+    "requirements": {},
+    "requiredTechnology": "conscious_biofabrication",
+    "costMultiplier": 2.14,
+    "productionMultiplier": 2.8,
+    "maxInstances": 1,
+    "tier": 6,
+    "maxTier": 5,
+    "upgrades": 0,
+    "uniqueBonus": {
+      "production": {
+        "food": 500,
+        "oxygen": 420
+      },
+      "growthRate": 0.25,
+      "efficiencyScaling": 1.15,
+      "storage": {
+        "food": 500000,
+        "oxygen": 300000
+      }
+    },
+    "tag": "food"
   }
 ]

@@ -83,7 +83,8 @@ export type BuildingType =
   | "quantum_forge_array"
   | "bio_reconstruction_vat"
   | "astral_scriptorium"
-  | "genetic_ecosynth_laboratory";
+  | "genetic_ecosynth_laboratory"
+  | "sentient_growth_core";
 
 export type TechnologyCategory =
   | "Infrastructure"

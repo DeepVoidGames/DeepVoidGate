@@ -93,6 +93,12 @@ export const initialFactions = [
           "Your unwavering devotion to the Biogenesis Coalition grants you access to the Genetic Ecosynth Laboratory a pinnacle of biospheric engineering.",
         loyaltyReq: 1000,
       },
+      {
+        name: "Biogenesis Coalition",
+        description:
+          "Focuses on population growth, terraforming and food-oxygen synergy. Unlocks Sentient Growth Core, growth-boosting buildings and eco-based technologies.",
+        loyaltyReq: 5000,
+      },
     ],
   },
   {
