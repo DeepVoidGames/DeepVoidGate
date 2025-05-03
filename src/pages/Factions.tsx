@@ -86,7 +86,7 @@ const FactionsDisplay = () => {
                   </span>
                 </div>
                 <Progress
-                  value={faction.loyalty / faction.maxLoyalty}
+                  value={(faction.loyalty / faction.maxLoyalty) * 100}
                   className="h-2 bg-primary/20"
                 />
               </div>
