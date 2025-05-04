@@ -205,13 +205,25 @@ const MilestonesManager = () => {
                   <div className="space-y-3 mt-4">
                     {!milestone.completed && (
                       <>
-                        <div className="text-xs text-muted-foreground">
-                          Progress: {milestone?.progress(state)?.toFixed(1)}%
+                        <div className="mt-2">
+                          <div className="text-xs text-muted-foreground flex justify-between">
+                            <span>
+                              Progress:{" "}
+                              {typeof milestone?.progress === "function"
+                                ? milestone.progress(state).toFixed(1)
+                                : Number(milestone?.progress).toFixed(1) || 0}
+                              %
+                            </span>
+                          </div>
+                          <Progress
+                            value={
+                              typeof milestone?.progress === "function"
+                                ? milestone.progress(state)
+                                : Number(milestone?.progress) || 0
+                            }
+                            className="h-1.5 mt-1"
+                          />
                         </div>
-                        <Progress
-                          value={milestone?.progress(state)}
-                          className="h-2"
-                        />
                       </>
                     )}
 
