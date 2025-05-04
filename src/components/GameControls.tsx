@@ -2,12 +2,22 @@ import React from "react";
 import { Button } from "@/components/ui/button";
 import { useGame } from "@/context/GameContext";
 import { Save, RotateCcw } from "lucide-react";
+import { useAuth } from "@/server/AuthContext";
+import { cloudSaveGameState } from "@/server/cloudSaveGameState";
 
 export const GameControls: React.FC = () => {
-  const { dispatch } = useGame();
+  const { dispatch, state } = useGame();
+  const { session } = useAuth();
 
-  const handleSaveGame = () => {
+  const handleSaveGame = async () => {
     dispatch({ type: "SAVE_GAME" });
+
+    if (!session) {
+      alert("User not authenticated");
+      return;
+    }
+
+    await cloudSaveGameState(session, state);
   };
 
   const handleGameReset = () => {
