@@ -164,13 +164,16 @@ const BuildingCard = ({
                 : "text-red-400"
             }
           >
-            {building.functioning ? (
-              `${Math.round(currentEfficiency * 100)}% Efficiency`
-            ) : (
-              <span className="flex items-center">
-                <X className="h-4 w-4 mr-1" /> Disabled
-              </span>
-            )}
+            {building.category != "storage" &&
+            building.category != "housing" ? (
+              building.functioning ? (
+                `${Math.round(currentEfficiency * 100)}% Efficiency`
+              ) : (
+                <span className="flex items-center">
+                  <X className="h-4 w-4 mr-1" /> Disabled
+                </span>
+              )
+            ) : null}
           </div>
         </div>
 
