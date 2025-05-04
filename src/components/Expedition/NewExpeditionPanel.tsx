@@ -1,5 +1,14 @@
 import React from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "../ui/card";
+import { ExpeditionType, ExpeditionTypes } from "@/types/expedition";
+
+type NewExpeditionPanelProps = {
+  expeditionTypes: ExpeditionTypes[];
+  setSelectedType: (string) => void;
+  setSelectedTier: (number) => void;
+  selectedType: ExpeditionType;
+  selectedTier: number;
+};
 
 function NewExpeditionPanel({
   expeditionTypes,
@@ -7,7 +16,7 @@ function NewExpeditionPanel({
   setSelectedTier,
   selectedType,
   selectedTier,
-}) {
+}: NewExpeditionPanelProps) {
   return (
     <div className="grid lg:grid-cols-2 gap-8">
       {/* Expedition Type Selection */}

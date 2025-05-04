@@ -1,5 +1,6 @@
 import { ResourceType } from "@/types/resource";
 import { Technology } from "@/types/technology";
+import { ReactNode } from "react";
 
 export type BuildingTags = "oxygen" | "food" | "energy" | "metals" | "science";
 
@@ -123,3 +124,16 @@ export interface UpgradeData {
   costs: Record<ResourceType, number>;
   canUpgrade: boolean;
 }
+
+export type BuildingCategories = {
+  id: BuildingCategory;
+  name: string;
+  icon: ReactNode;
+};
+
+export type BuildingConfig = {
+  type: BuildingType;
+  name: string;
+  category: BuildingCategory;
+  icon: ReactNode;
+};

@@ -3,26 +3,56 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import {
   Card,
   CardContent,
-  CardDescription,
   CardFooter,
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
+import {
+  BuildingCategories,
+  BuildingConfig,
+  BuildingData,
+  BuildingType,
+} from "@/types/building";
+import { ResourceData } from "@/types/resource";
+import { ResourcesState } from "@/store/reducers/resourceReducer";
+import { Technology } from "@/types/technology";
+
+type ConstructionSectionProps = {
+  categories: BuildingCategories[];
+  buildingConfig: BuildingConfig[];
+  initialBuildings: Omit<BuildingData, "id">[];
+  buildings: BuildingData[];
+  ResourcesIcon: ({ resource }: { resource: string }) => string;
+  formatNumber: (num: number) => string;
+  resources: {
+    oxygen: ResourceData;
+    food: ResourceData;
+    energy: ResourceData;
+    metals: ResourceData;
+    water: ResourceData;
+    science: ResourceData;
+  };
+  constructBuilding: (buildingType: BuildingType) => void;
+  canAffordBuilding: (
+    buildingType: BuildingType,
+    resources: ResourcesState
+  ) => boolean;
+  technologies: Technology[];
+};
 
 const ConstructionSection = ({
   categories,
   buildingConfig,
   initialBuildings,
   buildings,
-  canAffordResource,
   ResourcesIcon,
   formatNumber,
   resources,
   constructBuilding,
   canAffordBuilding,
   technologies,
-}) => {
+}: ConstructionSectionProps) => {
   // Funkcja sprawdzająca dostępność budynku
   const isBuildingUnlocked = (buildingType) => {
     const building = initialBuildings.find((b) => b.type === buildingType);

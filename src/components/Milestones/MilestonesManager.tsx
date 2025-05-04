@@ -13,6 +13,7 @@ import {
 } from "lucide-react";
 import { useGame } from "@/context/GameContext";
 import { Progress } from "@/components/ui/progress";
+import { Milestone } from "@/types/milestone";
 
 const milestoneCategories = [
   {
@@ -72,7 +73,7 @@ const MilestonesManager = () => {
   const [activeTab, setActiveTab] = useState("resources");
   const [searchQuery, setSearchQuery] = useState("");
 
-  const { milestonesWithProgress, stats, groupedMilestones } = useMemo(() => {
+  const { stats, groupedMilestones } = useMemo(() => {
     const ms = state.milestones.map((m) => ({
       ...m,
       progress: Math.min(m.progress(state), 100),
@@ -95,7 +96,7 @@ const MilestonesManager = () => {
 
   const filteredGroupedMilestones = useMemo(() => {
     const searchLower = searchQuery.toLowerCase();
-    const result = {};
+    const result: { [id: string]: Milestone[] } = {};
 
     Object.keys(groupedMilestones).forEach((baseId) => {
       const milestones = groupedMilestones[baseId];
@@ -205,9 +206,12 @@ const MilestonesManager = () => {
                     {!milestone.completed && (
                       <>
                         <div className="text-xs text-muted-foreground">
-                          Progress: {milestone.progress.toFixed(1)}%
+                          Progress: {milestone?.progress(state)?.toFixed(1)}%
                         </div>
-                        <Progress value={milestone.progress} className="h-2" />
+                        <Progress
+                          value={milestone?.progress(state)}
+                          className="h-2"
+                        />
                       </>
                     )}
 
@@ -276,11 +280,11 @@ const MilestonesManager = () => {
                         <div className="mt-2">
                           <div className="text-xs text-muted-foreground flex justify-between">
                             <span>
-                              Progress: {activeTier.progress.toFixed(1)}%
+                              Progress: {activeTier.progress(state).toFixed(1)}%
                             </span>
                           </div>
                           <Progress
-                            value={activeTier.progress}
+                            value={activeTier.progress(state)}
                             className="h-1.5 mt-1"
                           />
                         </div>

@@ -1,23 +1,8 @@
-import {
-  AlertTriangle,
-  ArrowDown,
-  ArrowUp,
-  Droplets,
-  FlaskConical,
-  Home,
-  Leaf,
-  Package,
-  Pickaxe,
-  Users,
-  Warehouse,
-  X,
-  Zap,
-} from "lucide-react";
+import { AlertTriangle, ArrowDown, ArrowUp, Users, X } from "lucide-react";
 import {
   Card,
   CardContent,
   CardDescription,
-  CardFooter,
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
@@ -25,32 +10,39 @@ import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
 import { Badge } from "@/components/ui/badge";
 import {
-  calculateBuildingStorage,
-  calculateEfficiency,
+  calculateStorageBonus,
+  calculateWorkerEfficiency,
   getBuildingMaxUpgrade,
-  getBuildingMaxUpgradeCost,
-  getBuildingUpgradeCost,
-  getCapacityByResource,
-  getProductionByResource,
+  calculateBuildingUpgradeCost,
+  calculateBuildingResourceProduction,
 } from "@/store/reducers/buildingReducer";
 import { buildingConfig } from "./BuildingManager";
-import { format } from "path";
 import React from "react";
+
+type BuildingCardProps = {
+  building;
+  formatNumber;
+  onAdjustWorkers;
+  resources;
+  onUpgrade;
+  onUpgradeMax;
+  canUpgrade;
+  ResourcesIcon;
+  tierProgress;
+};
 
 const BuildingCard = ({
   building,
-  isExpanded,
+
   formatNumber,
   onAdjustWorkers,
-  onToggleExpand,
   resources,
   onUpgrade,
   onUpgradeMax,
   canUpgrade,
   ResourcesIcon,
-  upgradeCosts,
   tierProgress,
-}) => {
+}: BuildingCardProps) => {
   const [maxUpgrade, setMaxUpgrade] = React.useState({ tier: 0, upgrades: 0 });
 
   // Kolory dla tierów
@@ -75,11 +67,10 @@ const BuildingCard = ({
 
   // Obliczanie efektywności z uwzględnieniem tieru
 
-  const currentEfficiency = calculateEfficiency(building, resources);
+  const currentEfficiency = calculateWorkerEfficiency(building);
 
   const getUpgrademaxData = () => {
     //getBuildingMaxUpgrade
-    const cost = getBuildingMaxUpgradeCost(building, resources);
     const a = getBuildingMaxUpgrade(building, resources);
     setMaxUpgrade(a);
   };
@@ -226,7 +217,7 @@ const BuildingCard = ({
                 building?.tier === building?.maxTier)) &&
               (() => {
                 const bonuses = hasStorageBonus
-                  ? calculateBuildingStorage(building)
+                  ? calculateStorageBonus(building)
                   : building.uniqueBonus.storage;
 
                 return (
@@ -270,7 +261,7 @@ const BuildingCard = ({
             <div className="grid grid-cols-2 gap-2 text-xs">
               {/* Production */}
               {Object.entries(building.baseProduction).map(([resource]) => {
-                const total = getProductionByResource(
+                const total = calculateBuildingResourceProduction(
                   building,
                   resource,
                   resources
@@ -365,7 +356,7 @@ const BuildingCard = ({
                   Upgrade Requirements:
                 </h4>
                 <div className="grid grid-cols-2 gap-2 mt-2 text-xs">
-                  {Object.entries(getBuildingUpgradeCost(building)).map(
+                  {Object.entries(calculateBuildingUpgradeCost(building)).map(
                     ([resource, cost]) => (
                       <div
                         key={resource}

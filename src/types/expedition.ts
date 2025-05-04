@@ -1,4 +1,5 @@
-import { ResourceType } from "@/store/types";
+import { ReactNode } from "react";
+import { ResourceType } from "./resource";
 
 // types.ts
 export type ExpeditionType = "scientific" | "mining" | string; // string dla przyszłych typów
@@ -55,4 +56,12 @@ export interface ExpeditionEventLog {
 
 export interface ResourceAmount {
   [key: string]: number;
+}
+
+export interface ExpeditionTypes {
+  type: string;
+  label: string;
+  icon: ReactNode;
+  color: string;
+  desc: string;
 }

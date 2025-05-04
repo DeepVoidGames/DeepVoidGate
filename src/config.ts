@@ -1,4 +1,4 @@
-export const ResourcesIcon = ({ resource }) => {
+export const ResourcesIcon = ({ resource }: { resource: string }) => {
   const icons = {
     oxygen: "O₂",
     water: "💧",

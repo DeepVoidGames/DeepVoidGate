@@ -1,4 +1,8 @@
-import { BuildingCategory, BuildingType } from "@/types/building";
+import {
+  BuildingCategory,
+  BuildingConfig,
+  BuildingType,
+} from "@/types/building";
 import {
   Home,
   Droplets,
@@ -13,7 +17,7 @@ import {
 } from "lucide-react";
 import React from "react";
 
-export const buildingConfig = [
+export const buildingConfig: BuildingConfig[] = [
   {
     type: "oxygenGenerator" as BuildingType,
     name: "Oxygen Generator",

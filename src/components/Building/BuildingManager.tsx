@@ -12,31 +12,30 @@ import {
 } from "lucide-react";
 import { useGame } from "@/context/GameContext";
 import { formatNumber } from "@/lib/utils";
-import {
-  BuildingType,
-  BuildingCategory,
-  ResourceType,
-  BuildingTags,
-} from "@/store/types";
-import { initialBuildings, initialTechnologies } from "@/store/initialData";
+
+import { initialBuildings } from "@/store/initialData";
 import ConstructionSection from "./ConstructionSection";
 import ExistingBuildings from "./ExistingBuildings";
 import { ResourcesIcon } from "@/config";
 import {
-  canAffordBuilding,
-  canAffordResource,
-  canUpgradeBuilding,
-  getBuildingUpgradeCost,
-  getProductionByResource,
-  upgradeBuildingMax,
+  canAffordBuildingCost,
+  checkBuildingUpgradeAffordability,
+  calculateBuildingUpgradeCost,
 } from "@/store/reducers/buildingReducer";
 import { buildingConfig } from "@/data/buildingConfig";
+import {
+  BuildingCategories,
+  BuildingCategory,
+  BuildingTags,
+  BuildingType,
+} from "@/types/building";
+import { ResourceType } from "@/types/resource";
 
 // Centralna konfiguracja budynków
 //TODO Przenisnie tego do osobnego pliku najlepiej data/buildings.json
 
 // Konfiguracja kategorii
-const categories = [
+const categories: BuildingCategories[] = [
   {
     id: "production" as BuildingCategory,
     name: "Production",
@@ -172,10 +171,14 @@ export const BuildingManager: React.FC = () => {
   const getUpgradeData = useMemo(
     () =>
       buildings.reduce((acc, building) => {
-        const costs = getBuildingUpgradeCost(building);
+        const costs = calculateBuildingUpgradeCost(building);
         acc[building.id] = {
           costs,
-          canUpgrade: canUpgradeBuilding(building, resources, costs),
+          canUpgrade: checkBuildingUpgradeAffordability(
+            building,
+            resources,
+            costs
+          ),
         };
         return acc;
       }, {} as Record<string, { costs: Record<ResourceType, number>; canUpgrade: boolean }>),
@@ -262,12 +265,11 @@ export const BuildingManager: React.FC = () => {
           buildingConfig={buildingConfig}
           initialBuildings={initialBuildings}
           buildings={buildings}
-          canAffordResource={canAffordResource}
           ResourcesIcon={ResourcesIcon}
           formatNumber={formatNumber}
           resources={resources}
           constructBuilding={constructBuilding}
-          canAffordBuilding={canAffordBuilding}
+          canAffordBuilding={canAffordBuildingCost}
           technologies={state.technologies}
         />
       </div>

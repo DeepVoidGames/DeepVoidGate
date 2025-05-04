@@ -2,20 +2,28 @@ import React from "react";
 import { Card } from "../ui/card";
 import { AlertTriangle, Book, Clock, Info, Package, Users } from "lucide-react";
 import {
-  BASE_EXPEDITION_TIME,
   calculateExpeditionDuration,
   calculateRequiredCrew,
-  CREW_PER_TIER,
   getBaseExpeditionReward,
-  getExpectedExpeditionRewards,
   getPossibleTechnologies,
-  TIME_PER_TIER,
 } from "@/store/reducers/expeditionReducer";
-import { Tooltip, TooltipContent, TooltipTrigger } from "../ui/tooltip";
+import { Tooltip, TooltipTrigger } from "../ui/tooltip";
 import { ResourcesIcon } from "@/config";
-import { ResourceType } from "@/store/types";
 import { Button } from "../ui/button";
 import { Alert, AlertDescription } from "../ui/alert";
+import { GameState } from "@/types/gameState";
+import { ExpeditionType } from "@/types/expedition";
+import { ResourceType } from "@/types/resource";
+
+type SummaryExpeditionPanelProps = {
+  formatDuration: (minutes: number) => string;
+  formatNumber: (num: number) => string;
+  state: GameState;
+  selectedTier: number;
+  selectedType: ExpeditionType;
+  handleStartExpedition: () => void;
+  error: string;
+};
 
 function SummaryExpeditionPanel({
   formatDuration,
@@ -25,7 +33,7 @@ function SummaryExpeditionPanel({
   selectedType,
   handleStartExpedition,
   error,
-}) {
+}: SummaryExpeditionPanelProps) {
   return (
     <Card className="glass-panel p-4 sm:p-6 space-y-3 animate-fade-in bg-secondary/40">
       <div className="flex flex-col md:flex-row items-center justify-between gap-4 sm:gap-6">

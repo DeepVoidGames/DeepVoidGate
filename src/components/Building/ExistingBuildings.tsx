@@ -1,27 +1,35 @@
 import React, { useState, useEffect } from "react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import BuildingCard from "@/components/Building/BuildingCard";
-import { BuildingData, ResourceType, UpgradeData } from "@/store/types";
 import {
-  canUpgradeMax,
-  upgradeBuildingMax,
-} from "@/store/reducers/buildingReducer";
-import { ResourcesState } from "@/store/reducers/resourceReducer";
+  BuildingCategories,
+  BuildingConfig,
+  BuildingData,
+  UpgradeData,
+} from "@/types/building";
+import { ResourceData } from "@/types/resource";
 
 interface ExistingBuildingsProps {
   activeTab: string;
   setActiveTab: (tab: string) => void;
-  categories: any[];
-  filteredBuildings: any[];
-  buildingConfig: any[];
+  categories: BuildingCategories[];
+  filteredBuildings: BuildingData[];
+  buildingConfig: BuildingConfig[];
   expandedBuilding: string | null;
   upgradeBuilding: (id: string) => void;
   upgradeBuildingMax: (id: string) => void;
   adjustWorkers: (id: string, count: number) => void;
   setExpandedBuilding: (id: string | null) => void;
-  resources: any;
+  resources: {
+    oxygen: ResourceData;
+    food: ResourceData;
+    energy: ResourceData;
+    metals: ResourceData;
+    water: ResourceData;
+    science: ResourceData;
+  };
   formatNumber: (num: number) => string;
-  ResourcesIcon: any;
+  ResourcesIcon: ({ resource }: { resource: string }) => string;
   getUpgradeData: Record<string, UpgradeData>;
   showMaxed: boolean;
 }
@@ -32,11 +40,9 @@ const ExistingBuildings: React.FC<ExistingBuildingsProps> = ({
   categories,
   filteredBuildings,
   buildingConfig,
-  expandedBuilding,
   upgradeBuilding,
   upgradeBuildingMax,
   adjustWorkers,
-  setExpandedBuilding,
   resources,
   formatNumber,
   ResourcesIcon,
@@ -55,7 +61,7 @@ const ExistingBuildings: React.FC<ExistingBuildingsProps> = ({
   };
 
   // Progress bar dla ulepszeń
-  const renderTierProgress = (building: any) => (
+  const renderTierProgress = (building: BuildingData) => (
     <div className="w-full mt-2">
       <div className="flex justify-between text-xs mb-1">
         <span className={tierColors[building.tier]}>Tier {building.tier}</span>
@@ -71,7 +77,7 @@ const ExistingBuildings: React.FC<ExistingBuildingsProps> = ({
   );
 
   // Funkcja, która znajduje kategorię budynku
-  const getBuildingCategory = (building: any): string => {
+  const getBuildingCategory = (building: BuildingData): string => {
     // Najpierw spróbuj znaleźć w building
     if (building.category) return building.category;
 
@@ -84,13 +90,9 @@ const ExistingBuildings: React.FC<ExistingBuildingsProps> = ({
   };
 
   // Funkcja określająca typ zasobu dla budynku
-  const getResourceType = (building: any): string | null => {
+  const getResourceType = (building: BuildingData): string | null => {
     // Sprawdź tag w budynku
     if (building.tag) return building.tag;
-
-    // Sprawdź w konfiguracji
-    const config = buildingConfig.find((b) => b.type === building.type);
-    if (config?.tag) return config.tag;
 
     // Sprawdź baseProduction w budynku
     if (
@@ -102,10 +104,10 @@ const ExistingBuildings: React.FC<ExistingBuildingsProps> = ({
 
     // Sprawdź baseProduction w konfiguracji
     if (
-      config?.baseProduction &&
-      Object.keys(config.baseProduction).length > 0
+      building?.baseProduction &&
+      Object.keys(building.baseProduction).length > 0
     ) {
-      return Object.keys(config.baseProduction)[0];
+      return Object.keys(building.baseProduction)[0];
     }
 
     // Próba określenia na podstawie nazwy typu
@@ -150,7 +152,10 @@ const ExistingBuildings: React.FC<ExistingBuildingsProps> = ({
   }, [activeTab, filteredBuildings, selectedResource]);
 
   // Funkcja sprawdzająca, czy budynek powinien być wyświetlony
-  const shouldDisplayBuilding = (building: any, categoryId: string) => {
+  const shouldDisplayBuilding = (
+    building: BuildingData,
+    categoryId: string
+  ) => {
     const buildingCategory = getBuildingCategory(building);
 
     const isCategoryMatch =
@@ -239,19 +244,14 @@ const ExistingBuildings: React.FC<ExistingBuildingsProps> = ({
                     <BuildingCard
                       key={building.id}
                       building={building}
-                      isExpanded={expandedBuilding === building.id}
                       onUpgrade={
                         !isMaxTier && upgradeData?.canUpgrade
                           ? () => upgradeBuilding(building.id)
                           : undefined
                       }
                       onAdjustWorkers={adjustWorkers}
-                      onToggleExpand={(id) =>
-                        setExpandedBuilding(id === expandedBuilding ? null : id)
-                      }
                       resources={resources}
                       canUpgrade={upgradeData?.canUpgrade && !isMaxTier}
-                      upgradeCosts={upgradeData?.costs || {}}
                       formatNumber={formatNumber}
                       ResourcesIcon={ResourcesIcon}
                       tierProgress={renderTierProgress(building)}

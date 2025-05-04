@@ -20,6 +20,17 @@ import { Progress } from "../ui/progress";
 import { ResourcesIcon } from "@/config";
 import { formatNumber } from "@/lib/utils";
 import { Button } from "../ui/button";
+import { Expedition, ExpeditionEvent } from "@/types/expedition";
+import { GameState } from "@/types/gameState";
+import { GameAction } from "@/store/actions";
+
+type ExpeditionCardProps = {
+  expedition: Expedition;
+  formatDuration: (minutes: number) => string;
+  state: GameState;
+  expeditionEvents: ExpeditionEvent[];
+  dispatch: React.Dispatch<GameAction>;
+};
 
 function ExpeditionCard({
   expedition,
@@ -27,7 +38,7 @@ function ExpeditionCard({
   state,
   expeditionEvents,
   dispatch,
-}) {
+}: ExpeditionCardProps) {
   return (
     <Card
       key={expedition.id}

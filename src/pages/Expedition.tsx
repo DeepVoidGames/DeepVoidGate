@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { useGame } from "@/context/GameContext";
-import { ExpeditionType } from "@/types/expedition";
+import { ExpeditionType, ExpeditionTypes } from "@/types/expedition";
 import { expeditionEvents } from "@/data/expeditionEvents";
 
 import { Rocket, FlaskConical, Pickaxe } from "lucide-react";
@@ -26,7 +26,7 @@ const Expedition = () => {
 
   if (!isExpedtionUnlocked(state)) return;
 
-  const expeditionTypes = [
+  const expeditionTypes: ExpeditionTypes[] = [
     {
       type: "scientific",
       label: "Scientific",
