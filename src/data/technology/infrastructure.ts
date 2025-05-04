@@ -1,0 +1,86 @@
+import { Technology } from "@/types/technology";
+
+export const technology_infrastructure: Technology[] = [
+  {
+    id: "industrial_automation",
+    name: "Industrial Automation",
+    category: "Infrastructure",
+    description:
+      "Automated storage management systems for bulk material handling",
+    researchCost: {
+      metals: 5630,
+      oxygen: 2810,
+      energy: 1400,
+      food: 1000,
+      science: 500,
+    },
+    prerequisites: ["basic_energy"],
+    unlocksBuildings: ["modularStorageHub"],
+    researchDuration: 60,
+    isResearched: false,
+  },
+  {
+    id: "composite_alloys",
+    name: "Composite Alloys",
+    category: "Infrastructure",
+    description: "Advanced metal compression and stacking techniques",
+    researchCost: { metals: 5630, energy: 1400, science: 500 },
+    prerequisites: ["deep_core_mining"],
+    unlocksBuildings: ["metallicCompactionVault"],
+    researchDuration: 75,
+    isResearched: false,
+  },
+  {
+    id: "quantum_storage",
+    name: "Quantum Storage",
+    category: "Infrastructure",
+    description: "Subatomic compression fields for mass storage solutions",
+    researchCost: {
+      metals: 5630,
+      oxygen: 15100,
+      energy: 1400,
+      food: 1000,
+      science: 500,
+    },
+    prerequisites: ["quantum_computing"],
+    unlocksBuildings: ["cryoUniversalDepot", "quantumCapacitor"],
+    researchDuration: 120,
+    isResearched: false,
+  },
+  {
+    id: "hydrostatic_architecture",
+    name: "Hydrostatic Megastructure Theory",
+    category: "Infrastructure",
+    description:
+      "Revolutionary approach to stabilizing dynamic marine environments using corrosion-resistant metamaterials and kilometer-scale pressure management systems. Enables construction of permanent oceanic settlements.",
+    researchCost: {
+      metals: 11000,
+      energy: 4000,
+      food: 1500,
+      oxygen: 1250,
+      science: 2000,
+    },
+    prerequisites: [],
+    unlocksBuildings: ["floating_habitat"],
+    researchDuration: 2400,
+    isResearched: false,
+  },
+  {
+    id: "myco_structural_engineering",
+    name: "Myco-Structural Ecosystem Synthesis",
+    category: "Infrastructure",
+    description:
+      "Engineering of living mycelium networks as structural frameworks, integrating photosynthetic lichens and adaptive gas exchange membranes for self-regulating organic habitats.",
+    researchCost: {
+      metals: 15000,
+      energy: 6000,
+      food: 2500,
+      oxygen: 2250,
+      science: 3000,
+    },
+    prerequisites: ["hydrostatic_architecture", "quantum_tunneling_synthesis"],
+    unlocksBuildings: ["bio_caverns"],
+    researchDuration: 3200,
+    isResearched: false,
+  },
+];

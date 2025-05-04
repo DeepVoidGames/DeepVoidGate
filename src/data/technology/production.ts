@@ -1,0 +1,183 @@
+import { Technology } from "@/types/technology";
+
+export const technology_production: Technology[] = [
+  {
+    id: "deep_core_mining",
+    name: "Deep Core Mining",
+    category: "Production",
+    description: "Enables access to 深层 metal deposits with advanced drills.",
+    researchCost: {
+      energy: 510,
+      metals: 1900,
+      science: 500,
+    },
+    prerequisites: ["basic_energy"],
+    unlocksBuildings: ["advancedMetalExtractor"],
+    researchDuration: 90,
+    isResearched: false,
+  },
+  {
+    id: "seismic_ore_mapping",
+    name: "Seismic Ore Mapping",
+    category: "Production",
+    description: "Detects high-density ore clusters using resonance waves.",
+    researchCost: {
+      energy: 870,
+      metals: 3080,
+      science: 870,
+    },
+    prerequisites: ["deep_core_mining"],
+    unlocksBuildings: ["highYieldMetalFracturer"],
+    researchDuration: 180,
+    isResearched: false,
+  },
+  {
+    id: "plasma_refining",
+    name: "Plasma Refining",
+    category: "Production",
+    description: "Harnesses plasma to break down ores at the atomic level.",
+    researchCost: {
+      energy: 1480,
+      science: 1480,
+      metals: 5000,
+    },
+    prerequisites: ["seismic_ore_mapping"],
+    unlocksBuildings: ["plasmaCoreMetalSynthesizer"],
+    researchDuration: 300,
+    isResearched: false,
+  },
+  {
+    id: "electrolytic_processing",
+    name: "Electrolytic Processing",
+    category: "Production",
+    description:
+      "Enables large-scale separation of compounds through electrical current.",
+    researchCost: {
+      oxygen: 1120,
+      energy: 450,
+      science: 500,
+    },
+    prerequisites: ["basic_energy"],
+    unlocksBuildings: ["electrolyticOxygenPlant"],
+    researchDuration: 120,
+    isResearched: false,
+  },
+  {
+    id: "basic_agriculture",
+    name: "Basic Agriculture",
+    category: "Production",
+    description:
+      "Unlocks foundational food production systems for colony sustainability.",
+    researchCost: { food: 300, energy: 150, science: 50 },
+    prerequisites: [],
+    unlocksBuildings: ["fungalFarm"],
+    researchDuration: 45,
+    isResearched: false,
+  },
+  {
+    id: "vertical_farming",
+    name: "Vertical Farming",
+    category: "Production",
+    description:
+      "Enables space-efficient stacked growing systems with automated nutrient delivery.",
+    researchCost: { food: 3000, energy: 1800, science: 300 },
+    prerequisites: ["basic_agriculture"],
+    unlocksBuildings: ["hydroponicTower"],
+    researchDuration: 90,
+    isResearched: false,
+  },
+  {
+    id: "biotech_engineering",
+    name: "Biotech Engineering",
+    category: "Production",
+    description:
+      "Advanced microbial cultivation and synthetic nutrition technologies.",
+    researchCost: { food: 9900, energy: 5930, science: 600 },
+    prerequisites: ["vertical_farming"],
+    unlocksBuildings: ["proteinSynthesizer"],
+    researchDuration: 180,
+    isResearched: false,
+  },
+  {
+    id: "quantum_tunneling_synthesis",
+    name: "Quantum Tunneling Synthesis",
+    category: "Production",
+    description:
+      "Quantum tunneling manipulation to extract metals from quantum vacuum.",
+    researchCost: {
+      energy: 1650,
+      metals: 4500,
+      science: 500,
+    },
+    prerequisites: ["plasma_refining"],
+    unlocksBuildings: ["quantumFluxMetalForge"],
+    researchDuration: 320,
+    isResearched: false,
+  },
+  {
+    id: "mhd_fusion_confinement",
+    name: "MHD Fusion Confinement",
+    category: "Production",
+    description:
+      "Plasma stabilization under extreme pressure conditions for the synthesis of metallic isotopes.",
+    researchCost: {
+      energy: 1350,
+      metals: 5200,
+      science: 1000,
+    },
+    prerequisites: ["quantum_tunneling_synthesis"],
+    unlocksBuildings: ["fusionEdgeMetallizer"],
+    researchDuration: 440,
+    isResearched: false,
+  },
+  {
+    id: "nano_scale_dismantling",
+    name: "Nanoscale Dismantling",
+    category: "Production",
+    description:
+      "Programmable nanobot swarms to deconstruct matter at the atomic level.",
+    researchCost: {
+      energy: 1800,
+      metals: 4800,
+      science: 2000,
+    },
+    prerequisites: ["mhd_fusion_confinement"],
+    unlocksBuildings: ["nanoDismantlerFoundry"],
+    researchDuration: 580,
+    isResearched: false,
+  },
+  {
+    id: "genetic_ecoengineering",
+    name: "Genetic Ecoengineering",
+    category: "Production",
+    description:
+      "By mastering genomic manipulation of entire ecosystems, researchers can fabricate highly efficient biospheres that exponentially increase food and oxygen production while enhancing population growth.",
+    researchCost: {
+      science: 200000,
+      energy: 80000,
+      oxygen: 60000,
+    },
+    prerequisites: [],
+    unlocksBuildings: ["genetic_ecosynth_laboratory"],
+    researchDuration: 7200, // 2h
+    isResearched: false,
+    locked: true,
+  },
+  {
+    id: "conscious_biofabrication",
+    name: "Conscious Biofabrication",
+    category: "Production",
+    description:
+      "By integrating neural lattice structures with bioengineered matter, entire living systems can be consciously directed. Agriculture, oxygen production, and colony well-being evolve into intelligent ecosystems.",
+    researchCost: {
+      science: 300000,
+      energy: 150000,
+      oxygen: 100000,
+    },
+    prerequisites: ["genetic_ecoengineering"],
+    unlocksBuildings: ["sentient_growth_core"],
+    researchDuration: 10800, // 3h
+    isResearched: false,
+    locked: true,
+  },
+];
