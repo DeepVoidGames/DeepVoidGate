@@ -8,14 +8,13 @@ import {
 import { initialFactions } from "@/store/reducers/factionsReducer";
 import { initialState } from "@/store/reducers/gameReducer";
 import { ResourcesState } from "@/store/reducers/resourceReducer";
-import { GameState, ResourceData } from "@/store/types";
-import { stat } from "fs";
+import { GameState } from "@/types/gameState";
 
 // TODO Add sync milestones data with save
 
 export const CURRENT_GAME_VERSION = 3; // Aktualna wersja gry
 
-export const migrateGameState = (savedState: any): GameState => {
+export const migrateGameState = (savedState: GameState): GameState => {
   let currentState = { ...savedState };
 
   // Migracje wersji

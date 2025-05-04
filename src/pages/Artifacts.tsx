@@ -8,7 +8,6 @@ import {
 } from "@/components/ui/card";
 import { Star, Lock, Zap, Scan, Package } from "lucide-react";
 import { Alert, AlertDescription } from "@/components/ui/alert";
-import { Artifact } from "@/types/artifacts";
 import { useGame } from "@/context/GameContext";
 import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";

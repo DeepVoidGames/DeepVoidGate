@@ -4,22 +4,13 @@ import {
   Home,
   Microscope,
   Settings,
-  Menu,
-  X,
-  Gem,
-  Zap,
-  Coins,
-  Icon,
   Milestone,
   Computer,
 } from "lucide-react";
 import { useIsMobile } from "@/hooks/use-mobile"; // Zaimportuj hook z odpowiedniej ścieżki
-import { ResourceData, ResourceType } from "@/store/types";
 import { useGame } from "@/context/GameContext";
-import { ResourcesIcon } from "@/config";
 import { formatNumber } from "@/lib/utils";
 import { getSettings } from "@/pages/Settings";
-import { link } from "fs";
 
 const links = [
   { path: "/", label: "Home", icon: <Home className="h-5 w-5" /> },

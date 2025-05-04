@@ -1,6 +1,5 @@
 import { IMAGE_PATH } from "@/config";
 import { Artifact, ArtifactEffectType } from "@/types/artifacts";
-import { start } from "repl";
 
 export const artifactsData: Artifact[] = [
   {

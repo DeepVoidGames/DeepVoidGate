@@ -1,5 +1,4 @@
-// components/OfflineProgressModal.tsx
-import { useEffect } from "react";
+import React, { useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
@@ -7,9 +6,9 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
-import { OfflineReport } from "@/store/types";
 import { ResourcesIcon } from "@/config";
 import { formatNumber } from "@/lib/utils";
+import { OfflineReport } from "@/types/offline";
 
 const formatTime = (milliseconds: number): string => {
   const seconds = Math.floor(milliseconds / 1000);

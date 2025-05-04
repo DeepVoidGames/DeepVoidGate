@@ -2,15 +2,15 @@ import React from "react";
 import { useGame } from "@/context/GameContext";
 import { Progress } from "@/components/ui/progress";
 import { formatNumber } from "@/lib/utils";
-import { ResourceType } from "@/store/types";
 import { Clock, AlertTriangle } from "lucide-react";
-import { getSettings } from "@/pages/Settings";
+import { ResourceType } from "@/types/resource";
+// import { getSettings } from "@/pages/Settings";
 
 export const ResourceDisplay: React.FC = () => {
   const { state } = useGame();
   const { resources, population } = state;
 
-  const settings = getSettings();
+  // const settings = getSettings();
 
   const resourceOrder: ResourceType[] = [
     "oxygen",

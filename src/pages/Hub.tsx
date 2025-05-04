@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from "react";
-import { toast } from "@/components/ui/use-toast";
 import { Lock } from "lucide-react";
 import { useGame } from "@/context/GameContext";
 import { MobileTopNav } from "@/components/Navbar";

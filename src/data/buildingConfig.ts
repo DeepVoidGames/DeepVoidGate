@@ -1,4 +1,4 @@
-import { BuildingCategory, BuildingType } from "@/store/types";
+import { BuildingCategory, BuildingType } from "@/types/building";
 import {
   Home,
   Droplets,
@@ -6,12 +6,8 @@ import {
   Zap,
   Pickaxe,
   FlaskConical,
-  Users,
   Clock,
   Factory,
-  Microscope,
-  Building,
-  Search,
   Package,
   Warehouse,
 } from "lucide-react";

@@ -1,7 +1,7 @@
 import React from "react";
 import { Button } from "@/components/ui/button";
 import { useGame } from "@/context/GameContext";
-import { Save, RotateCcw } from "lucide-react";
+import { Save } from "lucide-react";
 import { useAuth } from "@/server/AuthContext";
 import { cloudSaveGameState } from "@/server/cloudSaveGameState";
 
@@ -20,9 +20,9 @@ export const GameControls: React.FC = () => {
     await cloudSaveGameState(session, state);
   };
 
-  const handleGameReset = () => {
-    dispatch({ type: "RESET_GAME" });
-  };
+  // const handleGameReset = () => {
+  //   dispatch({ type: "RESET_GAME" });
+  // };
 
   return (
     <div className="flex items-center space-x-2 animate-fade-in-right">

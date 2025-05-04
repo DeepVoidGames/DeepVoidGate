@@ -1,7 +1,6 @@
-// src/data/milestonesData.ts
-import { Milestone, GameState, TechnologyCategory } from "@/store/types";
-import { stat } from "fs";
-import { FastForward } from "lucide-react";
+import { GameState } from "@/types/gameState";
+import { Milestone } from "@/types/milestone";
+import { TechnologyCategory } from "@/types/technology";
 
 // Define a new type for tiered milestones
 export interface TierDefinition {

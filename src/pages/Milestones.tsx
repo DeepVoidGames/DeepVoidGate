@@ -1,3 +1,4 @@
+import React from "react";
 import { GameHeader } from "@/components/GameHeader";
 import MilestonesManager from "@/components/Milestones/MilestonesManager";
 import { MobileTopNav } from "@/components/Navbar";

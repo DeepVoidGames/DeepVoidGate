@@ -4,10 +4,7 @@ import {
   FlaskConical,
   Microscope,
   Rocket,
-  Cpu,
-  Atom,
   Network,
-  Shield,
   Search,
   Lock,
   CheckCircle,
@@ -15,12 +12,10 @@ import {
   Eye,
   EyeOff,
 } from "lucide-react";
-import { GameProvider, useGame } from "@/context/GameContext";
+import {  useGame } from "@/context/GameContext";
 import { formatNumber } from "@/lib/utils";
-import { Technology, TechnologyCategory } from "@/store/types";
-import { initialTechnologies } from "@/store/initialData";
-import { toast } from "@/components/ui/use-toast";
 import { Progress } from "@/components/ui/progress";
+import { Technology } from "@/types/technology";
 
 const techCategories = [
   {

@@ -15,7 +15,7 @@ export const GameHeader: React.FC = () => {
           </span>
         </h1>
         <p className="text-sm text-muted-foreground">
-          Colony "新大陸" Space Management
+          Colony &quot;新大陸&quot; Space Management
         </p>
       </div>
 

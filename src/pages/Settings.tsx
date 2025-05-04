@@ -40,7 +40,7 @@ function Settings() {
   const [analyticsConsent, setAnalyticsConsent] = React.useState(true);
   const [isVerificationModalOpen, setIsVerificationModalOpen] =
     React.useState(false);
-  const [email, setEmail] = React.useState("");
+  // const [email, setEmail] = React.useState("");
   const [verificationCode, setVerificationCode] = React.useState("");
   const [isLoadSaveModalOpen, setIsLoadSaveModalOpen] = React.useState(false);
   const [saveData, setSaveData] = React.useState("");
@@ -85,6 +85,7 @@ function Settings() {
         variant: "default",
       });
     } catch (error) {
+      console.log(error);
       toast({
         title: "Update failed",
         description: "Could not update display name. Please try again.",
@@ -477,7 +478,11 @@ function Settings() {
             </h2>
             <div className="p-3 bg-white/5 rounded-lg flex">
               <div className="flex items-center">
-                <a href="https://discord.gg/JEbcXgaWzB" target="_blank">
+                <a
+                  href="https://discord.gg/JEbcXgaWzB"
+                  target="_blank"
+                  rel="noreferrer"
+                >
                   <img
                     src={`${"/deepvoidgate/demo/"}/discord.svg`}
                     className="w-8"
@@ -485,7 +490,11 @@ function Settings() {
                 </a>
               </div>
               <div className="flex items-center ml-4">
-                <a href="https://www.buymeacoffee.com/mrjacob" target="_blank">
+                <a
+                  href="https://www.buymeacoffee.com/mrjacob"
+                  target="_blank"
+                  rel="noreferrer"
+                >
                   <img
                     src="https://cdn.buymeacoffee.com/buttons/v2/default-yellow.png"
                     alt="Buy Me A Coffee"
@@ -518,8 +527,8 @@ function Settings() {
                 Verification Required
               </h3>
               <p className="text-gray-300">
-                We've sent a verification code to your email. Please check your
-                inbox.
+                We&apos;ve sent a verification code to your email. Please check
+                your inbox.
               </p>
               <input
                 type="text"

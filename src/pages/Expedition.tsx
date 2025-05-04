@@ -1,48 +1,17 @@
-import React, { useContext, useState } from "react";
+import React, { useState } from "react";
 import { useGame } from "@/context/GameContext";
 import { ExpeditionType } from "@/types/expedition";
 import { expeditionEvents } from "@/data/expeditionEvents";
-import { Button } from "@/components/ui/button";
-import { Progress } from "@/components/ui/progress";
-import {
-  Card,
-  CardHeader,
-  CardTitle,
-  CardContent,
-  CardFooter,
-} from "@/components/ui/card";
-import { Alert, AlertDescription } from "@/components/ui/alert";
-import {
-  Rocket,
-  FlaskConical,
-  Pickaxe,
-  Clock,
-  Users,
-  AlertTriangle,
-  CheckCircle2,
-  XCircle,
-  Info,
-  Package,
-  Book,
-} from "lucide-react";
+
+import { Rocket, FlaskConical, Pickaxe } from "lucide-react";
 import { MobileTopNav } from "@/components/Navbar";
 import {
-  BASE_EXPEDITION_TIME,
   CREW_PER_TIER,
-  getBaseExpeditionReward,
-  getExpectedExpeditionRewards,
-  getPossibleTechnologies,
   isExpedtionUnlocked,
-  TIME_PER_TIER,
 } from "@/store/reducers/expeditionReducer";
-import {
-  Tooltip,
-  TooltipContent,
-  TooltipTrigger,
-} from "@/components/ui/tooltip";
-import { ResourceType } from "@/store/types";
+
 import { formatNumber } from "@/lib/utils";
-import { ResourcesIcon } from "@/config";
+
 import NewExpeditionPanel from "@/components/Expedition/NewExpeditionPanel";
 import SummaryExpeditionPanel from "@/components/Expedition/SummaryExpeditionPanel";
 import ExpeditionCard from "@/components/Expedition/ExpeditionCard";
@@ -53,7 +22,7 @@ const Expedition = () => {
     useState<ExpeditionType>("scientific");
   const [selectedTier, setSelectedTier] = useState(0);
   const [error, setError] = useState("");
-  const [showCompleted, setShowCompleted] = useState(false);
+  const [showCompleted] = useState(false);
 
   if (!isExpedtionUnlocked(state)) return;
 
@@ -102,9 +71,9 @@ const Expedition = () => {
     return `${pad(hours)}:${pad(mins)}:${pad(secs)}`;
   };
 
-  const toggleCompleted = () => {
-    setShowCompleted(!showCompleted);
-  };
+  // const toggleCompleted = () => {
+  //   setShowCompleted(!showCompleted);
+  // };
 
   return (
     <>
@@ -160,6 +129,7 @@ const Expedition = () => {
               )
               .map((expedition) => (
                 <ExpeditionCard
+                  key={expedition?.id}
                   expedition={expedition}
                   formatDuration={formatDuration}
                   state={state}

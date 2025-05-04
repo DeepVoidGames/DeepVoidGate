@@ -1,31 +1,15 @@
 import React from "react";
-import {
-  Card,
-  CardHeader,
-  CardTitle,
-  CardContent,
-  CardFooter,
-} from "@/components/ui/card";
-import {
-  Users,
-  Cpu,
-  Leaf,
-  Star,
-  Zap,
-  AlertTriangle,
-  Eye,
-  EyeOff,
-} from "lucide-react";
+import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
+import { Users, Zap, Eye, EyeOff } from "lucide-react";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { useGame } from "@/context/GameContext";
 import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
-import { FactionName } from "@/types/factions";
 import { IMAGE_PATH } from "@/config";
 import { formatNumber } from "@/lib/utils";
 
 const FactionsDisplay = () => {
-  const { state, dispatch } = useGame();
+  const { state } = useGame();
   const { factions } = state;
 
   const [hiddenBonuses, setHiddenBonuses] = React.useState<Set<string>>(
@@ -35,7 +19,11 @@ const FactionsDisplay = () => {
   const toggleBonuses = (factionId: string) => {
     setHiddenBonuses((prev) => {
       const next = new Set(prev);
-      next.has(factionId) ? next.delete(factionId) : next.add(factionId);
+      if (next.has(factionId)) {
+        next.delete(factionId);
+      } else {
+        next.add(factionId);
+      }
       return next;
     });
   };

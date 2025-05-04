@@ -1,6 +1,4 @@
 import React from "react";
-import { GameProvider } from "@/context/GameContext";
-import { ResourceDisplay } from "@/components/ResourceDisplay";
 import { PlanetaryView } from "@/components/PlanetaryView";
 import { GameHeader } from "@/components/GameHeader";
 import TechnologiesManager from "@/components/Technologies/TechnologiesManager";
