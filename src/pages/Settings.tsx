@@ -1,5 +1,6 @@
 import React, { useEffect } from "react";
 import { toast } from "@/components/ui/use-toast";
+import { client, useAuth } from "@/server/AuthContext";
 
 type SettingsType = {
   compactUI: boolean;
@@ -25,6 +26,9 @@ export const getSettings = (): SettingsType => {
 };
 
 function Settings() {
+  const { session } = useAuth();
+  const [displayName, setDisplayName] = React.useState("");
+  const [isUpdatingName, setIsUpdatingName] = React.useState(false);
   const [compactUI, setCompactUI] = React.useState(false);
   const [compactUIOptions, setCompactUIOptions] = React.useState({
     showPlanetaryView: false,
@@ -44,11 +48,50 @@ function Settings() {
     handleLoadSettings();
   }, []);
 
+  useEffect(() => {
+    const fetchUser = async () => {
+      const user_ = await client.getAccount(session);
+      if (client.getUsers) {
+        setDisplayName(user_?.user?.display_name);
+      }
+    };
+    fetchUser();
+  }, [session]);
+
   const handleCloudSaveEnable = () => {
     // Tutaj będzie logika weryfikacji kodu
     setIsVerificationModalOpen(false);
     // Wyczyść pola po zamknięciu
     setVerificationCode("");
+  };
+
+  const updateDisplayName = async () => {
+    if (!session) {
+      toast({
+        title: "Not authenticated",
+        description: "You must be logged in to change your display name.",
+        variant: "destructive",
+      });
+      return;
+    }
+
+    setIsUpdatingName(true);
+    try {
+      await client.updateAccount(session, { display_name: displayName.trim() });
+      toast({
+        title: "Display name updated",
+        description: `Your display name has been changed to "${displayName.trim()}"`,
+        variant: "default",
+      });
+    } catch (error) {
+      toast({
+        title: "Update failed",
+        description: "Could not update display name. Please try again.",
+        variant: "destructive",
+      });
+    } finally {
+      setIsUpdatingName(false);
+    }
   };
 
   const handleSaveSettings = () => {
@@ -399,6 +442,32 @@ function Settings() {
               </div>
             </div>
           </div> */}
+
+          {session && (
+            <div className="space-y-2">
+              <label
+                htmlFor="displayName"
+                className="text-gray-200 font-semibold"
+              >
+                Display Name
+              </label>
+              <input
+                id="displayName"
+                type="text"
+                value={displayName}
+                onChange={(e) => setDisplayName(e.target.value)}
+                className="w-full bg-gray-700 text-gray-200 px-3 py-2 rounded-lg"
+                placeholder="Enter your display name"
+              />
+              <button
+                onClick={updateDisplayName}
+                disabled={isUpdatingName}
+                className="py-2 px-4 bg-blue-600 hover:bg-blue-700 text-white rounded-lg transition-colors duration-200"
+              >
+                {isUpdatingName ? "Updating..." : "Change Display Name"}
+              </button>
+            </div>
+          )}
 
           {/* Sekcja Społeczności */}
           <div className="space-y-4">
