@@ -8,7 +8,7 @@ export const GlobalChat = () => {
 
   const { messages, sendMessage, connected, onlineUsers } = useChat();
   const [input, setInput] = useState("");
-  const [isOpen, setIsOpen] = useState(true);
+  const [isOpen, setIsOpen] = useState(false);
 
   const handleSend = async () => {
     if (!input.trim()) return;
