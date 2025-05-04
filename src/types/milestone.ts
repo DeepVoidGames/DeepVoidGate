@@ -15,7 +15,7 @@ export type Milestone = {
   name: string;
   description: string;
   condition: (state: GameState) => boolean;
-  progress: (state: GameState) => number; // Nowe pole
+  progress: (state: GameState) => number;
   reward?: (state: GameState) => GameState;
   completed: boolean;
   category: string;

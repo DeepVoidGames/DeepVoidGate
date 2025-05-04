@@ -280,11 +280,19 @@ const MilestonesManager = () => {
                         <div className="mt-2">
                           <div className="text-xs text-muted-foreground flex justify-between">
                             <span>
-                              Progress: {activeTier.progress(state).toFixed(1)}%
+                              Progress:{" "}
+                              {typeof activeTier?.progress === "function"
+                                ? activeTier.progress(state).toFixed(1)
+                                : Number(activeTier?.progress).toFixed(1) || 0}
+                              %
                             </span>
                           </div>
                           <Progress
-                            value={activeTier.progress(state)}
+                            value={
+                              typeof activeTier?.progress === "function"
+                                ? activeTier.progress(state)
+                                : Number(activeTier?.progress) || 0
+                            }
                             className="h-1.5 mt-1"
                           />
                         </div>
