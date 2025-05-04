@@ -1,6 +1,7 @@
 import React, { useEffect } from "react";
 import { toast } from "@/components/ui/use-toast";
 import { client, useAuth } from "@/server/AuthContext";
+import { updateDisplayName } from "@/server/updateDisplayName";
 
 type SettingsType = {
   compactUI: boolean;
@@ -52,7 +53,7 @@ function Settings() {
     const fetchUser = async () => {
       const user_ = await client.getAccount(session);
       if (client.getUsers) {
-        setDisplayName(user_?.user?.display_name);
+        setDisplayName(user_?.user?.username);
       }
     };
     fetchUser();
@@ -65,7 +66,7 @@ function Settings() {
     setVerificationCode("");
   };
 
-  const updateDisplayName = async () => {
+  const handleUpdateDisplayName = async () => {
     if (!session) {
       toast({
         title: "Not authenticated",
@@ -77,7 +78,7 @@ function Settings() {
 
     setIsUpdatingName(true);
     try {
-      await client.updateAccount(session, { display_name: displayName.trim() });
+      await updateDisplayName(session, displayName);
       toast({
         title: "Display name updated",
         description: `Your display name has been changed to "${displayName.trim()}"`,
@@ -460,7 +461,7 @@ function Settings() {
                 placeholder="Enter your display name"
               />
               <button
-                onClick={updateDisplayName}
+                onClick={handleUpdateDisplayName}
                 disabled={isUpdatingName}
                 className="py-2 px-4 bg-blue-600 hover:bg-blue-700 text-white rounded-lg transition-colors duration-200"
               >

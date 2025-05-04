@@ -11,7 +11,7 @@ export async function updateDisplayName(session: Session, displayName: string) {
 
   try {
     const updatedAccount = await client.updateAccount(session, {
-      display_name: displayName,
+      username: displayName,
     });
     return updatedAccount;
   } catch (error) {
