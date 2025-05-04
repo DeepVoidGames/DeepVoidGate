@@ -1,4 +1,4 @@
-import { GameState } from "@/store/types";
+import { GameState } from "@/types/gameState";
 
 // types/analyticsTypes.ts
 export interface AnalyticsState {
