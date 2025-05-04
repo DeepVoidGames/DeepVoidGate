@@ -131,3 +131,7 @@ export const initialTechnologies: Technology[] = [
 ];
 
 export const initialExpeditions: Expedition[] = [];
+
+console.log("Available Technologies:", initialTechnologies.length);
+
+console.log("Available Initial Buildings", initialBuildings);

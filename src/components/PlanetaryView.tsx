@@ -134,7 +134,7 @@ export const PlanetaryView: React.FC = memo(() => {
           angle,
           distance,
           type: building.type,
-          size: 3 + building.level * 1.5,
+          size: 3 + building.tier * 1.5,
         };
       });
 

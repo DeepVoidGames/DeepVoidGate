@@ -10,19 +10,17 @@ import { initialState } from "@/store/reducers/gameReducer";
 import { ResourcesState } from "@/store/reducers/resourceReducer";
 import { GameState } from "@/types/gameState";
 
-// TODO Add sync milestones data with save
-
 export const CURRENT_GAME_VERSION = 3; // Aktualna wersja gry
 
 export const migrateGameState = (savedState: GameState): GameState => {
   let currentState = { ...savedState };
 
   // Migracje wersji
-  if (typeof currentState.version === "string") currentState.version = 0;
-  if (currentState.version === undefined || currentState.version === 0)
+  if (typeof currentState.version === "string") currentState.version = "0";
+  if (currentState.version === undefined || currentState.version === "0")
     currentState = migrateV0ToV1(currentState);
 
-  if (currentState.version === 1) currentState = migrateV1ToV2(currentState);
+  if (currentState.version === "1") currentState = migrateV1ToV2(currentState);
 
   // Merge technologii (bez zmian)
   const mergedTechnologies = initialTechnologies.map((tech) => ({
@@ -31,7 +29,6 @@ export const migrateGameState = (savedState: GameState): GameState => {
   }));
 
   // Poprawiony mechanizm dla budynków:
-  const initialBuildings = initialState.buildings;
 
   // Krok 1: Stwórz mapę budynków initial po 'type'
   const initialBuildingsMap = new Map(initialBuildings.map((b) => [b.type, b]));
@@ -246,10 +243,10 @@ const migrateBuildingsStats = (savedBuildings: any[]): any[] => {
     // Znajdź szablon budynku
     const template =
       initialBuildings.find((ib) => ib.type === building.type) || {};
-
     return {
       ...template, // Wartości domyślne z szablonu
       ...building, // Nadpisujemy wartościami z zapisanego stanu
+      id: building.id || generateId(),
       name: template.name || building.name,
       description: template.description || building.description,
       workerCapacity: template.workerCapacity ?? building.workerCapacity,

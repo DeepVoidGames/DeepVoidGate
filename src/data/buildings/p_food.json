@@ -149,9 +149,7 @@
       "energy": 0.5,
       "water": 0.4
     },
-    "requirements": {
-      "hydroponicFarm": 1
-    },
+    "requirements": {},
     "requiredTechnology": "vertical_farming",
     "costMultiplier": 1.7,
     "productionMultiplier": 1.2,
