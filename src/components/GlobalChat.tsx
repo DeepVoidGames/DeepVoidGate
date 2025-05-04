@@ -1,22 +1,37 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useChat } from "@/server/ChatContext";
 import { X, MessageCircle, Users } from "lucide-react";
 import { useAuth } from "@/server/AuthContext";
 
 export const GlobalChat = () => {
   const { session } = useAuth();
-
   const { messages, sendMessage, connected, onlineUsers } = useChat();
+
   const [input, setInput] = useState("");
   const [isOpen, setIsOpen] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
   const handleSend = async () => {
     if (!input.trim()) return;
-    await sendMessage(input.trim());
-    setInput("");
+
+    try {
+      await sendMessage(input.trim());
+      setInput("");
+      setError(null); // wyczyść błąd po udanym wysłaniu
+    } catch (err) {
+      // Załóżmy, że err.message zawiera komunikat z serwera
+      setError((err as Error).message || "Failed to send message");
+    }
   };
 
-  if (!session) return;
+  // Automatyczne ukrycie błędu po 5 sekundach
+  useEffect(() => {
+    if (!error) return;
+    const timer = setTimeout(() => setError(null), 5000);
+    return () => clearTimeout(timer);
+  }, [error]);
+
+  if (!session) return null;
 
   return (
     <>
@@ -51,7 +66,7 @@ export const GlobalChat = () => {
           </div>
 
           <div className="p-4">
-            <div className="h-64 overflow-y-auto mb-4">
+            <div className="h-64 overflow-y-auto mb-2">
               {messages.map((msg) => (
                 <div key={msg.id} className="mb-2 text-sm">
                   <span className="font-medium text-primary">
@@ -61,6 +76,13 @@ export const GlobalChat = () => {
                 </div>
               ))}
             </div>
+
+            {/* Komunikat błędu */}
+            {error && (
+              <div className="mb-2 p-2 bg-red-600 text-white rounded text-sm">
+                {error}
+              </div>
+            )}
 
             <div className="flex gap-2">
               <input
