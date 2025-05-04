@@ -1,17 +1,19 @@
-// milestonesReducer.ts
-import {
-  GameState,
-  ResourceType,
-  BuildingType,
-  Technology,
-  Milestone,
-} from "../types";
 import { toast } from "@/components/ui/use-toast";
+import { BuildingType } from "@/types/building";
+import { GameState } from "@/types/gameState";
+import { Milestone } from "@/types/milestone";
+import { ResourceType } from "@/types/resource";
 
-// Check and update milestones with tiered support and revocation
+/**
+ * Sprawdza, które kamienie milowe mogą zostać ukończone, a następnie je odblokowuje,
+ * stosując odpowiednie nagrody. Sprawdza również, czy należy cofnąć ukończone kamienie milowe,
+ * jeśli ich warunki nie są już spełnione.
+ *
+ * @param state - Obiekt reprezentujący aktualny stan gry.
+ * @returns Zaktualizowany stan gry po przetworzeniu kamieni milowych.
+ */
 export const checkMilestones = (state: GameState): GameState => {
   let newState = { ...state };
-  let hasChanges = false;
 
   // First pass: Find all milestones that can be completed
   const completableMilestones: Milestone[] = [];
@@ -27,8 +29,6 @@ export const checkMilestones = (state: GameState): GameState => {
 
   // Second pass: Complete milestones and apply rewards
   if (completableMilestones.length > 0) {
-    hasChanges = true;
-
     completableMilestones.sort((a, b) => (a.tier || 0) - (b.tier || 0));
 
     const updatedMilestones = [...newState.milestones];
@@ -81,7 +81,6 @@ export const checkMilestones = (state: GameState): GameState => {
         // const baseName = milestone.name.replace(/\s+[IVX]+$/, "");
         // const tierText = milestone.tier ? ` (Tier ${milestone.tier})` : "";
 
-        hasChanges = true;
         revokedAny = true;
         break; // Restart loop to re-check all milestones
       }
@@ -91,7 +90,13 @@ export const checkMilestones = (state: GameState): GameState => {
   return newState;
 };
 
-// Helper function to check prerequisites remains the same
+/**
+ * Sprawdza, czy kamień milowy ma ukończony kamień milowy, który jest wymagany jako prerequisit.
+ *
+ * @param state - Obiekt reprezentujący aktualny stan gry.
+ * @param milestone - Kamień milowy, którego wymóg prerequisitu jest sprawdzany.
+ * @returns `true`, jeśli kamień milowy nie ma wymaganego prerequisitu lub jeżeli wymagany prerequisit został ukończony; `false` w przeciwnym przypadku.
+ */
 const isPrerequisiteComplete = (
   state: GameState,
   milestone: Milestone
@@ -103,12 +108,32 @@ const isPrerequisiteComplete = (
   return prerequisite ? prerequisite.completed : true;
 };
 
-// Helper functions remain unchanged
+/**
+ * Zwraca liczbę budynków danego typu w grze.
+ *
+ * @param state - Obiekt reprezentujący aktualny stan gry.
+ * @param type - Typ budynku, którego liczba ma zostać obliczona.
+ * @returns Liczba budynków określonego typu w stanie gry.
+ */
 export const getBuildingCount = (state: GameState, type: BuildingType) =>
   state.buildings.filter((b) => b.type === type).length;
 
+/**
+ * Zwraca ilość zasobu o podanym typie w grze.
+ *
+ * @param state - Obiekt reprezentujący aktualny stan gry.
+ * @param resource - Typ zasobu, którego ilość ma zostać pobrana.
+ * @returns Ilość zasobu określonego typu w stanie gry.
+ */
 export const getResourceAmount = (state: GameState, resource: ResourceType) =>
   state.resources[resource].amount;
 
+/**
+ * Sprawdza, czy technologia o podanym identyfikatorze została zbadana.
+ *
+ * @param state - Obiekt reprezentujący aktualny stan gry.
+ * @param techId - Identyfikator technologii, którą sprawdzamy.
+ * @returns `true` jeśli technologia została zbadana, w przeciwnym razie `false`.
+ */
 export const isTechnologyResearched = (state: GameState, techId: string) =>
   state.technologies.some((t) => t.id === techId && t.isResearched);

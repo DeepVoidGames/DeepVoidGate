@@ -1,16 +1,13 @@
 import { applyArtifactEffect } from "@/store/reducers/artifactsReducer";
 import {
-  applyBuildingEffects,
-  calculateBuildingEfficiency,
+  updateResourcesByBuildings,
+  evaluateBuildingEfficiency,
 } from "@/store/reducers/buildingReducer";
 import { ResourcesState } from "@/store/reducers/resourceReducer";
-import {
-  BuildingData,
-  GameState,
-  ResourceType,
-  Technology,
-} from "@/store/types";
-import { stat } from "fs";
+import { BuildingData } from "@/types/building";
+import { GameState } from "@/types/gameState";
+import { ResourceData, ResourceType } from "@/types/resource";
+import { Technology } from "@/types/technology";
 
 export const calculateOfflineProduction = (
   state: GameState,
@@ -24,7 +21,7 @@ export const calculateOfflineProduction = (
   const EFFICIENCY_MULTIPLIER = 0.03; // 3% efektywności
   const OUTPUT_REDUCTION = 1; // Dodatkowe ograniczenie wyjścia
 
-  let currentResources = structuredClone(resources);
+  const currentResources = structuredClone(resources);
 
   // Ogranicz czas offline do maksymalnej wartości
   const cappedElapsedTime = Math.min(
@@ -36,7 +33,7 @@ export const calculateOfflineProduction = (
 
   while (remainingTime > 0) {
     // Oblicz efektywność z podwójnym ograniczeniem
-    const efficientBuildings = calculateBuildingEfficiency(
+    const efficientBuildings = evaluateBuildingEfficiency(
       buildings,
       currentResources
     ).map((building) => ({
@@ -47,14 +44,14 @@ export const calculateOfflineProduction = (
       ),
     }));
 
-    let tempResources = applyBuildingEffects(
+    let tempResources = updateResourcesByBuildings(
       efficientBuildings,
       currentResources
     );
 
     tempResources = applyArtifactEffect({
       ...state,
-      resources: tempResources,
+      resources: tempResources as { oxygen: ResourceData; water: ResourceData; food: ResourceData; energy: ResourceData; metals: ResourceData; science: ResourceData },
     }).resources;
 
     // Dodatkowe ograniczenie produkcji

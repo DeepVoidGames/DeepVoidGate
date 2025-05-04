@@ -1,6 +1,5 @@
 // expeditionReducer.ts
 import { generateId } from "../initialData";
-import { GameState, ResourceType, Technology } from "../types";
 import {
   Expedition,
   ExpeditionEvent,
@@ -11,17 +10,19 @@ import {
 import { expeditionEvents } from "@/data/expeditionEvents";
 import { toast } from "@/components/ui/use-toast";
 import {
-  addArtifact,
+  addArtifactCopies,
   getArtifact,
-  getArtifactsByExpeditionsTier,
+  getArtifactsByExpeditionTier,
 } from "./artifactsReducer";
-import { stat } from "fs";
 import { updateFactionLoyalty } from "./factionsReducer";
 import { FactionName } from "@/types/factions";
+import { GameState } from "@/types/gameState";
+import { ResourceType } from "@/types/resource";
+import { Technology } from "@/types/technology";
 
 // Stałe
 export const BASE_EXPEDITION_TIME = 15; // 30 minut dla tier 0
-export let TIME_PER_TIER = 15; // +15 minut na każdy tier
+export const TIME_PER_TIER = 15; // +15 minut na każdy tier
 export const CREW_PER_TIER = 5; // +5 załogant na każdy tier
 export const EVENT_INTERVAL = 10; // zdarzenie co 10 minut
 export const TIER_MULTIPLIER = 1.5; // mnożnik dla nagród za każdy tier
@@ -31,6 +32,15 @@ const BASE_REWARDS: Record<ExpeditionType, ResourceAmount> = {
   scientific: { science: 5000 },
 };
 
+/**
+ * Oblicza bazową nagrodę za ekspedycję danego typu i tieru.
+ *
+ * Nagroda jest skalowana wykładniczo na podstawie tieru ekspedycji z użyciem stałej `TIER_MULTIPLIER`.
+ *
+ * @param type - Typ ekspedycji (np. planetary, cosmic).
+ * @param tier - Tier ekspedycji (0+), wpływa na skalowanie nagrody.
+ * @returns Obiekt zawierający ilości nagród (zasobów) przypisanych do ekspedycji.
+ */
 export const getBaseExpeditionReward = (
   type: ExpeditionType,
   tier: number
@@ -47,6 +57,15 @@ export const getBaseExpeditionReward = (
   return multipliedRewards;
 };
 
+/**
+ * Zwraca oczekiwany zakres nagród za ekspedycję danego typu i tieru.
+ *
+ * Bazuje na nagrodzie podstawowej, zwracając dodatkowo minimalne (0×) i maksymalne (3×) możliwe wartości nagród.
+ *
+ * @param type - Typ ekspedycji (np. planetary, cosmic).
+ * @param tier - Tier ekspedycji (0+), wpływa na wysokość nagród.
+ * @returns Obiekt z bazowymi, minimalnymi i maksymalnymi możliwymi nagrodami za ekspedycję.
+ */
 export const getExpectedExpeditionRewards = (
   type: ExpeditionType,
   tier: number
@@ -63,6 +82,15 @@ export const getExpectedExpeditionRewards = (
   };
 };
 
+/**
+ * Zwraca aktualne nagrody za trwającą ekspedycję.
+ *
+ * Łączy bazowe nagrody wynikające z typu i tieru ekspedycji z aktualnie zapisanymi nagrodami ekspedycji.
+ * Jeśli ekspedycja miała modyfikatory (np. z wydarzeń), są one uwzględnione w `expedition.rewards`.
+ *
+ * @param expedition - Obiekt reprezentujący ekspedycję.
+ * @returns Łączne nagrody (bazowe + zmodyfikowane) jako mapę zasobów.
+ */
 export const getCurrentExpeditionRewards = (
   expedition: Expedition
 ): ResourceAmount => {
@@ -72,6 +100,20 @@ export const getCurrentExpeditionRewards = (
   };
 };
 
+/**
+ * Zwraca listę technologii możliwych do odkrycia w trakcie ekspedycji naukowej.
+ *
+ * Funkcja filtruje technologie, które:
+ * - nie zostały jeszcze odkryte (`!tech.isResearched`),
+ * - są zablokowane (`tech.locked === true`),
+ * - mają wszystkie wymagania wstępne (`prerequisites`) spełnione przez już odkryte technologie.
+ *
+ * Działa tylko dla ekspedycji typu `"scientific"`, w przeciwnym razie zwraca pustą tablicę.
+ *
+ * @param type - Typ ekspedycji (np. "scientific").
+ * @param technologies - Lista wszystkich technologii w grze.
+ * @returns Tablica możliwych do odkrycia technologii.
+ */
 export const getPossibleTechnologies = (
   type: ExpeditionType,
   technologies: Technology[]
@@ -88,6 +130,17 @@ export const getPossibleTechnologies = (
   );
 };
 
+/**
+ * Oblicza nagrodę za ekspedycję na podstawie jej typu i poziomu.
+ *
+ * Nagroda jest obliczana na podstawie bazowej wartości zasobów dla danego typu i poziomu ekspedycji,
+ * z losowym współczynnikiem mnożącym wynik w zakresie od 0.2 do 2.0.
+ * Nagroda dla każdego zasobu nie może być mniejsza niż 20% bazowej wartości.
+ *
+ * @param type - Typ ekspedycji (np. "scientific", "planetary").
+ * @param tier - Poziom ekspedycji, który wpływa na bazową wartość nagrody.
+ * @returns Obiekt `ResourceAmount` zawierający nagrody w zasobach (np. `oxygen`, `water`).
+ */
 export const calculateReward = (
   type: ExpeditionType,
   tier: number
@@ -108,15 +161,39 @@ export const calculateReward = (
   return rewards;
 };
 
+/**
+ * Formatuje nagrody w zasobach dla interfejsu użytkownika.
+ *
+ * Ta funkcja przyjmuje obiekt `rewards` zawierający zasoby i ich ilości,
+ * filtruje zasoby z ilościami większymi niż zero oraz formatuje ilości
+ * zasobów do postaci tekstowej (z użyciem `toLocaleString()`).
+ *
+ * @param rewards - Obiekt zawierający zasoby i ich ilości.
+ * @returns Tablica obiektów zawierających typ zasobu oraz sformatowaną ilość zasobu.
+ */
 export const formatRewardsForUI = (rewards: ResourceAmount) => {
-  return Object.entries(rewards)
-    .filter(([_, amount]) => amount > 0)
-    .map(([resource, amount]) => ({
-      type: resource as ResourceType,
-      amount: amount.toLocaleString(),
-    }));
+  return (
+    Object.entries(rewards)
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
+      .filter(([_, amount]) => amount > 0)
+      .map(([resource, amount]) => ({
+        type: resource as ResourceType,
+        amount: amount.toLocaleString(),
+      }))
+  );
 };
 
+/**
+ * Przetwarza nagrody z ekspedycji i aktualizuje stan gry.
+ *
+ * Ta funkcja sprawdza, czy nagrody zostały już przyznane w ramach ekspedycji,
+ * a następnie dodaje nagrody do zasobów gracza. Dodatkowo przetwarza technologie,
+ * załogantów, artefakty i frakcje związane z typem ekspedycji.
+ *
+ * @param expedition - Ekspedycja, z której pochodzą nagrody.
+ * @param state - Obecny stan gry, który zostanie zaktualizowany na podstawie nagród z ekspedycji.
+ * @returns Zaktualizowany stan gry po przyznaniu nagród z ekspedycji.
+ */
 const getReward = (expedition: Expedition, state: GameState): GameState => {
   let newState = { ...state };
 
@@ -191,16 +268,13 @@ const getReward = (expedition: Expedition, state: GameState): GameState => {
     // 45% szans na artefakt
 
     if (rng < 0.45) {
-      const artifacts = getArtifactsByExpeditionsTier(
-        newState,
-        expedition.tier
-      );
+      const artifacts = getArtifactsByExpeditionTier(newState, expedition.tier);
 
       const artifactIndex = Math.floor(Math.random() * artifacts.length);
       const artifact = artifacts[artifactIndex];
       const artifactAmount = Math.floor(Math.random() * 5) + 1; // 1-5 sztuk
       const artifactName = artifact.name;
-      newState = addArtifact(artifactName, artifactAmount, newState);
+      newState = addArtifactCopies(artifactName, artifactAmount, newState);
       toast({
         title: "Artifact Found!",
         description: `You have found an ${artifact.name}`,
@@ -232,7 +306,18 @@ const getReward = (expedition: Expedition, state: GameState): GameState => {
   return newState;
 };
 
-// Helpery
+/**
+ * Oblicza czas trwania ekspedycji na podstawie poziomu i stanu gry.
+ *
+ * Czas trwania ekspedycji zależy od poziomu ekspedycji (`tier`) oraz artefaktów,
+ * które mogą skrócić ten czas, np. "Time Crystal". Jeśli artefakt "Time Crystal"
+ * jest odblokowany, czas trwania zostaje zmniejszony o określony procent na
+ * podstawie liczby gwiazdek artefaktu.
+ *
+ * @param tier - Poziom ekspedycji, który wpływa na czas trwania.
+ * @param state - Obecny stan gry, zawierający informacje o artefaktach.
+ * @returns Czas trwania ekspedycji w jednostkach czasu (np. sekundach).
+ */
 export const calculateExpeditionDuration = (
   tier: number,
   state: GameState
@@ -246,10 +331,33 @@ export const calculateExpeditionDuration = (
   return BASE_EXPEDITION_TIME + tier * TIME_PER_TIER;
 };
 
+/**
+ * Oblicza wymaganą liczbę załogantów na podstawie poziomu ekspedycji.
+ *
+ * Liczba załogantów jest obliczana na podstawie stałej wartości `CREW_PER_TIER`
+ * oraz poziomu ekspedycji (`tier`). Wzrost liczby załogantów jest proporcjonalny
+ * do poziomu ekspedycji.
+ *
+ * @param tier - Poziom ekspedycji, który wpływa na liczbę wymaganych załogantów.
+ * @returns Wymagana liczba załogantów dla podanego poziomu ekspedycji.
+ */
 export const calculateRequiredCrew = (tier: number): number => {
   return CREW_PER_TIER + tier * CREW_PER_TIER;
 };
 
+/**
+ * Wybiera losowe wydarzenie dla ekspedycji, biorąc pod uwagę typ ekspedycji,
+ * poziom oraz wagę wydarzeń.
+ *
+ * Filtruje dostępne wydarzenia na podstawie typu ekspedycji i poziomu (tier),
+ * a następnie wybiera jedno z nich w sposób ważony. Wybór wydarzenia jest
+ * uzależniony od określonego typu ekspedycji, poziomu ekspedycji, oraz wagi
+ * przypisanej do każdego wydarzenia.
+ *
+ * @param expedition - Obiekt reprezentujący ekspedycję, dla której generowane
+ * wydarzenie (zawiera typ i poziom ekspedycji).
+ * @returns Wylosowane wydarzenie pasujące do filtrów, w tym losowe na podstawie wagi.
+ */
 const getRandomEvent = (expedition: Expedition): ExpeditionEvent => {
   const possibleEvents = expeditionEvents.filter((event) => {
     // Filtruj po typie ekspedycji jeśli określono
@@ -283,13 +391,27 @@ const getRandomEvent = (expedition: Expedition): ExpeditionEvent => {
   return selectedEvent;
 };
 
+/**
+ * Zastosowuje efekty wydarzeń do ekspedycji oraz stanu gry.
+ *
+ * Funkcja przetwarza efekty z listy, które mogą wpływać na czas trwania ekspedycji,
+ * zasoby, liczbę członków załogi, nagrody, odkrywanie technologii, lub status
+ * ekspedycji. Efekty są aplikowane na podstawie ich typu, a odpowiednie zmiany są
+ * wprowadzane do ekspedycji i stanu gry.
+ *
+ * @param effects - Lista efektów, które mają zostać zastosowane na ekspedycji.
+ * @param expedition - Obiekt reprezentujący ekspedycję, do której stosowane będą efekty.
+ * @param state - Obiekt reprezentujący aktualny stan gry, który będzie aktualizowany
+ * na podstawie efektów.
+ * @returns Obiekt zawierający zaktualizowaną ekspedycję oraz stan gry.
+ */
 const applyEventEffects = (
   effects: ExpeditionEventEffect[],
   expedition: Expedition,
   state: GameState
 ): { expedition: Expedition; state: GameState } => {
-  let newExpedition = { ...expedition };
-  let newState = { ...state };
+  const newExpedition = { ...expedition };
+  const newState = { ...state };
 
   for (const effect of effects) {
     const value =
@@ -302,12 +424,13 @@ const applyEventEffects = (
         newExpedition.duration += value as number;
         break;
 
-      case "resources":
+      case "resources": {
         const resourceType = effect.resourceType as ResourceType;
         if (newState.resources[resourceType]) {
           newState.resources[resourceType].amount += value as number;
         }
         break;
+      }
 
       case "crew": {
         const crewChange = value as number;
@@ -336,7 +459,7 @@ const applyEventEffects = (
         break;
       }
 
-      case "reward":
+      case "reward": {
         if (!newExpedition.rewards) newExpedition.rewards = {};
         const rewards = value as ResourceAmount;
         for (const [res, amount] of Object.entries(rewards)) {
@@ -344,6 +467,7 @@ const applyEventEffects = (
             (newExpedition.rewards[res] || 0) + amount;
         }
         break;
+      }
 
       case "technology": {
         const techId = effect.technologyId;
@@ -380,7 +504,22 @@ const applyEventEffects = (
   return { expedition: newExpedition, state: newState };
 };
 
-// Główne funkcje
+/**
+ * Rozpoczyna nową ekspedycję, sprawdzając, czy gracz ma wystarczającą liczbę dostępnych kolonistów,
+ * a następnie aktualizuje stan gry w zależności od wyniku.
+ *
+ * Funkcja wykonuje następujące operacje:
+ * - Sprawdza, czy gracz ma wystarczającą liczbę dostępnych kolonistów do wysłania na ekspedycję.
+ * - Jeśli liczba kolonistów jest niewystarczająca, wyświetla komunikat o błędzie.
+ * - Oblicza wymagany czas trwania ekspedycji oraz nagrody.
+ * - Tworzy nowy obiekt ekspedycji i dodaje go do stanu gry.
+ * - Zmniejsza liczbę dostępnych kolonistów w populacji.
+ *
+ * @param state - Obiekt reprezentujący aktualny stan gry.
+ * @param type - Typ ekspedycji, która ma zostać rozpoczęta.
+ * @param tier - Tier ekspedycji, który określa jej trudność oraz nagrody.
+ * @returns Zaktualizowany stan gry po rozpoczęciu ekspedycji.
+ */
 export const startExpedition = (
   state: GameState,
   type: ExpeditionType,
@@ -421,6 +560,21 @@ export const startExpedition = (
   };
 };
 
+/**
+ * Rozpoczyna ekspedycję, zmieniając jej status na "in_progress" jeśli jest w stanie "preparing".
+ * Jeśli ekspedycja nie jest w stanie "preparing", funkcja nic nie zmienia.
+ *
+ * Funkcja wykonuje następujące operacje:
+ * - Sprawdza, czy ekspedycja o podanym ID istnieje w stanie gry.
+ * - Jeśli ekspedycja nie jest w stanie "preparing", funkcja nic nie zmienia.
+ * - Zmienia status ekspedycji na "in_progress".
+ * - Aktualizuje listę ekspedycji w stanie gry.
+ * - Wyświetla komunikat o rozpoczęciu ekspedycji.
+ *
+ * @param state - Obiekt reprezentujący aktualny stan gry.
+ * @param expeditionId - ID ekspedycji, którą gracz chce uruchomić.
+ * @returns Zaktualizowany stan gry z rozpoczętą ekspedycją.
+ */
 export const launchExpedition = (
   state: GameState,
   expeditionId: string
@@ -452,6 +606,23 @@ export const launchExpedition = (
   };
 };
 
+/**
+ * Aktualizuje stan ekspedycji w grze na podstawie upływu czasu (deltaTime).
+ * Zajmuje się zarówno aktualizacją czasu trwania ekspedycji, jak i obsługą zdarzeń,
+ * a także przetwarzaniem zakończonych ekspedycji.
+ *
+ * Funkcja wykonuje następujące operacje:
+ * - Iteruje przez wszystkie aktywne ekspedycje, aktualizując ich stan.
+ * - Dla ekspedycji w stanie "in_progress" aktualizuje czas trwania i sprawdza, czy wystąpiły nowe zdarzenia.
+ * - Sprawdza, czy ekspedycja osiągnęła pełny czas trwania i zmienia jej status na "completed".
+ * - Dodaje nowe wydarzenie do ekspedycji, gdy minął wymagany czas.
+ * - Przetwarza zakończone ekspedycje, przyznając nagrody, jeśli nie zostały one jeszcze przyznane.
+ * - Usuwa zakończone ekspedycje z listy po upływie minuty, dla efektu wizualnego.
+ *
+ * @param state - Obiekt reprezentujący aktualny stan gry.
+ * @param deltaTime - Czas, który upłynął od ostatniego update'u, wyrażony w sekundach.
+ * @returns Zaktualizowany stan gry po przetworzeniu wszystkich ekspedycji.
+ */
 export const handleExpeditionTick = (
   state: GameState,
   deltaTime: number // w sekundach
@@ -460,8 +631,8 @@ export const handleExpeditionTick = (
 
   const deltaMinutes = deltaTime / 60;
   let newState = { ...state };
-  let updatedExpeditions = [...state.expeditions];
-  let expeditionsToProcess = [];
+  const updatedExpeditions = [...state.expeditions];
+  const expeditionsToProcess = [];
 
   // Najpierw aktualizujemy stan wszystkich ekspedycji
   for (let i = 0; i < updatedExpeditions.length; i++) {
@@ -470,7 +641,7 @@ export const handleExpeditionTick = (
     // Pomijaj nieaktywne ekspedycje
     if (expedition.status !== "in_progress") continue;
 
-    let newExpedition = { ...expedition };
+    const newExpedition = { ...expedition };
 
     // Sprawdź czy są nierozwiązane zdarzenia
     const hasPendingEvents = newExpedition.events.some(
@@ -552,6 +723,24 @@ export const handleExpeditionTick = (
   return newState;
 };
 
+/**
+ * Obsługuje wybór opcji w zdarzeniu ekspedycji przez gracza.
+ * Zaktualizowuje stan ekspedycji i gry na podstawie wybranej opcji,
+ * stosując efekty związane z tą opcją.
+ *
+ * Funkcja wykonuje następujące operacje:
+ * - Wyszukuje ekspedycję w stanie gry na podstawie jej identyfikatora.
+ * - Sprawdza, czy zdarzenie istnieje oraz czy wybrana opcja jest prawidłowa.
+ * - Zastosowuje efekty wybranej opcji na ekspedycji i stanie gry.
+ * - Zaktualizowuje log zdarzeń ekspedycji, zaznaczając wybraną opcję.
+ * - Zwraca zaktualizowany stan gry z nowymi danymi o ekspedycji.
+ *
+ * @param state - Obiekt reprezentujący aktualny stan gry.
+ * @param expeditionId - Identyfikator ekspedycji, której zdarzenie zostało wybrane.
+ * @param eventIndex - Indeks wybranego zdarzenia w ramach ekspedycji.
+ * @param optionIndex - Indeks wybranej opcji w ramach zdarzenia.
+ * @returns Zaktualizowany stan gry po przetworzeniu wyboru opcji w zdarzeniu.
+ */
 export const handleExpeditionEventChoice = (
   state: GameState,
   expeditionId: string,
@@ -605,6 +794,20 @@ export const handleExpeditionEventChoice = (
   };
 };
 
+/**
+ * Anuluje ekspedycję, zwracając załogantów do dostępnej puli.
+ * Ekspedycja musi być w stanie "preparing", aby mogła zostać anulowana.
+ *
+ * Funkcja wykonuje następujące operacje:
+ * - Sprawdza, czy ekspedycja o podanym identyfikatorze istnieje w stanie gry.
+ * - Jeśli ekspedycja jest w stanie "preparing", zwraca załogantów do dostępnych.
+ * - Usuwa ekspedycję z listy.
+ * - Zwraca zaktualizowany stan gry z usuniętą ekspedycją i zaktualizowaną liczbą dostępnych załogantów.
+ *
+ * @param state - Obiekt reprezentujący aktualny stan gry.
+ * @param expeditionId - Identyfikator ekspedycji, którą chcemy anulować.
+ * @returns Zaktualizowany stan gry po anulowaniu ekspedycji.
+ */
 export const cancelExpedition = (
   state: GameState,
   expeditionId: string
@@ -639,6 +842,13 @@ export const cancelExpedition = (
   };
 };
 
+/**
+ * Sprawdza, czy ekspedycja jest odblokowana na podstawie technologii "advanced_hub_integration".
+ * Ekspedycja jest odblokowana, jeśli technologia o identyfikatorze "advanced_hub_integration" została zbadana.
+ *
+ * @param state - Obiekt reprezentujący aktualny stan gry.
+ * @returns `true` jeśli technologia "advanced_hub_integration" została zbadana, w przeciwnym razie `false`.
+ */
 export const isExpedtionUnlocked = (state) => {
   return state.technologies.some(
     (tech) => tech.id === "advanced_hub_integration" && tech.isResearched

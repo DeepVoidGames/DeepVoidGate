@@ -1,55 +1,54 @@
 import { toast } from "@/components/ui/use-toast";
-import { GameAction } from "../actions";
-import { GameState, ResourceType } from "../types";
+import { GameAction } from "@/store/actions";
 import {
   initialResourcesState,
   initialPopulationState,
-  initialBuildings,
   resourceAlertThresholds,
   initialTechnologies,
-} from "../initialData";
-import { generateId } from "../initialData";
+} from "@/store/initialData";
 import {
   resetProductionCounters,
   calculateResourceChanges,
-  applyResourceCost,
-  canAffordCost,
-} from "./resourceReducer";
+} from "@/store/reducers/resourceReducer";
 import {
-  calculateBuildingEfficiency,
-  applyBuildingEffects,
-  constructBuilding,
-  upgradeBuilding,
-  assignWorker,
+  evaluateBuildingEfficiency,
+  updateResourcesByBuildings,
+  buildNewBuilding,
+  upgradeBuildingLevel,
+  assignWorkersToBuilding,
   upgradeBuildingMax,
-} from "./buildingReducer";
+} from "@/store/reducers/buildingReducer";
+import { calculatePopulationConsumption } from "@/store/reducers/populationReducer";
 import {
-  calculatePopulationConsumption,
-  recalculateAvailableWorkers,
-} from "./populationReducer";
-import { researchTechnology, updateResearches } from "./technologyReducer";
-import { stat } from "fs";
+  researchTechnology,
+  updateResearches,
+} from "@/store/reducers/technologyReducer";
 import { calculateOfflineProduction } from "@/lib/calculateOfflineProduction";
 import {
   CURRENT_GAME_VERSION,
   migrateGameState,
 } from "@/migrations/migrateGameState";
 import { initialMilestones } from "@/data/milestonesData";
-import { checkMilestones } from "./milestonesReducer";
+import { checkMilestones } from "@/store/reducers/milestonesReducer";
 import {
   startExpedition,
   launchExpedition,
   handleExpeditionTick,
   handleExpeditionEventChoice,
   cancelExpedition,
-} from "./expeditionReducer";
+} from "@/store/reducers/expeditionReducer";
 import { artifactsData } from "@/data/artifacts";
-import { applyArtifactEffect, upgradeArtifact } from "./artifactsReducer";
+import {
+  applyArtifactEffect,
+  upgradeArtifactIfPossible,
+} from "@/store/reducers/artifactsReducer";
 import {
   applyFactionBonuses,
   initialFactions,
   updateFactionLoyalty,
-} from "./factionsReducer";
+} from "@/store/reducers/factionsReducer";
+import { GameState } from "@/types/gameState";
+import { ResourceType } from "@/types/resource";
 
 // Initialize the game state
 export const initialState: GameState = {
@@ -101,7 +100,7 @@ export const gameReducer = (
       // Aktualizacja stanu przez kolejne moduły
       let newState = {
         ...state,
-        ...updateResourceProduction(state, deltaTime),
+        ...updateResourceProduction(state, deltaTime, initialResourcesState),
         ...calculateHousingAndColonists(state, deltaTime),
         sessionLength: newSessionLength,
       };
@@ -109,7 +108,13 @@ export const gameReducer = (
       newState = handleMilestonesAndExpeditions(newState, deltaTime);
       newState = processCriticalResources(newState, deltaTime);
       newState = monitorResourceLevels(newState);
-      newState = applyFactionBonuses(newState);
+      newState = applyFactionBonuses({
+        ...newState,
+        resources: {
+          ...initialResourcesState,
+          ...newState.resources,
+        },
+      });
 
       return {
         ...newState,
@@ -119,7 +124,7 @@ export const gameReducer = (
 
     case "CONSTRUCT_BUILDING": {
       const { buildingType } = action.payload;
-      const result = constructBuilding(
+      const result = buildNewBuilding(
         state.buildings,
         state.resources,
         buildingType,
@@ -137,7 +142,7 @@ export const gameReducer = (
 
     case "UPGRADE_BUILDING": {
       const { buildingId } = action.payload;
-      const result = upgradeBuilding(
+      const result = upgradeBuildingLevel(
         state.buildings,
         state.resources,
         buildingId
@@ -172,7 +177,7 @@ export const gameReducer = (
     case "ASSIGN_WORKER": {
       const { buildingId, count } = action.payload;
       console.log("ASSIGN_WORKER", buildingId, count);
-      const result = assignWorker(
+      const result = assignWorkersToBuilding(
         state.buildings,
         state.population,
         buildingId,
@@ -258,7 +263,7 @@ export const gameReducer = (
 
     case "UPGRADE_ARTIFACT": {
       const { artifactName } = action.payload;
-      return upgradeArtifact(artifactName, state);
+      return upgradeArtifactIfPossible(artifactName, state);
     }
 
     case "UPDATE_LOYALTY":
@@ -406,17 +411,23 @@ const calculateBasicValues = (state, action) => {
   };
 };
 
-const updateResourceProduction = (state, deltaTime) => {
-  let newResources = resetProductionCounters(state.resources);
-  const buildings = calculateBuildingEfficiency(state.buildings, newResources);
-  newResources = applyBuildingEffects(buildings, newResources);
+const updateResourceProduction = (state, deltaTime, initialResources) => {
+  let newResources = {
+    ...initialResources,
+    ...resetProductionCounters(state.resources),
+  };
+  const buildings = evaluateBuildingEfficiency(state.buildings, newResources);
+  newResources = updateResourcesByBuildings(buildings, newResources);
   newResources = calculatePopulationConsumption(state.population, newResources);
   return { resources: newResources, buildings };
 };
 
 const calculateHousingAndColonists = (state, deltaTime) => {
   const totalHousing = calculateHousingCapacity(state.buildings);
-  let newPopulation = updatePopulationCapacity(state.population, totalHousing);
+  const newPopulation = updatePopulationCapacity(
+    state.population,
+    totalHousing
+  );
   const colonistUpdates = processColonistArrival(
     newPopulation,
     deltaTime,
@@ -435,7 +446,7 @@ const handleMilestonesAndExpeditions = (state, deltaTime) => {
 };
 
 const processCriticalResources = (state, deltaTime) => {
-  let newResources = calculateResourceChanges(state.resources, deltaTime);
+  const newResources = calculateResourceChanges(state.resources, deltaTime);
   const newPopulation = handleDeathTimer(
     state.population,
     newResources,
@@ -595,7 +606,11 @@ const showResourceAlert = (resource: string, level: "critical" | "low") => {
 };
 
 // Population management
-const handleColonistDeath = (population: any): any => {
+const handleColonistDeath = (population: {
+  total: number;
+  available: number;
+  deathTimer?: number;
+}): { total: number; available: number; deathTimer?: number } => {
   const newPopulation = {
     ...population,
     total: Math.max(0, population.total - 1),
@@ -620,7 +635,11 @@ const handleColonistDeath = (population: any): any => {
   return newPopulation;
 };
 
-const clearDeathTimer = (population: any): any => {
+const clearDeathTimer = (population: {
+  total: number;
+  available: number;
+  deathTimer?: number;
+}): { total: number; available: number; deathTimer?: number } => {
   toast({
     title: "Life Support Restored",
     description:

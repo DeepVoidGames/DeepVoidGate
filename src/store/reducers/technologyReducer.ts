@@ -1,9 +1,21 @@
 import { toast } from "@/components/ui/use-toast";
-import { GameState, Technology, TechnologyCategory } from "../types";
 import { canAffordCost, applyResourceCost } from "./resourceReducer";
 import { ResourcesState } from "./resourceReducer";
-import { BuildingType } from "../types";
+import { Technology } from "@/types/technology";
+import { GameState } from "@/types/gameState";
+import { BuildingType } from "@/types/building";
 
+/**
+ * Sprawdza, czy wszystkie wymagania wstępne danej technologii zostały spełnione.
+ *
+ * Funkcja porównuje listę wymaganych technologii (`prerequisites`) z listą już zbadanych (`researchedTechIds`).
+ * Zwraca `true` tylko wtedy, gdy wszystkie wymagane technologie znajdują się na liście zbadanych.
+ *
+ * @param technology - Obiekt technologii zawierający listę wymaganych technologii (`prerequisites`).
+ * @param researchedTechIds - Tablica identyfikatorów technologii, które zostały już zbadane.
+ *
+ * @returns `true`, jeśli wszystkie wymagania są spełnione, w przeciwnym razie `false`.
+ */
 const checkPrerequisites = (
   technology: Technology,
   researchedTechIds: string[]
@@ -13,6 +25,24 @@ const checkPrerequisites = (
   );
 };
 
+/**
+ * Rozpoczyna badanie technologii, jeśli spełnione są wszystkie warunki.
+ *
+ * Funkcja sprawdza, czy technologia istnieje, nie została już zbadana,
+ * nie jest w trakcie badania, ma spełnione wymagania wstępne i czy gracz
+ * posiada wystarczające zasoby. Jeśli tak, rozpoczyna badanie i odejmuje zasoby.
+ * Uwzględnia bonus skracający czas badania od frakcji "StarUnderstanding".
+ *
+ * @param technologies - Tablica dostępnych technologii.
+ * @param resources - Aktualny stan zasobów gracza.
+ * @param techId - Identyfikator technologii, którą gracz chce zbadać.
+ * @param state - Pełny stan gry, używany m.in. do odczytu lojalności frakcji.
+ *
+ * @returns Obiekt zawierający:
+ * - `technologies`: zaktualizowana lista technologii,
+ * - `resources`: zaktualizowany stan zasobów,
+ * - `success`: flaga informująca, czy rozpoczęcie badania się powiodło.
+ */
 export const researchTechnology = (
   technologies: Technology[],
   resources: ResourcesState,
@@ -109,6 +139,16 @@ export const researchTechnology = (
   };
 };
 
+/**
+ * Zwraca listę typów budynków odblokowanych przez zbadane technologie.
+ *
+ * Funkcja filtruje technologie, które zostały zbadane (`isResearched === true`)
+ * i zbiera wszystkie typy budynków odblokowywanych przez te technologie.
+ *
+ * @param technologies - Tablica obiektów technologii dostępnych w grze.
+ *
+ * @returns Tablica typów budynków (`BuildingType[]`), które zostały odblokowane.
+ */
 export const getUnlockedBuildings = (
   technologies: Technology[]
 ): BuildingType[] => {
@@ -117,7 +157,17 @@ export const getUnlockedBuildings = (
     .flatMap((t) => t.unlocksBuildings);
 };
 
-// Helper function to check completed researches (should be called periodically)
+/**
+ * Aktualizuje stan badań technologii, kończąc te, których czas badań już upłynął.
+ *
+ * Funkcja sprawdza wszystkie technologie, które są w trakcie badań (mają `researchStartTime`)
+ * i nie zostały jeszcze zbadane (`!isResearched`). Jeśli czas badań (`researchDuration`)
+ * już upłynął, ustawia `isResearched` na `true` i usuwa znacznik czasu rozpoczęcia.
+ *
+ * @param technologies - Tablica obiektów technologii do zaktualizowania.
+ *
+ * @returns Zaktualizowana tablica technologii z uwzględnieniem ukończonych badań.
+ */
 export const updateResearches = (technologies: Technology[]): Technology[] => {
   const now = Date.now();
   return technologies.map((tech) => {

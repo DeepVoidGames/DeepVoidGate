@@ -1,5 +1,5 @@
+import { BuildingType } from "@/types/building";
 import { ExpeditionType } from "@/types/expedition";
-import { BuildingType, ResourceType } from "./types";
 import { FactionName } from "@/types/factions";
 
 export type GameAction =

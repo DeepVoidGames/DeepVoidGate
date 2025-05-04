@@ -1,22 +1,16 @@
 // factionsHelpers.ts
-import { GameState, ResourceType } from "../types";
-import { generateId } from "../initialData";
 import { FactionName } from "@/types/factions";
+import { GameState } from "@/types/gameState";
 
-// export const handleFactionSelection = (
-//   state: GameState,
-//   faction: FactionName
-// ): GameState => {
-//   return {
-//     ...state,
-//     selectedFaction: faction,
-//     factions: state.factions.map((f) => {
-//       if (f.id === faction) return { ...f, loyalty: 25 };
-//       return { ...f, hostility: 50 };
-//     }),
-//   };
-// };
-
+/**
+ * Aktualizuje lojalność frakcji w grze.
+ * Zmienia lojalność frakcji o określoną wartość, zapewniając, że lojalność mieści się w dozwolonym zakresie (od 0 do maxLoyalty).
+ *
+ * @param state - Obiekt reprezentujący aktualny stan gry.
+ * @param faction - Identyfikator frakcji, której lojalność ma zostać zaktualizowana.
+ * @param amount - Wartość, o którą ma zostać zmieniona lojalność (może być dodatnia lub ujemna).
+ * @returns Zaktualizowany stan gry z nowymi wartościami lojalności frakcji.
+ */
 export const updateFactionLoyalty = (
   state: GameState,
   faction: FactionName,
@@ -36,11 +30,19 @@ export const updateFactionLoyalty = (
   };
 };
 
+/**
+ * Zastosowuje bonusy frakcji na podstawie ich lojalności.
+ * Otwiera dostęp do technologii, gdy lojalność frakcji osiągnie wymagany próg.
+ *
+ * @param state - Obiekt reprezentujący aktualny stan gry.
+ * @returns Zaktualizowany stan gry z zastosowanymi bonusami frakcji.
+ */
 export const applyFactionBonuses = (state: GameState): GameState => {
-  let newState = { ...state };
+  const newState = { ...state };
 
   // Technocrats
   if (state.factions[0].loyalty >= 1000) {
+    //
   }
 
   // Biogenesis
