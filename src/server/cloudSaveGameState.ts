@@ -1,6 +1,6 @@
-import { GameState } from "@/store/types";
-import { Client, Session } from "@heroiclabs/nakama-js";
+import { Session } from "@heroiclabs/nakama-js";
 import { client } from "./AuthContext";
+import { GameState } from "@/types/gameState";
 
 export async function cloudSaveGameState(
   session: Session,

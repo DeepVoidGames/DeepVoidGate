@@ -6,12 +6,7 @@ import React, {
   ReactNode,
 } from "react";
 import { client, useAuth } from "./AuthContext";
-import {
-  Session,
-  Socket,
-  Channel,
-  ChannelMessage,
-} from "@heroiclabs/nakama-js";
+import { Socket, Channel, ChannelMessage } from "@heroiclabs/nakama-js";
 
 type ChatMessage = {
   id: string;
@@ -38,13 +33,13 @@ export const useChat = () => useContext(ChatContext);
 
 export const ChatProvider = ({ children }: { children: ReactNode }) => {
   const [messages, setMessages] = useState<ChatMessage[]>([]);
-  const [nextCursor, setNextCursor] = useState<string | null>(null);
+  const [, setNextCursor] = useState<string | null>(null);
   const [connected, setConnected] = useState(false);
   const [channel, setChannel] = useState<Channel | null>(null);
   const [socket, setSocket] = useState<Socket | null>(null);
   const [onlineUsers, setOnlineUsers] = useState<string[]>([]);
 
-  const { session, loading } = useAuth();
+  const { session } = useAuth();
 
   useEffect(() => {
     if (!session) return;
@@ -99,7 +94,10 @@ export const ChatProvider = ({ children }: { children: ReactNode }) => {
           msg.content !== null &&
           "message" in msg.content
         ) {
-          content = String((msg.content as any).message);
+          if (typeof msg.content === "object" && msg.content !== null) {
+            const contentObj = msg.content as { message?: string };
+            content = contentObj.message || "";
+          }
         } else if (typeof msg.content === "string") {
           content = msg.content;
         }

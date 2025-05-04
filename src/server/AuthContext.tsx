@@ -41,6 +41,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
         setSession(s);
         console.log("Authenticated! User ID:", s.user_id);
       } catch (e) {
+        console.log(e);
         setSession(null);
       } finally {
         setLoading(false);
