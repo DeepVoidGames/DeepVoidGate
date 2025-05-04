@@ -377,7 +377,7 @@ function Settings() {
           </div>
 
           {/* Sekcja Analityki */}
-          <div className="space-y-4">
+          {/* <div className="space-y-4">
             <h2 className="text-xl font-semibold text-gray-100 mb-2">
               Privacy
             </h2>
@@ -398,7 +398,7 @@ function Settings() {
                 </button>
               </div>
             </div>
-          </div>
+          </div> */}
 
           {/* Sekcja Społeczności */}
           <div className="space-y-4">
