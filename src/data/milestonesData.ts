@@ -1,3 +1,4 @@
+import { initialBuildings } from "@/store/initialData";
 import { GameState } from "@/types/gameState";
 import { Milestone } from "@/types/milestone";
 import { TechnologyCategory } from "@/types/technology";
@@ -352,7 +353,7 @@ export const initialMilestones: Milestone[] = [
     description:
       "Unlock all oxygen production facilities to ensure a steady supply of oxygen for the colony.",
     condition: function (state: GameState): boolean {
-      const maxCount = state.buildings.filter(
+      const maxCount = initialBuildings.filter(
         (building) => building.tag === "oxygen"
       ).length;
 
@@ -363,7 +364,7 @@ export const initialMilestones: Milestone[] = [
       return count >= maxCount;
     },
     progress: function (state: GameState): number {
-      const maxCount = state.buildings.filter(
+      const maxCount = initialBuildings.filter(
         (building) => building.tag === "oxygen"
       ).length;
 
@@ -382,7 +383,7 @@ export const initialMilestones: Milestone[] = [
     description:
       "Max out all oxygen production facilities to ensure a steady supply of oxygen for the colony.",
     condition: function (state: GameState): boolean {
-      const maxCount = state.buildings.filter(
+      const maxCount = initialBuildings.filter(
         (building) => building.tag === "oxygen"
       ).length;
 
@@ -396,7 +397,7 @@ export const initialMilestones: Milestone[] = [
       return count >= maxCount;
     },
     progress: function (state: GameState): number {
-      const maxCount = state.buildings.filter(
+      const maxCount = initialBuildings.filter(
         (building) => building.tag === "oxygen"
       ).length;
 
@@ -416,7 +417,7 @@ export const initialMilestones: Milestone[] = [
     description:
       "Unlock all food production facilities to ensure a steady supply of food for the colony.",
     condition: function (state: GameState): boolean {
-      const maxCount = state.buildings.filter(
+      const maxCount = initialBuildings.filter(
         (building) => building.tag === "food"
       ).length;
 
@@ -427,7 +428,7 @@ export const initialMilestones: Milestone[] = [
       return count >= maxCount;
     },
     progress: function (state: GameState): number {
-      const maxCount = state.buildings.filter(
+      const maxCount = initialBuildings.filter(
         (building) => building.tag === "food"
       ).length;
 
@@ -446,7 +447,7 @@ export const initialMilestones: Milestone[] = [
     description:
       "Max out all food production facilities to ensure a steady supply of food for the colony.",
     condition: function (state: GameState): boolean {
-      const maxCount = state.buildings.filter(
+      const maxCount = initialBuildings.filter(
         (building) => building.tag === "food"
       ).length;
 
@@ -460,7 +461,7 @@ export const initialMilestones: Milestone[] = [
       return count >= maxCount;
     },
     progress: function (state: GameState): number {
-      const maxCount = state.buildings.filter(
+      const maxCount = initialBuildings.filter(
         (building) => building.tag === "food"
       ).length;
 
@@ -481,7 +482,7 @@ export const initialMilestones: Milestone[] = [
     description:
       "Unlock all energy production facilities to ensure a steady supply of energy for the colony.",
     condition: function (state: GameState): boolean {
-      const maxCount = state.buildings.filter(
+      const maxCount = initialBuildings.filter(
         (building) => building.tag === "energy"
       ).length;
 
@@ -493,7 +494,7 @@ export const initialMilestones: Milestone[] = [
     },
 
     progress: function (state: GameState): number {
-      const maxCount = state.buildings.filter(
+      const maxCount = initialBuildings.filter(
         (building) => building.tag === "energy"
       ).length;
 
@@ -513,7 +514,7 @@ export const initialMilestones: Milestone[] = [
     description:
       "Max out all energy production facilities to ensure a steady supply of energy for the colony.",
     condition: function (state: GameState): boolean {
-      const maxCount = state.buildings.filter(
+      const maxCount = initialBuildings.filter(
         (building) => building.tag === "energy"
       ).length;
 
@@ -527,7 +528,7 @@ export const initialMilestones: Milestone[] = [
       return count >= maxCount;
     },
     progress: function (state: GameState): number {
-      const maxCount = state.buildings.filter(
+      const maxCount = initialBuildings.filter(
         (building) => building.tag === "energy"
       ).length;
 
@@ -547,7 +548,7 @@ export const initialMilestones: Milestone[] = [
     description:
       "Unlock all metal production facilities to ensure a steady supply of metal for the colony.",
     condition: function (state: GameState): boolean {
-      const maxCount = state.buildings.filter(
+      const maxCount = initialBuildings.filter(
         (building) => building.tag === "metals"
       ).length;
 
@@ -558,7 +559,7 @@ export const initialMilestones: Milestone[] = [
       return count >= maxCount;
     },
     progress: function (state: GameState): number {
-      const maxCount = state.buildings.filter(
+      const maxCount = initialBuildings.filter(
         (building) => building.tag === "metals"
       ).length;
 
@@ -578,7 +579,7 @@ export const initialMilestones: Milestone[] = [
     description:
       "Max out all metal production facilities to ensure a steady supply of metal for the colony.",
     condition: function (state: GameState): boolean {
-      const maxCount = state.buildings.filter(
+      const maxCount = initialBuildings.filter(
         (building) => building.tag === "metals"
       ).length;
 
@@ -592,7 +593,7 @@ export const initialMilestones: Milestone[] = [
       return count >= maxCount;
     },
     progress: function (state: GameState): number {
-      const maxCount = state.buildings.filter(
+      const maxCount = initialBuildings.filter(
         (building) => building.tag === "metals"
       ).length;
 
@@ -612,7 +613,7 @@ export const initialMilestones: Milestone[] = [
     description:
       "Unlock all science production facilities to ensure a steady supply of science for the colony.",
     condition: function (state: GameState): boolean {
-      const maxCount = state.buildings.filter(
+      const maxCount = initialBuildings.filter(
         (building) => building.tag === "science"
       ).length;
 
@@ -623,7 +624,7 @@ export const initialMilestones: Milestone[] = [
       return count >= maxCount;
     },
     progress: function (state: GameState): number {
-      const maxCount = state.buildings.filter(
+      const maxCount = initialBuildings.filter(
         (building) => building.tag === "science"
       ).length;
 
@@ -643,7 +644,7 @@ export const initialMilestones: Milestone[] = [
     description:
       "Max out all science production facilities to ensure a steady supply of science for the colony.",
     condition: function (state: GameState): boolean {
-      const maxCount = state.buildings.filter(
+      const maxCount = initialBuildings.filter(
         (building) => building.tag === "science"
       ).length;
 
@@ -657,7 +658,7 @@ export const initialMilestones: Milestone[] = [
       return count >= maxCount;
     },
     progress: function (state: GameState): number {
-      const maxCount = state.buildings.filter(
+      const maxCount = initialBuildings.filter(
         (building) => building.tag === "science"
       ).length;
 
