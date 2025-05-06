@@ -1,8 +1,8 @@
-import React, { useRef, useEffect, useState, memo } from "react";
+import React, { memo } from "react";
 import { useGame } from "@/context/GameContext";
+import { IMAGE_PATH } from "@/config";
 
 export const PlanetaryView: React.FC = memo(() => {
-  const canvasRef = useRef<HTMLCanvasElement>(null);
   const { state } = useGame();
 
   return (
@@ -12,7 +12,9 @@ export const PlanetaryView: React.FC = memo(() => {
       </h2>
 
       <div className="flex items-center justify-center">
-        <div className="relative"></div>
+        <div className="relative">
+          <img src={`${IMAGE_PATH}planet.gif`} />
+        </div>
       </div>
 
       <div className="text-center mt-4 text-sm text-muted-foreground">
