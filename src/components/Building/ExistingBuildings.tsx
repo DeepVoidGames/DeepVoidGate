@@ -126,30 +126,30 @@ const ExistingBuildings: React.FC<ExistingBuildingsProps> = ({
   useEffect(() => {
     if (activeTab !== "production") {
       setSelectedResource("oxygen");
-    } else {
-      // Filtruj budynki produkcyjne
-      const productionBuildings = filteredBuildings.filter(
-        (building) => getBuildingCategory(building) === "production"
-      );
-
-      if (productionBuildings.length > 0) {
-        const availableResources = productionBuildings.reduce(
-          (acc, building) => {
-            const res = getResourceType(building);
-            return res && !acc.includes(res) ? [...acc, res] : acc;
-          },
-          [] as string[]
-        );
-
-        if (
-          availableResources.length > 0 &&
-          !availableResources.includes(selectedResource)
-        ) {
-          setSelectedResource(availableResources[0]);
-        }
-      }
+      return;
     }
-  }, [activeTab, filteredBuildings, selectedResource]);
+
+    // Filter production buildings and determine available resources
+    const productionBuildings = filteredBuildings.filter(
+      (building) => getBuildingCategory(building) === "production"
+    );
+
+    const availableResources = productionBuildings.reduce(
+      (acc: string[], building) => {
+        const res = getResourceType(building);
+        return res && !acc.includes(res) ? [...acc, res] : acc;
+      },
+      []
+    );
+
+    // Update selectedResource only if necessary
+    setSelectedResource((currentSelected) => {
+      if (availableResources.length === 0) {
+        return currentSelected; // Keep current selection if no resources available
+      }
+      return currentSelected;
+    });
+  }, [activeTab, filteredBuildings]); // Removed selectedResource from dependencies
 
   // Funkcja sprawdzająca, czy budynek powinien być wyświetlony
   const shouldDisplayBuilding = (
