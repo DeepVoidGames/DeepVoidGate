@@ -74,7 +74,8 @@ export type BuildingType =
   | "void_storage_core"
   | "smart_resource_matrix"
   | "nutrient_reserve_cluster"
-  | "aeropulse_vault";
+  | "aeropulse_vault"
+  | "singularity_core";
 
 export interface BuildingData {
   id?: string;
@@ -118,6 +119,7 @@ export interface BuildingData {
   tag?: BuildingTags;
   housingCapacityMultiplier?: number;
   isFromExpedition?: boolean;
+  isBuild: boolean;
 }
 
 export interface UpgradeData {

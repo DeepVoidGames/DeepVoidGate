@@ -180,4 +180,22 @@ export const technology_production: Technology[] = [
     isResearched: false,
     locked: true,
   },
+  {
+    id: "singularity_engineering",
+    name: "Singularity Engineering",
+    category: "Production",
+    description:
+      "Advanced containment methods allow the safe manipulation of artificial singularities for matter compression and exotic material synthesis.",
+
+    researchCost: {
+      science: 450000,
+      energy: 225000,
+      oxygen: 150000,
+    },
+    prerequisites: [],
+    unlocksBuildings: ["singularity_core"],
+    researchDuration: 10800, // 3h
+    isResearched: false,
+    locked: true,
+  },
 ];

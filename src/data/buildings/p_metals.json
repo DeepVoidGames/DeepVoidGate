@@ -469,5 +469,37 @@
       "storage": { "metals": 50000 }
     },
     "tag": "metals"
+  },
+  {
+    "type": "singularity_core",
+    "category": "production",
+    "name": "Singularity Core",
+    "description": "An experimental core stabilized by artificial intelligence, harnessing the gravitational compression of a micro-singularity to fabricate exotic metals from pure energy.",
+    "workerCapacity": 12,
+    "baseCost": {
+      "metals": 45900,
+      "energy": 20250,
+      "science": 8100
+    },
+    "baseProduction": {
+      "metals": 30.0
+    },
+    "baseConsumption": {
+      "energy": 22.0,
+      "water": 3.0
+    },
+    "requirements": {},
+    "requiredTechnology": "singularity_engineering",
+    "costMultiplier": 1.77,
+    "productionMultiplier": 2.7,
+    "maxInstances": 1,
+    "tier": 1,
+    "maxTier": 5,
+    "upgrades": 0,
+    "uniqueBonus": {
+      "production": { "metals": 800 },
+      "storage": { "metals": 100000 }
+    },
+    "tag": "metals"
   }
 ]

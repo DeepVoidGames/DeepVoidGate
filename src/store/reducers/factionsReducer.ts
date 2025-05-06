@@ -42,7 +42,9 @@ export const applyFactionBonuses = (state: GameState): GameState => {
 
   // Technocrats
   if (state.factions[0].loyalty >= 1000) {
-    //
+    newState.technologies.find(
+      (tech) => tech.id === "singularity_engineering"
+    ).locked = false;
   }
 
   // Biogenesis
@@ -70,9 +72,10 @@ export const initialFactions = [
     hostility: 0,
     bonuses: [
       {
-        name: "",
-        description: "",
-        loyaltyReq: 25,
+        name: "Core of Collapse",
+        description:
+          "Technocrat Syndicate grants you access to forbidden research on singularity stabilization. Allowing construction of the Singularity Core.",
+        loyaltyReq: 1000,
       },
     ],
   },
