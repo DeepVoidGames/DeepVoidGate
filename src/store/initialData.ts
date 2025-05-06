@@ -14,6 +14,7 @@ import { technology_research } from "@/data/technology/research";
 import { technology_advanced } from "@/data/technology/advanced";
 import { ResourceAlertThresholds } from "@/types/resource";
 import { BuildingCategory, BuildingData, BuildingType } from "@/types/building";
+import { technology_expedition } from "@/data/technology/expedition_";
 
 // Generate a unique ID
 export const generateId = (lenght: number = 9): string => {
@@ -128,6 +129,9 @@ export const initialTechnologies: Technology[] = [
   ...technology_production,
   ...technology_research,
   ...technology_advanced,
+  ...technology_expedition,
 ];
+
+console.log("Available initialTechnologies", initialTechnologies.length);
 
 export const initialExpeditions: Expedition[] = [];

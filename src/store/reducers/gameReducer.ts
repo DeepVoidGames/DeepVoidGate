@@ -5,6 +5,7 @@ import {
   initialPopulationState,
   resourceAlertThresholds,
   initialTechnologies,
+  initialBuildings,
 } from "@/store/initialData";
 import {
   resetProductionCounters,
@@ -346,6 +347,16 @@ export const gameReducer = (
             },
             {} as Record<ResourceType, number>
           );
+
+          const types1 = initialBuildings.map((item) => item.type);
+          const types2 = migratedState.buildings.map((item) => item.type);
+          const onlyIn1 = types1.filter((type) => !types2.includes(type));
+
+          // Typy, które są w array2, a nie ma ich w array1
+          const onlyIn2 = types2.filter((type) => !types1.includes(type));
+
+          console.log("Only in initialBuildings:", onlyIn1);
+          console.log("Only in  migratedState.buildings:", onlyIn2);
 
           return {
             ...migratedState,
