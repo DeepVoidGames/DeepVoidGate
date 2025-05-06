@@ -1,3 +1,4 @@
+import { getSettings } from "@/pages/Settings";
 import { clsx, type ClassValue } from "clsx";
 import { twMerge } from "tailwind-merge";
 
@@ -6,12 +7,16 @@ export function cn(...inputs: ClassValue[]) {
 }
 
 // Format a number with appropriate suffixes (K, M, B, etc.)
+// Format a number with appropriate suffixes (K, M, B, etc.) or scientific notation
 export function formatNumber(num: number): string {
   if (num === 0) return "0";
   if (num === Infinity) return "∞";
   if (num === -Infinity) return "-∞";
   if (isNaN(num)) return "NaN";
   if (num == undefined) return "undefined";
+
+  const isScientificNotation =
+    getSettings().compactUIOptions?.isScientificNotation;
 
   if (Math.abs(num) < 1) {
     // Format small numbers with appropriate precision
@@ -50,9 +55,12 @@ export function formatNumber(num: number): string {
   // Determine the appropriate suffix
   const magnitude = Math.floor(Math.log10(Math.abs(num)) / 3);
   const scaledNumber = num / Math.pow(10, magnitude * 3);
-
-  // Format the scaled number with 1 decimal place, but remove trailing zeros
   const formattedNumber = scaledNumber.toFixed(1).replace(/\.0$/, "");
+
+  if (isScientificNotation) {
+    const exponent = magnitude * 3;
+    return `${formattedNumber}e${exponent}`;
+  }
 
   return `${formattedNumber}${suffixes[magnitude]}`;
 }

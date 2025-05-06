@@ -10,6 +10,7 @@ type SettingsType = {
     compactResourcesView: boolean;
     alwaysMobileNavbar: boolean;
     doubleNavbar: boolean;
+    isScientificNotation: boolean;
   };
   analyticsConsent: boolean;
 };
@@ -36,6 +37,7 @@ function Settings() {
     compactResourcesView: false,
     alwaysMobileNavbar: false,
     doubleNavbar: false,
+    isScientificNotation: false,
   });
   const [analyticsConsent, setAnalyticsConsent] = React.useState(true);
   const [isVerificationModalOpen, setIsVerificationModalOpen] =
@@ -120,12 +122,14 @@ function Settings() {
       setAnalyticsConsent(settings.analyticsConsent);
       setCompactUIOptions({
         showPlanetaryView:
-          settings.compactUIOptions?.showPlanetaryView || false,
+          settings?.compactUIOptions?.showPlanetaryView || false,
         compactResourcesView:
-          settings.compactUIOptions?.compactResourcesView || false,
+          settings?.compactUIOptions?.compactResourcesView || false,
         alwaysMobileNavbar:
-          settings.compactUIOptions?.alwaysMobileNavbar || false,
-        doubleNavbar: settings.compactUIOptions?.doubleNavbar || false,
+          settings?.compactUIOptions?.alwaysMobileNavbar || false,
+        doubleNavbar: settings?.compactUIOptions?.doubleNavbar || false,
+        isScientificNotation:
+          settings?.compactUIOptions?.isScientificNotation || false,
       });
     }
   };
@@ -262,6 +266,8 @@ function Settings() {
                           alwaysMobileNavbar:
                             compactUIOptions.alwaysMobileNavbar,
                           doubleNavbar: compactUIOptions.doubleNavbar,
+                          isScientificNotation:
+                            compactUIOptions?.isScientificNotation,
                         })
                       }
                       className={`w-12 h-6 rounded-full p-1 transition-colors duration-200 ${
@@ -300,6 +306,8 @@ function Settings() {
                           alwaysMobileNavbar:
                             compactUIOptions.alwaysMobileNavbar,
                           doubleNavbar: compactUIOptions.doubleNavbar,
+                          isScientificNotation:
+                            compactUIOptions?.isScientificNotation,
                         })
                       }
                       className={`w-12 h-6 rounded-full p-1 transition-colors duration-200 ${
@@ -337,6 +345,8 @@ function Settings() {
                           alwaysMobileNavbar:
                             !compactUIOptions?.alwaysMobileNavbar,
                           doubleNavbar: compactUIOptions.doubleNavbar,
+                          isScientificNotation:
+                            compactUIOptions?.isScientificNotation,
                         })
                       }
                       className={`w-12 h-6 rounded-full p-1 transition-colors duration-200 ${
@@ -374,6 +384,8 @@ function Settings() {
                           alwaysMobileNavbar:
                             compactUIOptions?.alwaysMobileNavbar,
                           doubleNavbar: !compactUIOptions.doubleNavbar,
+                          isScientificNotation:
+                            compactUIOptions?.isScientificNotation,
                         })
                       }
                       className={`w-12 h-6 rounded-full p-1 transition-colors duration-200 ${
@@ -385,6 +397,45 @@ function Settings() {
                       <div
                         className={`bg-white w-4 h-4 rounded-full transform transition-transform duration-200 ${
                           compactUIOptions?.doubleNavbar
+                            ? "translate-x-6"
+                            : "translate-x-0"
+                        }`}
+                      />
+                    </button>
+                  </div>
+                </div>
+
+                <div className="flex justify-between items-center p-2 bg-white/5 rounded-lg">
+                  <div className="flex flex-col">
+                    <span className="text-gray-200">Scientific Notation</span>
+                    <span className="text-xs text-gray-400 ">
+                      Example 1500 → &quot;1.5K&quot; or &quot;1.5e3&quot;
+                    </span>
+                  </div>
+                  <div>
+                    <button
+                      onClick={() =>
+                        setCompactUIOptions({
+                          showPlanetaryView:
+                            compactUIOptions?.showPlanetaryView,
+                          compactResourcesView:
+                            compactUIOptions?.compactResourcesView,
+                          alwaysMobileNavbar:
+                            compactUIOptions?.alwaysMobileNavbar,
+                          doubleNavbar: compactUIOptions?.doubleNavbar,
+                          isScientificNotation:
+                            !compactUIOptions?.isScientificNotation,
+                        })
+                      }
+                      className={`w-12 h-6 rounded-full p-1 transition-colors duration-200 ${
+                        compactUIOptions?.isScientificNotation
+                          ? "bg-blue-500"
+                          : "bg-gray-600"
+                      }`}
+                    >
+                      <div
+                        className={`bg-white w-4 h-4 rounded-full transform transition-transform duration-200 ${
+                          compactUIOptions?.isScientificNotation
                             ? "translate-x-6"
                             : "translate-x-0"
                         }`}
