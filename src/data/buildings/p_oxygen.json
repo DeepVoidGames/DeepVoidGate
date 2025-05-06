@@ -10,7 +10,8 @@
       "energy": 20
     },
     "baseProduction": {
-      "oxygen": 2.0
+      "oxygen": 2.0,
+      "water": 1
     },
     "baseConsumption": {
       "energy": 0.5,
@@ -40,7 +41,8 @@
       "energy": 30
     },
     "baseProduction": {
-      "oxygen": 2.5
+      "oxygen": 2.5,
+      "water": 1.5
     },
     "baseConsumption": {
       "energy": 0.4,
