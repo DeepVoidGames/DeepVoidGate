@@ -30,28 +30,7 @@ export const migrateGameState = (savedState: GameState): GameState => {
 
   // Poprawiony mechanizm dla budynków:
 
-  // Krok 1: Stwórz mapę budynków initial po 'type'
-  const initialBuildingsMap = new Map(initialBuildings.map((b) => [b.type, b]));
-
-  // Krok 2: Przepisz zapisane budynki, łącząc z initial (po 'type')
-  const mergedSavedBuildings = (currentState.buildings || []).map(
-    (savedBldg) => ({
-      ...initialBuildingsMap.get(savedBldg.type), // Nadpisuje domyślne wartości
-      ...savedBldg, // Zachowuje zapisane wartości
-    })
-  );
-
   if (currentState.userID == null) currentState.userID = generateId(16);
-
-  // Krok 3: Dodaj nowe budynki z initial, których nie ma w zapisie
-  const newInitialBuildings = initialBuildings.filter(
-    (initialBldg) =>
-      !(currentState.buildings || []).some(
-        (savedBldg) => savedBldg.type === initialBldg.type
-      )
-  );
-
-  const finalBuildings = [...mergedSavedBuildings, ...newInitialBuildings];
 
   const tech = migrateTechnologiesStats(mergedTechnologies);
   const resources = migrateResources(currentState.resources);
@@ -71,7 +50,7 @@ export const migrateGameState = (savedState: GameState): GameState => {
   return {
     ...initialState,
     ...currentState,
-    buildings: migrateBuildingsStats(finalBuildings),
+    buildings: migrateBuildingsStats(currentState.buildings),
     resources: resources,
     technologies: tech,
     milestones: mergedMilestones,

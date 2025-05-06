@@ -75,7 +75,8 @@ export type BuildingType =
   | "smart_resource_matrix"
   | "nutrient_reserve_cluster"
   | "aeropulse_vault"
-  | "singularity_core";
+  | "singularity_core"
+  | "fusionReactor";
 
 export interface BuildingData {
   id?: string;
