@@ -8,7 +8,7 @@ import {
   getPossibleTechnologies,
 } from "@/store/reducers/expeditionReducer";
 import { Tooltip, TooltipTrigger } from "../ui/tooltip";
-import { ResourcesIcon } from "@/config";
+import { IMAGE_PATH, ResourcesIcon } from "@/config";
 import { Button } from "../ui/button";
 import { Alert, AlertDescription } from "../ui/alert";
 import { GameState } from "@/types/gameState";
@@ -87,6 +87,33 @@ function SummaryExpeditionPanel({
                 ))}
               </div>
             </div>
+
+            {selectedType == "scientific" ? (
+              <div className="flex items-center gap-2">
+                <img
+                  src={`${IMAGE_PATH}factions_/StarUnderstanding.png`}
+                  className="w-8 h-8"
+                  alt="Scientific Expedition"
+                />
+                <span className="text-sm text-gray-500">{"+ ?"}</span>
+
+                <img
+                  src={`${IMAGE_PATH}factions_/Biogenesis.png`}
+                  className="w-7 h-7"
+                  alt="Biogenesis"
+                />
+                <span className="text-sm text-gray-500">{"+ ?"}</span>
+              </div>
+            ) : (
+              <div className="flex items-center gap-2">
+                <img
+                  src={`${IMAGE_PATH}factions_/Technocrats.png`}
+                  className="w-7 h-7"
+                  alt="Technocrats"
+                />
+                <span className="text-sm text-gray-500">{"+ ?"}</span>
+              </div>
+            )}
           </div>
         </div>
 

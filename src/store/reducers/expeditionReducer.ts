@@ -290,6 +290,11 @@ const getReward = (expedition: Expedition, state: GameState): GameState => {
         .id as FactionName,
       10 * (expedition.tier + 1)
     );
+    newState = updateFactionLoyalty(
+      newState,
+      newState.factions.find((f) => f.id == "Biogenesis").id as FactionName,
+      10 * (expedition.tier + 1)
+    );
   } else if (expedition.type === "mining") {
     newState = updateFactionLoyalty(
       newState,

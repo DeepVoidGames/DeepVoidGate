@@ -9,7 +9,7 @@ import { Client, Session } from "@heroiclabs/nakama-js";
 import { v4 as uuidv4 } from "uuid";
 
 // Konfiguracja klienta Nakama
-export const client = new Client("defaultkey", "192.168.4.200", "7350", false);
+export const client = new Client("defaultkey", "api.deepvoid.dev", "443", true);
 
 type AuthContextType = {
   session: Session | null;

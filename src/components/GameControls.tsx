@@ -13,7 +13,7 @@ export const GameControls: React.FC = () => {
     dispatch({ type: "SAVE_GAME" });
 
     if (!session) {
-      alert("User not authenticated");
+      console.warn("User not authenticated");
       return;
     }
 
