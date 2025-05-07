@@ -67,6 +67,9 @@ export const CloudSaveSection = ({
             Offline save is stored in browser u can manually load save from
             cloud.
           </div>
+          <div className="mt-2 text-xs text-gray-400 text-right">
+            ID: {localStorage.getItem("custom_id") ?? ""}
+          </div>
         </>
       ) : (
         <div className="flex flex-col">
