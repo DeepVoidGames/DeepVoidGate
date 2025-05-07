@@ -116,9 +116,13 @@ function Settings() {
 
   // Handle cloud load
   const handleCloudLoadButton = async () => {
+    if (!session) {
+      console.warn("User not authenticated");
+      return;
+    }
+
     try {
       await cloudLoadGameState(state, cloudLoadKey);
-
       // Give a brief moment before reload
       setTimeout(() => window.location.reload(), 1000);
     } catch (error) {
