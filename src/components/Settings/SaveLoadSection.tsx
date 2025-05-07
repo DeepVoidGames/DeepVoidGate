@@ -13,7 +13,7 @@ export const SaveLoadSection = ({
 }: SaveLoadSectionProps): React.ReactElement => {
   return (
     <SettingsSection
-      title="Game Save Data"
+      title="Game Save Data (Developer options)"
       description="Manage your game save data"
     >
       <div className="flex flex-wrap gap-3">
