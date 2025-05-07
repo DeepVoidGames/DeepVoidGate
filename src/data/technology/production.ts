@@ -198,4 +198,38 @@ export const technology_production: Technology[] = [
     isResearched: false,
     locked: true,
   },
+  {
+    id: "algal_quantum_symbiosis",
+    name: "Algal Quantum Symbiosis",
+    category: "Production",
+    description:
+      "Engineers algae strains that exploit quantum coherence to boost oxygen output while reducing water waste. Self-replicating biomass reduces maintenance costs.",
+    researchCost: {
+      oxygen: 18000,
+      energy: 6000,
+      food: 3000,
+      science: 1500,
+    },
+    prerequisites: ["plasma_refining"],
+    unlocksBuildings: ["photo_reactor"],
+    researchDuration: 10800,
+    isResearched: false,
+  },
+  {
+    id: "atmospheric_compression",
+    name: "Atmospheric Compression Algorithms",
+    category: "Production",
+    description:
+      "Breakthrough in molecular filtering allows extraction of oxygen from thin atmospheres with minimal energy waste. Unlocks the Atmospheric Forge.",
+    researchCost: {
+      oxygen: 27000,
+      energy: 9000,
+      food: 4500,
+      science: 2250,
+    },
+    prerequisites: ["algal_quantum_symbiosis"],
+    unlocksBuildings: ["atmo_forge"],
+    researchDuration: 13800,
+    isResearched: false,
+  },
 ];

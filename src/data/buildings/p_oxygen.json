@@ -159,5 +159,71 @@
       "storage": { "oxygen": 100000 }
     },
     "tag": "oxygen"
+  },
+  {
+    "type": "photo_reactor",
+    "category": "production",
+    "name": "Photosynthetic Reactor",
+    "description": "Combines genetically enhanced algae with quantum fractals to produce oxygen and surplus biomass. Self-regulating ecosystem.",
+    "workerCapacity": 10,
+    "baseCost": {
+      "oxygen": 900,
+      "energy": 300,
+      "food": 150,
+      "science": 75
+    },
+    "baseProduction": {
+      "oxygen": 10.0,
+      "food": 1.5
+    },
+    "baseConsumption": {
+      "water": 0.8,
+      "energy": 1.0
+    },
+    "requirements": {},
+    "requiredTechnology": "algal_quantum_symbiosis",
+    "costMultiplier": 1.9,
+    "productionMultiplier": 1.8,
+    "maxInstances": 1,
+    "tier": 1,
+    "maxTier": 5,
+    "upgrades": 0,
+    "uniqueBonus": {
+      "production": { "oxygen": 40, "food": 20 }
+    },
+    "tag": "oxygen"
+  },
+  {
+    "type": "atmo_forge",
+    "category": "production",
+    "name": "Atmospheric Forge",
+    "description": "A planetary-scale oxygen generator that reprocesses CO₂ directly from the atmosphere. Requires rare catalysts but outputs massive volumes.",
+    "workerCapacity": 12,
+    "baseCost": {
+      "oxygen": 2500,
+      "energy": 1500,
+      "science": 400,
+      "metals": 200
+    },
+    "baseProduction": {
+      "oxygen": 14.0
+    },
+    "baseConsumption": {
+      "energy": 3.0,
+      "water": 1.8
+    },
+    "requirements": {},
+    "requiredTechnology": "atmospheric_compression",
+    "costMultiplier": 1.9,
+    "productionMultiplier": 1.95,
+    "maxInstances": 1,
+    "tier": 1,
+    "maxTier": 5,
+    "upgrades": 0,
+    "uniqueBonus": {
+      "production": { "oxygen": 120 },
+      "storage": { "oxygen": 150000 }
+    },
+    "tag": "oxygen"
   }
 ]

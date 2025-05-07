@@ -76,7 +76,9 @@ export type BuildingType =
   | "nutrient_reserve_cluster"
   | "aeropulse_vault"
   | "singularity_core"
-  | "fusionReactor";
+  | "fusionReactor"
+  | "photo_reactor"
+  | "atmo_forge";
 
 export interface BuildingData {
   id?: string;
