@@ -297,5 +297,66 @@
       "storage": { "energy": 250000 }
     },
     "tag": "energy"
+  },
+  {
+    "type": "chrono_turbine_mk2",
+    "category": "production",
+    "name": "Chrono Turbine MK2",
+    "description": "Harnesses quantum-entangled temporal vortices to generate boundless energy. Stabilizing the time-stream requires exotic matter, but rewards exponential output.",
+    "workerCapacity": 15,
+    "baseCost": {
+      "energy": 5000,
+      "science": 2500
+    },
+    "baseProduction": {
+      "energy": 18.0
+    },
+    "baseConsumption": {
+      "oxygen": 1.5,
+      "water": 1.0
+    },
+    "requirements": {},
+    "requiredTechnology": "temporal_engineering",
+    "costMultiplier": 2.5,
+    "productionMultiplier": 2.2,
+    "maxInstances": 1,
+    "tier": 1,
+    "maxTier": 5,
+    "upgrades": 0,
+    "uniqueBonus": {
+      "production": { "energy": 250 },
+      "storage": { "energy": 500000 }
+    },
+    "tag": "energy"
+  },
+  {
+    "type": "quantum_flux_generator",
+    "category": "production",
+    "name": "Quantum Flux Generator",
+    "description": "Taps into the quantum foam of spacetime, converting temporal fluctuations into massive energy output. Requires stabilization but enables reality-altering production.",
+    "workerCapacity": 12,
+    "baseCost": {
+      "energy": 10000,
+      "science": 5000
+    },
+    "baseProduction": {
+      "energy": 22.0
+    },
+    "baseConsumption": {
+      "oxygen": 2.0
+    },
+    "requirements": {},
+    "requiredTechnology": "quantum_temporal_manipulation",
+    "costMultiplier": 2.5,
+    "productionMultiplier": 2.2,
+    "maxInstances": 1,
+    "tier": 1,
+    "maxTier": 5,
+    "upgrades": 0,
+    "uniqueBonus": {
+      "production": { "energy": 250 },
+      "storage": { "energy": 500000 }
+    },
+    "tag": "energy"
   }
 ]

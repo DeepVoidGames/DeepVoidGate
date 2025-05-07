@@ -110,4 +110,34 @@ export const technology_energy: Technology[] = [
     isResearched: false,
     researchDuration: 150,
   },
+  {
+    id: "temporal_engineering",
+    name: "Temporal Engineering",
+    category: "Energy",
+    description:
+      "Mastery of localized time dilation allows extraction of energy from spacetime itself. Unlocks Chrono Turbine MK2 and time-altered resource nodes.",
+    researchCost: {
+      energy: 50000,
+      science: 25000,
+    },
+    prerequisites: ["fusion_energy"],
+    unlocksBuildings: ["chrono_turbine_mk2"],
+    researchDuration: 3600,
+    isResearched: false,
+  },
+  {
+    id: "quantum_temporal_manipulation",
+    name: "Quantum Temporal Manipulation",
+    description:
+      "Enables controlled exploitation of spacetime anomalies for energy production.",
+    researchCost: {
+      energy: 100000,
+      science: 50000,
+    },
+    prerequisites: ["temporal_engineering", "quantum_singularity"],
+    unlocksBuildings: ["quantum_flux_generator"],
+    researchDuration: 7200,
+    isResearched: false,
+    category: "Energy",
+  },
 ];

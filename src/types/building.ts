@@ -78,7 +78,9 @@ export type BuildingType =
   | "singularity_core"
   | "fusionReactor"
   | "photo_reactor"
-  | "atmo_forge";
+  | "atmo_forge"
+  | "chrono_turbine_mk2"
+  | "quantum_flux_generator";
 
 export interface BuildingData {
   id?: string;
