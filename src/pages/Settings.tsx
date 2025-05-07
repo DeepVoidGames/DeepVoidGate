@@ -1,610 +1,397 @@
-import React, { useEffect } from "react";
+// Settings.jsx
+import React, { useEffect, useState } from "react";
 import { toast } from "@/components/ui/use-toast";
-import { client, useAuth } from "@/server/AuthContext";
-import { updateDisplayName } from "@/server/updateDisplayName";
+import { useAuth } from "@/server/AuthContext";
+import { SettingsSection } from "@/components/Settings/SettingsSection";
+import { ToggleSwitch } from "@/components/Settings/ToggleSwitch";
+import { ModalSetting } from "@/components/Settings/ModalSetting";
+import { SaveLoadSection } from "@/components/Settings/SaveLoadSection";
+import { CloudSaveSection } from "@/components/Settings/CloudSaveSection";
+import { UserProfileSection } from "@/components/Settings/UserProfileSection";
+import { IMAGE_PATH } from "@/config";
+import { cloudSaveGameState } from "@/server/cloudSaveGameState";
+import { useGame } from "@/context/GameContext";
+import { cloudLoadGameState } from "@/server/cloudLoadGameState";
 
-type SettingsType = {
-  compactUI: boolean;
+// Settings type definition
+export const defaultSettings = {
+  compactUI: false,
   compactUIOptions: {
-    showPlanetaryView: boolean;
-    compactResourcesView: boolean;
-    alwaysMobileNavbar: boolean;
-    doubleNavbar: boolean;
-    isScientificNotation: boolean;
-  };
-  analyticsConsent: boolean;
-};
-
-export const getSettings = (): SettingsType => {
-  const settings = JSON.parse(localStorage.getItem("settings"));
-  return (
-    settings || {
-      compactUI: false,
-      compactUIOptions: {},
-      analyticsConsent: true,
-      doubleNavbar: false,
-    }
-  );
-};
-
-function Settings() {
-  const { session } = useAuth();
-  const [displayName, setDisplayName] = React.useState("");
-  const [isUpdatingName, setIsUpdatingName] = React.useState(false);
-  const [compactUI, setCompactUI] = React.useState(false);
-  const [compactUIOptions, setCompactUIOptions] = React.useState({
     showPlanetaryView: false,
     compactResourcesView: false,
     alwaysMobileNavbar: false,
     doubleNavbar: false,
     isScientificNotation: false,
-  });
-  const [analyticsConsent, setAnalyticsConsent] = React.useState(true);
-  const [isVerificationModalOpen, setIsVerificationModalOpen] =
-    React.useState(false);
-  // const [email, setEmail] = React.useState("");
-  const [verificationCode, setVerificationCode] = React.useState("");
-  const [isLoadSaveModalOpen, setIsLoadSaveModalOpen] = React.useState(false);
-  const [saveData, setSaveData] = React.useState("");
+  },
+  analyticsConsent: true,
+};
 
+// Helper function to get settings from localStorage
+export const getSettings = () => {
+  try {
+    const settings = JSON.parse(localStorage.getItem("settings"));
+    return settings || defaultSettings;
+  } catch (error) {
+    console.error("Failed to parse settings:", error);
+    return defaultSettings;
+  }
+};
+
+function Settings() {
+  const { session, loading } = useAuth();
+  const { state } = useGame();
+  const [settings, setSettings] = useState(defaultSettings);
+  const [isLoadSaveModalOpen, setIsLoadSaveModalOpen] = useState(false);
+  const [saveData, setSaveData] = useState("");
+  const [isCloudLoadModalOpen, setIsCloudLoadModalOpen] = useState(false);
+  const [cloudLoadKey, setCloudLoadKey] = useState(
+    localStorage.getItem("custom_id") ?? ""
+  );
+
+  // Load settings on component mount
   useEffect(() => {
-    handleLoadSettings();
+    setSettings(getSettings());
   }, []);
 
-  useEffect(() => {
-    const fetchUser = async () => {
-      const user_ = await client.getAccount(session);
-      if (client.getUsers) {
-        setDisplayName(user_?.user?.username);
-      }
-    };
-    fetchUser();
-  }, [session]);
-
-  const handleCloudSaveEnable = () => {
-    // Tutaj będzie logika weryfikacji kodu
-    setIsVerificationModalOpen(false);
-    // Wyczyść pola po zamknięciu
-    setVerificationCode("");
+  // Update individual setting
+  const updateSetting = (key, value) => {
+    setSettings((prev) => ({ ...prev, [key]: value }));
   };
 
-  const handleUpdateDisplayName = async () => {
-    if (!session) {
+  // Update compact UI option
+  const updateCompactUIOption = (key, value) => {
+    setSettings((prev) => ({
+      ...prev,
+      compactUIOptions: {
+        ...prev.compactUIOptions,
+        [key]: value,
+      },
+    }));
+  };
+
+  // Save settings to localStorage
+  const handleSaveSettings = () => {
+    try {
+      localStorage.setItem("settings", JSON.stringify(settings));
       toast({
-        title: "Not authenticated",
-        description: "You must be logged in to change your display name.",
+        title: "Settings Saved",
+        description: "Your settings have been saved successfully.",
+        variant: "default",
+      });
+      setTimeout(() => window.location.reload(), 1000);
+    } catch (error) {
+      console.error("Failed to save settings:", error);
+      toast({
+        title: "Save Failed",
+        description: "Could not save settings. Please try again.",
+        variant: "destructive",
+      });
+    }
+  };
+
+  // Handle cloud save
+  const handleCloudSave = async () => {
+    try {
+      if (!session) {
+        console.warn("User not authenticated");
+        return;
+      }
+
+      await cloudSaveGameState(session, state);
+
+      toast({
+        title: "Game Saved to Cloud",
+        description: `Your game has been saved`,
+        variant: "default",
+      });
+    } catch (error) {
+      console.error("Cloud save failed:", error);
+      toast({
+        title: "Cloud Save Failed",
+        description: "Could not save game to cloud. Please try again.",
+        variant: "destructive",
+      });
+    }
+  };
+
+  // Handle cloud load
+  const handleCloudLoadButton = async () => {
+    try {
+      await cloudLoadGameState(state, cloudLoadKey);
+
+      // Give a brief moment before reload
+      setTimeout(() => window.location.reload(), 1000);
+    } catch (error) {
+      console.error("Load save failed:", error);
+    }
+  };
+
+  // Load save data from paste
+  const handleLoadSave = () => {
+    if (!saveData.trim()) {
+      toast({
+        title: "Error",
+        description: "Please paste save data first.",
         variant: "destructive",
       });
       return;
     }
 
-    setIsUpdatingName(true);
     try {
-      await updateDisplayName(session, displayName);
+      localStorage.setItem("deepvoidgate_save", saveData);
       toast({
-        title: "Display name updated",
-        description: `Your display name has been changed to "${displayName.trim()}"`,
+        title: "Save Loaded",
+        description: "Your game save has been loaded successfully.",
         variant: "default",
       });
+      setIsLoadSaveModalOpen(false);
+      setSaveData("");
+
+      // Give a brief moment before reload
+      setTimeout(() => window.location.reload(), 1000);
     } catch (error) {
-      console.log(error);
+      console.error("Load save failed:", error);
       toast({
-        title: "Update failed",
-        description: "Could not update display name. Please try again.",
+        title: "Load Failed",
+        description:
+          "Could not load game save. Please check the format and try again.",
         variant: "destructive",
       });
-    } finally {
-      setIsUpdatingName(false);
     }
   };
-
-  const handleSaveSettings = () => {
-    localStorage.setItem(
-      "settings",
-      JSON.stringify({
-        compactUI,
-        compactUIOptions,
-        analyticsConsent,
-      })
-    );
-    toast({
-      title: "Settings Saved",
-      description: "Your settings have been saved successfully.",
-      variant: "default",
-    });
-    window.location.reload();
-  };
-
-  const handleLoadSettings = () => {
-    const settings = JSON.parse(localStorage.getItem("settings"));
-    if (settings) {
-      setCompactUI(settings.compactUI);
-      setAnalyticsConsent(settings.analyticsConsent);
-      setCompactUIOptions({
-        showPlanetaryView:
-          settings?.compactUIOptions?.showPlanetaryView || false,
-        compactResourcesView:
-          settings?.compactUIOptions?.compactResourcesView || false,
-        alwaysMobileNavbar:
-          settings?.compactUIOptions?.alwaysMobileNavbar || false,
-        doubleNavbar: settings?.compactUIOptions?.doubleNavbar || false,
-        isScientificNotation:
-          settings?.compactUIOptions?.isScientificNotation || false,
-      });
-    }
-  };
-
-  const devSection = (
-    <div className="space-y-4">
-      <h2 className="text-xl font-semibold text-gray-100 mb-2">
-        Game save data
-      </h2>
-
-      <div className="flex">
-        <button
-          onClick={() => {
-            navigator.clipboard.writeText(
-              localStorage.getItem("deepvoidgate_save")
-            );
-            toast({
-              title: "Save Copied",
-              description: "Save has been copied to clipboard.",
-              variant: "default",
-            });
-          }}
-          className="w-full py-3 bg-blue-600 hover:bg-blue-700 text-white rounded-lg transition-colors duration-200 p-2 m-1"
-        >
-          Copy Save
-        </button>
-        <button
-          onClick={() => setIsLoadSaveModalOpen(true)}
-          className="w-full py-3 bg-red-600 hover:bg-red-700 text-white rounded-lg transition-colors duration-200 p-2 m-1"
-        >
-          Load Save
-        </button>
-      </div>
-    </div>
-  );
-
-  // Dodajemy nowy modal
-  const loadSaveModal = (
-    <div className="fixed inset-0 bg-black/50 flex items-center justify-center p-4 backdrop-blur-sm">
-      <div className="glass-panel p-6 max-w-xl w-full space-y-4">
-        <h3 className="text-xl font-bold text-gray-100">Load Game Save</h3>
-        <p className="text-gray-300">
-          Paste your save data below. Warning: This will overwrite your current
-          game!
-        </p>
-        <textarea
-          value={saveData}
-          onChange={(e) => setSaveData(e.target.value)}
-          className="w-full h-64 bg-gray-700 text-gray-200 px-3 py-2 rounded-lg font-mono text-sm"
-          placeholder="Paste your save data here..."
-        />
-        <div className="flex gap-2 justify-end">
-          <button
-            onClick={() => {
-              setIsLoadSaveModalOpen(false);
-              setSaveData("");
-            }}
-            className="px-4 py-2 text-gray-300 hover:text-white transition-colors"
-          >
-            Cancel
-          </button>
-          <button
-            onClick={() => {
-              if (saveData) {
-                localStorage.setItem("deepvoidgate_save", saveData);
-                window.location.reload();
-              }
-            }}
-            className="px-4 py-2 bg-red-600 hover:bg-red-700 text-white rounded-lg transition-colors"
-          >
-            Load Save
-          </button>
-        </div>
-      </div>
-    </div>
-  );
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-background to-background/90 flex items-center justify-center p-4 mb-10">
-      <div className="glass-panel p-8 max-w-[800px] w-full animate-fade-in">
-        <div className="flex items-center mb-6">
-          <h1 className="text-3xl  font-bold text-gray-100">Game Settings</h1>
+    <div className="min-h-screen bg-gradient-to-b from-background to-background/90 flex items-center justify-center p-4 mb-10 mt-20">
+      <div className="glass-panel p-6 md:p-8 max-w-3xl w-full animate-fade-in rounded-xl shadow-lg">
+        <div className="flex items-center mb-8 border-b border-gray-700 pb-4">
+          <h1 className="text-3xl font-bold text-gray-100">Game Settings</h1>
         </div>
 
-        <div className="space-y-6">
-          {/* Sekcja Interfejsu */}
-          <div className="space-y-4">
-            <h2 className="text-xl font-semibold text-gray-100 mb-2">
-              Interface
-            </h2>
+        <div className="space-y-8">
+          {/* UI Settings Section */}
+          <SettingsSection
+            title="Interface"
+            description="Customize how the game interface appears"
+          >
+            {/* Main Compact UI Toggle */}
+            <ToggleSwitch
+              title="Compact UI"
+              description="Simplify interface elements for a cleaner look"
+              isEnabled={settings.compactUI}
+              onToggle={() => updateSetting("compactUI", !settings.compactUI)}
+            />
 
-            {/* Główny przełącznik Compact UI */}
-            <div className="flex justify-between items-center p-3 bg-white/5 rounded-lg">
-              <div className="flex flex-col">
-                <span className="text-gray-200">Compact UI</span>
-                <span className="text-sm text-gray-400">
-                  Simplify interface elements
-                </span>
-              </div>
-              <div>
-                <button
-                  onClick={() => setCompactUI(!compactUI)}
-                  className={`w-12 h-6 rounded-full p-1 transition-colors duration-200 ${
-                    compactUI ? "bg-blue-500" : "bg-gray-600"
-                  }`}
-                >
-                  <div
-                    className={`bg-white w-4 h-4 rounded-full transform transition-transform duration-200 ${
-                      compactUI ? "translate-x-6" : "translate-x-0"
-                    }`}
-                  />
-                </button>
-              </div>
-            </div>
+            {/* Additional Compact UI Options */}
+            {settings.compactUI && (
+              <div className="ml-4 space-y-3 border-l-2 border-gray-700 pl-4 mt-4">
+                <ToggleSwitch
+                  title="Hide Planetary View"
+                  description="Hide planetary view on the right (mobile bottom)"
+                  isEnabled={settings.compactUIOptions.showPlanetaryView}
+                  onToggle={() =>
+                    updateCompactUIOption(
+                      "showPlanetaryView",
+                      !settings.compactUIOptions.showPlanetaryView
+                    )
+                  }
+                />
 
-            {/* Dodatkowe opcje widoczne tylko gdy Compact UI jest włączone */}
-            {compactUI && (
-              <div className="ml-4 space-y-3 border-l-2 border-gray-700 pl-4">
-                <div className="flex justify-between items-center p-2 bg-white/5 rounded-lg">
-                  <div className="flex flex-col">
-                    <span className="text-gray-200">Hide Planetary View</span>
-                    <span className="text-xs text-gray-400 ">
-                      Hide display planetary view on the right (mobile bottom).
-                    </span>
-                  </div>
-                  <div>
-                    <button
-                      onClick={() =>
-                        setCompactUIOptions({
-                          showPlanetaryView:
-                            !compactUIOptions.showPlanetaryView,
-                          compactResourcesView:
-                            compactUIOptions.compactResourcesView,
-                          alwaysMobileNavbar:
-                            compactUIOptions.alwaysMobileNavbar,
-                          doubleNavbar: compactUIOptions.doubleNavbar,
-                          isScientificNotation:
-                            compactUIOptions?.isScientificNotation,
-                        })
-                      }
-                      className={`w-12 h-6 rounded-full p-1 transition-colors duration-200 ${
-                        compactUIOptions?.showPlanetaryView
-                          ? "bg-blue-500"
-                          : "bg-gray-600"
-                      }`}
-                    >
-                      <div
-                        className={`bg-white w-4 h-4 rounded-full transform transition-transform duration-200 ${
-                          compactUIOptions?.showPlanetaryView
-                            ? "translate-x-6"
-                            : "translate-x-0"
-                        }`}
-                      />
-                    </button>
-                  </div>
-                </div>
+                <ToggleSwitch
+                  title="Compact Resources View"
+                  description="Display resources in a compact view (desktop only)"
+                  isEnabled={settings.compactUIOptions.compactResourcesView}
+                  onToggle={() =>
+                    updateCompactUIOption(
+                      "compactResourcesView",
+                      !settings.compactUIOptions.compactResourcesView
+                    )
+                  }
+                />
 
-                <div className="flex justify-between items-center p-2 bg-white/5 rounded-lg">
-                  <div className="flex flex-col">
-                    <span className="text-gray-200">
-                      Compact Resources View
-                    </span>
-                    <span className="text-xs text-gray-400 ">
-                      Display resources in a compact view. Desktop only.
-                    </span>
-                  </div>
-                  <div>
-                    <button
-                      onClick={() =>
-                        setCompactUIOptions({
-                          showPlanetaryView: compactUIOptions.showPlanetaryView,
-                          compactResourcesView:
-                            !compactUIOptions.compactResourcesView,
-                          alwaysMobileNavbar:
-                            compactUIOptions.alwaysMobileNavbar,
-                          doubleNavbar: compactUIOptions.doubleNavbar,
-                          isScientificNotation:
-                            compactUIOptions?.isScientificNotation,
-                        })
-                      }
-                      className={`w-12 h-6 rounded-full p-1 transition-colors duration-200 ${
-                        compactUIOptions.compactResourcesView
-                          ? "bg-blue-500"
-                          : "bg-gray-600"
-                      }`}
-                    >
-                      <div
-                        className={`bg-white w-4 h-4 rounded-full transform transition-transform duration-200 ${
-                          compactUIOptions.compactResourcesView
-                            ? "translate-x-6"
-                            : "translate-x-0"
-                        }`}
-                      />
-                    </button>
-                  </div>
-                </div>
+                <ToggleSwitch
+                  title="Always Mobile Navbar"
+                  description="Display resources at the top and menu at the bottom"
+                  isEnabled={settings.compactUIOptions.alwaysMobileNavbar}
+                  onToggle={() =>
+                    updateCompactUIOption(
+                      "alwaysMobileNavbar",
+                      !settings.compactUIOptions.alwaysMobileNavbar
+                    )
+                  }
+                />
 
-                <div className="flex justify-between items-center p-2 bg-white/5 rounded-lg">
-                  <div className="flex flex-col">
-                    <span className="text-gray-200">Always Mobile Navbar</span>
-                    <span className="text-xs text-gray-400 ">
-                      Display resources at the top and the menu at the bottom.
-                    </span>
-                  </div>
-                  <div>
-                    <button
-                      onClick={() =>
-                        setCompactUIOptions({
-                          showPlanetaryView:
-                            compactUIOptions?.showPlanetaryView,
-                          compactResourcesView:
-                            compactUIOptions?.compactResourcesView,
-                          alwaysMobileNavbar:
-                            !compactUIOptions?.alwaysMobileNavbar,
-                          doubleNavbar: compactUIOptions.doubleNavbar,
-                          isScientificNotation:
-                            compactUIOptions?.isScientificNotation,
-                        })
-                      }
-                      className={`w-12 h-6 rounded-full p-1 transition-colors duration-200 ${
-                        compactUIOptions?.alwaysMobileNavbar
-                          ? "bg-blue-500"
-                          : "bg-gray-600"
-                      }`}
-                    >
-                      <div
-                        className={`bg-white w-4 h-4 rounded-full transform transition-transform duration-200 ${
-                          compactUIOptions?.alwaysMobileNavbar
-                            ? "translate-x-6"
-                            : "translate-x-0"
-                        }`}
-                      />
-                    </button>
-                  </div>
-                </div>
+                <ToggleSwitch
+                  title="Double Navbar"
+                  description="Display second navbar with resources data"
+                  isEnabled={settings.compactUIOptions.doubleNavbar}
+                  onToggle={() =>
+                    updateCompactUIOption(
+                      "doubleNavbar",
+                      !settings.compactUIOptions.doubleNavbar
+                    )
+                  }
+                />
 
-                <div className="flex justify-between items-center p-2 bg-white/5 rounded-lg">
-                  <div className="flex flex-col">
-                    <span className="text-gray-200">Double Navbar</span>
-                    <span className="text-xs text-gray-400 ">
-                      Display second navbar with resources data.
-                    </span>
-                  </div>
-                  <div>
-                    <button
-                      onClick={() =>
-                        setCompactUIOptions({
-                          showPlanetaryView:
-                            compactUIOptions?.showPlanetaryView,
-                          compactResourcesView:
-                            compactUIOptions?.compactResourcesView,
-                          alwaysMobileNavbar:
-                            compactUIOptions?.alwaysMobileNavbar,
-                          doubleNavbar: !compactUIOptions.doubleNavbar,
-                          isScientificNotation:
-                            compactUIOptions?.isScientificNotation,
-                        })
-                      }
-                      className={`w-12 h-6 rounded-full p-1 transition-colors duration-200 ${
-                        compactUIOptions?.doubleNavbar
-                          ? "bg-blue-500"
-                          : "bg-gray-600"
-                      }`}
-                    >
-                      <div
-                        className={`bg-white w-4 h-4 rounded-full transform transition-transform duration-200 ${
-                          compactUIOptions?.doubleNavbar
-                            ? "translate-x-6"
-                            : "translate-x-0"
-                        }`}
-                      />
-                    </button>
-                  </div>
-                </div>
-
-                <div className="flex justify-between items-center p-2 bg-white/5 rounded-lg">
-                  <div className="flex flex-col">
-                    <span className="text-gray-200">Scientific Notation</span>
-                    <span className="text-xs text-gray-400 ">
-                      Example 1500 → &quot;1.5K&quot; or &quot;1.5e3&quot;
-                    </span>
-                  </div>
-                  <div>
-                    <button
-                      onClick={() =>
-                        setCompactUIOptions({
-                          showPlanetaryView:
-                            compactUIOptions?.showPlanetaryView,
-                          compactResourcesView:
-                            compactUIOptions?.compactResourcesView,
-                          alwaysMobileNavbar:
-                            compactUIOptions?.alwaysMobileNavbar,
-                          doubleNavbar: compactUIOptions?.doubleNavbar,
-                          isScientificNotation:
-                            !compactUIOptions?.isScientificNotation,
-                        })
-                      }
-                      className={`w-12 h-6 rounded-full p-1 transition-colors duration-200 ${
-                        compactUIOptions?.isScientificNotation
-                          ? "bg-blue-500"
-                          : "bg-gray-600"
-                      }`}
-                    >
-                      <div
-                        className={`bg-white w-4 h-4 rounded-full transform transition-transform duration-200 ${
-                          compactUIOptions?.isScientificNotation
-                            ? "translate-x-6"
-                            : "translate-x-0"
-                        }`}
-                      />
-                    </button>
-                  </div>
-                </div>
+                <ToggleSwitch
+                  title="Scientific Notation"
+                  description="Display numbers in scientific notation (e.g., 1500 → '1.5K' or '1.5e3')"
+                  isEnabled={settings.compactUIOptions.isScientificNotation}
+                  onToggle={() =>
+                    updateCompactUIOption(
+                      "isScientificNotation",
+                      !settings.compactUIOptions.isScientificNotation
+                    )
+                  }
+                />
               </div>
             )}
-          </div>
 
-          {/* Sekcja Cloud Save z emailem */}
-          <div className="space-y-4">
-            {/* <h2 className="text-xl font-semibold text-gray-100 mb-2">
-              Cloud Save (Not Implemented)
-            </h2>
-            <div className="p-3 bg-white/5 rounded-lg space-y-4">
-              <div className="flex flex-col gap-2">
-                <input
-                  type="email"
-                  placeholder="Enter your email"
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                  className="w-full bg-gray-700 text-gray-200 px-3 py-2 rounded-lg"
-                />
-                <button
-                  onClick={() => setIsVerificationModalOpen(true)}
-                  className="w-full py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg transition-colors duration-200"
-                  disabled={true}
-                >
-                  Enable Cloud Save
-                </button>
-              </div>
-            </div> */}
-          </div>
+            {/* Save Settings Button */}
+            <button
+              className="w-full py-3 bg-blue-600 hover:bg-blue-700 text-white font-medium rounded-lg transition-all duration-200 focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50"
+              onClick={handleSaveSettings}
+            >
+              Save Settings
+            </button>
+          </SettingsSection>
 
-          {/* Sekcja Analityki */}
-          {/* <div className="space-y-4">
-            <h2 className="text-xl font-semibold text-gray-100 mb-2">
-              Privacy
-            </h2>
-            <div className="p-3 bg-white/5 rounded-lg">
-              <div className="flex justify-between items-center">
-                <span className="text-gray-200">Analytics Consent</span>
-                <button
-                  onClick={() => setAnalyticsConsent(!analyticsConsent)}
-                  className={`w-12 h-6 rounded-full p-1 transition-colors duration-200 ${
-                    analyticsConsent ? "bg-green-500" : "bg-gray-600"
-                  }`}
-                >
-                  <div
-                    className={`bg-white w-4 h-4 rounded-full transform transition-transform duration-200 ${
-                      analyticsConsent ? "translate-x-6" : "translate-x-0"
-                    }`}
-                  />
-                </button>
-              </div>
-            </div>
-          </div> */}
+          {/* User Profile Section (conditional) */}
+          {session && <UserProfileSection session={session} />}
 
-          {session && (
-            <div className="space-y-2">
-              <label
-                htmlFor="displayName"
-                className="text-gray-200 font-semibold"
-              >
-                Display Name
-              </label>
-              <input
-                id="displayName"
-                type="text"
-                value={displayName}
-                onChange={(e) => setDisplayName(e.target.value)}
-                className="w-full bg-gray-700 text-gray-200 px-3 py-2 rounded-lg"
-                placeholder="Enter your display name"
-              />
-              <button
-                onClick={handleUpdateDisplayName}
-                disabled={isUpdatingName}
-                className="py-2 px-4 bg-blue-600 hover:bg-blue-700 text-white rounded-lg transition-colors duration-200"
-              >
-                {isUpdatingName ? "Updating..." : "Change Display Name"}
-              </button>
-            </div>
-          )}
+          {/* Cloud Save Management */}
+          <CloudSaveSection
+            onCloudSave={() => handleCloudSave()}
+            onCloudLoad={() => setIsCloudLoadModalOpen(true)}
+          />
 
-          {/* Sekcja Społeczności */}
-          <div className="space-y-4">
-            <h2 className="text-xl font-semibold text-gray-100 mb-2">
-              Community
-            </h2>
-            <div className="p-3 bg-white/5 rounded-lg flex">
-              <div className="flex items-center">
+          {/* Game Save Management */}
+          <SaveLoadSection
+            onCopySave={() => {
+              navigator.clipboard.writeText(
+                localStorage.getItem("deepvoidgate_save") || ""
+              );
+              toast({
+                title: "Save Copied",
+                description: "Save data has been copied to clipboard.",
+                variant: "default",
+              });
+            }}
+            onLoadSave={() => setIsLoadSaveModalOpen(true)}
+          />
+
+          {/* Community Section */}
+          <SettingsSection
+            title="Community"
+            description="Connect with other players"
+          >
+            <div className="flex flex-wrap gap-4 p-3 bg-white/5 rounded-lg">
+              <div className="max-[415px]:w-full">
                 <a
                   href="https://discord.gg/JEbcXgaWzB"
                   target="_blank"
                   rel="noreferrer"
+                  className="flex items-center gap-2 bg-indigo-600/60 hover:bg-indigo-700 px-4 py-2 rounded-lg transition-all duration-200"
                 >
                   <img
-                    src={`${"/deepvoidgate/demo/"}/discord.svg`}
-                    className="w-8"
+                    src={`${IMAGE_PATH}discord.svg`}
+                    className="w-5 h-5"
+                    alt="Discord"
                   />
+                  <span className="text-white">Join Discord</span>
                 </a>
               </div>
-              <div className="flex items-center ml-4">
+
+              <div className="max-[415px]:w-full">
                 <a
                   href="https://www.buymeacoffee.com/mrjacob"
                   target="_blank"
                   rel="noreferrer"
+                  className="flex items-center bg-yellow-600 hover:bg-yellow-700 px-4 py-2 rounded-lg transition-all duration-200"
                 >
-                  <img
-                    src="https://cdn.buymeacoffee.com/buttons/v2/default-yellow.png"
-                    alt="Buy Me A Coffee"
-                    style={{ height: "30px", width: "108.5px" }}
-                  />
+                  <img src={`${IMAGE_PATH}bmc.png`} alt="" className="h-5" />
+                  <span className="pl-2">Buy Me a Coffee</span>
                 </a>
               </div>
             </div>
-          </div>
-
-          {/* Dev */}
-          {devSection}
-
-          {/* Przycisk zapisywania */}
-          <button
-            className="w-full py-3 bg-blue-600 hover:bg-blue-700 text-white rounded-lg transition-colors duration-200"
-            onClick={handleSaveSettings}
-          >
-            Save Settings
-          </button>
+          </SettingsSection>
         </div>
 
-        {isLoadSaveModalOpen && loadSaveModal}
-
-        {/* Modal weryfikacyjny */}
-        {isVerificationModalOpen && (
-          <div className="fixed inset-0 bg-black/50 flex items-center justify-center p-4 backdrop-blur-sm">
-            <div className="glass-panel p-6 max-w-sm w-full space-y-4">
-              <h3 className="text-xl font-bold text-gray-100">
-                Verification Required
-              </h3>
-              <p className="text-gray-300">
-                We&apos;ve sent a verification code to your email. Please check
-                your inbox.
-              </p>
-              <input
-                type="text"
-                placeholder="Enter verification code"
-                value={verificationCode}
-                onChange={(e) => setVerificationCode(e.target.value)}
-                className="w-full bg-gray-700 text-gray-200 px-3 py-2 rounded-lg"
-              />
-              <div className="flex gap-2 justify-end">
-                <button
-                  onClick={() => setIsVerificationModalOpen(false)}
-                  className="px-4 py-2 text-gray-300 hover:text-white transition-colors"
-                >
-                  Cancel
-                </button>
-                <button
-                  onClick={handleCloudSaveEnable}
-                  className="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg transition-colors"
-                >
-                  Confirm
-                </button>
-              </div>
-            </div>
+        {/* Load Save Modal */}
+        <ModalSetting
+          isOpen={isLoadSaveModalOpen}
+          title="Load Game Save"
+          onClose={() => {
+            setIsLoadSaveModalOpen(false);
+            setSaveData("");
+          }}
+        >
+          <p className="text-gray-300 mb-4">
+            Paste your save data below. Warning: This will overwrite your
+            current game!
+          </p>
+          <textarea
+            value={saveData}
+            onChange={(e) => setSaveData(e.target.value)}
+            className="w-full h-64 bg-gray-700 text-gray-200 px-3 py-2 rounded-lg font-mono text-sm mb-4"
+            placeholder="Paste your save data here..."
+          />
+          <div className="flex gap-2 justify-end">
+            <button
+              onClick={() => {
+                setIsLoadSaveModalOpen(false);
+                setSaveData("");
+              }}
+              className="px-4 py-2 text-gray-300 hover:text-white transition-colors"
+            >
+              Cancel
+            </button>
+            <button
+              onClick={handleLoadSave}
+              className="px-4 py-2 bg-red-600 hover:bg-red-700 text-white rounded-lg transition-colors"
+            >
+              Load Save
+            </button>
           </div>
-        )}
+        </ModalSetting>
+
+        {/* Cloud Load Modal */}
+        <ModalSetting
+          isOpen={isCloudLoadModalOpen}
+          title="Load Game from Cloud"
+          onClose={() => {
+            setIsCloudLoadModalOpen(false);
+            setCloudLoadKey("");
+          }}
+        >
+          <p className="text-gray-300 mb-4">
+            Enter the key you used when saving your game to the cloud.
+          </p>
+          <input
+            type="text"
+            value={cloudLoadKey}
+            onChange={(e) => setCloudLoadKey(e.target.value)}
+            className="w-full bg-gray-700 text-gray-200 px-3 py-2 rounded-lg mb-4"
+            placeholder="Your save key"
+          />
+          <div className="flex gap-2 justify-end">
+            <button
+              onClick={() => {
+                setIsCloudLoadModalOpen(false);
+                setCloudLoadKey("");
+              }}
+              className="px-4 py-2 text-gray-300 hover:text-white transition-colors"
+            >
+              Cancel
+            </button>
+            <button
+              onClick={handleCloudLoadButton}
+              className="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg transition-colors"
+              disabled={loading}
+            >
+              Load from Cloud
+            </button>
+          </div>
+        </ModalSetting>
       </div>
     </div>
   );

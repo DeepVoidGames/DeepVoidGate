@@ -8,7 +8,6 @@ import React, {
 import { Client, Session } from "@heroiclabs/nakama-js";
 import { v4 as uuidv4 } from "uuid";
 
-// Konfiguracja klienta Nakama
 export const client = new Client("defaultkey", "api.deepvoid.dev", "443", true);
 
 type AuthContextType = {
@@ -31,17 +30,17 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 
   useEffect(() => {
     const authenticate = async () => {
-      let deviceId = localStorage.getItem("device_id");
-      if (!deviceId) {
-        deviceId = uuidv4();
-        localStorage.setItem("device_id", deviceId);
+      let customId = localStorage.getItem("custom_id");
+      if (!customId) {
+        customId = uuidv4();
+        localStorage.setItem("custom_id", customId);
       }
       try {
-        const s = await client.authenticateDevice(deviceId, true);
+        const s = await client.authenticateCustom(customId);
         setSession(s);
         console.log("Authenticated! User ID:", s.user_id);
       } catch (e) {
-        console.log(e);
+        console.error("Authentication error:", e);
         setSession(null);
       } finally {
         setLoading(false);
@@ -52,7 +51,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 
   const logout = () => {
     setSession(null);
-    localStorage.removeItem("device_id");
+    localStorage.removeItem("custom_id");
   };
 
   return (
