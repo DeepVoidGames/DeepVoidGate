@@ -336,8 +336,8 @@
     "description": "Taps into the quantum foam of spacetime, converting temporal fluctuations into massive energy output. Requires stabilization but enables reality-altering production.",
     "workerCapacity": 12,
     "baseCost": {
-      "energy": 10000,
-      "science": 5000
+      "energy": 7500,
+      "science": 3000
     },
     "baseProduction": {
       "energy": 22.0
@@ -347,8 +347,8 @@
     },
     "requirements": {},
     "requiredTechnology": "quantum_temporal_manipulation",
-    "costMultiplier": 2.5,
-    "productionMultiplier": 2.2,
+    "costMultiplier": 2.4,
+    "productionMultiplier": 1.9,
     "maxInstances": 1,
     "tier": 1,
     "maxTier": 5,
