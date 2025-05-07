@@ -77,6 +77,12 @@ export const initialFactions = [
           "Technocrat Syndicate grants you access to forbidden research on singularity stabilization. Allowing construction of the Singularity Core.",
         loyaltyReq: 1000,
       },
+      {
+        name: "Hyperindustrial Directive",
+        description:
+          "Your unwavering loyalty has granted you access to the Syndicate’s advanced automation protocols. All production operations are now enhanced by 25% efficiency.",
+        loyaltyReq: 5000,
+      },
     ],
   },
   {

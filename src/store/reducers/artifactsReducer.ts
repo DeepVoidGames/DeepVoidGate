@@ -116,9 +116,13 @@ export const applyArtifactEffect = (state: GameState): GameState => {
           case "production" as ArtifactEffectType:
             if (artifact.isLocked) return;
             Object.values(state.resources).forEach((resource) => {
-              resource.production =
-                resource.production *
-                (effect.value + (artifact.stars + 1) / 10);
+              let bonus = effect.value + (artifact.stars + 1) / 10;
+              if (
+                state?.factions[0]?.loyalty >=
+                state?.factions[0]?.bonuses[1]?.loyaltyReq
+              )
+                bonus += 0.25;
+              resource.production = resource.production * bonus;
             });
             break;
           case "capacity" as ArtifactEffectType:
