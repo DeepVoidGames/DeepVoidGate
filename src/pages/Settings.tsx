@@ -8,7 +8,7 @@ import { ModalSetting } from "@/components/Settings/ModalSetting";
 import { SaveLoadSection } from "@/components/Settings/SaveLoadSection";
 import { CloudSaveSection } from "@/components/Settings/CloudSaveSection";
 import { UserProfileSection } from "@/components/Settings/UserProfileSection";
-import { IMAGE_PATH } from "@/config";
+import { BUILDID, IMAGE_PATH } from "@/config";
 import { cloudSaveGameState } from "@/server/cloudSaveGameState";
 import { useGame } from "@/context/GameContext";
 import { cloudLoadGameState } from "@/server/cloudLoadGameState";
@@ -316,6 +316,10 @@ function Settings() {
                   <span className="pl-2">Buy Me a Coffee</span>
                 </a>
               </div>
+            </div>
+
+            <div className="mt-2 text-xs text-gray-400 text-right">
+              BuildID: {BUILDID}
             </div>
           </SettingsSection>
         </div>

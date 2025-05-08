@@ -68,7 +68,7 @@ export const CloudSaveSection = ({
             cloud.
           </div>
           <div className="mt-2 text-xs text-gray-400 text-right">
-            ID: {localStorage.getItem("custom_id") ?? ""}
+            UserID: {localStorage.getItem("custom_id") ?? ""}
           </div>
         </>
       ) : (
