@@ -167,5 +167,101 @@
       "storage": { "science": 150000 }
     },
     "tag": "science"
+  },
+  {
+    "type": "celestial_archive",
+    "category": "research",
+    "name": "Celestial Archive",
+    "description": "A vault of quantum-entangled knowledge tablets that self-update with cosmic truths. Scholars achieve enlightenment through neural sync with the archive's AI core.",
+    "workerCapacity": 8,
+    "baseCost": {
+      "science": 1595,
+      "metals": 893,
+      "energy": 517
+    },
+    "baseProduction": {
+      "science": 16.25
+    },
+    "baseConsumption": {
+      "energy": 1.8,
+      "water": 1.1
+    },
+    "requirements": {},
+    "requiredTechnology": "quantum_cognition",
+    "costMultiplier": 2.25,
+    "productionMultiplier": 2.0,
+    "maxInstances": 1,
+    "tier": 1,
+    "maxTier": 5,
+    "upgrades": 0,
+    "uniqueBonus": {
+      "production": { "science": 200 },
+      "storage": { "science": 200000 }
+    },
+    "tag": "science"
+  },
+  {
+    "type": "neural_oracle",
+    "category": "research",
+    "name": "Neural Oracle Complex",
+    "description": "A living supercomputer grown from bio-crystalline neurons. Researchers interface directly with its dreamlike predictions of future technologies.",
+    "workerCapacity": 10,
+    "baseCost": {
+      "science": 2871,
+      "metals": 1607,
+      "energy": 931
+    },
+    "baseProduction": {
+      "science": 19.25
+    },
+    "baseConsumption": {
+      "energy": 3.2,
+      "water": 2.0
+    },
+    "requirements": {},
+    "requiredTechnology": "psionic_synthesis",
+    "costMultiplier": 2.35,
+    "productionMultiplier": 2.0,
+    "maxInstances": 1,
+    "tier": 1,
+    "maxTier": 5,
+    "upgrades": 0,
+    "uniqueBonus": {
+      "production": { "science": 222 },
+      "storage": { "science": 250000 }
+    },
+    "tag": "science"
+  },
+  {
+    "type": "singularity_thinktank",
+    "category": "research",
+    "name": "Singularity Think Tank",
+    "description": "A micro black hole contained in a quantum lattice generates infinite parallel thoughtstreams. Researchers harvest insights from collapsing universes.",
+    "workerCapacity": 12,
+    "baseCost": {
+      "science": 5168,
+      "metals": 2893,
+      "energy": 1676
+    },
+    "baseProduction": {
+      "science": 23.05
+    },
+    "baseConsumption": {
+      "energy": 5.8,
+      "water": 3.6
+    },
+    "requirements": {},
+    "requiredTechnology": "singularity_harvesting",
+    "costMultiplier": 2.35,
+    "productionMultiplier": 2.0,
+    "maxInstances": 1,
+    "tier": 1,
+    "maxTier": 5,
+    "upgrades": 0,
+    "uniqueBonus": {
+      "production": { "science": 244 },
+      "storage": { "science": 250000 }
+    },
+    "tag": "science"
   }
 ]

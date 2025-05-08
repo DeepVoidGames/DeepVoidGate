@@ -53,4 +53,52 @@ export const technology_research: Technology[] = [
     isResearched: false,
     locked: true,
   },
+  {
+    id: "quantum_cognition",
+    name: "Quantum Cognition",
+    category: "Research",
+    description:
+      "Merging human intuition with quantum computation allows scholars to perceive knowledge as probabilistic wavefunctions, collapsing them into breakthroughs.",
+    researchCost: {
+      science: 324000,
+      energy: 180000,
+      metals: 90000,
+    },
+    prerequisites: ["ai_development"],
+    unlocksBuildings: ["celestial_archive"],
+    researchDuration: 11880, // 3h 18min (1.8x dłużej niż przykład)
+    isResearched: false,
+  },
+  {
+    id: "psionic_synthesis",
+    name: "Psionic Synthesis",
+    category: "Research",
+    description:
+      "Genetically engineered brain tissue fused with quantum crystals creates a hive-mind capable of solving problems across alternate timelines.",
+    researchCost: {
+      science: 583200,
+      energy: 324000,
+      food: 120000,
+    },
+    prerequisites: ["quantum_cognition"],
+    unlocksBuildings: ["neural_oracle"],
+    researchDuration: 21384, // 5h 56min (3.24x dłużej)
+    isResearched: false,
+  },
+  {
+    id: "singularity_harvesting",
+    name: "Singularity Harvesting",
+    category: "Research",
+    description:
+      "Stable quantum singularities act as infinite computation matrices. Each collapsed universe within yields fragments of ultimate truth.",
+    researchCost: {
+      science: 1049760,
+      energy: 583200,
+      food: 120000,
+    },
+    prerequisites: ["psionic_synthesis", "temporal_engineering"],
+    unlocksBuildings: ["singularity_thinktank"],
+    researchDuration: 38491, // 10h 41min (5.83x dłużej)
+    isResearched: false,
+  },
 ];

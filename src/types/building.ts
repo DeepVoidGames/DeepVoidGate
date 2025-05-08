@@ -80,7 +80,10 @@ export type BuildingType =
   | "photo_reactor"
   | "atmo_forge"
   | "chrono_turbine_mk2"
-  | "quantum_flux_generator";
+  | "quantum_flux_generator"
+  | "celestial_archive"
+  | "neural_oracle"
+  | "singularity_thinktank";
 
 export interface BuildingData {
   id?: string;
