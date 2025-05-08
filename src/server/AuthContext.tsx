@@ -7,8 +7,9 @@ import React, {
 } from "react";
 import { Client, Session } from "@heroiclabs/nakama-js";
 import { v4 as uuidv4 } from "uuid";
+import { API_KEY } from "@/key";
 
-export const client = new Client("defaultkey", "api.deepvoid.dev", "443", true);
+export const client = new Client(API_KEY, "api.deepvoid.dev", "443", true);
 
 type AuthContextType = {
   session: Session | null;

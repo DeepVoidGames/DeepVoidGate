@@ -18,7 +18,6 @@ import FactionsDisplay from "@/pages/Factions";
 import { AuthProvider } from "@/server/AuthContext";
 import { ChatProvider } from "@/server/ChatContext";
 import { GlobalChat } from "./components/GlobalChat";
-import MapComponent from "./pages/Map";
 
 const queryClient = new QueryClient();
 
@@ -41,7 +40,6 @@ const App = () => (
                 <Route path="/expedition" element={<ExpeditionUI />} />
                 <Route path="/artifacts" element={<ArtifactsDisplay />} />
                 <Route path="/factions" element={<FactionsDisplay />} />
-                <Route path="/map" element={<MapComponent />} />
                 <Route path="/settings" element={<Settings />} />
                 {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
                 <Route path="*" element={<NotFound />} />
