@@ -78,7 +78,7 @@ export const technology_infrastructure: Technology[] = [
       oxygen: 2250,
       science: 3000,
     },
-    prerequisites: ["hydrostatic_architecture", "quantum_tunneling_synthesis"],
+    prerequisites: ["hydrostatic_architecture"],
     unlocksBuildings: ["bio_caverns"],
     researchDuration: 3200,
     isResearched: false,
