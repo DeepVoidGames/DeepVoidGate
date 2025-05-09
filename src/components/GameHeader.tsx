@@ -2,12 +2,17 @@ import React from "react";
 import { Users } from "lucide-react";
 import { useGame } from "@/context/GameContext";
 import { GameControls } from "./GameControls";
+import { getDominantFaction } from "@/store/reducers/factionsReducer";
 
 export const GameHeader: React.FC = () => {
   const { state } = useGame();
   const { population, colonistProgress } = state;
   return (
-    <header className="glass-panel p-4 flex items-center justify-between animate-fade-in">
+    <header
+      className={`glass-panel p-4 flex items-center justify-between animate-fade-in ${getDominantFaction(
+        state
+      )}`}
+    >
       <div className="flex flex-col">
         <h1 className="text-2xl font-bold tracking-tight">
           <span className="text-transparent bg-clip-text bg-gradient-to-r from-primary to-primary/70">

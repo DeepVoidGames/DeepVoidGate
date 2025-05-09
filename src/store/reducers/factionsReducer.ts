@@ -62,6 +62,36 @@ export const applyFactionBonuses = (state: GameState): GameState => {
   return newState;
 };
 
+/**
+ * Określa dominującą frakcję na podstawie ich poziomu lojalności.
+ * Jeśli lojalność pierwszej i drugiej frakcji jest równa, zwraca trzecią frakcję jako domyślną.
+ * W przypadku mniej niż 3 frakcji, zwraca pusty string.
+ *
+ * @param state - Obiekt reprezentujący aktualny stan gry, zawierający listę frakcji.
+ * @returns Identyfikator dominującej frakcji lub pusty string, jeśli nie można określić dominującej frakcji.
+ */
+export const getDominantFaction = (
+  state: GameState,
+  isBackground?: boolean,
+  opacity: string = ""
+): string => {
+  if (state.factions.length < 3) return "";
+  if (
+    state.factions[0].loyalty < 5000 &&
+    state.factions[1].loyalty < 5000 &&
+    state.factions[2].loyalty < 5000
+  )
+    return "";
+
+  if (state.factions[0].loyalty > state.factions[1].loyalty) {
+    return isBackground ? "bg-blue-600" + opacity : "border-blue-600/30";
+  } else if (state.factions[0].loyalty < state.factions[1].loyalty) {
+    return isBackground ? "bg-green-600" + opacity : "border-green-600/30";
+  } else {
+    return isBackground ? "bg-purple-400" + opacity : "border-purple-600/30";
+  }
+};
+
 export const initialFactions = [
   {
     id: "Technocrats" as FactionName,

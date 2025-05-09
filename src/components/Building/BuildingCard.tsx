@@ -18,6 +18,8 @@ import {
 } from "@/store/reducers/buildingReducer";
 import { buildingConfig } from "./BuildingManager";
 import React from "react";
+import { getDominantFaction } from "@/store/reducers/factionsReducer";
+import { useGame } from "@/context/GameContext";
 
 type BuildingCardProps = {
   building;
@@ -33,7 +35,6 @@ type BuildingCardProps = {
 
 const BuildingCard = ({
   building,
-
   formatNumber,
   onAdjustWorkers,
   resources,
@@ -43,6 +44,7 @@ const BuildingCard = ({
   ResourcesIcon,
   tierProgress,
 }: BuildingCardProps) => {
+  const { state } = useGame();
   const [maxUpgrade, setMaxUpgrade] = React.useState({ tier: 0, upgrades: 0 });
 
   // Kolory dla tierów
@@ -83,7 +85,11 @@ const BuildingCard = ({
     <Card
       className={`neo-panel overflow-hidden transition-all duration-300 border-primary/30 relative ${
         !building.functioning ? "bg-red-950/10 border-red-800/30" : ""
-      }`}
+      }
+
+      ${getDominantFaction(state)}  
+      ${getDominantFaction(state, true, "/30")}
+      `}
     >
       {/* <img src={`/deepvoidgate/demo/buildings/${building.type}.jpg`} /> */}
       {/* <div className="absolute inset-0 w-full h-full overflow-hidden">
@@ -186,6 +192,7 @@ const BuildingCard = ({
             <Progress
               value={(building.upgrades / 10) * 100}
               className="h-2 bg-gray-700"
+              className2={`${getDominantFaction(state, true, "/80")}`}
             />
           </div>
         )}

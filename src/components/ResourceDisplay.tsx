@@ -4,6 +4,7 @@ import { Progress } from "@/components/ui/progress";
 import { formatNumber } from "@/lib/utils";
 import { Clock, AlertTriangle } from "lucide-react";
 import { ResourceType } from "@/types/resource";
+import { getDominantFaction } from "@/store/reducers/factionsReducer";
 // import { getSettings } from "@/pages/Settings";
 
 export const ResourceDisplay: React.FC = () => {
@@ -21,7 +22,11 @@ export const ResourceDisplay: React.FC = () => {
     "science",
   ];
   return (
-    <div className={"glass-panel p-4 space-y-3 animate-fade-in"}>
+    <div
+      className={`glass-panel p-4 space-y-3 animate-fade-in ${getDominantFaction(
+        state
+      )} `}
+    >
       <div className="flex items-center justify-between">
         <h2 className="text-lg font-medium text-foreground/90">Resources</h2>
 
@@ -60,8 +65,8 @@ export const ResourceDisplay: React.FC = () => {
           }
 
           return (
-            <div key={resourceKey} className="space-x-1">
-              <div className="flex items-center justify-between">
+            <div key={resourceKey} className={`space-x-1 `}>
+              <div className={`flex items-center justify-between $`}>
                 <div className="flex items-center gap-2">
                   <span className={`resource-badge`}>{resource.icon}</span>
                   <span
@@ -112,6 +117,7 @@ export const ResourceDisplay: React.FC = () => {
                       ? "bg-yellow-500/20"
                       : `bg-${resource.color}-500/20`
                   }`}
+                  className2={`${getDominantFaction(state, true)}`}
                 />
                 <div className="text-xs font-mono min-w-[120px] text-right">
                   {formatNumber(resource.amount)} /{" "}

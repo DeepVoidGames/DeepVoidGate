@@ -1,12 +1,19 @@
 import React, { memo } from "react";
 import { useGame } from "@/context/GameContext";
 import { IMAGE_PATH } from "@/config";
+import { getDominantFaction } from "@/store/reducers/factionsReducer";
 
 export const PlanetaryView: React.FC = memo(() => {
   const { state } = useGame();
 
   return (
-    <div className="glass-panel p-4 relative animate-fade-in">
+    <div
+      className={`glass-panel p-4 relative animate-fade-in ${getDominantFaction(
+        state,
+        false,
+        "/80"
+      )}`}
+    >
       <h2 className="text-lg font-medium text-foreground/90 mb-2">
         Planetary View
       </h2>
