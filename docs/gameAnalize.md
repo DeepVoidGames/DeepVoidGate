@@ -25,6 +25,7 @@ DeepvoidGate appears to be a space colony management simulation game with multip
 - **Technology Dependencies**: Some technologies require prerequisites to be researched first.
 - **Technology Effects**: Research unlocks new building types, improvements, or special abilities.
 - **Research Status**: Technologies can be displayed with a "Researched" status.
+- **Advanced Researchs**: This type of technologies unlock new content/mechanics.
 
 ### Milestone System
 
@@ -41,12 +42,14 @@ DeepvoidGate appears to be a space colony management simulation game with multip
 - **Duration Management**: Expeditions have set durations (e.g., 21:00 minutes).
 - **Random Events**: Expeditions can trigger events requiring player decisions (e.g., "Forgotten Fungal Culture" with options to study or harvest).
 - **Risk/Reward Mechanics**: Some options offer tradeoffs (e.g., "Accelerate through dangerous zone (50% gain/lose)").
+- **Connection with Technologies**: Scientific expedition has chance to unlock new technologie exercise to expedition.
+- **Connection with Artifacts**: Mining expedition has chance to unlock/add copy of artifact specific for expedition level.
 
 ### Faction System
 
 - **Multiple Factions**: Three factions exist (Technocrat Syndicate, Biogenesis Coalition, Order of Stellar Understanding).
 - **Loyalty Mechanics**: Player can build loyalty with factions (e.g., "5020/10000").
-- **Hostility Tracking**: Potential for negative relations with factions.
+- **Hostility Tracking**: Potential for negative relations with factions (Didn't implemented yet).
 - **Faction Bonuses**: At specific loyalty thresholds (1K+, 5K+), special bonuses become available.
 - **Unique Specializations**: Each faction has thematic specializations (e.g., Technocrats focus on "Production optimization, automation, AI").
 
@@ -63,7 +66,7 @@ DeepvoidGate appears to be a space colony management simulation game with multip
 ### Upgrade Systems
 
 - **Building Tiers**: Buildings can be upgraded through multiple tiers (shown as "Max Tier Reached" for completed buildings).
-- **Upgrade Progress**: Visible progress tracking for ongoing upgrades ("10/10 upgrades").
+- **Upgrade Progress**: Visible progress tracking for ongoing upgrades ("10/10 upgrades" after 10/10 next upgrade adding +1 to tier if not max tier).
 - **Resource Production Scaling**: Higher-tier buildings have improved production rates.
 
 ### Worker Management
@@ -81,10 +84,9 @@ DeepvoidGate appears to be a space colony management simulation game with multip
 
 ### Progression Systems
 
-- **Milestone Advancement**: Completing milestones unlocks new gameplay options.
-- **Technology Tree Expansion**: Researching technologies enables access to advanced systems.
+- **Technology Tree Expansion**: Researching technologies enables access to buildings and unlocks new gameplay options.
 - **Artifact Collection**: Finding and upgrading artifacts provides significant boosts.
-- **Faction Reputation**: Building loyalty unlocks special bonuses and abilities.
+- **Faction Reputation**: Building loyalty unlocks special bonuses and new buildings.
 
 ### User Interface Systems
 
