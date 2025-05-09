@@ -184,3 +184,25 @@ export const updateResearches = (technologies: Technology[]): Technology[] => {
     return tech;
   });
 };
+
+/**
+ * Sprawdza, czy dana technologia jest odblokowana w aktualnym stanie gry.
+ *
+ * Funkcja przeszukuje listę technologii w stanie gry i weryfikuje,
+ * czy istnieje technologia o podanym identyfikatorze, która została
+ * już zbadana (ma ustawioną flagę `isResearched` na `true`).
+ *
+ * @param technologieId - Unikalny identyfikator technologii do sprawdzenia.
+ * @param state - Obiekt stanu gry zawierający listę technologii.
+ *
+ * @returns `true` jeśli technologia jest odblokowana (zbadana),
+ *          `false` w przeciwnym przypadku.
+ */
+export const isTechnologyUnlocked = (
+  technologieId: string,
+  state: GameState
+): boolean => {
+  return state.technologies.some(
+    (tech) => tech.id === technologieId && tech.isResearched
+  );
+};

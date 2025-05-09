@@ -7,9 +7,13 @@ import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
 import { IMAGE_PATH } from "@/config";
 import { formatNumber } from "@/lib/utils";
+import { isExpedtionUnlocked } from "@/store/reducers/expeditionReducer";
 
 const FactionsDisplay = () => {
   const { state } = useGame();
+
+  if (!isExpedtionUnlocked(state)) return;
+
   const { factions } = state;
 
   const [hiddenBonuses, setHiddenBonuses] = React.useState<Set<string>>(

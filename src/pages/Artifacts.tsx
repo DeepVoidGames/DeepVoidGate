@@ -11,9 +11,12 @@ import { Alert, AlertDescription } from "@/components/ui/alert";
 import { useGame } from "@/context/GameContext";
 import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
+import { isExpedtionUnlocked } from "@/store/reducers/expeditionReducer";
 
 const ArtifactsDisplay = () => {
   const { state, dispatch } = useGame();
+
+  if (!isExpedtionUnlocked(state)) return;
 
   const handleUpgrade = (artifactName: string) => {
     const artifact = state.artifacts.find((a) => a.name === artifactName);
