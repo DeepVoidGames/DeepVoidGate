@@ -28,8 +28,8 @@ export const updateFactionLoyalty = (
             ? Math.min(Math.max(f.loyalty + amount, 0), f.maxLoyalty)
             : Math.min(
                 Math.max(
-                  (f.loyalty + amount) *
-                    (artifact?.effect[0]?.value * artifact?.stars + 1),
+                  f.loyalty +
+                    amount * (1 + artifact?.effect[0]?.value * artifact?.stars),
                   0
                 ),
                 f.maxLoyalty

@@ -36,12 +36,12 @@ function SummaryExpeditionPanel({
 }: SummaryExpeditionPanelProps) {
   return (
     <Card className="glass-panel p-4 sm:p-6 space-y-3 animate-fade-in bg-secondary/40">
-      <div className="flex flex-col md:flex-row items-center justify-between gap-4 sm:gap-6">
+      <div className="flex flex-col min-[849px]:flex-row items-center justify-between gap-4 sm:gap-6">
         <div className="space-y-2 w-full">
           <h3 className="text-lg sm:text-xl font-semibold">
             Expedition Summary
           </h3>
-          <div className="flex flex-col sm:flex-row items-start sm:items-center gap-3 sm:gap-4 text-sm">
+          <div className="flex flex-col min-[849px]:flex-row items-start sm:items-center gap-3 sm:gap-4 text-sm">
             <div className="flex items-center gap-2">
               <Clock className="w-4 h-4" />
               <span className="whitespace-nowrap">
