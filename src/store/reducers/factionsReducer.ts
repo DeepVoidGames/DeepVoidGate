@@ -1,6 +1,7 @@
 // factionsHelpers.ts
 import { FactionName } from "@/types/factions";
 import { GameState } from "@/types/gameState";
+import { getArtifact } from "@/store/reducers/artifactsReducer";
 
 /**
  * Aktualizuje lojalność frakcji w grze.
@@ -16,13 +17,23 @@ export const updateFactionLoyalty = (
   faction: FactionName,
   amount: number
 ): GameState => {
+  const artifact = getArtifact("Artifact of Diplomacy", state);
   return {
     ...state,
     factions: state.factions.map((f) => {
       if (f.id === faction) {
         return {
           ...f,
-          loyalty: Math.min(Math.max(f.loyalty + amount, 0), f.maxLoyalty),
+          loyalty: artifact?.isLocked
+            ? Math.min(Math.max(f.loyalty + amount, 0), f.maxLoyalty)
+            : Math.min(
+                Math.max(
+                  (f.loyalty + amount) *
+                    (artifact?.effect[0]?.value * artifact?.stars + 1),
+                  0
+                ),
+                f.maxLoyalty
+              ),
         };
       }
       return f;

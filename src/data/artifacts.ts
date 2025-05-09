@@ -58,4 +58,22 @@ export const artifactsData: Artifact[] = [
       },
     ],
   },
+  {
+    name: "Artifact of Diplomacy",
+    description: "A crystal that can manipulate time itself.",
+    image: `${IMAGE_PATH}artifacts_/artifact_of_diplomacy.png`,
+    stars: 0,
+    class: "E",
+    isLocked: true,
+    amount: 0,
+    expedtionTier: 4,
+    effect: [
+      {
+        type: "loyalty" as ArtifactEffectType,
+        description: (starts: number) =>
+          `Increases loyalty gain by ${((starts + 1) / 2) * 10}%`,
+        value: 0.05,
+      },
+    ],
+  },
 ];

@@ -16,4 +16,8 @@ export type ArtifactEffect = {
   value: number;
 };
 
-export type ArtifactEffectType = "produciton" | "capacity" | "expeditionTime";
+export type ArtifactEffectType =
+  | "produciton"
+  | "capacity"
+  | "expeditionTime"
+  | "loyalty";
