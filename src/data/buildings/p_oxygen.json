@@ -202,8 +202,7 @@
     "baseCost": {
       "oxygen": 2500,
       "energy": 1500,
-      "science": 400,
-      "metals": 200
+      "science": 400
     },
     "baseProduction": {
       "oxygen": 14.0
@@ -222,6 +221,38 @@
     "upgrades": 0,
     "uniqueBonus": {
       "production": { "oxygen": 120 },
+      "storage": { "oxygen": 150000 }
+    },
+    "tag": "oxygen"
+  },
+  {
+    "type": "strato_extractor",
+    "category": "production",
+    "name": "Stratospheric Extractor",
+    "description": "An orbital-scale extractor that captures and splits atmospheric compounds in the upper stratosphere. Operates autonomously and is capable of supplying entire colonies.",
+    "workerCapacity": 8,
+    "baseCost": {
+      "oxygen": 4500,
+      "energy": 2700,
+      "science": 720
+    },
+    "baseProduction": {
+      "oxygen": 18.0
+    },
+    "baseConsumption": {
+      "energy": 4.0,
+      "water": 2.8
+    },
+    "requirements": {},
+    "requiredTechnology": "stratospheric_processing",
+    "costMultiplier": 1.9,
+    "productionMultiplier": 1.95,
+    "maxInstances": 1,
+    "tier": 1,
+    "maxTier": 5,
+    "upgrades": 0,
+    "uniqueBonus": {
+      "production": { "oxygen": 160 },
       "storage": { "oxygen": 150000 }
     },
     "tag": "oxygen"

@@ -64,6 +64,16 @@ export const applyFactionBonuses = (state: GameState): GameState => {
       (tech) => tech.id === "genetic_ecoengineering"
     ).locked = false;
 
+  if (state.factions[1].loyalty >= 5000)
+    newState.technologies.find(
+      (tech) => tech.id === "conscious_biofabrication"
+    ).locked = false;
+
+  if (state.factions[1].loyalty >= 8000)
+    newState.technologies.find(
+      (tech) => tech.id === "stratospheric_processing"
+    ).locked = false;
+
   // StarUnderstanding
   if (state.factions[2].loyalty >= 1000)
     newState.technologies.find(
@@ -148,6 +158,11 @@ export const initialFactions = [
           "Your unwavering loyalty has granted you access to the Syndicate’s advanced automation protocols. All production operations are now enhanced by 25% efficiency.",
         loyaltyReq: 5000,
       },
+      {
+        name: "Unkown",
+        description: "Unkown",
+        loyaltyReq: 8000,
+      },
     ],
   },
   {
@@ -170,6 +185,12 @@ export const initialFactions = [
           "Focuses on population growth, terraforming and food-oxygen synergy. Unlocks Sentient Growth Core, growth-boosting buildings and eco-based technologies.",
         loyaltyReq: 5000,
       },
+      {
+        name: "Orbital Terraforming Initiative",
+        description:
+          "Pioneers orbital-scale environmental manipulation. Grants access to high-atmosphere extraction, advanced oxygen systems, and infrastructure that supports planetary-scale sustainability.",
+        loyaltyReq: 8000,
+      },
     ],
   },
   {
@@ -191,6 +212,11 @@ export const initialFactions = [
         description:
           "The Order envelops your research centers in a temporal veil, reducing the duration of all technological bans by 50%. Forbidden knowledge is forgotten... faster.",
         loyaltyReq: 5000,
+      },
+      {
+        name: "Unkown",
+        description: "Unkown",
+        loyaltyReq: 8000,
       },
     ],
   },

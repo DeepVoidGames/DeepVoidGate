@@ -232,4 +232,22 @@ export const technology_production: Technology[] = [
     researchDuration: 13800,
     isResearched: false,
   },
+  {
+    id: "stratospheric_processing",
+    name: "Stratospheric Processing",
+    category: "Production",
+    description:
+      "Unlocks advanced techniques for extracting and separating gases directly from the upper layers of the atmosphere using orbital infrastructure. Enables highly efficient oxygen harvesting for large-scale colonies.",
+    researchCost: {
+      oxygen: 27000,
+      energy: 9000,
+      food: 4500,
+      science: 2250,
+    },
+    prerequisites: ["algal_quantum_symbiosis"],
+    unlocksBuildings: ["strato_extractor"],
+    researchDuration: 14800,
+    isResearched: false,
+    locked: true,
+  },
 ];
