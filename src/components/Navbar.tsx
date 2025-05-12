@@ -1,16 +1,11 @@
 import * as React from "react";
 import { Link, useLocation } from "react-router-dom";
-import {
-  Home,
-  Microscope,
-  Settings,
-  Milestone,
-  Computer,
-} from "lucide-react";
+import { Home, Microscope, Settings, Milestone, Computer } from "lucide-react";
 import { useIsMobile } from "@/hooks/use-mobile"; // Zaimportuj hook z odpowiedniej ścieżki
 import { useGame } from "@/context/GameContext";
 import { formatNumber } from "@/lib/utils";
 import { getSettings } from "@/pages/Settings";
+import { getDominantFactionTheme } from "@/store/reducers/factionsReducer";
 
 const links = [
   { path: "/", label: "Home", icon: <Home className="h-5 w-5" /> },
@@ -24,7 +19,6 @@ const links = [
     label: "Milestones",
     icon: <Milestone className="h-5 w-5" />,
   },
-  
 ];
 
 const MobileNav = () => {
@@ -92,6 +86,7 @@ const MobileNav = () => {
 
 const DesktopNav = () => {
   const location = useLocation();
+  const { state } = useGame();
 
   return (
     <nav className="fixed top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
@@ -114,7 +109,14 @@ const DesktopNav = () => {
                 className={`flex h-10 w-36 items-center justify-center gap-2 rounded-md text-sm font-medium transition-colors p-1 ${
                   location.pathname === link.path
                     ? "bg-blue-100/20 text-blue-400"
-                    : "text-foreground/80 hover:bg-accent/10"
+                    : `text-foreground/80 hover:${getDominantFactionTheme(
+                        state,
+                        {
+                          styleType: "text",
+                          withGradient: false,
+                          withHover: false,
+                        }
+                      )}`
                 }`}
               >
                 {link.icon}

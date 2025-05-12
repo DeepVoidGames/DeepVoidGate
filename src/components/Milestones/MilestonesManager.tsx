@@ -14,7 +14,7 @@ import {
 import { useGame } from "@/context/GameContext";
 import { Progress } from "@/components/ui/progress";
 import { Milestone } from "@/types/milestone";
-import { getDominantFaction } from "@/store/reducers/factionsReducer";
+import { getDominantFactionTheme } from "@/store/reducers/factionsReducer";
 
 const milestoneCategories = [
   {
@@ -119,8 +119,9 @@ const MilestonesManager = () => {
 
   return (
     <div
-      className={`glass-panel p-4 space-y-6 animate-fade-in ${getDominantFaction(
-        state
+      className={`glass-panel p-4 space-y-6 animate-fade-in ${getDominantFactionTheme(
+        state,
+        { styleType: "border", opacity: 0.8 }
       )}`}
     >
       {/* ... (Header and Statistics) ... */}

@@ -18,7 +18,7 @@ import {
 } from "@/store/reducers/buildingReducer";
 import { buildingConfig } from "./BuildingManager";
 import React from "react";
-import { getDominantFaction } from "@/store/reducers/factionsReducer";
+import { getDominantFactionTheme } from "@/store/reducers/factionsReducer";
 import { useGame } from "@/context/GameContext";
 
 type BuildingCardProps = {
@@ -87,8 +87,8 @@ const BuildingCard = ({
         !building.functioning ? "bg-red-950/10 border-red-800/30" : ""
       }
 
-      ${getDominantFaction(state)}  
-      ${getDominantFaction(state, true, "/30")}
+      ${getDominantFactionTheme(state, { styleType: "border" })}  
+      
       `}
     >
       {/* <img src={`/deepvoidgate/demo/buildings/${building.type}.jpg`} /> */}
@@ -192,7 +192,9 @@ const BuildingCard = ({
             <Progress
               value={(building.upgrades / 10) * 100}
               className="h-2 bg-gray-700"
-              className2={`${getDominantFaction(state, true)}`}
+              className2={`${getDominantFactionTheme(state, {
+                styleType: "background",
+              })}`}
             />
           </div>
         )}

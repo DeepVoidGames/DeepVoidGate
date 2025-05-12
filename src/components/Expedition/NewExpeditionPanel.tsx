@@ -2,7 +2,7 @@ import React from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "../ui/card";
 import { ExpeditionType, ExpeditionTypes } from "@/types/expedition";
 import { useGame } from "@/context/GameContext";
-import { getDominantFaction } from "@/store/reducers/factionsReducer";
+import { getDominantFactionTheme } from "@/store/reducers/factionsReducer";
 
 type NewExpeditionPanelProps = {
   expeditionTypes: ExpeditionTypes[];
@@ -25,8 +25,9 @@ function NewExpeditionPanel({
     <div className="grid lg:grid-cols-2 gap-8">
       {/* Expedition Type Selection */}
       <Card
-        className={`glass-panel p-6 space-y-3 animate-fade-in bg-secondary/40 ${getDominantFaction(
-          state
+        className={`glass-panel p-6 space-y-3 animate-fade-in bg-secondary/40 ${getDominantFactionTheme(
+          state,
+          { styleType: "border", opacity: 0.8 }
         )}`}
       >
         <CardHeader className="p-0 pb-6">
@@ -39,7 +40,9 @@ function NewExpeditionPanel({
               onClick={() => setSelectedType(type)}
               className={`w-full p-4 rounded-xl border-2 transition-all flex items-start gap-4 ${
                 selectedType === type
-                  ? `${getDominantFaction(state, true)}`
+                  ? `${getDominantFactionTheme(state, {
+                      styleType: "background",
+                    })}`
                   : "border-muted hover:border-primary/30"
               }`}
             >
@@ -57,8 +60,9 @@ function NewExpeditionPanel({
 
       {/* Tier Selection */}
       <Card
-        className={`glass-panel p-6 space-y-3 animate-fade-in bg-secondary/40 ${getDominantFaction(
-          state
+        className={`glass-panel p-6 space-y-3 animate-fade-in bg-secondary/40 ${getDominantFactionTheme(
+          state,
+          { styleType: "border", opacity: 0.8 }
         )}`}
       >
         <CardHeader className="p-0 pb-6">

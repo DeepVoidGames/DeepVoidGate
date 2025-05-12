@@ -4,7 +4,7 @@ import { Progress } from "@/components/ui/progress";
 import { formatNumber } from "@/lib/utils";
 import { Clock, AlertTriangle } from "lucide-react";
 import { ResourceType } from "@/types/resource";
-import { getDominantFaction } from "@/store/reducers/factionsReducer";
+import { getDominantFactionTheme } from "@/store/reducers/factionsReducer";
 // import { getSettings } from "@/pages/Settings";
 
 export const ResourceDisplay: React.FC = () => {
@@ -23,8 +23,11 @@ export const ResourceDisplay: React.FC = () => {
   ];
   return (
     <div
-      className={`glass-panel p-4 space-y-3 animate-fade-in ${getDominantFaction(
-        state
+      className={`glass-panel p-4 space-y-3 animate-fade-in ${getDominantFactionTheme(
+        state,
+        {
+          styleType: "border",
+        }
       )} `}
     >
       <div className="flex items-center justify-between">
@@ -117,7 +120,9 @@ export const ResourceDisplay: React.FC = () => {
                       ? "bg-yellow-500/20"
                       : `bg-${resource.color}-500/20`
                   }`}
-                  className2={`${getDominantFaction(state, true)}`}
+                  className2={`${getDominantFactionTheme(state, {
+                    styleType: "background",
+                  })}`}
                 />
                 <div className="text-xs font-mono min-w-[120px] text-right">
                   {formatNumber(resource.amount)} /{" "}

@@ -16,7 +16,7 @@ import { useGame } from "@/context/GameContext";
 import { formatNumber } from "@/lib/utils";
 import { Progress } from "@/components/ui/progress";
 import { Technology } from "@/types/technology";
-import { getDominantFaction } from "@/store/reducers/factionsReducer";
+import { getDominantFactionTheme } from "@/store/reducers/factionsReducer";
 
 const techCategories = [
   {
@@ -176,8 +176,9 @@ const TechnologiesManager: React.FC = () => {
 
   return (
     <div
-      className={`glass-panel p-4 space-y-6 animate-fade-in ${getDominantFaction(
-        state
+      className={`glass-panel p-4 space-y-6 animate-fade-in ${getDominantFactionTheme(
+        state,
+        { styleType: "border", opacity: 0.8 }
       )}`}
     >
       <div className="flex flex-col md:flex-row justify-between gap-4 mb-4">

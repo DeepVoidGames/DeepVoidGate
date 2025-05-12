@@ -81,32 +81,50 @@ export const applyFactionBonuses = (state: GameState): GameState => {
  * @param state - Obiekt reprezentujący aktualny stan gry, zawierający listę frakcji.
  * @returns Identyfikator dominującej frakcji lub pusty string, jeśli nie można określić dominującej frakcji.
  */
-export const getDominantFaction = (
+export const getDominantFactionTheme = (
   state: GameState,
-  isBackground?: boolean,
-  opacity: string = "/60"
-): string => {
-  if (state.factions.length < 3) return "";
-  if (
-    state.factions[0].loyalty < 5000 &&
-    state.factions[1].loyalty < 5000 &&
-    state.factions[2].loyalty < 5000
-  )
-    return "";
-
-  if (
-    state.factions[0].loyalty > state.factions[1].loyalty &&
-    state.factions[0].loyalty > state.factions[2].loyalty
-  ) {
-    return isBackground ? `bg-sky-500${opacity}` : "border-blue-600/30";
-  } else if (
-    state.factions[0].loyalty < state.factions[1].loyalty &&
-    state.factions[0].loyalty < state.factions[2].loyalty
-  ) {
-    return isBackground ? `bg-green-400${opacity}` : "border-green-600/30";
-  } else {
-    return isBackground ? `bg-purple-400${opacity}` : "border-purple-600/30";
+  options?: {
+    styleType?: keyof FactionTheme;
+    opacity?: number;
+    withHover?: boolean;
+    withGradient?: boolean;
   }
+): string => {
+  return "";
+  const {
+    styleType = "background",
+    opacity = 1,
+    withHover = false,
+    withGradient = false,
+  } = options || {};
+
+  // Znajdź dominującą frakcję
+  const dominant = state.factions.reduce((prev, current) =>
+    prev.loyalty > current.loyalty ? prev : current
+  );
+
+  if (!dominant || dominant.loyalty < 5000) return "";
+
+  // Pobierz motyw
+  const theme = FACTION_THEMES[dominant.id] || FACTION_THEMES.neutral;
+
+  // Buduj klasę CSS
+  let result = theme[styleType];
+
+  // Dodawanie opcji
+  if (opacity < 1) {
+    if (styleType !== "border") {
+      const opacityValue = Math.round(opacity * 100);
+      result += `/${opacityValue}`;
+    }
+  }
+
+  if (withHover) result += ` ${theme.hover}`;
+  if (withGradient && styleType === "background") {
+    result = `bg-gradient-to-r ${theme.gradient}`;
+  }
+
+  return result.trim();
 };
 
 export const initialFactions = [
@@ -177,3 +195,35 @@ export const initialFactions = [
     ],
   },
 ];
+
+interface FactionTheme {
+  background: string;
+  border: string;
+  text: string;
+  gradient: string;
+  hover: string;
+}
+// Mapa stylów dla różnych frakcji
+const FACTION_THEMES: Record<string, FactionTheme> = {
+  rebels: {
+    background: "bg-sky-500",
+    border: "border-blue-600/40",
+    text: "text-blue-800",
+    gradient: "from-blue-400 to-blue-600",
+    hover: "hover:bg-blue-700",
+  },
+  empire: {
+    background: "bg-green-400",
+    border: "border-green-600/40",
+    text: "text-green-800",
+    gradient: "from-green-400 to-green-600",
+    hover: "hover:bg-green-700",
+  },
+  neutral: {
+    background: "bg-purple-400",
+    border: "border-purple-400/40",
+    text: "text-purple-800",
+    gradient: "from-purple-400 to-purple-600",
+    hover: "hover:bg-purple-700",
+  },
+};

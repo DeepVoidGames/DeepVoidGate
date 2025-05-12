@@ -8,7 +8,7 @@ import { Progress } from "@/components/ui/progress";
 import { IMAGE_PATH } from "@/config";
 import { formatNumber } from "@/lib/utils";
 import { isExpedtionUnlocked } from "@/store/reducers/expeditionReducer";
-import { getDominantFaction } from "@/store/reducers/factionsReducer";
+import { getDominantFactionTheme } from "@/store/reducers/factionsReducer";
 
 const FactionsDisplay = () => {
   const { state } = useGame();
@@ -45,8 +45,9 @@ const FactionsDisplay = () => {
         </h1>
       </div>
       <div
-        className={`grid grid-cols-1 md:grid-cols-3 gap-6 glass-panel animate-fade-in p-4 ${getDominantFaction(
-          state
+        className={`grid grid-cols-1 md:grid-cols-3 gap-6 glass-panel animate-fade-in p-4 ${getDominantFactionTheme(
+          state,
+          { styleType: "border", opacity: 0.8 }
         )}`}
       >
         {factions.map((faction) => (

@@ -30,7 +30,7 @@ import {
   BuildingType,
 } from "@/types/building";
 import { ResourceType } from "@/types/resource";
-import { getDominantFaction } from "@/store/reducers/factionsReducer";
+import { getDominantFactionTheme } from "@/store/reducers/factionsReducer";
 
 // Centralna konfiguracja budynków
 //TODO Przenisnie tego do osobnego pliku najlepiej data/buildings.json
@@ -189,7 +189,11 @@ export const BuildingManager: React.FC = () => {
   return (
     <div className={`space-y-6 animate-fade-in`}>
       {/* Existing Buildings Section */}
-      <div className={`glass-panel p-4 w-full ${getDominantFaction(state)}`}>
+      <div
+        className={`glass-panel p-4 w-full ${getDominantFactionTheme(state, {
+          styleType: "border",
+        })}`}
+      >
         <div className="flex flex-col md:flex-row justify-between mb-4 gap-4 w-full">
           <div className="grid grid-cols-2 w-full">
             <h2 className="text-lg font-medium text-foreground/90">

@@ -12,7 +12,7 @@ import { useGame } from "@/context/GameContext";
 import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
 import { isExpedtionUnlocked } from "@/store/reducers/expeditionReducer";
-import { getDominantFaction } from "@/store/reducers/factionsReducer";
+import { getDominantFactionTheme } from "@/store/reducers/factionsReducer";
 
 const ArtifactsDisplay = () => {
   const { state, dispatch } = useGame();
@@ -45,8 +45,9 @@ const ArtifactsDisplay = () => {
       </div>
 
       <div
-        className={`flex flex-wrap gap-3 justify-center glass-panel animate-fade-in p-2 sm:p-4 ${getDominantFaction(
-          state
+        className={`flex flex-wrap gap-3 justify-center glass-panel animate-fade-in p-2 sm:p-4 ${getDominantFactionTheme(
+          state,
+          { styleType: "border", opacity: 0.8 }
         )}`}
       >
         {state?.artifacts?.map((artifact) => {
