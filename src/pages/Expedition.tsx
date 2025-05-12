@@ -15,6 +15,7 @@ import { formatNumber } from "@/lib/utils";
 import NewExpeditionPanel from "@/components/Expedition/NewExpeditionPanel";
 import SummaryExpeditionPanel from "@/components/Expedition/SummaryExpeditionPanel";
 import ExpeditionCard from "@/components/Expedition/ExpeditionCard";
+import { getDominantFaction } from "@/store/reducers/factionsReducer";
 
 const Expedition = () => {
   const { state, dispatch } = useGame();
@@ -108,7 +109,11 @@ const Expedition = () => {
         />
 
         {/* Ongoing Expeditions */}
-        <div className="glass-panel p-6 space-y-3 animate-fade-in bg-secondary/40 mb-24 w-full">
+        <div
+          className={`glass-panel p-6 space-y-3 animate-fade-in bg-secondary/40 mb-24 w-full ${getDominantFaction(
+            state
+          )}`}
+        >
           <div className="flex items-center justify-between mb-4 w-full">
             <h2 className="text-2xl font-bold">Active Missions</h2>
             {/* <button

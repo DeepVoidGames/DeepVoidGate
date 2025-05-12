@@ -1,6 +1,8 @@
 import React from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "../ui/card";
 import { ExpeditionType, ExpeditionTypes } from "@/types/expedition";
+import { useGame } from "@/context/GameContext";
+import { getDominantFaction } from "@/store/reducers/factionsReducer";
 
 type NewExpeditionPanelProps = {
   expeditionTypes: ExpeditionTypes[];
@@ -17,10 +19,16 @@ function NewExpeditionPanel({
   selectedType,
   selectedTier,
 }: NewExpeditionPanelProps) {
+  const { state } = useGame();
+
   return (
     <div className="grid lg:grid-cols-2 gap-8">
       {/* Expedition Type Selection */}
-      <Card className="glass-panel p-6 space-y-3 animate-fade-in bg-secondary/40">
+      <Card
+        className={`glass-panel p-6 space-y-3 animate-fade-in bg-secondary/40 ${getDominantFaction(
+          state
+        )}`}
+      >
         <CardHeader className="p-0 pb-6">
           <CardTitle className="text-xl">1. Select Mission Type</CardTitle>
         </CardHeader>
@@ -31,7 +39,7 @@ function NewExpeditionPanel({
               onClick={() => setSelectedType(type)}
               className={`w-full p-4 rounded-xl border-2 transition-all flex items-start gap-4 ${
                 selectedType === type
-                  ? "border-primary bg-primary/10"
+                  ? `${getDominantFaction(state, true)}`
                   : "border-muted hover:border-primary/30"
               }`}
             >
@@ -48,7 +56,11 @@ function NewExpeditionPanel({
       </Card>
 
       {/* Tier Selection */}
-      <Card className="glass-panel p-6 space-y-3 animate-fade-in bg-secondary/40">
+      <Card
+        className={`glass-panel p-6 space-y-3 animate-fade-in bg-secondary/40 ${getDominantFaction(
+          state
+        )}`}
+      >
         <CardHeader className="p-0 pb-6">
           <CardTitle className="text-xl">2. Select Difficulty</CardTitle>
         </CardHeader>

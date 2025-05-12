@@ -84,7 +84,7 @@ export const applyFactionBonuses = (state: GameState): GameState => {
 export const getDominantFaction = (
   state: GameState,
   isBackground?: boolean,
-  opacity: string = ""
+  opacity: string = "/60"
 ): string => {
   if (state.factions.length < 3) return "";
   if (
@@ -94,12 +94,18 @@ export const getDominantFaction = (
   )
     return "";
 
-  if (state.factions[0].loyalty > state.factions[1].loyalty) {
-    return isBackground ? "bg-blue-600" + opacity : "border-blue-600/30";
-  } else if (state.factions[0].loyalty < state.factions[1].loyalty) {
-    return isBackground ? "bg-green-600" + opacity : "border-green-600/30";
+  if (
+    state.factions[0].loyalty > state.factions[1].loyalty &&
+    state.factions[0].loyalty > state.factions[2].loyalty
+  ) {
+    return isBackground ? `bg-sky-500${opacity}` : "border-blue-600/30";
+  } else if (
+    state.factions[0].loyalty < state.factions[1].loyalty &&
+    state.factions[0].loyalty < state.factions[2].loyalty
+  ) {
+    return isBackground ? `bg-green-400${opacity}` : "border-green-600/30";
   } else {
-    return isBackground ? "bg-purple-400" + opacity : "border-purple-600/30";
+    return isBackground ? `bg-purple-400${opacity}` : "border-purple-600/30";
   }
 };
 

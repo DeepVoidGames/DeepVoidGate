@@ -8,6 +8,7 @@ import { Progress } from "@/components/ui/progress";
 import { IMAGE_PATH } from "@/config";
 import { formatNumber } from "@/lib/utils";
 import { isExpedtionUnlocked } from "@/store/reducers/expeditionReducer";
+import { getDominantFaction } from "@/store/reducers/factionsReducer";
 
 const FactionsDisplay = () => {
   const { state } = useGame();
@@ -43,7 +44,11 @@ const FactionsDisplay = () => {
           Galactic Factions
         </h1>
       </div>
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-6 glass-panel animate-fade-in p-4">
+      <div
+        className={`grid grid-cols-1 md:grid-cols-3 gap-6 glass-panel animate-fade-in p-4 ${getDominantFaction(
+          state
+        )}`}
+      >
         {factions.map((faction) => (
           <Card
             key={faction.id}

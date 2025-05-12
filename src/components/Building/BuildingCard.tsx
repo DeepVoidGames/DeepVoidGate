@@ -192,7 +192,7 @@ const BuildingCard = ({
             <Progress
               value={(building.upgrades / 10) * 100}
               className="h-2 bg-gray-700"
-              className2={`${getDominantFaction(state, true, "/80")}`}
+              className2={`${getDominantFaction(state, true)}`}
             />
           </div>
         )}

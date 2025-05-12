@@ -14,6 +14,7 @@ import { Alert, AlertDescription } from "../ui/alert";
 import { GameState } from "@/types/gameState";
 import { ExpeditionType } from "@/types/expedition";
 import { ResourceType } from "@/types/resource";
+import { getDominantFaction } from "@/store/reducers/factionsReducer";
 
 type SummaryExpeditionPanelProps = {
   formatDuration: (minutes: number) => string;
@@ -35,7 +36,11 @@ function SummaryExpeditionPanel({
   error,
 }: SummaryExpeditionPanelProps) {
   return (
-    <Card className="glass-panel p-4 sm:p-6 space-y-3 animate-fade-in bg-secondary/40">
+    <Card
+      className={`glass-panel p-4 sm:p-6 space-y-3 animate-fade-in bg-secondary/40 ${getDominantFaction(
+        state
+      )}`}
+    >
       <div className="flex flex-col min-[849px]:flex-row items-center justify-between gap-4 sm:gap-6">
         <div className="space-y-2 w-full">
           <h3 className="text-lg sm:text-xl font-semibold">

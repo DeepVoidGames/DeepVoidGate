@@ -12,6 +12,7 @@ import { useGame } from "@/context/GameContext";
 import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
 import { isExpedtionUnlocked } from "@/store/reducers/expeditionReducer";
+import { getDominantFaction } from "@/store/reducers/factionsReducer";
 
 const ArtifactsDisplay = () => {
   const { state, dispatch } = useGame();
@@ -43,7 +44,11 @@ const ArtifactsDisplay = () => {
         </h1>
       </div>
 
-      <div className="flex flex-wrap gap-3 justify-center glass-panel animate-fade-in p-2 sm:p-4 ">
+      <div
+        className={`flex flex-wrap gap-3 justify-center glass-panel animate-fade-in p-2 sm:p-4 ${getDominantFaction(
+          state
+        )}`}
+      >
         {state?.artifacts?.map((artifact) => {
           const requiredCopies = Math.pow(2, artifact.stars);
           const canUpgrade =

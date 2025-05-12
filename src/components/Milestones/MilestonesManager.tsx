@@ -14,6 +14,7 @@ import {
 import { useGame } from "@/context/GameContext";
 import { Progress } from "@/components/ui/progress";
 import { Milestone } from "@/types/milestone";
+import { getDominantFaction } from "@/store/reducers/factionsReducer";
 
 const milestoneCategories = [
   {
@@ -117,7 +118,11 @@ const MilestonesManager = () => {
   }, [groupedMilestones, activeTab, searchQuery]);
 
   return (
-    <div className="glass-panel p-4 space-y-6 animate-fade-in">
+    <div
+      className={`glass-panel p-4 space-y-6 animate-fade-in ${getDominantFaction(
+        state
+      )}`}
+    >
       {/* ... (Header and Statistics) ... */}
       <div className="flex flex-col md:flex-row justify-between gap-4 mb-4">
         <div className="space-y-2">

@@ -4,6 +4,7 @@ import { useGame } from "@/context/GameContext";
 import { MobileTopNav } from "@/components/Navbar";
 import { Link } from "react-router-dom";
 import { IMAGE_PATH } from "@/config";
+import { getDominantFaction } from "@/store/reducers/factionsReducer";
 
 type Feature = {
   id: string;
@@ -77,7 +78,11 @@ const Hub = () => {
     <>
       <MobileTopNav />
       <div className="min-h-screen bg-gradient-to-b from-background to-background/90 flex items-center justify-center p-4">
-        <div className="glass-panel p-8 max-w-[800px] w-full animate-fade-in">
+        <div
+          className={`glass-panel p-8 max-w-[800px] w-full animate-fade-in ${getDominantFaction(
+            state
+          )}`}
+        >
           <div className="flex items-center mb-6">
             <h1 className="text-3xl font-bold text-gray-100">Hub</h1>
           </div>
