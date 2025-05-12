@@ -124,6 +124,7 @@ export const getPossibleTechnologies = (
     (tech) =>
       !tech.isResearched &&
       tech.locked === true &&
+      tech.expedtionMinTier != null &&
       tech.prerequisites.every((prereq) =>
         technologies.some((t) => t.id === prereq && t.isResearched)
       )

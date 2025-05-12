@@ -74,7 +74,7 @@ export const technology_expedition: Technology[] = [
   {
     id: "symbiotic_processing_units",
     name: "Symbiotic Processing Units",
-    category: "Advanced",
+    category: "Infrastructure",
     description:
       "Integrates bio-mechanical constructs with industrial systems to enable co-dependent, ultra-efficient resource generation.",
     researchCost: {
