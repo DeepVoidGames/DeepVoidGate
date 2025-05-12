@@ -490,7 +490,7 @@ const processColonistArrival = (population, deltaTime, currentProgress) => {
   if (canAddColonist) progress += deltaTime;
   else progress = 0;
 
-  if (progress >= 120 && canAddColonist) {
+  if (progress >= 75 && canAddColonist) {
     return {
       newPopulation: {
         ...population,
