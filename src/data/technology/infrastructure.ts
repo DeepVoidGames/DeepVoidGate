@@ -83,4 +83,21 @@ export const technology_infrastructure: Technology[] = [
     researchDuration: 3200,
     isResearched: false,
   },
+  {
+    id: "neural_ecosymbiosis",
+    name: "Neural Eco-Symbiosis",
+    category: "Infrastructure",
+    description:
+      "Unlocks integration of neural-responsive materials into organic housing. Enables the Neuro-Symbiotic Bio-Domes, providing highly adaptive, self-regulating living environments that enhance comfort and population well-being.",
+    researchCost: {
+      science: 16000,
+      energy: 9500,
+      food: 6000,
+      oxygen: 4500,
+    },
+    prerequisites: ["myco_structural_engineering"],
+    unlocksBuildings: ["neuro_bio_domes"],
+    researchDuration: 3800,
+    isResearched: false,
+  },
 ];

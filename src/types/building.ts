@@ -86,7 +86,8 @@ export type BuildingType =
   | "singularity_thinktank"
   | "strato_extractor"
   | "quantum_core"
-  | "deep_core_extractor";
+  | "deep_core_extractor"
+  | "neuro_bio_domes";
 
 export interface BuildingData {
   id?: string;

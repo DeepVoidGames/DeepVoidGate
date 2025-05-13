@@ -112,5 +112,39 @@
     "uniqueBonus": {},
     "tag": "habitation",
     "housingCapacityMultiplier": 2
+  },
+  {
+    "type": "neuro_bio_domes",
+    "category": "housing",
+    "name": "Neuro-Symbiotic Bio-Domes",
+    "description": "Advanced organic habitats interfacing directly with colonists' neural patterns. Engineered fungal structures dynamically adjust comfort, light, and air quality based on inhabitant needs.",
+    "workerCapacity": 0,
+    "baseCost": {
+      "metals": 4200,
+      "energy": 1850,
+      "food": 900,
+      "oxygen": 650
+    },
+    "baseProduction": {},
+    "baseConsumption": {
+      "oxygen": 0.45,
+      "energy": 0.8,
+      "water": 0.3
+    },
+    "requirements": {},
+    "requiredTechnology": "neural_ecosymbiosis",
+    "costMultiplier": 1.85,
+    "productionMultiplier": 1,
+    "maxInstances": 1,
+    "tier": 4,
+    "maxTier": 5,
+    "upgrades": 0,
+    "uniqueBonus": {
+      "stability": 0.05,
+      "happiness": 0.12
+    },
+    "tag": "habitation",
+    "housingCapacityMultiplier": 3
   }
+  
 ]
