@@ -39,10 +39,13 @@ function NewExpeditionPanel({
               key={type}
               onClick={() => setSelectedType(type)}
               className={`w-full p-4 rounded-xl border-2 transition-all flex items-start gap-4 ${
+                // selectedType === type
+                //   ? `${getDominantFactionTheme(state, {
+                //       styleType: "background",
+                //     })}`
+                //   : "border-muted hover:border-primary/30"
                 selectedType === type
-                  ? `${getDominantFactionTheme(state, {
-                      styleType: "background",
-                    })}`
+                  ? "border-primary bg-primary/10"
                   : "border-muted hover:border-primary/30"
               }`}
             >
