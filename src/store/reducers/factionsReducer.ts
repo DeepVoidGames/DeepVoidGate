@@ -57,6 +57,11 @@ export const applyFactionBonuses = (state: GameState): GameState => {
       (tech) => tech.id === "singularity_engineering"
     ).locked = false;
   }
+  if (state.factions[0].loyalty >= 8000) {
+    newState.technologies.find(
+      (tech) => tech.id === "core_drilling_tech"
+    ).locked = false;
+  }
 
   // Biogenesis
   if (state.factions[1].loyalty >= 1000)
@@ -164,8 +169,9 @@ export const initialFactions = [
         loyaltyReq: 5000,
       },
       {
-        name: "Unkown",
-        description: "Unkown",
+        name: "Crust Breach Initiative",
+        description:
+          "Marks the beginning of extreme-depth planetary extraction. Unlocks the Deep Core Extractor — a facility capable of reaching previously untapped metal reserves. A defining leap in industrial-scale mining.",
         loyaltyReq: 8000,
       },
     ],

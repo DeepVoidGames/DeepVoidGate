@@ -250,4 +250,21 @@ export const technology_production: Technology[] = [
     isResearched: false,
     locked: true,
   },
+  {
+    id: "core_drilling_tech",
+    name: "Core Drilling Technology",
+    category: "Production",
+    description:
+      "Introduces reinforced drilling systems and heat-resistant alloys, enabling safe and continuous mining of deep crust metal veins. Unlocks the Deep Core Extractor.",
+    researchCost: {
+      science: 600000,
+      energy: 425000,
+      oxygen: 250000,
+    },
+    prerequisites: ["singularity_engineering"],
+    unlocksBuildings: ["deep_core_extractor"],
+    researchDuration: 16800,
+    isResearched: false,
+    locked: true,
+  },
 ];

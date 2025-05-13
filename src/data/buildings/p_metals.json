@@ -497,8 +497,40 @@
     "maxTier": 5,
     "upgrades": 0,
     "uniqueBonus": {
-      "production": { "metals": 800 },
+      "production": { "metals": 490 },
       "storage": { "metals": 100000 }
+    },
+    "tag": "metals"
+  },
+  {
+    "type": "deep_core_extractor",
+    "category": "production",
+    "name": "Deep Core Extractor",
+    "description": "An advanced mining installation that drills into the planet's inner crust to extract dense metal deposits. Operates with extreme efficiency, but requires vast energy and water resources to maintain pressure balance.",
+    "workerCapacity": 12,
+    "baseCost": {
+      "metals": 68850,
+      "energy": 30375,
+      "science": 12150
+    },
+    "baseProduction": {
+      "metals": 34.0
+    },
+    "baseConsumption": {
+      "energy": 22.0,
+      "water": 3.0
+    },
+    "requirements": {},
+    "requiredTechnology": "core_drilling_tech",
+    "costMultiplier": 1.67,
+    "productionMultiplier": 2.7,
+    "maxInstances": 1,
+    "tier": 1,
+    "maxTier": 5,
+    "upgrades": 0,
+    "uniqueBonus": {
+      "production": { "metals": 520 },
+      "storage": { "metals": 500000 }
     },
     "tag": "metals"
   }
