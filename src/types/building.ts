@@ -87,7 +87,8 @@ export type BuildingType =
   | "strato_extractor"
   | "quantum_core"
   | "deep_core_extractor"
-  | "neuro_bio_domes";
+  | "neuro_bio_domes"
+  | "aether_spires";
 
 export interface BuildingData {
   id?: string;

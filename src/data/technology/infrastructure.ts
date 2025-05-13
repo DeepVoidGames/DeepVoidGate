@@ -100,4 +100,21 @@ export const technology_infrastructure: Technology[] = [
     researchDuration: 3800,
     isResearched: false,
   },
+  {
+    id: "aetheric_biosystems",
+    name: "Aetheric Biosystems",
+    category: "Infrastructure",
+    description:
+      "Unlocks Aether Spires — monumental living ecosystems blending AI, organic intelligence, and vertical architecture. A pinnacle of bio-integrated habitation, supporting dense, healthy, and autonomous populations.",
+    researchCost: {
+      science: 28000,
+      energy: 16500,
+      oxygen: 9000,
+      food: 8500,
+    },
+    prerequisites: ["neural_ecosymbiosis"],
+    unlocksBuildings: ["aether_spires"],
+    researchDuration: 28800,
+    isResearched: false,
+  },
 ];

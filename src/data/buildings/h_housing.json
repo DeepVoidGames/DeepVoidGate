@@ -145,6 +145,39 @@
     },
     "tag": "habitation",
     "housingCapacityMultiplier": 3
+  },
+  {
+    "type": "aether_spires",
+    "category": "housing",
+    "name": "Aether Spires",
+    "description": "Vertical bio-technological spires that house thousands within self-regulating ecosystems. Each spire balances atmosphere, nutrition, and neurochemical well-being through AI-guided fungal-plant hybrids.",
+    "workerCapacity": 0,
+    "baseCost": {
+      "metals": 9600,
+      "energy": 4200,
+      "food": 1800,
+      "oxygen": 1300
+    },
+    "baseProduction": {},
+    "baseConsumption": {
+      "oxygen": 0.95,
+      "energy": 1.6,
+      "water": 0.6
+    },
+    "requirements": {},
+    "requiredTechnology": "aetheric_biosystems",
+    "costMultiplier": 2.0,
+    "productionMultiplier": 1,
+    "maxInstances": 1,
+    "tier": 5,
+    "maxTier": 5,
+    "upgrades": 0,
+    "uniqueBonus": {
+      "stability": 0.1,
+      "happiness": 0.2,
+      "efficiency": 0.05
+    },
+    "tag": "habitation",
+    "housingCapacityMultiplier": 3
   }
-  
 ]

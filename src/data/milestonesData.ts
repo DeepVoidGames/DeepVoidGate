@@ -346,6 +346,34 @@ export const initialMilestones: Milestone[] = [
     completed: false,
     category: "population",
   },
+  {
+    id: "population_bustling_city",
+    name: "Bustling City",
+    description:
+      "With hundreds of inhabitants, the colony now thrives like a small city, full of energy and opportunity.",
+    condition: function (state: GameState): boolean {
+      return state.population.total >= 500;
+    },
+    progress: function (state: GameState): number {
+      return Math.min((state.population.total / 500) * 100, 100);
+    },
+    completed: false,
+    category: "population",
+  },
+  {
+    id: "population_metropolis",
+    name: "Emerging Metropolis",
+    description:
+      "The population boom has transformed the colony into a true metropolis, a shining beacon of civilization.",
+    condition: function (state: GameState): boolean {
+      return state.population.total >= 1000;
+    },
+    progress: function (state: GameState): number {
+      return Math.min((state.population.total / 1000) * 100, 100);
+    },
+    completed: false,
+    category: "population",
+  },
 
   {
     id: "oxygen_building",
