@@ -140,4 +140,20 @@ export const technology_energy: Technology[] = [
     isResearched: false,
     category: "Energy",
   },
+  {
+    id: "quantum_energy_harnessing",
+    name: "Quantum Energy Harnessing",
+    description:
+      "Enables the stabilization and extraction of energy from quantum field fluctuations. A major breakthrough in clean, high-density power generation, unlocking the Quantum Core Reactor.",
+    researchCost: {
+      energy: 500000,
+      science: 100000,
+    },
+    prerequisites: ["quantum_temporal_manipulation"],
+    unlocksBuildings: ["quantum_core"],
+    researchDuration: 19800,
+    isResearched: false,
+    locked: true,
+    category: "Energy",
+  },
 ];

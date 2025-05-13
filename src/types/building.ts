@@ -84,7 +84,8 @@ export type BuildingType =
   | "celestial_archive"
   | "neural_oracle"
   | "singularity_thinktank"
-  | "strato_extractor";
+  | "strato_extractor"
+  | "quantum_core";
 
 export interface BuildingData {
   id?: string;

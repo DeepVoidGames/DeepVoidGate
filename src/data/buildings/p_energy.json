@@ -358,5 +358,35 @@
       "storage": { "energy": 500000 }
     },
     "tag": "energy"
+  },
+  {
+    "type": "quantum_core",
+    "category": "production",
+    "name": "Quantum Core Reactor",
+    "description": "A state-of-the-art energy facility that manipulates quantum fields to generate immense power output with minimal environmental footprint. Requires constant oxygen flow to stabilize the quantum matrix.",
+    "workerCapacity": 12,
+    "baseCost": {
+      "energy": 13500,
+      "science": 5400
+    },
+    "baseProduction": {
+      "energy": 26.0
+    },
+    "baseConsumption": {
+      "oxygen": 2.0
+    },
+    "requirements": {},
+    "requiredTechnology": "quantum_energy_harnessing",
+    "costMultiplier": 2.4,
+    "productionMultiplier": 1.9,
+    "maxInstances": 1,
+    "tier": 1,
+    "maxTier": 5,
+    "upgrades": 0,
+    "uniqueBonus": {
+      "production": { "energy": 280 },
+      "storage": { "energy": 500000 }
+    },
+    "tag": "energy"
   }
 ]

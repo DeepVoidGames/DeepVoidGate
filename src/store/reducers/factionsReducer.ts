@@ -80,6 +80,11 @@ export const applyFactionBonuses = (state: GameState): GameState => {
       (tech) => tech.id === "stellar_awareness"
     ).locked = false;
 
+  if (state.factions[2].loyalty >= 8000)
+    newState.technologies.find(
+      (tech) => tech.id === "quantum_energy_harnessing"
+    ).locked = false;
+
   return newState;
 };
 
@@ -214,8 +219,9 @@ export const initialFactions = [
         loyaltyReq: 5000,
       },
       {
-        name: "Unkown",
-        description: "Unkown",
+        name: "Singularity Protocol",
+        description:
+          "Initiates the transition into quantum-level resource control. Unlocks the Quantum Core Reactor — a next-generation facility capable of producing massive energy outputs by tapping into quantum fields. A milestone in limitless energy generation.",
         loyaltyReq: 8000,
       },
     ],
