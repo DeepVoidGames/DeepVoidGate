@@ -549,7 +549,7 @@ export const startExpedition = (
     duration: calculateExpeditionDuration(tier, state),
     elapsed: 0,
     crew: requiredCrew,
-    status: "preparing",
+    status: "in_progress",
     events: [],
     nextEventTime: EVENT_INTERVAL, // pierwsze zdarzenie po 10 minutach
     rewards: calculateReward(type, tier),
