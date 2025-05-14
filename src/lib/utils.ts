@@ -173,3 +173,17 @@ export const formatTime = (seconds: number): string => {
     .toString()
     .padStart(2, "0")}:${secs.toString().padStart(2, "0")}`;
 };
+
+// Format the time remaining until next event
+export const formatTimeRemaining = (timestamp) => {
+  if (!timestamp) return "No events scheduled";
+
+  const msRemaining = timestamp - Date.now();
+  if (msRemaining <= 0) return "Event imminent";
+
+  const seconds = Math.floor((msRemaining / 1000) % 60);
+  const minutes = Math.floor((msRemaining / (1000 * 60)) % 60);
+  const hours = Math.floor((msRemaining / (1000 * 60 * 60)) % 24);
+
+  return `${hours > 0 ? `${hours}h ` : ""}${minutes}m ${seconds}s`;
+};

@@ -17,7 +17,8 @@ import ArtifactsDisplay from "@/pages/Artifacts";
 import FactionsDisplay from "@/pages/Factions";
 import { AuthProvider } from "@/server/AuthContext";
 import { ChatProvider } from "@/server/ChatContext";
-import { GlobalChat } from "./components/GlobalChat";
+import { GlobalChat } from "@/components/GlobalChat";
+import FactionEventModal from "@/components/FactionEventModal";
 
 const queryClient = new QueryClient();
 
@@ -32,6 +33,7 @@ const App = () => (
             <Sonner />
             <BrowserRouter basename="/deepvoidgate/demo/">
               <Navbar />
+              <FactionEventModal />
               <Routes>
                 <Route path="/" element={<Index />} />
                 <Route path="/tech" element={<Technologies />} />

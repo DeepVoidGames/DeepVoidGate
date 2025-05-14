@@ -5,7 +5,7 @@ import { Technology } from "@/types/technology";
 import { Milestone } from "@/types/milestone";
 import { Expedition } from "@/types/expedition";
 import { Artifact } from "@/types/artifacts";
-import { Faction } from "@/types/factions";
+import { Faction, FactionEvent } from "@/types/factions";
 
 export interface GameState {
   version: string;
@@ -33,4 +33,6 @@ export interface GameState {
   sessionLength: number; // w sekundach
   artifacts: Artifact[];
   factions: Faction[];
+  factionEvent?: FactionEvent;
+  nextFactionEventAt?: number;
 }

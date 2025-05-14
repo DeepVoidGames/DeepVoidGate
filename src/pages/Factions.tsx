@@ -1,12 +1,12 @@
-import React from "react";
+import React, { useMemo } from "react";
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
-import { Users, Zap, Eye, EyeOff } from "lucide-react";
+import { Users, Zap, Eye, EyeOff, Clock } from "lucide-react";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { useGame } from "@/context/GameContext";
 import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
 import { IMAGE_PATH } from "@/config";
-import { formatNumber } from "@/lib/utils";
+import { formatNumber, formatTimeRemaining } from "@/lib/utils";
 import { isExpedtionUnlocked } from "@/store/reducers/expeditionReducer";
 import { getDominantFactionTheme } from "@/store/reducers/factionsReducer";
 
@@ -32,6 +32,27 @@ const FactionsDisplay = () => {
       return next;
     });
   };
+
+  const eventTiming = useMemo(() => {
+    // Check if there's an active event
+    if (state.factionEvent && state.factionEvent.activeUntil > Date.now()) {
+      return {
+        type: "active",
+        time: state.factionEvent.activeUntil,
+        title: state.factionEvent.title,
+      };
+    }
+
+    // If no active event, check when the next one is scheduled
+    if (state.nextFactionEventAt && state.nextFactionEventAt > Date.now()) {
+      return {
+        type: "scheduled",
+        time: state.nextFactionEventAt,
+      };
+    }
+
+    return null;
+  }, [state.factionEvent, state.nextFactionEventAt]);
 
   return (
     <div className="max-w-7xl mx-auto p-4 space-y-8 mb-20">
@@ -156,7 +177,18 @@ const FactionsDisplay = () => {
             </CardContent>
           </Card>
         ))}
+
+        {/* Next event timing indicator */}
+        {eventTiming && (
+          <div className="text-xs text-gray-400 gap-1 flex items-center">
+            <Clock className="w-3 h-3" />
+            <span>
+              Next faction event: {formatTimeRemaining(eventTiming.time)}
+            </span>
+          </div>
+        )}
       </div>
+
       {/* Faction Logs Section
       <div className="glass-panel p-6 space-y-4">
         <h2 className="text-xl font-semibold flex items-center gap-2">

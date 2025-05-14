@@ -15,3 +15,25 @@ export type FactionBonuses = {
   description: string;
   loyaltyReq: number;
 };
+
+export interface FactionEvent {
+  id: string;
+  title: string;
+  description: string;
+  options: FactionEventOption[];
+  duration: number; // w sekundach
+  activeUntil: number; // timestamp końca
+}
+
+export interface FactionEventOption {
+  label: string;
+  effects: FactionEffect[];
+  resultText?: string;
+}
+
+export interface FactionEffect {
+  type: "loyalty" | "resource" | "story" | "unlock" | "catastrophe";
+  faction?: FactionName;
+  value?: number;
+  target?: string; // np. unlock: "some_tech_id"
+}

@@ -1,6 +1,6 @@
 import { BuildingType } from "@/types/building";
 import { ExpeditionType } from "@/types/expedition";
-import { FactionName } from "@/types/factions";
+import { FactionEventOption, FactionName } from "@/types/factions";
 
 export type GameAction =
   | { type: "TICK"; payload: { currentTime: number } }
@@ -33,5 +33,7 @@ export type GameAction =
   | {
       type: "UPDATE_LOYALTY";
       payload: { faction: FactionName; amount: number };
-    };
+    }
+  | { type: "FACTION_EVENT_CHOICE"; payload: { option: FactionEventOption } };
+
 //

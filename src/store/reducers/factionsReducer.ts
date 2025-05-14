@@ -1,7 +1,82 @@
 // factionsHelpers.ts
-import { FactionName } from "@/types/factions";
+import {
+  FactionEvent,
+  FactionEventOption,
+  FactionName,
+} from "@/types/factions";
 import { GameState } from "@/types/gameState";
 import { getArtifact } from "@/store/reducers/artifactsReducer";
+import { factionEventPool } from "@/data/factionEvents";
+
+export const generateRandomFactionEvent = (): FactionEvent => {
+  const index = Math.floor(Math.random() * factionEventPool.length);
+  return JSON.parse(JSON.stringify(factionEventPool[index])); // deep copy
+};
+
+export const scheduleNextFactionEvent = (): number => {
+  const nextIn = 3600 * 1000 + Math.random() * 7200 * 1000; // 1–3h
+  return Date.now() + nextIn;
+};
+
+export const applyFactionEventOption = (
+  state: GameState,
+  option: FactionEventOption
+): GameState => {
+  let newState = { ...state };
+
+  for (const effect of option.effects) {
+    switch (effect.type) {
+      case "loyalty":
+        newState = updateFactionLoyalty(
+          newState,
+          effect.faction!,
+          effect.value!
+        );
+        break;
+      case "resource":
+        // Handle resource modifications
+        if (effect.target && effect.value !== undefined) {
+          newState = {
+            ...newState,
+            resources: {
+              ...newState.resources,
+              [effect.target]: {
+                ...newState.resources[effect.target],
+                amount: Math.max(
+                  0,
+                  newState.resources[effect.target].amount + effect.value
+                ),
+              },
+            },
+          };
+        }
+        break;
+      case "story":
+        //
+        break;
+      case "unlock":
+        // Unlock specified technology
+        if (effect.target) {
+          newState = {
+            ...newState,
+            technologies: newState.technologies.map((tech) =>
+              tech.id === effect.target ? { ...tech, locked: false } : tech
+            ),
+          };
+        }
+        break;
+      case "catastrophe":
+        // np. zwiększ ryzyko zdarzenia losowego
+        break;
+    }
+  }
+
+  return {
+    ...newState,
+    factionEvent: null,
+    nextFactionEventAt: scheduleNextFactionEvent(),
+  };
+};
 
 /**
  * Aktualizuje lojalność frakcji w grze.

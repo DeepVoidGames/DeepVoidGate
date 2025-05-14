@@ -45,7 +45,10 @@ import {
 } from "@/store/reducers/artifactsReducer";
 import {
   applyFactionBonuses,
+  applyFactionEventOption,
+  generateRandomFactionEvent,
   initialFactions,
+  scheduleNextFactionEvent,
   updateFactionLoyalty,
 } from "@/store/reducers/factionsReducer";
 import { GameState } from "@/types/gameState";
@@ -116,6 +119,30 @@ export const gameReducer = (
           ...newState.resources,
         },
       });
+
+      const now = action.payload.currentTime;
+      
+      // === FRAKCYJNE WYDARZENIA ===
+      const activeEvent = newState.factionEvent;
+      if (activeEvent && activeEvent.activeUntil <= now) {
+        // Wydarzenie wygasło – opcjonalnie możesz dodać efekt "brak decyzji"
+        newState.factionEvent = undefined;
+      }
+
+      if (
+        !activeEvent &&
+        (!newState.nextFactionEventAt || now >= newState.nextFactionEventAt) &&
+        newState.technologies.find((t) => t.id == "advanced_hub_integration")
+          .isResearched
+      ) {
+        // Wygeneruj nowe wydarzenie
+        const generated = generateRandomFactionEvent(); // funkcja, którą zdefiniujesz
+        newState.factionEvent = {
+          ...generated,
+          activeUntil: now + generated.duration * 1000,
+        };
+        newState.nextFactionEventAt = scheduleNextFactionEvent();
+      }
 
       return {
         ...newState,
@@ -273,6 +300,12 @@ export const gameReducer = (
         action.payload.faction,
         action.payload.amount
       );
+
+    case "FACTION_EVENT_CHOICE": {
+      console.log("dispatch działa?", action.payload.option);
+
+      return applyFactionEventOption(state, action.payload.option);
+    }
 
     case "SAVE_GAME": {
       try {
