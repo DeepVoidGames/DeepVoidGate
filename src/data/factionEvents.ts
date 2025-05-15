@@ -22,7 +22,7 @@ export const factionEventPool: FactionEvent[] = [
       },
       {
         label: "Mediate",
-        effects: [{ type: "resource", target: "science", value: 750000 }],
+        effects: [{ type: "resource", target: "science", value: 75000 }],
       },
     ],
   },
@@ -39,8 +39,8 @@ export const factionEventPool: FactionEvent[] = [
         effects: [
           { type: "loyalty", faction: "Biogenesis", value: +250 },
           { type: "loyalty", faction: "StarUnderstanding", value: -100 },
-          { type: "resource", target: "oxygen", value: 300000 },
-          { type: "resource", target: "water", value: 100000 },
+          { type: "resource", target: "oxygen", value: 30000 },
+          { type: "resource", target: "water", value: 10000 },
         ],
       },
       {
@@ -53,8 +53,8 @@ export const factionEventPool: FactionEvent[] = [
       {
         label: "Limited Test Implementation",
         effects: [
-          { type: "resource", target: "oxygen", value: 1000000 },
-          { type: "resource", target: "science", value: 7500000 },
+          { type: "resource", target: "oxygen", value: 100000 },
+          { type: "resource", target: "science", value: 750000 },
         ],
       },
     ],
@@ -72,8 +72,8 @@ export const factionEventPool: FactionEvent[] = [
         effects: [
           { type: "loyalty", faction: "StarUnderstanding", value: +200 },
           { type: "loyalty", faction: "Technocrats", value: -150 },
-          { type: "resource", target: "energy", value: -200000 },
-          { type: "resource", target: "science", value: 2500000 },
+          { type: "resource", target: "energy", value: -20000 },
+          { type: "resource", target: "science", value: 250000 },
         ],
       },
       {
@@ -81,7 +81,7 @@ export const factionEventPool: FactionEvent[] = [
         effects: [
           { type: "loyalty", faction: "Technocrats", value: +175 },
           { type: "loyalty", faction: "StarUnderstanding", value: -125 },
-          { type: "resource", target: "energy", value: 1000000 },
+          { type: "resource", target: "energy", value: 100000 },
         ],
       },
       {
@@ -89,8 +89,8 @@ export const factionEventPool: FactionEvent[] = [
         effects: [
           { type: "loyalty", faction: "StarUnderstanding", value: +50 },
           { type: "loyalty", faction: "Technocrats", value: +50 },
-          { type: "resource", target: "science", value: 1000000 },
-          { type: "resource", target: "energy", value: -500000 },
+          { type: "resource", target: "science", value: 100000 },
+          { type: "resource", target: "energy", value: -50000 },
         ],
       },
     ],
@@ -108,8 +108,8 @@ export const factionEventPool: FactionEvent[] = [
         effects: [
           { type: "loyalty", faction: "Technocrats", value: +300 },
           { type: "loyalty", faction: "Biogenesis", value: -250 },
-          { type: "resource", target: "metals", value: 4000000 },
-          { type: "resource", target: "energy", value: -100000 },
+          { type: "resource", target: "metals", value: 400000 },
+          { type: "resource", target: "energy", value: -10000 },
         ],
       },
       {
@@ -123,8 +123,8 @@ export const factionEventPool: FactionEvent[] = [
         label: "Research Alternatives",
         effects: [
           { type: "resource", target: "metals", value: 150 },
-          { type: "resource", target: "science", value: 1000000 },
-          { type: "resource", target: "energy", value: -700000 },
+          { type: "resource", target: "science", value: 100000 },
+          { type: "resource", target: "energy", value: -70000 },
         ],
       },
     ],
@@ -142,8 +142,8 @@ export const factionEventPool: FactionEvent[] = [
         effects: [
           { type: "loyalty", faction: "Biogenesis", value: +250 },
           { type: "loyalty", faction: "StarUnderstanding", value: -100 },
-          { type: "resource", target: "food", value: 3500000 },
-          { type: "resource", target: "water", value: -100000 },
+          { type: "resource", target: "food", value: 350000 },
+          { type: "resource", target: "water", value: -10000 },
         ],
       },
       {
@@ -158,8 +158,8 @@ export const factionEventPool: FactionEvent[] = [
         effects: [
           { type: "loyalty", faction: "Biogenesis", value: +100 },
           { type: "loyalty", faction: "StarUnderstanding", value: +50 },
-          { type: "resource", target: "food", value: 200000 },
-          { type: "resource", target: "science", value: 7500000 },
+          { type: "resource", target: "food", value: 20000 },
+          { type: "resource", target: "science", value: 750000 },
         ],
       },
     ],
@@ -177,7 +177,7 @@ export const factionEventPool: FactionEvent[] = [
         effects: [
           { type: "loyalty", faction: "StarUnderstanding", value: +275 },
           { type: "loyalty", faction: "Technocrats", value: -175 },
-          { type: "resource", target: "water", value: 4000000 },
+          { type: "resource", target: "water", value: 400000 },
         ],
       },
       {
@@ -185,7 +185,7 @@ export const factionEventPool: FactionEvent[] = [
         effects: [
           { type: "loyalty", faction: "Technocrats", value: +225 },
           { type: "loyalty", faction: "StarUnderstanding", value: -200 },
-          { type: "resource", target: "energy", value: 3000000 },
+          { type: "resource", target: "energy", value: 300000 },
         ],
       },
       {
@@ -193,9 +193,9 @@ export const factionEventPool: FactionEvent[] = [
         effects: [
           { type: "loyalty", faction: "StarUnderstanding", value: +100 },
           { type: "loyalty", faction: "Technocrats", value: +100 },
-          { type: "resource", target: "water", value: 2000000 },
-          { type: "resource", target: "energy", value: 1500000 },
-          { type: "resource", target: "science", value: 500000 },
+          { type: "resource", target: "water", value: 200000 },
+          { type: "resource", target: "energy", value: 150000 },
+          { type: "resource", target: "science", value: 50000 },
         ],
       },
     ],
@@ -213,8 +213,8 @@ export const factionEventPool: FactionEvent[] = [
         effects: [
           { type: "loyalty", faction: "Technocrats", value: +250 },
           { type: "loyalty", faction: "Biogenesis", value: -200 },
-          { type: "resource", target: "energy", value: 3500000 },
-          { type: "resource", target: "metals", value: -200000 },
+          { type: "resource", target: "energy", value: 350000 },
+          { type: "resource", target: "metals", value: -20000 },
         ],
       },
       {
@@ -222,8 +222,8 @@ export const factionEventPool: FactionEvent[] = [
         effects: [
           { type: "loyalty", faction: "Biogenesis", value: +225 },
           { type: "loyalty", faction: "Technocrats", value: -150 },
-          { type: "resource", target: "energy", value: 2000000 },
-          { type: "resource", target: "metals", value: -100000 },
+          { type: "resource", target: "energy", value: 200000 },
+          { type: "resource", target: "metals", value: -10000 },
         ],
       },
       {
@@ -231,9 +231,9 @@ export const factionEventPool: FactionEvent[] = [
         effects: [
           { type: "loyalty", faction: "Technocrats", value: +75 },
           { type: "loyalty", faction: "Biogenesis", value: +75 },
-          { type: "resource", target: "energy", value: 2500000 },
-          { type: "resource", target: "metals", value: -100000 },
-          { type: "resource", target: "science", value: 700000 },
+          { type: "resource", target: "energy", value: 250000 },
+          { type: "resource", target: "metals", value: -10000 },
+          { type: "resource", target: "science", value: 70000 },
         ],
       },
     ],
@@ -251,7 +251,7 @@ export const factionEventPool: FactionEvent[] = [
         effects: [
           { type: "loyalty", faction: "StarUnderstanding", value: +300 },
           { type: "loyalty", faction: "Technocrats", value: -200 },
-          { type: "resource", target: "science", value: 1500000 },
+          { type: "resource", target: "science", value: 150000 },
         ],
       },
       {
@@ -259,8 +259,8 @@ export const factionEventPool: FactionEvent[] = [
         effects: [
           { type: "loyalty", faction: "Technocrats", value: +275 },
           { type: "loyalty", faction: "StarUnderstanding", value: -250 },
-          { type: "resource", target: "science", value: 2500000 },
-          { type: "resource", target: "metals", value: 1000000 },
+          { type: "resource", target: "science", value: 250000 },
+          { type: "resource", target: "metals", value: 100000 },
         ],
       },
       {
@@ -268,7 +268,7 @@ export const factionEventPool: FactionEvent[] = [
         effects: [
           { type: "loyalty", faction: "StarUnderstanding", value: +125 },
           { type: "loyalty", faction: "Technocrats", value: +125 },
-          { type: "resource", target: "science", value: 2000000 },
+          { type: "resource", target: "science", value: 200000 },
         ],
       },
     ],
@@ -286,8 +286,8 @@ export const factionEventPool: FactionEvent[] = [
         effects: [
           { type: "loyalty", faction: "Biogenesis", value: +250 },
           { type: "loyalty", faction: "Technocrats", value: -125 },
-          { type: "resource", target: "oxygen", value: 2500000 },
-          { type: "resource", target: "water", value: -100000 },
+          { type: "resource", target: "oxygen", value: 250000 },
+          { type: "resource", target: "water", value: -10000 },
         ],
       },
       {
@@ -295,16 +295,16 @@ export const factionEventPool: FactionEvent[] = [
         effects: [
           { type: "loyalty", faction: "Technocrats", value: +225 },
           { type: "loyalty", faction: "Biogenesis", value: -100 },
-          { type: "resource", target: "oxygen", value: 2500000 },
-          { type: "resource", target: "energy", value: -100000 },
-          { type: "resource", target: "metals", value: -700000 },
+          { type: "resource", target: "oxygen", value: 250000 },
+          { type: "resource", target: "energy", value: -10000 },
+          { type: "resource", target: "metals", value: -70000 },
         ],
       },
       {
         label: "Emergency Reserves",
         effects: [
-          { type: "resource", target: "oxygen", value: 1500000 },
-          { type: "resource", target: "science", value: 1000000 },
+          { type: "resource", target: "oxygen", value: 150000 },
+          { type: "resource", target: "science", value: 100000 },
         ],
       },
     ],
@@ -323,9 +323,9 @@ export const factionEventPool: FactionEvent[] = [
           { type: "loyalty", faction: "Technocrats", value: +300 },
           { type: "loyalty", faction: "Biogenesis", value: -100 },
           { type: "loyalty", faction: "StarUnderstanding", value: -100 },
-          { type: "resource", target: "energy", value: 2000000 },
-          { type: "resource", target: "metals", value: 1500000 },
-          { type: "resource", target: "science", value: 1000000 },
+          { type: "resource", target: "energy", value: 200000 },
+          { type: "resource", target: "metals", value: 150000 },
+          { type: "resource", target: "science", value: 100000 },
         ],
       },
       {
@@ -334,9 +334,9 @@ export const factionEventPool: FactionEvent[] = [
           { type: "loyalty", faction: "Biogenesis", value: +300 },
           { type: "loyalty", faction: "Technocrats", value: -100 },
           { type: "loyalty", faction: "StarUnderstanding", value: -100 },
-          { type: "resource", target: "food", value: 2000000 },
-          { type: "resource", target: "water", value: 1500000 },
-          { type: "resource", target: "oxygen", value: 2000000 },
+          { type: "resource", target: "food", value: 200000 },
+          { type: "resource", target: "water", value: 150000 },
+          { type: "resource", target: "oxygen", value: 200000 },
         ],
       },
       {
@@ -345,7 +345,7 @@ export const factionEventPool: FactionEvent[] = [
           { type: "loyalty", faction: "StarUnderstanding", value: +300 },
           { type: "loyalty", faction: "Technocrats", value: -100 },
           { type: "loyalty", faction: "Biogenesis", value: -100 },
-          { type: "resource", target: "science", value: 2500000 },
+          { type: "resource", target: "science", value: 250000 },
         ],
       },
     ],
