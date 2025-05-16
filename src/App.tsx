@@ -19,6 +19,7 @@ import { AuthProvider } from "@/server/AuthContext";
 import { ChatProvider } from "@/server/ChatContext";
 import { GlobalChat } from "@/components/GlobalChat";
 import FactionEventModal from "@/components/FactionEventModal";
+import { BASE_NAME } from "./config";
 
 const queryClient = new QueryClient();
 
@@ -31,7 +32,7 @@ const App = () => (
           <TooltipProvider>
             <Toaster />
             <Sonner />
-            <BrowserRouter basename="/deepvoidgate/demo/">
+            <BrowserRouter basename={BASE_NAME}>
               <Navbar />
               <FactionEventModal />
               <Routes>
