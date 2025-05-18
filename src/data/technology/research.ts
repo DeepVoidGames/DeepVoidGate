@@ -114,7 +114,23 @@ export const technology_research: Technology[] = [
     },
     prerequisites: ["singularity_harvesting"],
     unlocksBuildings: ["multiversal_collider"],
-    researchDuration: 24384, // ~15h 35min
+    researchDuration: 24384,
+    isResearched: false,
+  },
+  {
+    id: "fractal_neurodynamics",
+    name: "Fractal Neurodynamics",
+    category: "Research",
+    description:
+      "Neural processes mapped onto fractal architectures allow thought to echo infinitely within itself, revealing truths that exist beyond time.",
+    researchCost: {
+      science: 4242000,
+      energy: 2123000,
+      food: 480000,
+    },
+    prerequisites: ["multiversal_physics"],
+    unlocksBuildings: ["fractal_thought_engine"],
+    researchDuration: 26384,
     isResearched: false,
   },
 ];

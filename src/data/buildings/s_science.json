@@ -295,5 +295,37 @@
       "storage": { "science": 500000 }
     },
     "tag": "science"
+  },
+  {
+    "type": "fractal_thought_engine",
+    "category": "research",
+    "name": "Fractal Thought Engine",
+    "description": "By recursively folding neural timelines into fractal dimensions, the engine generates paradoxical insights that transcend causality.",
+    "workerCapacity": 20,
+    "baseCost": {
+      "science": 13600,
+      "metals": 7800,
+      "energy": 4800
+    },
+    "baseProduction": {
+      "science": 43.2
+    },
+    "baseConsumption": {
+      "energy": 14.6,
+      "water": 7.9
+    },
+    "requirements": {},
+    "requiredTechnology": "fractal_neurodynamics",
+    "costMultiplier": 2.35,
+    "productionMultiplier": 2.25,
+    "maxInstances": 1,
+    "tier": 3,
+    "maxTier": 5,
+    "upgrades": 0,
+    "uniqueBonus": {
+      "production": { "science": 440 },
+      "storage": { "science": 1000000 }
+    },
+    "tag": "science"
   }
 ]

@@ -89,7 +89,8 @@ export type BuildingType =
   | "deep_core_extractor"
   | "neuro_bio_domes"
   | "aether_spires"
-  | "multiversal_collider";
+  | "multiversal_collider"
+  | "fractal_thought_engine";
 
 export interface BuildingData {
   id?: string;
