@@ -98,7 +98,23 @@ export const technology_research: Technology[] = [
     },
     prerequisites: ["psionic_synthesis", "temporal_engineering"],
     unlocksBuildings: ["singularity_thinktank"],
-    researchDuration: 38491, // 10h 41min (5.83x dłużej)
+    researchDuration: 21384, // 10h 41min (5.83x dłużej)
+    isResearched: false,
+  },
+  {
+    id: "multiversal_physics",
+    name: "Multiversal Physics",
+    category: "Research",
+    description:
+      "Harnessing the unpredictable laws of alternate realities allows for the discovery of knowledge unreachable in our own universe.",
+    researchCost: {
+      science: 2084000,
+      energy: 1126800,
+      food: 248000,
+    },
+    prerequisites: ["singularity_harvesting"],
+    unlocksBuildings: ["multiversal_collider"],
+    researchDuration: 24384, // ~15h 35min
     isResearched: false,
   },
 ];

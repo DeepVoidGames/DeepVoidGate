@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { useChat } from "@/server/ChatContext";
 import { X, MessageCircle, Users } from "lucide-react";
 import { useAuth } from "@/server/AuthContext";
@@ -10,6 +10,7 @@ export const GlobalChat = () => {
   const [input, setInput] = useState("");
   const [isOpen, setIsOpen] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const messagesEndRef = useRef<HTMLDivElement | null>(null);
 
   const handleSend = async () => {
     if (!input.trim()) return;
@@ -30,6 +31,24 @@ export const GlobalChat = () => {
     const timer = setTimeout(() => setError(null), 5000);
     return () => clearTimeout(timer);
   }, [error]);
+
+  useEffect(() => {
+    if (isOpen) {
+      setTimeout(() => {
+        messagesEndRef.current?.scrollIntoView({ behavior: "auto" });
+      }, 0);
+    }
+  }, [isOpen]);
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      if (messagesEndRef.current) {
+        messagesEndRef.current.scrollIntoView({ behavior: "smooth" });
+      }
+    }, 0);
+
+    return () => clearTimeout(timer);
+  }, [messages]);
 
   if (!session) return null;
 
@@ -75,6 +94,7 @@ export const GlobalChat = () => {
                   <span className="ml-2 text-foreground">{msg.content}</span>
                 </div>
               ))}
+              <div ref={messagesEndRef} />
             </div>
 
             {/* Komunikat błędu */}

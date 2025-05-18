@@ -263,5 +263,37 @@
       "storage": { "science": 250000 }
     },
     "tag": "science"
+  },
+  {
+    "type": "multiversal_collider",
+    "category": "research",
+    "name": "Multiversal Collider",
+    "description": "A hyperdimensional particle collider smashes multiversal constants together, generating unpredictable bursts of alien knowledge.",
+    "workerCapacity": 16,
+    "baseCost": {
+      "science": 8420,
+      "metals": 5010,
+      "energy": 3120
+    },
+    "baseProduction": {
+      "science": 32.6
+    },
+    "baseConsumption": {
+      "energy": 9.2,
+      "water": 5.4
+    },
+    "requirements": {},
+    "requiredTechnology": "multiversal_physics",
+    "costMultiplier": 2.35,
+    "productionMultiplier": 2.15,
+    "maxInstances": 1,
+    "tier": 2,
+    "maxTier": 5,
+    "upgrades": 0,
+    "uniqueBonus": {
+      "production": { "science": 392 },
+      "storage": { "science": 500000 }
+    },
+    "tag": "science"
   }
 ]

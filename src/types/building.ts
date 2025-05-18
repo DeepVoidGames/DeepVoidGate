@@ -88,7 +88,8 @@ export type BuildingType =
   | "quantum_core"
   | "deep_core_extractor"
   | "neuro_bio_domes"
-  | "aether_spires";
+  | "aether_spires"
+  | "multiversal_collider";
 
 export interface BuildingData {
   id?: string;
