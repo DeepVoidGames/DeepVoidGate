@@ -117,4 +117,20 @@ export const technology_infrastructure: Technology[] = [
     researchDuration: 28800,
     isResearched: false,
   },
+  {
+    id: "quantum_storage_field",
+    name: "Quantum Storage Field",
+    category: "Infrastructure",
+    description:
+      "Quantum entanglement and stasis fields allow for storing massive quantities of matter without spatial limitations.",
+    researchCost: {
+      science: 3800000,
+      energy: 2100000,
+      food: 950000,
+    },
+    prerequisites: ["void_singularity"],
+    unlocksBuildings: ["quantum_matter_repository"],
+    researchDuration: 28800,
+    isResearched: false,
+  },
 ];

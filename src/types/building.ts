@@ -90,7 +90,8 @@ export type BuildingType =
   | "neuro_bio_domes"
   | "aether_spires"
   | "multiversal_collider"
-  | "fractal_thought_engine";
+  | "fractal_thought_engine"
+  | "quantum_matter_repository";
 
 export interface BuildingData {
   id?: string;

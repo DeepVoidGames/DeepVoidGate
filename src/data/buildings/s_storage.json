@@ -461,5 +461,47 @@
       }
     },
     "tag": "storage"
+  },
+  {
+    "type": "quantum_matter_repository",
+    "category": "storage",
+    "name": "Quantum Matter Repository",
+    "description": "Matter is suspended in quantum stasis fields, eliminating entropy and allowing near-infinite compression of resources across dimensions.",
+    "workerCapacity": 0,
+    "baseCost": {
+      "metals": 24500,
+      "science": 17800,
+      "energy": 9500
+    },
+    "baseProduction": {},
+    "baseConsumption": {
+      "energy": 3.2,
+      "water": 1.5
+    },
+    "storageBonus": {
+      "metals": 100000,
+      "oxygen": 100000,
+      "food": 100000,
+      "science": 100000,
+      "water": 100000
+    },
+    "requirements": {},
+    "requiredTechnology": "quantum_storage_field",
+    "costMultiplier": 2.1,
+    "productionMultiplier": 1.0,
+    "maxInstances": 1,
+    "tier": 1,
+    "maxTier": 5,
+    "upgrades": 0,
+    "uniqueBonus": {
+      "storage": {
+        "metals": 5000000,
+        "science": 5000000,
+        "oxygen": 3000000,
+        "food": 3000000,
+        "water": 2500000
+      }
+    },
+    "tag": "storage"
   }
 ]
