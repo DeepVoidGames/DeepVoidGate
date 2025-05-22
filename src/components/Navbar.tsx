@@ -6,6 +6,7 @@ import { useGame } from "@/context/GameContext";
 import { formatNumber } from "@/lib/utils";
 import { getSettings } from "@/pages/Settings";
 import { getDominantFactionTheme } from "@/store/reducers/factionsReducer";
+import { useAnalytics } from "@/context/AnalyticsContext";
 
 const links = [
   { path: "/", label: "Home", icon: <Home className="h-5 w-5" /> },
@@ -147,6 +148,8 @@ const Navbar = () => {
   const isMobile = useIsMobile();
   const settings = getSettings();
   const { state } = useGame();
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const { onlineStats: currentOnlineFromContext } = useAnalytics();
 
   // Check technoloige for id advanced_hub_integration to unlock Hub
   const hasHubIntegration = state.technologies.some(

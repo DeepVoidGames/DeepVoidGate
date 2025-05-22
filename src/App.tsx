@@ -20,6 +20,8 @@ import { ChatProvider } from "@/server/ChatContext";
 import { GlobalChat } from "@/components/GlobalChat";
 import FactionEventModal from "@/components/FactionEventModal";
 import { BASE_NAME } from "./config";
+import Analytics from "./pages/Analytics";
+import { AnalyticsProvider } from "./context/AnalyticsContext";
 
 const queryClient = new QueryClient();
 
@@ -29,26 +31,29 @@ const App = () => (
       <ChatProvider>
         <GlobalChat />
         <GameProvider>
-          <TooltipProvider>
-            <Toaster />
-            <Sonner />
-            <BrowserRouter basename={BASE_NAME}>
-              <Navbar />
-              <FactionEventModal />
-              <Routes>
-                <Route path="/" element={<Index />} />
-                <Route path="/tech" element={<Technologies />} />
-                <Route path="/milestones" element={<Milestones />} />
-                <Route path="/hub" element={<Hub />} />
-                <Route path="/expedition" element={<ExpeditionUI />} />
-                <Route path="/artifacts" element={<ArtifactsDisplay />} />
-                <Route path="/factions" element={<FactionsDisplay />} />
-                <Route path="/settings" element={<Settings />} />
-                {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
-                <Route path="*" element={<NotFound />} />
-              </Routes>
-            </BrowserRouter>
-          </TooltipProvider>
+          <AnalyticsProvider>
+            <TooltipProvider>
+              <Toaster />
+              <Sonner />
+              <BrowserRouter basename={BASE_NAME}>
+                <Navbar />
+                <FactionEventModal />
+                <Routes>
+                  <Route path="/" element={<Index />} />
+                  <Route path="/tech" element={<Technologies />} />
+                  <Route path="/milestones" element={<Milestones />} />
+                  <Route path="/hub" element={<Hub />} />
+                  <Route path="/expedition" element={<ExpeditionUI />} />
+                  <Route path="/artifacts" element={<ArtifactsDisplay />} />
+                  <Route path="/factions" element={<FactionsDisplay />} />
+                  <Route path="/settings" element={<Settings />} />
+                  <Route path="/analytics" element={<Analytics />} />
+                  {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
+                  <Route path="*" element={<NotFound />} />
+                </Routes>
+              </BrowserRouter>
+            </TooltipProvider>
+          </AnalyticsProvider>
         </GameProvider>
       </ChatProvider>
     </AuthProvider>
