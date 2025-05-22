@@ -47,7 +47,7 @@ const BuildingCard = ({
   const { state } = useGame();
   const [maxUpgrade, setMaxUpgrade] = React.useState({ tier: 0, upgrades: 0 });
 
-  // Kolory dla tierów
+  // Tier colors for the badge
   const tierColors: Record<number, string> = {
     1: "bg-gray-400 text-gray-800",
     2: "bg-blue-400 text-blue-800",
@@ -66,8 +66,6 @@ const BuildingCard = ({
 
   const isMaxTier =
     building.tier >= building.maxTier && building.upgrades >= 10;
-
-  // Obliczanie efektywności z uwzględnieniem tieru
 
   const currentEfficiency = calculateWorkerEfficiency(building);
 
@@ -137,7 +135,6 @@ const BuildingCard = ({
                 <span>
                   {building.assignedWorkers} / {building.workerCapacity} workers
                 </span>
-                {/* Przeniesione i zmodyfikowane przyciski */}
                 <div className="flex gap-2 ml-2">
                   <Button
                     size="sm"
@@ -199,7 +196,6 @@ const BuildingCard = ({
           </div>
         )}
 
-        {/* Przyciski do obsługi */}
         <div className="flex justify-between gap-2 mt-3">
           <div className="flex gap-2 flex-1"></div>
 
