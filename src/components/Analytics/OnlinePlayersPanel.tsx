@@ -12,7 +12,8 @@ import {
 } from "lucide-react";
 import { getDominantFactionTheme } from "@/store/reducers/factionsReducer";
 import { useGame } from "@/context/GameContext";
-import { useAnalytics } from "@/context/AnalyticsContext";
+// import { useAnalytics } from "@/context/AnalyticsContext"; // Usunięto import useAnalytics
+
 import {
   LineChart as RechartsLineChart,
   Line,
@@ -36,12 +37,23 @@ type OnlineStats = {
   max: number;
   min: number;
   avg: number;
-  current: number;
+  current: number; // Dodano current, ponieważ backend zwraca teraz tę wartość w statystykach historycznych
 };
 
 type HistoryData = {
   data_points: OnlineSnapshot[];
   stats: OnlineStats;
+};
+
+type CurrentOnlineData = {
+  online_count: number;
+  sessions: Array<{
+    user_id: string;
+    connected_at: string;
+    last_heartbeat: string;
+    session_duration_minutes: number;
+  }>;
+  last_check: string;
 };
 
 const ranges = ["last_hour", "last_24h", "last_7d", "last_30d"] as const;
@@ -56,9 +68,10 @@ const rangeLabels: Record<Range, string> = {
 
 const OnlinePlayersPanel: React.FC = () => {
   const { state: gameState } = useGame();
-  const { onlineStats: currentOnlineFromContext } = useAnalytics();
+  // const { connected } = useAnalytics(); // `connected` z useAnalytics nie jest już używane bezpośrednio do wyświetlania liczby online
 
   const [loading, setLoading] = useState(true);
+  const [currentOnline, setCurrentOnline] = useState<number | null>(null); // Nowy stan dla aktualnej liczby online
   const [history, setHistory] = useState<Record<Range, HistoryData>>({
     last_hour: {
       data_points: [],
@@ -77,64 +90,62 @@ const OnlinePlayersPanel: React.FC = () => {
   const [activeTab, setActiveTab] = useState<Range>("last_24h");
   const [chartType, setChartType] = useState<"line" | "area" | "bar">("area");
 
-  const fetchHistoryData = useCallback(async () => {
+  const fetchOnlineData = useCallback(async () => {
     try {
       setLoading(true);
 
-      const historyResponse = await fetch(
-        "https://api.fern.fun/deepvoidgate/online/history/summary?detailed=true"
+      // Pobieranie aktualnej liczby online
+      const currentResponse = await fetch(
+        "https://api.fern.fun/deepvoidgate/online/current"
       );
+      if (!currentResponse.ok) {
+        throw new Error(`HTTP error! status: ${currentResponse.status}`);
+      }
+      const currentData: CurrentOnlineData = await currentResponse.json();
+      setCurrentOnline(currentData.online_count);
 
+      // Pobieranie danych historycznych
+      const historyResponse = await fetch(
+        "https://api.fern.fun/deepvoidgate/online/history/summary"
+      ); // Usunięto ?detailed=true, chyba że jest to potrzebne w przyszłości
       if (!historyResponse.ok) {
         throw new Error(`HTTP error! status: ${historyResponse.status}`);
       }
+      const historyData: Record<Range, HistoryData> =
+        await historyResponse.json();
 
-      const historyData = await historyResponse.json();
-
-      const currentOnlineCount = currentOnlineFromContext?.online_count || 0;
-
-      const validatedHistory = {
+      // Zapewnienie, że struktura danych jest poprawna
+      const validatedHistory: Record<Range, HistoryData> = {
         last_hour: historyData.last_hour || {
           data_points: [],
-          stats: {
-            max: 0,
-            min: 0,
-            avg: 0,
-            current: currentOnlineCount,
-          },
+          stats: { max: 0, min: 0, avg: 0, current: currentData.online_count },
         },
         last_24h: historyData.last_24h || {
           data_points: [],
-          stats: {
-            max: 0,
-            min: 0,
-            avg: 0,
-            current: currentOnlineCount,
-          },
+          stats: { max: 0, min: 0, avg: 0, current: currentData.online_count },
         },
         last_7d: historyData.last_7d || {
           data_points: [],
-          stats: {
-            max: 0,
-            min: 0,
-            avg: 0,
-            current: currentOnlineCount,
-          },
+          stats: { max: 0, min: 0, avg: 0, current: currentData.online_count },
         },
         last_30d: historyData.last_30d || {
           data_points: [],
-          stats: {
-            max: 0,
-            min: 0,
-            avg: 0,
-            current: currentOnlineCount,
-          },
+          stats: { max: 0, min: 0, avg: 0, current: currentData.online_count },
         },
       };
 
+      // Aktualizowanie "current" w statystykach historycznych na podstawie aktualnej liczby online
+      // To zapewnia spójność, jeśli dane historyczne nie są odświeżane natychmiast
+      for (const range of ranges) {
+        if (validatedHistory[range]?.stats) {
+          validatedHistory[range].stats.current = currentData.online_count;
+        }
+      }
+
       setHistory(validatedHistory);
     } catch (err) {
-      console.error("Failed to fetch online history data", err);
+      console.error("Failed to fetch online data:", err);
+      setCurrentOnline(0); // Ustaw na 0 lub inną wartość domyślną w przypadku błędu
       setHistory({
         last_hour: {
           data_points: [],
@@ -156,17 +167,17 @@ const OnlinePlayersPanel: React.FC = () => {
     } finally {
       setLoading(false);
     }
-  }, [currentOnlineFromContext?.online_count]);
+  }, []);
 
   useEffect(() => {
-    fetchHistoryData();
+    fetchOnlineData();
 
     const interval = setInterval(() => {
-      fetchHistoryData();
-    }, 5 * 60 * 1000); // 5 minut
+      fetchOnlineData();
+    }, 60 * 1000); // Odświeżaj co minutę, aby aktualna liczba online była świeża
 
     return () => clearInterval(interval);
-  }, [fetchHistoryData]);
+  }, [fetchOnlineData]);
 
   const formatChartData = (data: OnlineSnapshot[] | undefined) => {
     if (!data || !Array.isArray(data)) {
@@ -174,7 +185,6 @@ const OnlinePlayersPanel: React.FC = () => {
     }
 
     return data.map((point) => ({
-      // Usunięto index, jeśli timestamp jest unikalny
       timestamp: point.timestamp,
       count: point.count,
       formattedTime: formatTimeForRange(point.timestamp, activeTab),
@@ -193,6 +203,7 @@ const OnlinePlayersPanel: React.FC = () => {
         return date.toLocaleTimeString("en-US", {
           hour: "2-digit",
           minute: "2-digit",
+          day: "numeric", // Dodano dzień, aby rozróżnić dni w 24h
         });
       case "last_7d":
         return date.toLocaleDateString("en-US", {
@@ -375,10 +386,8 @@ const OnlinePlayersPanel: React.FC = () => {
     }
   };
 
-  const currentOnlineDisplay =
-    currentOnlineFromContext?.online_count !== undefined
-      ? currentOnlineFromContext.online_count
-      : "...";
+  // Użyj `currentOnline` ze stanu komponentu
+  const currentOnlineDisplay = currentOnline !== null ? currentOnline : "...";
 
   if (loading) {
     return (

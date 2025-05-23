@@ -149,7 +149,7 @@ const Navbar = () => {
   const settings = getSettings();
   const { state } = useGame();
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const { onlineStats: currentOnlineFromContext } = useAnalytics();
+  const { connected } = useAnalytics();
 
   // Check technoloige for id advanced_hub_integration to unlock Hub
   const hasHubIntegration = state.technologies.some(

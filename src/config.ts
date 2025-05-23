@@ -17,5 +17,5 @@ export const IMAGE_PATH = "/deepvoidgate/demo/";
 export const BASE_NAME = "/deepvoidgate/demo/";
 
 // https://github.com/DeepVoidGames/DeepVoidGate/tree/${BUILDID}
-export const BUILDID = "6d5659b8c17635f43151b4ae24c872a1e9d61cf6";
-// Last Build ID = d2e57d0d003720d1a9b9f7d13054a3b3227a20f6
+export const BUILDID = "215c0a5d44f6318ad7e7c94bbf7956650c9138a4";
+// Last Build ID = 6d5659b8c17635f43151b4ae24c872a1e9d61cf6

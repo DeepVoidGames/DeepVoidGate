@@ -9,17 +9,9 @@ import React, {
 } from "react";
 import { useGame } from "@/context/GameContext";
 
-// --- Interfejsy ---
-interface OnlineStats {
-  online_count: number;
-  last_update: string;
-}
-
 interface AnalyticsContextType {
   connected: boolean;
-  onlineStats: OnlineStats | null;
   reconnectAttempts: number;
-  requestOnlineCount: () => void;
 }
 
 const AnalyticsContext = createContext<AnalyticsContextType | undefined>(
@@ -40,7 +32,6 @@ export const AnalyticsProvider: React.FC<AnalyticsProviderProps> = ({
   const reconnectTimeoutRef = useRef<NodeJS.Timeout | null>(null);
 
   const [connected, setConnected] = useState(false);
-  const [onlineStats, setOnlineStats] = useState<OnlineStats | null>(null);
   const [reconnectAttempts, setReconnectAttempts] = useState(0);
 
   const { state } = useGame();
@@ -51,28 +42,6 @@ export const AnalyticsProvider: React.FC<AnalyticsProviderProps> = ({
       console.log("[AnalyticsContext] WebSocket heartbeat sent");
     }
   }, []);
-
-  const requestOnlineCount = useCallback(() => {
-    if (socketRef.current?.readyState === WebSocket.OPEN) {
-      socketRef.current.send(JSON.stringify({ type: "get_online_count" }));
-      console.log("[AnalyticsContext] Requested online count via WebSocket");
-    }
-  }, []);
-
-  const updateOnlineStats = useCallback(
-    (newCount: number, timestamp: string | undefined = undefined) => {
-      setOnlineStats((prevStats) => {
-        if (prevStats && prevStats.online_count === newCount) {
-          return prevStats; // Ważne: ZWRACAMY TEN SAM OBIEKT
-        }
-        return {
-          online_count: newCount,
-          last_update: timestamp || new Date().toISOString(),
-        };
-      });
-    },
-    []
-  );
 
   const connectWebSocket = useCallback(() => {
     if (!state.userID) {
@@ -116,8 +85,6 @@ export const AnalyticsProvider: React.FC<AnalyticsProviderProps> = ({
         sendWebSocketHeartbeat,
         120000
       );
-
-      requestOnlineCount();
     };
 
     socket.onmessage = (event) => {
@@ -126,8 +93,6 @@ export const AnalyticsProvider: React.FC<AnalyticsProviderProps> = ({
 
         switch (data.type) {
           case "connection_established":
-            // Użyj nowej funkcji updateOnlineStats
-            updateOnlineStats(data.online_count || 0, data.timestamp);
             if (data.heartbeat_interval && heartbeatIntervalRef.current) {
               clearInterval(heartbeatIntervalRef.current);
               heartbeatIntervalRef.current = setInterval(
@@ -138,18 +103,6 @@ export const AnalyticsProvider: React.FC<AnalyticsProviderProps> = ({
             break;
 
           case "heartbeat_ack":
-            // Użyj nowej funkcji updateOnlineStats
-            updateOnlineStats(data.online_count || 0, data.timestamp);
-            break;
-
-          case "online_count_update":
-            // Użyj nowej funkcji updateOnlineStats
-            updateOnlineStats(data.count || 0, data.timestamp);
-            break;
-
-          case "online_count_response":
-            // Użyj nowej funkcji updateOnlineStats
-            updateOnlineStats(data.count || 0, data.timestamp);
             break;
 
           case "save_status":
@@ -222,13 +175,7 @@ export const AnalyticsProvider: React.FC<AnalyticsProviderProps> = ({
         );
       }
     };
-  }, [
-    state.userID,
-    reconnectAttempts,
-    sendWebSocketHeartbeat,
-    requestOnlineCount,
-    updateOnlineStats, // Dodano do zależności connectWebSocket
-  ]);
+  }, [state.userID, reconnectAttempts, sendWebSocketHeartbeat]);
 
   // Główny useEffect do inicjalizacji połączenia
   useEffect(() => {
@@ -237,7 +184,6 @@ export const AnalyticsProvider: React.FC<AnalyticsProviderProps> = ({
         "[AnalyticsContext] No userID, skipping WebSocket connection."
       );
       setConnected(false);
-      setOnlineStats(null); // Tutaj też zresetuj state, a nie twórz nowy obiekt OnlineStats
       setReconnectAttempts(0);
       if (socketRef.current) {
         socketRef.current.close();
@@ -288,17 +234,16 @@ export const AnalyticsProvider: React.FC<AnalyticsProviderProps> = ({
     const handleVisibilityChange = () => {
       if (!document.hidden && state.userID && connected) {
         console.log(
-          "[AnalyticsContext] Tab became visible, sending immediate heartbeat and requesting online count."
+          "[AnalyticsContext] Tab became visible, sending immediate heartbeat."
         );
         sendWebSocketHeartbeat();
-        requestOnlineCount();
       }
     };
 
     document.addEventListener("visibilitychange", handleVisibilityChange);
     return () =>
       document.removeEventListener("visibilitychange", handleVisibilityChange);
-  }, [connected, sendWebSocketHeartbeat, requestOnlineCount, state.userID]);
+  }, [connected, sendWebSocketHeartbeat, state.userID]); // Usunięto requestOnlineCount z zależności
 
   // Hook do obsługi beforeunload
   useEffect(() => {
@@ -319,11 +264,9 @@ export const AnalyticsProvider: React.FC<AnalyticsProviderProps> = ({
   const contextValue: AnalyticsContextType = React.useMemo(
     () => ({
       connected,
-      onlineStats,
       reconnectAttempts,
-      requestOnlineCount,
     }),
-    [connected, onlineStats, reconnectAttempts, requestOnlineCount]
+    [connected, reconnectAttempts]
   );
 
   return (
