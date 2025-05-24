@@ -29,8 +29,8 @@ export interface GameState {
   userID: string;
   milestones: Milestone[];
   expeditions: Expedition[];
-  playtime: number; // w sekundach
-  sessionLength: number; // w sekundach
+  playtime: number; 
+  sessionLength: number;
   artifacts: Artifact[];
   factions: Faction[];
   factionEvent?: FactionEvent;

@@ -3,8 +3,8 @@ import { GameState } from "@/types/gameState";
 // types/analyticsTypes.ts
 export interface AnalyticsState {
   sessionStart: number;
-  totalPlaytime: number; // sekundy
-  sessionLength: number; // sekundy
+  totalPlaytime: number; 
+  sessionLength: number;
   state: GameState;
 }
 

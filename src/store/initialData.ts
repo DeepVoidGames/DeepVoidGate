@@ -21,7 +21,6 @@ export const generateId = (lenght: number = 9): string => {
   return Math.random().toString(36).substr(2, lenght);
 };
 
-// Połącz obie tablice danych budynków
 const allBuildingsData = [
   ...oxygenBuildingData,
   ...foodBuildingData,

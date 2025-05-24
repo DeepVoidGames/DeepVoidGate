@@ -21,8 +21,8 @@ export interface FactionEvent {
   title: string;
   description: string;
   options: FactionEventOption[];
-  duration: number; // w sekundach
-  activeUntil: number; // timestamp końca
+  duration: number; 
+  activeUntil: number; 
 }
 
 export interface FactionEventOption {
@@ -35,5 +35,5 @@ export interface FactionEffect {
   type: "loyalty" | "resource" | "story" | "unlock" | "catastrophe";
   faction?: FactionName;
   value?: number;
-  target?: string; // np. unlock: "some_tech_id"
+  target?: string; 
 }

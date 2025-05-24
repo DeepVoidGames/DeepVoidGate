@@ -6,7 +6,6 @@ export type ResourceType =
   | "metals"
   | "science";
 
-// Resource data structure
 export interface ResourceData {
   amount: number;
   production: number;

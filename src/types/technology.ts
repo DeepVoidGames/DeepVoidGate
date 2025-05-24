@@ -14,11 +14,11 @@ export interface Technology {
   category: TechnologyCategory;
   description: string;
   researchCost: { [key in ResourceType]?: number };
-  prerequisites: string[]; // IDs technologii wymaganych do odblokowania
+  prerequisites: string[]; 
   unlocksBuildings: BuildingType[];
   isResearched: boolean;
-  researchDuration: number; // w sekundach
+  researchDuration: number;
   researchStartTime?: number;
-  locked?: boolean; // czy technologia jest zablokowana
-  expedtionMinTier?: number; // minimalny poziom technologii do odblokowania
+  locked?: boolean; 
+  expedtionMinTier?: number;
 }

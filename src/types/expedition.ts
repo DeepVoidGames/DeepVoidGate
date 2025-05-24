@@ -1,8 +1,7 @@
 import { ReactNode } from "react";
 import { ResourceType } from "./resource";
 
-// types.ts
-export type ExpeditionType = "scientific" | "mining" | string; // string dla przyszłych typów
+export type ExpeditionType = "scientific" | "mining" | string;
 
 export interface ExpeditionEvent {
   id: string;
@@ -10,16 +9,16 @@ export interface ExpeditionEvent {
   description: string;
   image?: string;
   options: ExpeditionEventOption[];
-  weight?: number; // do losowania zdarzeń
-  type?: ExpeditionType[]; // typy ekspedycji, w których może wystąpić
-  minTier?: number; // minimalny tier ekspedycji
-  maxTier?: number; // maksymalny tier ekspedycji
+  weight?: number; 
+  type?: ExpeditionType[]; 
+  minTier?: number; 
+  maxTier?: number; 
 }
 
 export interface ExpeditionEventOption {
   text: string;
   effects: ExpeditionEventEffect[];
-  weight?: number; // dla efektów losowych
+  weight?: number; 
 }
 
 export interface ExpeditionEventEffect {
@@ -36,22 +35,22 @@ export interface Expedition {
   id: string;
   type: ExpeditionType;
   tier: number;
-  duration: number; // w minutach
-  elapsed: number; // czas już upłynięty
-  crew: number; // liczba załogantów
+  duration: number; 
+  elapsed: number;
+  crew: number; 
   status: "preparing" | "in_progress" | "completed" | "failed";
-  events: ExpeditionEventLog[]; // zdarzenia, które już wystąpiły
-  nextEventTime: number; // czas do następnego zdarzenia (w minutach)
-  rewards?: ResourceAmount; // nagrody za ukończenie
+  events: ExpeditionEventLog[]; 
+  nextEventTime: number;
+  rewards?: ResourceAmount; 
   unlockedTechnologies?: string[];
-  rewardsCollected?: boolean; // czy nagrody zostały już odebrane
+  rewardsCollected?: boolean; 
 }
 
 export interface ExpeditionEventLog {
-  id?: string; // id zdarzenia, jeśli jest dostępne
+  id?: string; 
   eventId: string;
   chosenOptionIndex: number;
-  time: number; // czas ekspedycji, w którym wystąpiło zdarzenie
+  time: number; 
 }
 
 export interface ResourceAmount {
