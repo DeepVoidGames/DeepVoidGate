@@ -36,5 +36,3 @@ DeepvoidGate consists of multiple core systems working together to simulate the 
 - **Artifacts:** Unique items that boost colony performance.
 
 Further documentation covers system-specific details, APIs, and design decisions.
-
-[License](/LICENSE.md)
