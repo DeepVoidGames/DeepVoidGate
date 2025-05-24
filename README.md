@@ -2,6 +2,8 @@
 
 [Play DeepvoidGate](https://cloud.fern.fun/deepvoidgate/demo/)
 
+[![Discord](https://img.shields.io/badge/Discord-5865F2?style=flat&logo=discord&logoColor=white)](https://discord.com/invite/JEbcXgaWzB)
+
 DeepvoidGate is a complex space colony management simulation game that challenges players to build and sustain a thriving colony on a distant planet. The game features deep interlocking systems of resource management, technology research, expeditions, faction alliances, and artifact collection, providing a rich strategic experience.
 
 ## Features
