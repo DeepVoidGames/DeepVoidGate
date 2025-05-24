@@ -2,17 +2,17 @@ import { Artifact, ArtifactEffectType } from "@/types/artifacts";
 import { GameState } from "@/types/gameState";
 
 /**
- * Ulepsza artefakt gracza, zwiększając jego poziom gwiazdek, jeśli spełnione są warunki.
+ * Upgrades the player's artifact by increasing its star level if certain conditions are met.
  *
- * Warunki ulepszenia:
- * - Artefakt musi istnieć.
- * - Nie może być zablokowany (`isLocked` musi być `false`).
- * - Nie może mieć maksymalnej liczby gwiazdek (maksymalnie 5).
- * - Gracz musi posiadać wystarczającą liczbę kopii artefaktu (wymagana liczba to 2^aktualny_poziom_gwiazdek).
+ * Upgrade conditions:
+ * - The artifact must exist.
+ * - It must not be locked (`isLocked` must be `false`).
+ * - It must not have the maximum number of stars (maximum is 5).
+ * - The player must have a sufficient number of copies of the artifact (required amount is 2^current_star_level).
  *
- * @param artifactName - nazwa artefaktu do ulepszenia.
- * @param state - aktualny stan gry, zawierający informacje o artefaktach.
- * @returns Zaktualizowany stan gry z ulepszonym artefaktem lub niezmieniony, jeśli warunki nie zostały spełnione.
+ * @param artifactName - The name of the artifact to upgrade.
+ * @param state - The current game state, containing artifact information.
+ * @returns The updated game state with the upgraded artifact, or unchanged if the conditions were not met.
  */
 export const upgradeArtifactIfPossible = (
   artifactName: string,
@@ -42,16 +42,16 @@ export const upgradeArtifactIfPossible = (
 };
 
 /**
- * Dodaje określoną liczbę kopii istniejącego artefaktu do stanu gracza.
+ * Adds a specified number of copies of an existing artifact to the player's state.
  *
- * - Jeśli artefakt nie istnieje w kolekcji gracza, stan gry pozostaje niezmieniony.
- * - Jeśli artefakt istnieje, zwiększana jest jego liczba (`amount`) o podaną wartość.
- * - Artefakt zostaje również odblokowany (`isLocked` ustawione na `false`).
+ * - If the artifact does not exist in the player's collection, the game state remains unchanged.
+ * - If the artifact exists, its `amount` is increased by the given value.
+ * - The artifact is also unlocked (`isLocked` is set to `false`).
  *
- * @param artifactName - Nazwa artefaktu, do którego mają zostać dodane kopie.
- * @param amount - Liczba kopii do dodania (może być ujemna, jeśli to celowe).
- * @param state - Aktualny stan gry.
- * @returns Zaktualizowany stan gry z dodaną liczbą kopii artefaktu lub oryginalny stan, jeśli artefakt nie istnieje.
+ * @param artifactName - The name of the artifact to which copies should be added.
+ * @param amount - The number of copies to add (can be negative if intentional).
+ * @param state - The current game state.
+ * @returns The updated game state with the added artifact copies, or the original state if the artifact does not exist.
  */
 export const addArtifactCopies = (
   artifactName: string,
@@ -78,14 +78,14 @@ export const addArtifactCopies = (
 };
 
 /**
- * Zwraca artefakt o podanej nazwie z aktualnego stanu gry.
+ * Returns the artifact with the given name from the current game state.
  *
- * - Jeśli artefakt o podanej nazwie istnieje, zostaje zwrócony.
- * - Jeśli nie istnieje, zwracana jest wartość `undefined`.
+ * - If an artifact with the specified name exists, it is returned.
+ * - If it does not exist, `undefined` is returned.
  *
- * @param artifactName - Nazwa szukanego artefaktu.
- * @param state - Aktualny stan gry zawierający listę artefaktów.
- * @returns Artefakt o podanej nazwie lub `undefined`, jeśli nie został znaleziony.
+ * @param artifactName - The name of the artifact to find.
+ * @param state - The current game state containing the list of artifacts.
+ * @returns The artifact with the given name, or `undefined` if not found.
  */
 export const getArtifact = (
   artifactName: string,
@@ -95,15 +95,15 @@ export const getArtifact = (
 };
 
 /**
- * Nakłada efekty aktywnych artefaktów na stan gry, modyfikując produkcję i pojemność zasobów.
+ * Applies the effects of active artifacts to the game state, modifying resource production and capacity.
  *
- * - Funkcja iteruje po wszystkich artefaktach, które posiadają przypisane efekty (`effect`).
- * - Każdy efekt może zwiększać produkcję (`production`) lub pojemność (`capacity`) zasobów.
- * - Efekty są stosowane tylko, jeśli artefakt nie jest zablokowany (`isLocked === false`).
- * - Wpływ efektu rośnie wraz z poziomem gwiazdek artefaktu (`(stars + 1) / 10`).
+ * - The function iterates over all artifacts that have assigned effects (`effect`).
+ * - Each effect can increase resource `production` or `capacity`.
+ * - Effects are applied only if the artifact is not locked (`isLocked === false`).
+ * - The effect's strength scales with the artifact's star level (`(stars + 1) / 10`).
  *
- * @param state - Aktualny stan gry, zawierający artefakty i zasoby.
- * @returns Zaktualizowany stan gry z zastosowanymi efektami artefaktów.
+ * @param state - The current game state, containing artifacts and resources.
+ * @returns The updated game state with artifact effects applied.
  */
 export const applyArtifactEffect = (state: GameState): GameState => {
   if (!state.artifacts) return state;
@@ -144,13 +144,13 @@ export const applyArtifactEffect = (state: GameState): GameState => {
 };
 
 /**
- * Zwraca listę artefaktów przypisanych do określonego tieru ekspedycji.
+ * Returns a list of artifacts assigned to a specific expedition tier.
  *
- * - Przeszukuje kolekcję artefaktów gracza i filtruje je na podstawie poziomu ekspedycji (`expedtionTier`).
+ * - Searches the player's artifact collection and filters them based on the expedition tier (`expeditionTier`).
  *
- * @param state - Aktualny stan gry zawierający artefakty.
- * @param tier - Tier ekspedycji, dla którego mają zostać zwrócone artefakty.
- * @returns Tablica artefaktów należących do podanego tieru ekspedycji.
+ * @param state - The current game state containing artifacts.
+ * @param tier - The expedition tier for which artifacts should be returned.
+ * @returns An array of artifacts belonging to the specified expedition tier.
  */
 export const getArtifactsByExpeditionTier = (
   state: GameState,

@@ -6,9 +6,9 @@ export const cloudLoadGameState = async (
   customId: string
 ) => {
   try {
-    // Zapisz nowe customId do localStorage
+    // Save new customId to localStorage
     localStorage.setItem("custom_id", customId);
-    // Ponowne uwierzytelnienie z nowym customId
+    // Re-authentication with new customId
     const session = await client.authenticateCustom(customId);
     try {
       const objects = await client.listStorageObjects(
@@ -21,7 +21,7 @@ export const cloudLoadGameState = async (
         return null;
       }
       console.log(objects.objects);
-      // Zwracamy zawartość pierwszego obiektu
+      // We return the content of the first object
 
       if (objects?.objects[0]?.value != null)
         localStorage.setItem(

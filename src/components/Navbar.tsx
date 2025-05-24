@@ -6,7 +6,6 @@ import { useGame } from "@/context/GameContext";
 import { formatNumber } from "@/lib/utils";
 import { getSettings } from "@/pages/Settings";
 import { getDominantFactionTheme } from "@/store/reducers/factionsReducer";
-import { useAnalytics } from "@/context/AnalyticsContext";
 
 const links = [
   { path: "/", label: "Home", icon: <Home className="h-5 w-5" /> },
@@ -148,8 +147,6 @@ const Navbar = () => {
   const isMobile = useIsMobile();
   const settings = getSettings();
   const { state } = useGame();
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const { connected } = useAnalytics();
 
   // Check technoloige for id advanced_hub_integration to unlock Hub
   const hasHubIntegration = state.technologies.some(
@@ -167,7 +164,7 @@ const Navbar = () => {
     }
   }, [hasHubIntegration]);
 
-  if (isMobile === undefined) return null; // Możesz dodać placeholder ładowania
+  if (isMobile === undefined) return null; // You can add a loading placeholder
   return isMobile || settings.compactUIOptions?.alwaysMobileNavbar ? (
     <MobileNav />
   ) : (
@@ -199,7 +196,7 @@ export const MobileTopNav = () => {
       }`}
     >
       <div className="grid grid-cols-1 h-12 items-center justify-between px-4">
-        {/* Lewa strona - surowce z animacjami */}
+        {/* Left side - raw materials with animations */}
         <div className="grid grid-flow-col gap-[1vw] min-[400px]:gap-[3vw] items-center justify-center content-center w-full">
           {Object.values(resources).map((resource, key) => (
             <div
@@ -209,7 +206,7 @@ export const MobileTopNav = () => {
                 resource.production
               }/${resource.consumption})`}
             >
-              {/* Wartość z animacją zmian */}
+              {/* Value with change animation */}
               <div className="flex flex-col max-[400px]:min-w-[20px] min-w-[30px]">
                 <div className="flex items-center justify-start">
                   <div className="max-[400px]:mr-1 mr-3 min-[400px]:w-3 min-[400px]:h-3 flex items-center justify-center transition-transform duration-200">
@@ -229,7 +226,7 @@ export const MobileTopNav = () => {
                   </span>
                 </div>
 
-                {/* Mini-wskaźnik produkcji */}
+                {/* Mini-production indicator */}
                 <div className="flex items-center max-[400px]:gap-[5px] gap-1 max-[700px]:text-[10px] text-[1rem] text-xs min-[700px]:mb-1">
                   <span className="text-green-400/80">
                     +{formatNumber(resource.production)}

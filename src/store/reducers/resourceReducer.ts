@@ -9,9 +9,9 @@ export type ResourcesState = Record<ResourceType, ResourceData>;
  * This function updates the resource amounts in the state, adjusting for production and consumption over a given period (`deltaTime`).
  * The new resource amounts are limited by their respective capacities, and changes are calculated with precision to 4 decimal places.
  *
- * @param resources - Obiekt stanu zasobów, zawierający informacje o produkcji, konsumpcji, ilości i pojemności dla każdego zasobu.
- * @param deltaTime - Czas, w którym obliczana jest zmiana zasobów (w sekundach).
- * @returns Nowy stan zasobów zaktualizowany o zmiany w ilości zasobów.
+ * @param resources - Resource state object containing information about production, consumption, amount, and capacity for each resource.
+ * @param deltaTime - Time period over which the resource change is calculated (in seconds).
+ * @returns New resource state updated with the changes in resource amounts.
  */
 export const calculateResourceChanges = (
   resources: ResourcesState,
@@ -53,8 +53,8 @@ export const calculateResourceChanges = (
  * This function resets the production rate to 1 and the consumption rate to 0 for all resources in the provided state.
  * It is useful when you want to restart or reconfigure the resource management system to a default state.
  *
- * @param resources - Obiekt stanu zasobów, zawierający informacje o produkcji, konsumpcji, ilości i pojemności dla każdego zasobu.
- * @returns Nowy stan zasobów, w którym liczniki produkcji i konsumpcji zostały zresetowane.
+ * @param resources - Resource state object containing information about production, consumption, amount, and capacity for each resource.
+ * @returns New resource state with production and consumption counters reset.
  */
 export const resetProductionCounters = (
   resources: ResourcesState
@@ -80,10 +80,10 @@ export const resetProductionCounters = (
  * will not go below zero, ensuring that no negative values occur. It is useful for applying resource consumption
  * during actions like building or expedition launches.
  *
- * @param resources - Obiekt stanu zasobów, który zawiera informacje o dostępnych ilościach zasobów.
- * @param costs - Obiekt zawierający koszty w zasobach, gdzie kluczami są typy zasobów, a wartościami są liczby oznaczające koszt.
+ * @param resources - Resource state object containing information about available resource amounts.
+ * @param costs - Object containing resource costs, where keys are resource types and values are the cost amounts.
  *
- * @returns Nowy stan zasobów, gdzie koszt został zastosowany do odpowiednich zasobów.
+ * @returns New resource state with the costs applied to the corresponding resources.
  */
 export const applyResourceCost = (
   resources: ResourcesState,
@@ -106,16 +106,16 @@ export const applyResourceCost = (
 };
 
 /**
- * Sprawdza, czy dostępne zasoby wystarczają na pokrycie podanych kosztów.
+ * Checks if available resources are sufficient to cover the given costs.
  *
- * Funkcja przechodzi przez wszystkie wymagane zasoby i sprawdza, czy dostępna ilość zasobów
- * jest większa lub równa wymaganej wartości. Jeśli jakikolwiek zasób jest niewystarczający,
- * funkcja zwraca `false`. W przeciwnym razie, zwraca `true`.
+ * The function iterates over all required resources and verifies if the available amount
+ * is greater than or equal to the required value. If any resource is insufficient,
+ * the function returns `false`. Otherwise, it returns `true`.
  *
- * @param resources - Obiekt stanu zasobów, zawierający aktualne ilości zasobów.
- * @param costs - Obiekt zawierający koszty w zasobach, gdzie kluczami są typy zasobów, a wartościami są liczby oznaczające wymagany koszt.
+ * @param resources - Resource state object containing current resource amounts.
+ * @param costs - Object containing resource costs, where keys are resource types and values are the required costs.
  *
- * @returns `true` jeśli wszystkie wymagane zasoby są dostępne w wystarczającej ilości, w przeciwnym razie `false`.
+ * @returns `true` if all required resources are available in sufficient amounts, otherwise `false`.
  */
 export const canAffordCost = (
   resources: ResourcesState,
@@ -125,7 +125,7 @@ export const canAffordCost = (
     const resourceKey = resource as ResourceType;
     const currentAmount = resources[resourceKey]?.amount || 0;
 
-    // Logi diagnostyczne
+    // Diagnostic log
     if (cost && currentAmount < cost) {
       // console.warn(
       //   `Insufficient ${resource}: ${currentAmount.toFixed(2)} < ${cost}`

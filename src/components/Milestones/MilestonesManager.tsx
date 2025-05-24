@@ -124,7 +124,7 @@ const MilestonesManager = () => {
         { styleType: "border", opacity: 0.8 }
       )}`}
     >
-      {/* ... (Header and Statistics) ... */}
+      {/* Header and Statistics */}
       <div className="flex flex-col md:flex-row justify-between gap-4 mb-4">
         <div className="space-y-2">
           <h2 className="text-lg font-medium text-foreground/90 flex items-center gap-2">
@@ -155,7 +155,7 @@ const MilestonesManager = () => {
         </div>
       </div>
 
-      {/* ... (Categories) ... */}
+      {/* Categories */}
       <div className="flex flex-wrap gap-2 mb-6">
         {milestoneCategories.map((category) => (
           <button
@@ -264,7 +264,7 @@ const MilestonesManager = () => {
                   key={baseId}
                   className="p-4 rounded-lg border bg-background/50 border-muted/30 hover:border-primary hover:shadow-lg h-[300px]"
                 >
-                  {/* ... (Grouped milestone display logic) ... */}
+                  {/* Grouped milestone display logic */}
                   <div className="flex justify-between items-start mb-3">
                     <div>
                       <h3 className="font-medium text-foreground/90 flex items-center gap-2">

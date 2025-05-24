@@ -51,7 +51,7 @@ const ExistingBuildings: React.FC<ExistingBuildingsProps> = ({
 }) => {
   const [selectedResource, setSelectedResource] = useState<string>("oxygen");
 
-  // Kolory dla poszczególnych tierów
+  // Colors for each tier
   const tierColors: Record<number, string> = {
     1: "text-gray-400",
     2: "text-blue-400",
@@ -60,7 +60,7 @@ const ExistingBuildings: React.FC<ExistingBuildingsProps> = ({
     5: "text-yellow-400",
   };
 
-  // Progress bar dla ulepszeń
+  // Progress bar for improvements
   const renderTierProgress = (building: BuildingData) => (
     <div className="w-full mt-2">
       <div className="flex justify-between text-xs mb-1">
@@ -76,25 +76,18 @@ const ExistingBuildings: React.FC<ExistingBuildingsProps> = ({
     </div>
   );
 
-  // Funkcja, która znajduje kategorię budynku
   const getBuildingCategory = (building: BuildingData): string => {
-    // Najpierw spróbuj znaleźć w building
     if (building.category) return building.category;
 
-    // Jeśli nie ma, sprawdź w buildingConfig
     const config = buildingConfig.find((b) => b.type === building.type);
     if (config?.category) return config.category;
 
-    // Domyślnie zwróć 'all'
     return "all";
   };
 
-  // Funkcja określająca typ zasobu dla budynku
   const getResourceType = (building: BuildingData): string | null => {
-    // Sprawdź tag w budynku
     if (building.tag) return building.tag;
 
-    // Sprawdź baseProduction w budynku
     if (
       building.baseProduction &&
       Object.keys(building.baseProduction).length > 0
@@ -102,7 +95,6 @@ const ExistingBuildings: React.FC<ExistingBuildingsProps> = ({
       return Object.keys(building.baseProduction)[0];
     }
 
-    // Sprawdź baseProduction w konfiguracji
     if (
       building?.baseProduction &&
       Object.keys(building.baseProduction).length > 0
@@ -110,7 +102,6 @@ const ExistingBuildings: React.FC<ExistingBuildingsProps> = ({
       return Object.keys(building.baseProduction)[0];
     }
 
-    // Próba określenia na podstawie nazwy typu
     const lowerType = building.type.toLowerCase();
     const resourceTypes = ["oxygen", "food", "energy", "metals"];
     for (const resource of resourceTypes) {
@@ -119,7 +110,6 @@ const ExistingBuildings: React.FC<ExistingBuildingsProps> = ({
       }
     }
 
-    // Domyślnie zwróć oxygen
     return "oxygen";
   };
 
@@ -129,7 +119,6 @@ const ExistingBuildings: React.FC<ExistingBuildingsProps> = ({
       return;
     }
 
-    // Filter production buildings and determine available resources
     const productionBuildings = filteredBuildings.filter(
       (building) => getBuildingCategory(building) === "production"
     );
@@ -151,7 +140,6 @@ const ExistingBuildings: React.FC<ExistingBuildingsProps> = ({
     });
   }, [activeTab, filteredBuildings]); // Removed selectedResource from dependencies
 
-  // Funkcja sprawdzająca, czy budynek powinien być wyświetlony
   const shouldDisplayBuilding = (
     building: BuildingData,
     categoryId: string
@@ -179,9 +167,9 @@ const ExistingBuildings: React.FC<ExistingBuildingsProps> = ({
               value={category.id}
               className="flex items-center justify-center p-1.5 sm:px-3 sm:py-1.5 gap-1"
             >
-              {/* Zwiększamy rozmiar ikon na mobile */}
+              {/* We increase the size of icons on mobile */}
               <div className="text-lg sm:text-base">{category.icon}</div>
-              {/* Tekst widoczny tylko na desktopach */}
+              {/* Text visible only on desktops */}
               <span className="hidden sm:inline">{category.name}</span>
             </TabsTrigger>
           ))}
@@ -200,7 +188,7 @@ const ExistingBuildings: React.FC<ExistingBuildingsProps> = ({
                 }`}
               >
                 {<ResourcesIcon resource={resource} />}
-                {/* Tekst widoczny tylko na większych ekranach */}
+                {/* Text visible only on larger screens*/}
                 <span className="hidden sm:inline ml-1">
                   {resource.charAt(0).toUpperCase() + resource.slice(1)}
                 </span>

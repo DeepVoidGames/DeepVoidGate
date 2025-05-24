@@ -6,13 +6,15 @@ export interface PopulationState {
 }
 
 /**
- * Oblicza zużycie tlenu i jedzenia przez populację.
+ * Calculates oxygen and food consumption by the population.
  *
- * Funkcja przyjmuje stan populacji oraz aktualny stan zasobów, a następnie oblicza, ile tlenu i jedzenia zostanie zużyte przez całą populację na podstawie ustalonych wskaźników.
+ * The function takes the population state and the current resource state,
+ * then calculates how much oxygen and food will be consumed by the entire population
+ * based on established consumption rates.
  *
- * @param population - Obiekt reprezentujący stan populacji, zawierający m.in. całkowitą liczbę osób.
- * @param resources - Obiekt reprezentujący zasoby, w tym informacje o zużyciu tlenu i jedzenia.
- * @returns Obiekt zasobów zaktualizowany o zużycie tlenu i jedzenia przez całą populację.
+ * @param population - Object representing the population state, including total number of people.
+ * @param resources - Object representing resources, including oxygen and food consumption info.
+ * @returns Resource object updated with oxygen and food consumption by the entire population.
  */
 export const calculatePopulationConsumption = (
   population: PopulationState,
@@ -33,11 +35,12 @@ export const calculatePopulationConsumption = (
 /**
  * Recalculates the number of available workers based on population and assigned workers in buildings.
  *
- * This function calculates the total number of workers assigned to buildings and subtracts that from the total population to determine how many workers are available for other tasks.
+ * This function calculates the total number of workers assigned to buildings and subtracts that from the total population
+ * to determine how many workers are available for other tasks.
  *
- * @param population - Obiekt reprezentujący stan populacji, w tym całkowitą liczbę ludzi.
- * @param buildings - Tablica obiektów reprezentujących budynki, w tym liczbę przypisanych pracowników.
- * @returns Nowy obiekt stanu populacji zaktualizowany o liczbę dostępnych pracowników.
+ * @param population - Object representing the population state, including total number of people.
+ * @param buildings - Array of objects representing buildings, including the number of assigned workers.
+ * @returns New population state object updated with the number of available workers.
  */
 export const recalculateAvailableWorkers = (
   population: PopulationState,

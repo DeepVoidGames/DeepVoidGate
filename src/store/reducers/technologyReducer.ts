@@ -6,15 +6,16 @@ import { GameState } from "@/types/gameState";
 import { BuildingType } from "@/types/building";
 
 /**
- * Sprawdza, czy wszystkie wymagania wstępne danej technologii zostały spełnione.
+ * Checks if all the prerequisites for a given technology have been met.
  *
- * Funkcja porównuje listę wymaganych technologii (`prerequisites`) z listą już zbadanych (`researchedTechIds`).
- * Zwraca `true` tylko wtedy, gdy wszystkie wymagane technologie znajdują się na liście zbadanych.
+ * The function compares the list of required technologies (`prerequisites`)
+ * with the list of already researched ones (`researchedTechIds`).
+ * Returns `true` only if all required technologies are found in the researched list.
  *
- * @param technology - Obiekt technologii zawierający listę wymaganych technologii (`prerequisites`).
- * @param researchedTechIds - Tablica identyfikatorów technologii, które zostały już zbadane.
+ * @param technology - The technology object containing the list of prerequisites.
+ * @param researchedTechIds - Array of technology IDs that have already been researched.
  *
- * @returns `true`, jeśli wszystkie wymagania są spełnione, w przeciwnym razie `false`.
+ * @returns `true` if all prerequisites are met, otherwise `false`.
  */
 const checkPrerequisites = (
   technology: Technology,
@@ -26,22 +27,22 @@ const checkPrerequisites = (
 };
 
 /**
- * Rozpoczyna badanie technologii, jeśli spełnione są wszystkie warunki.
+ * Starts researching a technology if all conditions are met.
  *
- * Funkcja sprawdza, czy technologia istnieje, nie została już zbadana,
- * nie jest w trakcie badania, ma spełnione wymagania wstępne i czy gracz
- * posiada wystarczające zasoby. Jeśli tak, rozpoczyna badanie i odejmuje zasoby.
- * Uwzględnia bonus skracający czas badania od frakcji "StarUnderstanding".
+ * The function checks if the technology exists, has not been researched yet,
+ * is not currently being researched, has met all prerequisites, and the player
+ * has enough resources. If so, it starts the research and deducts the resources.
+ * It also applies a faction bonus that shortens research time if applicable.
  *
- * @param technologies - Tablica dostępnych technologii.
- * @param resources - Aktualny stan zasobów gracza.
- * @param techId - Identyfikator technologii, którą gracz chce zbadać.
- * @param state - Pełny stan gry, używany m.in. do odczytu lojalności frakcji.
+ * @param technologies - Array of available technologies.
+ * @param resources - Current state of player resources.
+ * @param techId - ID of the technology the player wants to research.
+ * @param state - The full game state, used among others to read faction loyalty.
  *
- * @returns Obiekt zawierający:
- * - `technologies`: zaktualizowana lista technologii,
- * - `resources`: zaktualizowany stan zasobów,
- * - `success`: flaga informująca, czy rozpoczęcie badania się powiodło.
+ * @returns An object containing:
+ * - `technologies`: updated list of technologies,
+ * - `resources`: updated resource state,
+ * - `success`: a flag indicating whether starting the research succeeded.
  */
 export const researchTechnology = (
   technologies: Technology[],
@@ -140,14 +141,14 @@ export const researchTechnology = (
 };
 
 /**
- * Zwraca listę typów budynków odblokowanych przez zbadane technologie.
+ * Returns a list of building types unlocked by researched technologies.
  *
- * Funkcja filtruje technologie, które zostały zbadane (`isResearched === true`)
- * i zbiera wszystkie typy budynków odblokowywanych przez te technologie.
+ * The function filters technologies that have been researched (`isResearched === true`)
+ * and collects all building types unlocked by these technologies.
  *
- * @param technologies - Tablica obiektów technologii dostępnych w grze.
+ * @param technologies - Array of technology objects available in the game.
  *
- * @returns Tablica typów budynków (`BuildingType[]`), które zostały odblokowane.
+ * @returns Array of building types (`BuildingType[]`) that have been unlocked.
  */
 export const getUnlockedBuildings = (
   technologies: Technology[]
@@ -158,15 +159,15 @@ export const getUnlockedBuildings = (
 };
 
 /**
- * Aktualizuje stan badań technologii, kończąc te, których czas badań już upłynął.
+ * Updates the state of technology research by completing those whose research time has elapsed.
  *
- * Funkcja sprawdza wszystkie technologie, które są w trakcie badań (mają `researchStartTime`)
- * i nie zostały jeszcze zbadane (`!isResearched`). Jeśli czas badań (`researchDuration`)
- * już upłynął, ustawia `isResearched` na `true` i usuwa znacznik czasu rozpoczęcia.
+ * The function checks all technologies currently being researched (have `researchStartTime`)
+ * and not yet researched (`!isResearched`). If the research duration has elapsed,
+ * it sets `isResearched` to `true` and clears the start timestamp.
  *
- * @param technologies - Tablica obiektów technologii do zaktualizowania.
+ * @param technologies - Array of technology objects to update.
  *
- * @returns Zaktualizowana tablica technologii z uwzględnieniem ukończonych badań.
+ * @returns Updated array of technologies reflecting completed researches.
  */
 export const updateResearches = (technologies: Technology[]): Technology[] => {
   const now = Date.now();
@@ -186,17 +187,17 @@ export const updateResearches = (technologies: Technology[]): Technology[] => {
 };
 
 /**
- * Sprawdza, czy dana technologia jest odblokowana w aktualnym stanie gry.
+ * Checks if a given technology is unlocked in the current game state.
  *
- * Funkcja przeszukuje listę technologii w stanie gry i weryfikuje,
- * czy istnieje technologia o podanym identyfikatorze, która została
- * już zbadana (ma ustawioną flagę `isResearched` na `true`).
+ * The function searches the technology list in the game state and verifies
+ * if a technology with the given ID exists and has been researched
+ * (has the `isResearched` flag set to `true`).
  *
- * @param technologieId - Unikalny identyfikator technologii do sprawdzenia.
- * @param state - Obiekt stanu gry zawierający listę technologii.
+ * @param technologieId - Unique ID of the technology to check.
+ * @param state - The game state object containing the list of technologies.
  *
- * @returns `true` jeśli technologia jest odblokowana (zbadana),
- *          `false` w przeciwnym przypadku.
+ * @returns `true` if the technology is unlocked (researched),
+ *          `false` otherwise.
  */
 export const isTechnologyUnlocked = (
   technologieId: string,

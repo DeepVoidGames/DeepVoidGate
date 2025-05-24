@@ -53,10 +53,9 @@ const ConstructionSection = ({
   canAffordBuilding,
   technologies,
 }: ConstructionSectionProps) => {
-  // Funkcja sprawdzająca dostępność budynku
   const isBuildingUnlocked = (buildingType) => {
     const building = initialBuildings.find((b) => b.type === buildingType);
-    if (!building?.requiredTechnology) return true; // Budynki bez wymagań są zawsze dostępne
+    if (!building?.requiredTechnology) return true;
 
     return technologies.some(
       (tech) => tech.id === building.requiredTechnology && tech.isResearched
@@ -79,9 +78,9 @@ const ConstructionSection = ({
                 value={category.id}
                 className="flex items-center justify-center p-1.5 sm:px-3 sm:py-1.5 gap-1"
               >
-                {/* Zwiększamy rozmiar ikon na mobile */}
+                {/* We increase the size of icons on mobile */}
                 <div className="text-lg sm:text-base">{category.icon}</div>
-                {/* Tekst widoczny tylko na desktopach */}
+                {/* Text visible only on desktops */}
                 <span className="hidden sm:inline">{category.name}</span>
               </TabsTrigger>
             ))}

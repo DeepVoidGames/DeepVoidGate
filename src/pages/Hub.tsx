@@ -9,17 +9,16 @@ import { getDominantFactionTheme } from "@/store/reducers/factionsReducer";
 type Feature = {
   id: string;
   name: string;
-  description?: string; // Opis funkcji
+  description?: string;
   image: string;
-  to: string; // Link do podstrony
-  requiredTechnologies?: string[]; // Lista wymaganych technologii do odblokowania
+  to: string; 
+  requiredTechnologies?: string[];
 };
 
 const Hub = () => {
   const [unlockedFeatures, setUnlockedFeatures] = useState<string[]>([]);
   const { state } = useGame();
 
-  // Przykładowe funkcje - można pobierać z API lub localStorage
   const features: Feature[] = [
     {
       id: "expedition",
@@ -56,7 +55,6 @@ const Hub = () => {
 
   useEffect(() => {
     if (state.technologies) {
-      // Technoloige to tablica z {} gdzie sa id
       const unlockedTechs = state.technologies
         .filter((tech) => tech.isResearched)
         .map((tech) => tech.id);

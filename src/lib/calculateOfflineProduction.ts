@@ -16,23 +16,22 @@ export const calculateOfflineProduction = (
   technologies: Technology[],
   elapsedTime: number
 ): ResourcesState => {
-  // Nowe ograniczenia
-  const MAX_OFFLINE_HOURS = 12; // Maksymalny czas brany pod uwagę
-  const EFFICIENCY_MULTIPLIER = 0.03; // 3% efektywności
-  const OUTPUT_REDUCTION = 1; // Dodatkowe ograniczenie wyjścia
+  const MAX_OFFLINE_HOURS = 12; // Maximum time taken into account
+  const EFFICIENCY_MULTIPLIER = 0.03; // 3% efficiency
+  const OUTPUT_REDUCTION = 1; // Additional output restriction
 
   const currentResources = structuredClone(resources);
 
-  // Ogranicz czas offline do maksymalnej wartości
+  // Limit offline time to maximum value
   const cappedElapsedTime = Math.min(
     elapsedTime,
-    MAX_OFFLINE_HOURS * 60 * 60 * 1000 // 12 godzin w milisekundach
+    MAX_OFFLINE_HOURS * 60 * 60 * 1000 // 12 hours in milliseconds
   );
 
   let remainingTime = cappedElapsedTime;
 
   while (remainingTime > 0) {
-    // Oblicz efektywność z podwójnym ograniczeniem
+    // Calculate efficiency with double constraint
     const efficientBuildings = evaluateBuildingEfficiency(
       buildings,
       currentResources
@@ -40,7 +39,7 @@ export const calculateOfflineProduction = (
       ...building,
       efficiency: Math.min(
         building.efficiency * EFFICIENCY_MULTIPLIER,
-        0.05 // Hard limit 5% nawet jeśli obliczenia dadzą więcej
+        0.05 // Hard limit 5% even if calculations give more
       ),
     }));
 
@@ -51,26 +50,33 @@ export const calculateOfflineProduction = (
 
     tempResources = applyArtifactEffect({
       ...state,
-      resources: tempResources as { oxygen: ResourceData; water: ResourceData; food: ResourceData; energy: ResourceData; metals: ResourceData; science: ResourceData },
+      resources: tempResources as {
+        oxygen: ResourceData;
+        water: ResourceData;
+        food: ResourceData;
+        energy: ResourceData;
+        metals: ResourceData;
+        science: ResourceData;
+      },
     }).resources;
 
-    // Dodatkowe ograniczenie produkcji
+    // Additional production restriction
     Object.keys(tempResources).forEach((resourceKey) => {
       const res = tempResources[resourceKey as ResourceType];
-      // Zastosuj dodatkowy reduktor tylko dla produkcji
+      // Use additional reducer only for production
       tempResources[resourceKey as ResourceType].production =
         res.production * OUTPUT_REDUCTION;
     });
 
-    // Oblicz czas segmentu
+    // Calculate segment time
     let maxSegmentTime = remainingTime;
 
-    // Sprawdzaj limity tylko dla produkcji (nie dla konsumpcji)
+    // Check limits only for production (not consumption)
     Object.values(tempResources).forEach((res) => {
       const netRate = res.production - res.consumption;
-      if (netRate <= 0) return; // Ignoruj surowce, które nie są produkowane (tylko konsumowane)
+      if (netRate <= 0) return; // Ignore resources that are not produced (only consumed)
 
-      // Sprawdź tylko czas do osiągnięcia limitu pojemności przy produkcji
+      // Just check the time to reach the capacity limit in production
       const timeToCapacity = ((res.capacity - res.amount) / netRate) * 1000;
       if (timeToCapacity > 0) {
         maxSegmentTime = Math.min(maxSegmentTime, timeToCapacity);
@@ -80,7 +86,7 @@ export const calculateOfflineProduction = (
     const segmentTime = Math.min(maxSegmentTime, remainingTime);
     const segmentSeconds = segmentTime / 1000;
 
-    // Aktualizuj surowce
+    // Update resources
     Object.keys(tempResources).forEach((resourceKey) => {
       const res = tempResources[resourceKey as ResourceType];
       const netRate = res.production - res.consumption;
@@ -88,12 +94,12 @@ export const calculateOfflineProduction = (
         currentResources[resourceKey as ResourceType].amount +
         netRate * segmentSeconds;
 
-      // Przy produkcji nie przekraczaj limitu pojemności
+      // Do not exceed the capacity limit when producing
       if (netRate > 0) {
         newAmount = Math.min(newAmount, res.capacity);
       }
 
-      // Nigdy nie spadaj poniżej zera
+      // Never go below zero
       newAmount = Math.max(0, newAmount);
 
       currentResources[resourceKey as ResourceType].amount = newAmount;
@@ -102,19 +108,19 @@ export const calculateOfflineProduction = (
     remainingTime -= segmentTime;
   }
 
-  // Globalne kapsowanie surowców, ale tylko dla przyrostu (nie odejmujemy surowców)
+  // Global capping of raw materials, but only for growth (we do not subtract raw materials)
   Object.keys(currentResources).forEach((resourceKey) => {
     const resource = currentResources[resourceKey as ResourceType];
     const originalAmount = resources[resourceKey as ResourceType].amount;
 
-    // Maksymalny zysk offline to 25% pojemności
+    // Maximum offline profit is 25% of capacity
     const maxGain = resource.capacity * 0.25;
 
-    // Nigdy nie zmniejszaj ilości surowców poniżej początkowej wartości
+    // Never reduce the amount of resources below the initial value
     if (resource.amount < originalAmount) {
       resource.amount = originalAmount;
     }
-    // Ogranicz maksymalny przyrost surowców
+    // Limit the maximum growth of resources
     else if (resource.amount > originalAmount + maxGain) {
       resource.amount = originalAmount + maxGain;
     }

@@ -66,10 +66,7 @@ const TechnologiesManager: React.FC = () => {
   const [now, setNow] = useState(Date.now());
 
   useEffect(() => {
-    // Natychmiastowe sprawdzenie postępu
     dispatch({ type: "CHECK_RESEARCH_PROGRESS" });
-
-    // Codzienne aktualizacje
     const interval = setInterval(() => {
       dispatch({ type: "CHECK_RESEARCH_PROGRESS" });
     }, 1000);
@@ -130,7 +127,6 @@ const TechnologiesManager: React.FC = () => {
     const elapsed = now - tech.researchStartTime;
     const totalDuration = tech.researchDuration * 1000;
 
-    // Zabezpieczenie przed ujemnym czasem
     if (elapsed >= totalDuration) {
       return {
         progress: 100,

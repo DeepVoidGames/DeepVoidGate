@@ -1,3 +1,4 @@
+//!  THIS FILE IS TOTALY MESS, NEED TO BE REFACTORED
 import { artifactsData } from "@/data/artifacts";
 import { initialMilestones } from "@/data/milestonesData";
 import {
@@ -10,25 +11,21 @@ import { initialState } from "@/store/reducers/gameReducer";
 import { ResourcesState } from "@/store/reducers/resourceReducer";
 import { GameState } from "@/types/gameState";
 
-export const CURRENT_GAME_VERSION = 3; // Aktualna wersja gry
+export const CURRENT_GAME_VERSION = 3;
 
 export const migrateGameState = (savedState: GameState): GameState => {
   let currentState = { ...savedState };
 
-  // Migracje wersji
   if (typeof currentState.version === "string") currentState.version = "0";
   if (currentState.version === undefined || currentState.version === "0")
     currentState = migrateV0ToV1(currentState);
 
   if (currentState.version === "1") currentState = migrateV1ToV2(currentState);
 
-  // Merge technologii (bez zmian)
   const mergedTechnologies = initialTechnologies.map((tech) => ({
     ...tech,
     ...currentState.technologies.find((t: any) => t.id === tech.id),
   }));
-
-  // Poprawiony mechanizm dla budynków:
 
   if (currentState.userID == null) currentState.userID = generateId(16);
 
@@ -60,7 +57,6 @@ export const migrateGameState = (savedState: GameState): GameState => {
   };
 };
 
-// Migracja z wersji 0 (brak wersji)
 const migrateV0ToV1 = (state: any) => {
   console.log("Migrating from V0 to V1...");
   return {
@@ -74,7 +70,6 @@ const migrateV0ToV1 = (state: any) => {
 const migrateV1ToV2 = (state: any) => {
   console.log("Migrating from V1 to V2...");
 
-  // 1. Naprawiamy surowce
   const resources = state.resources || {};
   const defaultResources = {
     oxygen: {
@@ -152,7 +147,6 @@ const migrateV1ToV2 = (state: any) => {
           : defaultRes.baseCapacity,
     };
 
-    // Dodatkowe sprawdzenie NaN dla pól liczbowych
     for (const numericField of [
       "amount",
       "production",
@@ -166,9 +160,7 @@ const migrateV1ToV2 = (state: any) => {
     }
   }
 
-  // 2. Migracja budynków
   const buildings = (state.buildings || []).map((b: any) => {
-    // Jeśli budynek ma już tier i upgrades, pomijamy migrację
     if (b.tier !== undefined && b.upgrades !== undefined) {
       return {
         ...b,
@@ -186,12 +178,11 @@ const migrateV1ToV2 = (state: any) => {
       upgrades = Math.min(Math.max(t5Upgrades, 0), 10);
     }
 
-    // Znajdź szablon budynku
     const template = initialBuildings.find((ib) => ib.type === b.type) || {};
 
     return {
-      ...template, // Najpierw wartości z szablonu
-      ...b, // Nadpisujemy właściwości z V1
+      ...template,
+      ...b,
       tier,
       upgrades,
       level: undefined,
@@ -199,15 +190,13 @@ const migrateV1ToV2 = (state: any) => {
     };
   });
 
-  // 3. Populacja (dodajemy deathTimer)
   const population = {
     ...state.population,
     deathTimer: null,
   };
 
-  // 4. Zwracamy nowy stan
   return {
-    version: 2, // Upewnij się, że wersja jest poprawna!
+    version: 2,
     resources: fixedResources,
     buildings: buildings,
     population,
@@ -219,12 +208,11 @@ const migrateV1ToV2 = (state: any) => {
 
 const migrateBuildingsStats = (savedBuildings: any[]): any[] => {
   return savedBuildings.map((building) => {
-    // Znajdź szablon budynku
     const template =
       initialBuildings.find((ib) => ib.type === building.type) || {};
     return {
-      ...template, // Wartości domyślne z szablonu
-      ...building, // Nadpisujemy wartościami z zapisanego stanu
+      ...template,
+      ...building,
       id: building.id || generateId(),
       name: template.name || building.name,
       description: template.description || building.description,
@@ -247,12 +235,11 @@ const migrateBuildingsStats = (savedBuildings: any[]): any[] => {
 
 const migrateArtifactsStats = (savedArtifacts: any[]): any[] => {
   const migratedArtifacts = savedArtifacts.map((artifact) => {
-    // Szukamy w initial artifactsData
     const template = artifactsData.find((a) => a.name === artifact.name) || {};
 
     return {
-      ...template, // Wartości domyślne z szablonu
-      ...artifact, // Nadpisujemy wartościami z zapisu
+      ...template,
+      ...artifact,
       name: template.name ?? artifact.name,
       description: template.description ?? artifact.description,
       image: template.image ?? artifact.image,
@@ -283,12 +270,11 @@ const migrateArtifactsStats = (savedArtifacts: any[]): any[] => {
 
 const migrateTechnologiesStats = (savedTechnologies: any[]): any[] => {
   return savedTechnologies.map((tech) => {
-    // Znajdź szablon technologii
     const template = initialTechnologies.find((it) => it.id === tech.id) || {};
 
     return {
-      ...template, // Wartości domyślne z szablonu
-      ...tech, // Nadpisujemy wartościami z zapisanego stanu
+      ...template,
+      ...tech,
       name: template.name || tech.name,
       description: template.description || tech.description,
       researchCost: template.researchCost || tech.researchCost,
@@ -300,50 +286,41 @@ const migrateTechnologiesStats = (savedTechnologies: any[]): any[] => {
 };
 
 const migrateFactionsStats = (savedFactions: any[]): any[] => {
-  // Jeśli brak jakichkolwiek danych o frakcjach, zwróć początkowy stan
   if (!savedFactions || !Array.isArray(savedFactions)) {
     return initialFactions.map((f) => ({ ...f }));
   }
 
-  // Stwórz mapę istniejących frakcji do łatwiejszego łączenia
   const savedFactionsMap = new Map(savedFactions.map((f) => [f.id, f]));
 
   return initialFactions.map((template) => {
     const savedFaction = savedFactionsMap.get(template.id) || {};
 
-    // Połącz właściwości zachowując progres gracza
     return {
       id: template.id,
-      name: template.name, // Zawsze używaj nazwy z szablonu
+      name: template.name,
       description: template.description,
       loyalty: savedFaction.loyalty || template.loyalty || 0,
       hostility: savedFaction.hostility || template.hostility || 0,
       maxLoyalty: savedFaction.maxLoyalty || template.maxLoyalty || 100,
       bonuses: mergeBonuses(template.bonuses, savedFaction.bonuses),
-      // Dodaj inne właściwości według potrzeb
     };
   });
 };
 
 const mergeBonuses = (templateBonuses: any[], savedBonuses: any[] = []) => {
-  // 1. Stwórz mapę bonusów z szablonu
   const bonusMap = new Map(templateBonuses.map((b) => [b.name, { ...b }]));
 
-  // 2. Zaktualizuj bonusy danymi z zapisu
   savedBonuses.forEach((savedBonus) => {
     const existing = bonusMap.get(savedBonus.name);
     if (existing) {
-      // 3. Scal właściwości zachowując wartości z zapisu
       bonusMap.set(savedBonus.name, {
         ...existing,
         ...savedBonus,
-        // Specjalna obsługa progresu (np. odblokowane bonusy)
         unlocked: savedBonus.unlocked || existing.unlocked,
       });
     }
   });
 
-  // 4. Zwróć połączoną listę w kolejności z szablonu
   return templateBonuses.map(
     (templateBonus) => bonusMap.get(templateBonus.name) || templateBonus
   );
@@ -354,11 +331,9 @@ const migrateResources = (
 ): Record<string, any> => {
   const migratedResources: Record<string, any> = {};
 
-  // Iterujemy po wszystkich zasobach z initialState
   Object.entries(initialState.resources).forEach(([key, defaultResource]) => {
     const savedResource = savedResources[key as keyof ResourceData];
 
-    // Łączymy domyślne wartości z zapisanymi (jeśli istnieją)
     migratedResources[key] = {
       ...defaultResource,
       ...savedResource,

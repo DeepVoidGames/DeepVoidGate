@@ -18,14 +18,14 @@ export const GlobalChat = () => {
     try {
       await sendMessage(input.trim());
       setInput("");
-      setError(null); // wyczyść błąd po udanym wysłaniu
+      setError(null); // clear error after successful sending
     } catch (err) {
-      // Załóżmy, że err.message zawiera komunikat z serwera
+      // Let's assume that err.message contains a message from the server
       setError((err as Error).message || "Failed to send message");
     }
   };
 
-  // Automatyczne ukrycie błędu po 5 sekundach
+  // Automatically hide error after 5 seconds
   useEffect(() => {
     if (!error) return;
     const timer = setTimeout(() => setError(null), 5000);
@@ -54,7 +54,7 @@ export const GlobalChat = () => {
 
   return (
     <>
-      {/* Ikona do otwierania */}
+      {/* Icon to open */}
       {!isOpen && (
         <button
           onClick={() => setIsOpen(true)}
@@ -65,7 +65,7 @@ export const GlobalChat = () => {
         </button>
       )}
 
-      {/* Okno czatu */}
+      {/* Chat window */}
       {isOpen && (
         <div className="fixed md:bottom-4 bottom-20 right-4 w-80 bg-card rounded-lg shadow-xl border border-border z-50 animate-in slide-in-from-bottom-8">
           <div className="flex justify-between items-center p-4 border-b border-border">
@@ -97,7 +97,7 @@ export const GlobalChat = () => {
               <div ref={messagesEndRef} />
             </div>
 
-            {/* Komunikat błędu */}
+            {/* Error message */}
             {error && (
               <div className="mb-2 p-2 bg-red-600 text-white rounded text-sm">
                 {error}

@@ -32,10 +32,6 @@ import {
 import { ResourceType } from "@/types/resource";
 import { getDominantFactionTheme } from "@/store/reducers/factionsReducer";
 
-// Centralna konfiguracja budynków
-//TODO Przenisnie tego do osobnego pliku najlepiej data/buildings.json
-
-// Konfiguracja kategorii
 const categories: BuildingCategories[] = [
   {
     id: "production" as BuildingCategory,
@@ -144,27 +140,26 @@ export const BuildingManager: React.FC = () => {
           "science",
         ];
 
-        // Pobierz indeksy wg kolejności zasobów z pola 'tag'
+        // Get indexes by resource order from 'tag' field
         const getOrderIndex = (building: typeof a) => {
           const index = resourceOrder.indexOf(building.tag as BuildingTags);
-          return index === -1 ? Infinity : index; // Nieznane tagi na koniec
+          return index === -1 ? Infinity : index; // Unknown tags at the end
         };
 
         const aIndex = getOrderIndex(a);
         const bIndex = getOrderIndex(b);
 
-        // 1. Sortowanie główne - kolejność zasobów
+        // 1. Main Sorting - Resource Order
         if (aIndex !== bIndex) return aIndex - bIndex;
 
-        // 2. Sortowanie wewnątrz grupy - po produkcji właściwego zasobu
+        // 2. Sorting within the group - after the production of the appropriate resource
         const getProduction = (building: typeof a) => {
           return building.baseProduction?.[building.tag as ResourceType] || 0;
         };
 
-        return getProduction(b) - getProduction(a); // Sortuj malejąco
+        return getProduction(b) - getProduction(a);
       }
 
-      // Domyślne sortowanie alfabetyczne po type
       return a.type.localeCompare(b.type);
     });
 

@@ -3,15 +3,15 @@ import { client } from "./AuthContext";
 import { GameState } from "@/types/gameState";
 
 /**
- * Zapisuje stan gry do chmury przy użyciu Nakama storage API.
+ * Saves the game state to the cloud using the Nakama storage API.
  *
- * Przesyła bieżący `gameState` do kolekcji "saves" pod kluczem "savegame".
- * W przypadku błędu zapisuje go w konsoli i ponownie wyrzuca wyjątek.
+ * Uploads the current `gameState` to the "saves" collection under the key "savegame".
+ * In case of an error, it logs the error to the console and rethrows the exception.
  *
- * @param session - Obiekt sesji użytkownika zalogowanego w Nakama.
- * @param gameState - Obiekt reprezentujący aktualny stan gry do zapisania.
+ * @param session - The user session object logged into Nakama.
+ * @param gameState - The object representing the current game state to be saved.
  *
- * @throws Wyrzuca błąd, jeśli zapis do chmury się nie powiedzie.
+ * @throws Throws an error if the cloud save operation fails.
  */
 export async function cloudSaveGameState(
   session: Session,

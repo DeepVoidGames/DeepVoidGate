@@ -86,7 +86,7 @@ function ExpeditionCard({
           />
         </div>
 
-        {/* Nagrody */}
+        {/* Awards */}
         {expedition.rewards && Object.keys(expedition.rewards).length > 0 && (
           <div className="p-2 sm:p-4 rounded-lg">
             <h4 className="font-medium flex items-center gap-2 mb-1 sm:mb-2 text-sm sm:text-base">
@@ -186,7 +186,7 @@ function ExpeditionCard({
           })}
       </CardContent>
 
-      {/* Przyciski akcji */}
+      {/* Action buttons */}
       {expedition.status === "preparing" && (
         <CardFooter className="flex flex-col sm:flex-row gap-2 pt-2 sm:pt-4 px-3 sm:px-6">
           <Button

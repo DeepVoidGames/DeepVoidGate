@@ -17,7 +17,7 @@ class BuildingAnalyzer:
 
 
     def generate_data(self):
-        """Generuje dane dla wszystkich budynków zgodnie z formułą z gry"""
+        """Generates data for all buildings according to the game formula"""
         for building in self.buildings:
             building_data = []
             max_tier = building.get("maxTier", MAX_TIERS)
@@ -66,7 +66,7 @@ class BuildingAnalyzer:
         return self
 
     def _calculate_costs(self, building: Dict[str, Any], tier: int, upgrade: int) -> Dict[str, float]:
-        """Oblicza koszty zgodnie z formułą z gry: baseCost * costMultiplier^tier * (1 + 0.1 * upgrade)"""
+        """Calculates costs according to the game formula: baseCost * cost Multiplier^tier * (1 + 0.1 * upgrade)"""
         costs = {}
         for resource in RESOURCE_TYPES:
             base_cost = building.get("baseCost", {}).get(resource, 0)
@@ -84,7 +84,7 @@ class BuildingAnalyzer:
         return costs
 
     def _get_current_cost(self, building: Dict[str, Any], tier: int, upgrade: int) -> Dict[str, float]:
-        """Pobiera aktualny koszt ulepszenia zgodnie z formułą z gry"""
+        """Gets the current upgrade cost according to the in-game formula"""
         return {
             r: math.floor(
                 building["baseCost"].get(r, 0) * 
@@ -96,7 +96,7 @@ class BuildingAnalyzer:
         }
 
     def plot_separate_production_and_costs(self):
-        """Tworzy osobne wykresy produkcji i kosztów z markerami co 10 poziomów i podsumowaniami kosztów"""
+        """Creates separate production and cost charts with markers every 10 levels and cost summaries"""
         buildings = self.all_data["building"].unique()
         if len(buildings) == 0:
             print("Brak danych do wyświetlenia")
@@ -215,7 +215,7 @@ class BuildingAnalyzer:
         plt.show()
 
     def simulate_development(self, steps=100, energy_critical=50):
-        """Symulacja rozwoju z poprawionymi obliczeniami kosztów"""
+        """Development simulation with improved cost calculations"""
         simulation_data = {b["type"]: {
             "tier": 1,
             "upgrade": 0,
@@ -286,7 +286,6 @@ class BuildingAnalyzer:
             for r, v in resources.items():
                 print(f"{r}: {v:.2f}")
 
-# Przykład użycia
 if __name__ == "__main__":
     building_config = json.loads(open("buildings/p_food.json").read())
     

@@ -1,4 +1,3 @@
-// expeditionReducer.ts
 import { generateId } from "../initialData";
 import {
   Expedition,
@@ -20,12 +19,12 @@ import { GameState } from "@/types/gameState";
 import { ResourceType } from "@/types/resource";
 import { Technology } from "@/types/technology";
 
-// Stałe
-export const BASE_EXPEDITION_TIME = 15; // 30 minut dla tier 0
-export const TIME_PER_TIER = 15; // +15 minut na każdy tier
-export const CREW_PER_TIER = 5; // +5 załogant na każdy tier
-export const EVENT_INTERVAL = 10; // zdarzenie co 10 minut
-export const TIER_MULTIPLIER = 1.5; // mnożnik dla nagród za każdy tier
+// Constants for expedition calculations
+export const BASE_EXPEDITION_TIME = 15; // 15m for the first tier
+export const TIME_PER_TIER = 15; // 15m for each additional tier
+export const CREW_PER_TIER = 5; //  5 crew members required for the first tier, increases by 5 for each additional tier
+export const EVENT_INTERVAL = 10; // 10 minutes between events
+export const TIER_MULTIPLIER = 1.5; //  1.5x multiplier for each tier of expedition
 
 const BASE_REWARDS: Record<ExpeditionType, ResourceAmount> = {
   mining: { metals: 5000 },
@@ -33,13 +32,13 @@ const BASE_REWARDS: Record<ExpeditionType, ResourceAmount> = {
 };
 
 /**
- * Oblicza bazową nagrodę za ekspedycję danego typu i tieru.
+ * Calculates the base reward for an expedition of a given type and tier.
  *
- * Nagroda jest skalowana wykładniczo na podstawie tieru ekspedycji z użyciem stałej `TIER_MULTIPLIER`.
+ * The reward is scaled exponentially based on the expedition tier using the `TIER_MULTIPLIER` constant.
  *
- * @param type - Typ ekspedycji (np. planetary, cosmic).
- * @param tier - Tier ekspedycji (0+), wpływa na skalowanie nagrody.
- * @returns Obiekt zawierający ilości nagród (zasobów) przypisanych do ekspedycji.
+ * @param type - The type of expedition (e.g., planetary, cosmic).
+ * @param tier - The expedition tier (0+), which affects reward scaling.
+ * @returns An object containing the amounts of rewards (resources) assigned to the expedition.
  */
 export const getBaseExpeditionReward = (
   type: ExpeditionType,
@@ -58,13 +57,16 @@ export const getBaseExpeditionReward = (
 };
 
 /**
- * Zwraca oczekiwany zakres nagród za ekspedycję danego typu i tieru.
+ * Returns the expected range of rewards for an expedition of a given type and tier.
  *
- * Bazuje na nagrodzie podstawowej, zwracając dodatkowo minimalne (0×) i maksymalne (3×) możliwe wartości nagród.
+ * Based on the base reward, it additionally returns the minimum (0×) and maximum (3×) possible reward values.
  *
- * @param type - Typ ekspedycji (np. planetary, cosmic).
- * @param tier - Tier ekspedycji (0+), wpływa na wysokość nagród.
- * @returns Obiekt z bazowymi, minimalnymi i maksymalnymi możliwymi nagrodami za ekspedycję.
+ * - The base reward is multiplied by 0 (minimum), 1 (base), and 3 (maximum).
+ * - The return value includes three objects: `minReward`, `baseReward`, and `maxReward`, each containing resource amounts.
+ *
+ * @param type - The type of expedition (e.g., 'planetary', 'cosmic').
+ * @param tier - The expedition tier (integer ≥ 0), which affects reward amounts.
+ * @returns An object with three properties: `minReward`, `baseReward`, `maxReward`, each an object with resources and their amounts.
  */
 export const getExpectedExpeditionRewards = (
   type: ExpeditionType,
@@ -83,13 +85,13 @@ export const getExpectedExpeditionRewards = (
 };
 
 /**
- * Zwraca aktualne nagrody za trwającą ekspedycję.
+ * Returns the current rewards for an ongoing expedition.
  *
- * Łączy bazowe nagrody wynikające z typu i tieru ekspedycji z aktualnie zapisanymi nagrodami ekspedycji.
- * Jeśli ekspedycja miała modyfikatory (np. z wydarzeń), są one uwzględnione w `expedition.rewards`.
+ * Combines the base rewards based on the expedition's type and tier with the currently saved expedition rewards.
+ * If the expedition had modifiers (e.g., from events), they are included in `expedition.rewards`.
  *
- * @param expedition - Obiekt reprezentujący ekspedycję.
- * @returns Łączne nagrody (bazowe + zmodyfikowane) jako mapę zasobów.
+ * @param expedition - The object representing the expedition.
+ * @returns The total rewards (base + modified) as a resource map.
  */
 export const getCurrentExpeditionRewards = (
   expedition: Expedition
@@ -101,18 +103,18 @@ export const getCurrentExpeditionRewards = (
 };
 
 /**
- * Zwraca listę technologii możliwych do odkrycia w trakcie ekspedycji naukowej.
+ * Returns a list of technologies that can be discovered during a scientific expedition.
  *
- * Funkcja filtruje technologie, które:
- * - nie zostały jeszcze odkryte (`!tech.isResearched`),
- * - są zablokowane (`tech.locked === true`),
- * - mają wszystkie wymagania wstępne (`prerequisites`) spełnione przez już odkryte technologie.
+ * The function filters technologies that:
+ * - have not yet been researched (`!tech.isResearched`),
+ * - are locked (`tech.locked === true`),
+ * - have all prerequisite technologies met (`prerequisites`) by already researched technologies.
  *
- * Działa tylko dla ekspedycji typu `"scientific"`, w przeciwnym razie zwraca pustą tablicę.
+ * Works only for expeditions of type `"scientific"`, otherwise returns an empty array.
  *
- * @param type - Typ ekspedycji (np. "scientific").
- * @param technologies - Lista wszystkich technologii w grze.
- * @returns Tablica możliwych do odkrycia technologii.
+ * @param type - The expedition type (e.g., "scientific").
+ * @param technologies - The list of all technologies in the game.
+ * @returns An array of technologies that can be discovered.
  */
 export const getPossibleTechnologies = (
   type: ExpeditionType,
@@ -132,15 +134,15 @@ export const getPossibleTechnologies = (
 };
 
 /**
- * Oblicza nagrodę za ekspedycję na podstawie jej typu i poziomu.
+ * Calculates the reward for an expedition based on its type and tier.
  *
- * Nagroda jest obliczana na podstawie bazowej wartości zasobów dla danego typu i poziomu ekspedycji,
- * z losowym współczynnikiem mnożącym wynik w zakresie od 0.2 do 2.0.
- * Nagroda dla każdego zasobu nie może być mniejsza niż 20% bazowej wartości.
+ * The reward is computed from the base resource values for the given expedition type and tier,
+ * with a random multiplier ranging from 0.2 to 2.0 applied.
+ * The reward for each resource cannot be less than 20% of the base value.
  *
- * @param type - Typ ekspedycji (np. "scientific", "planetary").
- * @param tier - Poziom ekspedycji, który wpływa na bazową wartość nagrody.
- * @returns Obiekt `ResourceAmount` zawierający nagrody w zasobach (np. `oxygen`, `water`).
+ * @param type - The type of expedition (e.g., "scientific", "planetary").
+ * @param tier - The expedition tier, which affects the base reward value.
+ * @returns A `ResourceAmount` object containing the resource rewards (e.g., `oxygen`, `water`).
  */
 export const calculateReward = (
   type: ExpeditionType,
@@ -163,14 +165,14 @@ export const calculateReward = (
 };
 
 /**
- * Formatuje nagrody w zasobach dla interfejsu użytkownika.
+ * Formats resource rewards for UI display.
  *
- * Ta funkcja przyjmuje obiekt `rewards` zawierający zasoby i ich ilości,
- * filtruje zasoby z ilościami większymi niż zero oraz formatuje ilości
- * zasobów do postaci tekstowej (z użyciem `toLocaleString()`).
+ * This function takes a `rewards` object containing resource types and their amounts,
+ * filters out resources with amounts greater than zero, and formats the amounts
+ * as localized strings using `toLocaleString()`.
  *
- * @param rewards - Obiekt zawierający zasoby i ich ilości.
- * @returns Tablica obiektów zawierających typ zasobu oraz sformatowaną ilość zasobu.
+ * @param rewards - An object containing resources and their amounts.
+ * @returns An array of objects, each containing the resource type and the formatted amount as a string.
  */
 export const formatRewardsForUI = (rewards: ResourceAmount) => {
   return (
@@ -185,15 +187,15 @@ export const formatRewardsForUI = (rewards: ResourceAmount) => {
 };
 
 /**
- * Przetwarza nagrody z ekspedycji i aktualizuje stan gry.
+ * Processes expedition rewards and updates the game state.
  *
- * Ta funkcja sprawdza, czy nagrody zostały już przyznane w ramach ekspedycji,
- * a następnie dodaje nagrody do zasobów gracza. Dodatkowo przetwarza technologie,
- * załogantów, artefakty i frakcje związane z typem ekspedycji.
+ * This function checks if the rewards have already been granted for the expedition,
+ * then adds the rewards to the player's resources. Additionally, it processes technologies,
+ * crew members, artifacts, and factions related to the expedition type.
  *
- * @param expedition - Ekspedycja, z której pochodzą nagrody.
- * @param state - Obecny stan gry, który zostanie zaktualizowany na podstawie nagród z ekspedycji.
- * @returns Zaktualizowany stan gry po przyznaniu nagród z ekspedycji.
+ * @param expedition - The expedition from which the rewards originate.
+ * @param state - The current game state to be updated based on the expedition rewards.
+ * @returns The updated game state after applying the expedition rewards.
  */
 const getReward = (expedition: Expedition, state: GameState): GameState => {
   let newState = { ...state };
@@ -313,16 +315,15 @@ const getReward = (expedition: Expedition, state: GameState): GameState => {
 };
 
 /**
- * Oblicza czas trwania ekspedycji na podstawie poziomu i stanu gry.
+ * Calculates the duration of an expedition based on its tier and the game state.
  *
- * Czas trwania ekspedycji zależy od poziomu ekspedycji (`tier`) oraz artefaktów,
- * które mogą skrócić ten czas, np. "Time Crystal". Jeśli artefakt "Time Crystal"
- * jest odblokowany, czas trwania zostaje zmniejszony o określony procent na
- * podstawie liczby gwiazdek artefaktu.
+ * The expedition duration depends on the expedition tier and artifacts that may reduce this time,
+ * such as the "Time Crystal." If the "Time Crystal" artifact is unlocked, the duration is decreased
+ * by a certain percentage based on the number of stars the artifact has.
  *
- * @param tier - Poziom ekspedycji, który wpływa na czas trwania.
- * @param state - Obecny stan gry, zawierający informacje o artefaktach.
- * @returns Czas trwania ekspedycji w jednostkach czasu (np. sekundach).
+ * @param tier - The expedition tier affecting the duration.
+ * @param state - The current game state containing information about artifacts.
+ * @returns The duration of the expedition in time units (e.g., seconds).
  */
 export const calculateExpeditionDuration = (
   tier: number,
@@ -338,31 +339,30 @@ export const calculateExpeditionDuration = (
 };
 
 /**
- * Oblicza wymaganą liczbę załogantów na podstawie poziomu ekspedycji.
+ * Calculates the required number of crew members based on the expedition tier.
  *
- * Liczba załogantów jest obliczana na podstawie stałej wartości `CREW_PER_TIER`
- * oraz poziomu ekspedycji (`tier`). Wzrost liczby załogantów jest proporcjonalny
- * do poziomu ekspedycji.
+ * The number of crew members is calculated using the constant `CREW_PER_TIER`
+ * multiplied by the expedition tier (`tier`). The required crew increases
+ * proportionally with the expedition tier.
  *
- * @param tier - Poziom ekspedycji, który wpływa na liczbę wymaganych załogantów.
- * @returns Wymagana liczba załogantów dla podanego poziomu ekspedycji.
+ * @param tier - The expedition tier influencing the required crew size.
+ * @returns The required number of crew members for the given expedition tier.
  */
 export const calculateRequiredCrew = (tier: number): number => {
   return CREW_PER_TIER + tier * CREW_PER_TIER;
 };
 
 /**
- * Wybiera losowe wydarzenie dla ekspedycji, biorąc pod uwagę typ ekspedycji,
- * poziom oraz wagę wydarzeń.
+ * Selects a random event for an expedition considering its type, tier, and event weights.
  *
- * Filtruje dostępne wydarzenia na podstawie typu ekspedycji i poziomu (tier),
- * a następnie wybiera jedno z nich w sposób ważony. Wybór wydarzenia jest
- * uzależniony od określonego typu ekspedycji, poziomu ekspedycji, oraz wagi
- * przypisanej do każdego wydarzenia.
+ * Filters available events based on the expedition type and tier,
+ * then selects one event randomly with weighted probability.
+ * The selection depends on the expedition’s type, tier, and
+ * the weight assigned to each event.
  *
- * @param expedition - Obiekt reprezentujący ekspedycję, dla której generowane
- * wydarzenie (zawiera typ i poziom ekspedycji).
- * @returns Wylosowane wydarzenie pasujące do filtrów, w tym losowe na podstawie wagi.
+ * @param expedition - The expedition object for which the event is generated
+ * (includes expedition type and tier).
+ * @returns A randomly selected event matching the filters, chosen based on weights.
  */
 const getRandomEvent = (expedition: Expedition): ExpeditionEvent => {
   const possibleEvents = expeditionEvents.filter((event) => {
@@ -398,18 +398,17 @@ const getRandomEvent = (expedition: Expedition): ExpeditionEvent => {
 };
 
 /**
- * Zastosowuje efekty wydarzeń do ekspedycji oraz stanu gry.
+ * Applies event effects to the expedition and game state.
  *
- * Funkcja przetwarza efekty z listy, które mogą wpływać na czas trwania ekspedycji,
- * zasoby, liczbę członków załogi, nagrody, odkrywanie technologii, lub status
- * ekspedycji. Efekty są aplikowane na podstawie ich typu, a odpowiednie zmiany są
- * wprowadzane do ekspedycji i stanu gry.
+ * Processes a list of effects that may impact expedition duration,
+ * resources, crew size, rewards, technology discoveries, or expedition status.
+ * Effects are applied based on their type, and appropriate changes are made
+ * to both the expedition and game state.
  *
- * @param effects - Lista efektów, które mają zostać zastosowane na ekspedycji.
- * @param expedition - Obiekt reprezentujący ekspedycję, do której stosowane będą efekty.
- * @param state - Obiekt reprezentujący aktualny stan gry, który będzie aktualizowany
- * na podstawie efektów.
- * @returns Obiekt zawierający zaktualizowaną ekspedycję oraz stan gry.
+ * @param effects - List of effects to be applied to the expedition.
+ * @param expedition - The expedition object to which effects will be applied.
+ * @param state - The current game state object that will be updated based on effects.
+ * @returns An object containing the updated expedition and game state.
  */
 const applyEventEffects = (
   effects: ExpeditionEventEffect[],
@@ -511,20 +510,20 @@ const applyEventEffects = (
 };
 
 /**
- * Rozpoczyna nową ekspedycję, sprawdzając, czy gracz ma wystarczającą liczbę dostępnych kolonistów,
- * a następnie aktualizuje stan gry w zależności od wyniku.
+ * Starts a new expedition after checking if the player has enough available colonists,
+ * then updates the game state based on the outcome.
  *
- * Funkcja wykonuje następujące operacje:
- * - Sprawdza, czy gracz ma wystarczającą liczbę dostępnych kolonistów do wysłania na ekspedycję.
- * - Jeśli liczba kolonistów jest niewystarczająca, wyświetla komunikat o błędzie.
- * - Oblicza wymagany czas trwania ekspedycji oraz nagrody.
- * - Tworzy nowy obiekt ekspedycji i dodaje go do stanu gry.
- * - Zmniejsza liczbę dostępnych kolonistów w populacji.
+ * The function performs the following operations:
+ * - Checks if the player has enough available colonists to send on the expedition.
+ * - If the number of colonists is insufficient, displays an error message.
+ * - Calculates the required expedition duration and rewards.
+ * - Creates a new expedition object and adds it to the game state.
+ * - Decreases the number of available colonists in the population.
  *
- * @param state - Obiekt reprezentujący aktualny stan gry.
- * @param type - Typ ekspedycji, która ma zostać rozpoczęta.
- * @param tier - Tier ekspedycji, który określa jej trudność oraz nagrody.
- * @returns Zaktualizowany stan gry po rozpoczęciu ekspedycji.
+ * @param state - The object representing the current game state.
+ * @param type - The type of expedition to start.
+ * @param tier - The expedition tier, defining its difficulty and rewards.
+ * @returns The updated game state after starting the expedition.
  */
 export const startExpedition = (
   state: GameState,
@@ -567,19 +566,19 @@ export const startExpedition = (
 };
 
 /**
- * Rozpoczyna ekspedycję, zmieniając jej status na "in_progress" jeśli jest w stanie "preparing".
- * Jeśli ekspedycja nie jest w stanie "preparing", funkcja nic nie zmienia.
+ * Starts an expedition by changing its status to "in_progress" if it is currently "preparing".
+ * If the expedition is not in the "preparing" state, the function makes no changes.
  *
- * Funkcja wykonuje następujące operacje:
- * - Sprawdza, czy ekspedycja o podanym ID istnieje w stanie gry.
- * - Jeśli ekspedycja nie jest w stanie "preparing", funkcja nic nie zmienia.
- * - Zmienia status ekspedycji na "in_progress".
- * - Aktualizuje listę ekspedycji w stanie gry.
- * - Wyświetla komunikat o rozpoczęciu ekspedycji.
+ * The function performs the following operations:
+ * - Checks if the expedition with the given ID exists in the game state.
+ * - If the expedition is not in "preparing" state, no changes are made.
+ * - Changes the expedition status to "in_progress".
+ * - Updates the expedition list in the game state.
+ * - Displays a message about the expedition start.
  *
- * @param state - Obiekt reprezentujący aktualny stan gry.
- * @param expeditionId - ID ekspedycji, którą gracz chce uruchomić.
- * @returns Zaktualizowany stan gry z rozpoczętą ekspedycją.
+ * @param state - The object representing the current game state.
+ * @param expeditionId - The ID of the expedition the player wants to start.
+ * @returns The updated game state with the expedition started.
  */
 export const launchExpedition = (
   state: GameState,
@@ -613,21 +612,20 @@ export const launchExpedition = (
 };
 
 /**
- * Aktualizuje stan ekspedycji w grze na podstawie upływu czasu (deltaTime).
- * Zajmuje się zarówno aktualizacją czasu trwania ekspedycji, jak i obsługą zdarzeń,
- * a także przetwarzaniem zakończonych ekspedycji.
+ * Updates the state of expeditions in the game based on elapsed time (deltaTime).
+ * Handles updating expedition duration, event processing, and completed expeditions.
  *
- * Funkcja wykonuje następujące operacje:
- * - Iteruje przez wszystkie aktywne ekspedycje, aktualizując ich stan.
- * - Dla ekspedycji w stanie "in_progress" aktualizuje czas trwania i sprawdza, czy wystąpiły nowe zdarzenia.
- * - Sprawdza, czy ekspedycja osiągnęła pełny czas trwania i zmienia jej status na "completed".
- * - Dodaje nowe wydarzenie do ekspedycji, gdy minął wymagany czas.
- * - Przetwarza zakończone ekspedycje, przyznając nagrody, jeśli nie zostały one jeszcze przyznane.
- * - Usuwa zakończone ekspedycje z listy po upływie minuty, dla efektu wizualnego.
+ * The function performs the following operations:
+ * - Iterates through all active expeditions, updating their state.
+ * - For expeditions in "in_progress" status, updates elapsed time and checks for new events.
+ * - Checks if the expedition has reached its full duration and changes its status to "completed".
+ * - Adds new events to expeditions when required time has passed.
+ * - Processes completed expeditions by awarding rewards if not yet granted.
+ * - Removes completed expeditions from the list after one minute for visual effect.
  *
- * @param state - Obiekt reprezentujący aktualny stan gry.
- * @param deltaTime - Czas, który upłynął od ostatniego update'u, wyrażony w sekundach.
- * @returns Zaktualizowany stan gry po przetworzeniu wszystkich ekspedycji.
+ * @param state - The object representing the current game state.
+ * @param deltaTime - Time elapsed since the last update, expressed in seconds.
+ * @returns The updated game state after processing all expeditions.
  */
 export const handleExpeditionTick = (
   state: GameState,
@@ -730,22 +728,22 @@ export const handleExpeditionTick = (
 };
 
 /**
- * Obsługuje wybór opcji w zdarzeniu ekspedycji przez gracza.
- * Zaktualizowuje stan ekspedycji i gry na podstawie wybranej opcji,
- * stosując efekty związane z tą opcją.
+ * Handles the player's choice of option in an expedition event.
+ * Updates the expedition and game state based on the selected option,
+ * applying effects associated with that option.
  *
- * Funkcja wykonuje następujące operacje:
- * - Wyszukuje ekspedycję w stanie gry na podstawie jej identyfikatora.
- * - Sprawdza, czy zdarzenie istnieje oraz czy wybrana opcja jest prawidłowa.
- * - Zastosowuje efekty wybranej opcji na ekspedycji i stanie gry.
- * - Zaktualizowuje log zdarzeń ekspedycji, zaznaczając wybraną opcję.
- * - Zwraca zaktualizowany stan gry z nowymi danymi o ekspedycji.
+ * The function performs the following operations:
+ * - Finds the expedition in the game state by its identifier.
+ * - Checks if the event exists and if the selected option is valid.
+ * - Applies the effects of the chosen option to the expedition and game state.
+ * - Updates the expedition's event log, marking the selected option.
+ * - Returns the updated game state with new expedition data.
  *
- * @param state - Obiekt reprezentujący aktualny stan gry.
- * @param expeditionId - Identyfikator ekspedycji, której zdarzenie zostało wybrane.
- * @param eventIndex - Indeks wybranego zdarzenia w ramach ekspedycji.
- * @param optionIndex - Indeks wybranej opcji w ramach zdarzenia.
- * @returns Zaktualizowany stan gry po przetworzeniu wyboru opcji w zdarzeniu.
+ * @param state - The object representing the current game state.
+ * @param expeditionId - The identifier of the expedition whose event was selected.
+ * @param eventIndex - The index of the selected event within the expedition.
+ * @param optionIndex - The index of the selected option within the event.
+ * @returns The updated game state after processing the event option choice.
  */
 export const handleExpeditionEventChoice = (
   state: GameState,
@@ -801,18 +799,18 @@ export const handleExpeditionEventChoice = (
 };
 
 /**
- * Anuluje ekspedycję, zwracając załogantów do dostępnej puli.
- * Ekspedycja musi być w stanie "preparing", aby mogła zostać anulowana.
+ * Cancels an expedition, returning crew members to the available pool.
+ * The expedition must be in the "preparing" state to be canceled.
  *
- * Funkcja wykonuje następujące operacje:
- * - Sprawdza, czy ekspedycja o podanym identyfikatorze istnieje w stanie gry.
- * - Jeśli ekspedycja jest w stanie "preparing", zwraca załogantów do dostępnych.
- * - Usuwa ekspedycję z listy.
- * - Zwraca zaktualizowany stan gry z usuniętą ekspedycją i zaktualizowaną liczbą dostępnych załogantów.
+ * The function performs the following operations:
+ * - Checks if the expedition with the given identifier exists in the game state.
+ * - If the expedition is in the "preparing" state, returns crew members to available.
+ * - Removes the expedition from the list.
+ * - Returns the updated game state with the expedition removed and updated available crew count.
  *
- * @param state - Obiekt reprezentujący aktualny stan gry.
- * @param expeditionId - Identyfikator ekspedycji, którą chcemy anulować.
- * @returns Zaktualizowany stan gry po anulowaniu ekspedycji.
+ * @param state - The object representing the current game state.
+ * @param expeditionId - The identifier of the expedition to be canceled.
+ * @returns The updated game state after canceling the expedition.
  */
 export const cancelExpedition = (
   state: GameState,
@@ -849,11 +847,11 @@ export const cancelExpedition = (
 };
 
 /**
- * Sprawdza, czy ekspedycja jest odblokowana na podstawie technologii "advanced_hub_integration".
- * Ekspedycja jest odblokowana, jeśli technologia o identyfikatorze "advanced_hub_integration" została zbadana.
+ * Checks if the expedition is unlocked based on the "advanced_hub_integration" technology.
+ * The expedition is unlocked if the technology with the ID "advanced_hub_integration" has been researched.
  *
- * @param state - Obiekt reprezentujący aktualny stan gry.
- * @returns `true` jeśli technologia "advanced_hub_integration" została zbadana, w przeciwnym razie `false`.
+ * @param state - The object representing the current game state.
+ * @returns `true` if the "advanced_hub_integration" technology has been researched, otherwise `false`.
  */
 export const isExpedtionUnlocked = (state) => {
   return state.technologies.some(

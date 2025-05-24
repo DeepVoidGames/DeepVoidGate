@@ -17,9 +17,9 @@ const NotFound = () => {
   return (
     <div className="min-h-screen bg-gradient-to-b from-background to-background/90 flex items-center justify-center p-4">
       <div className="glass-panel p-8 max-w-md text-center animate-scale-in">
-        <h1 className="text-6xl font-bold mb-4 text-transparent bg-clip-text bg-gradient-to-r from-primary to-primary/70">
+        <span className="text-6xl font-bold mb-4 text-transparent bg-clip-text bg-gradient-to-r from-primary to-primary/70">
           404
-        </h1>
+        </span>
         <p className="text-xl text-muted-foreground mb-6">
           Signal lost. This sector of space is uncharted.
         </p>

@@ -74,7 +74,7 @@ function SummaryExpeditionPanel({
                     <span>Rewards:</span>
                     <Info className="w-3 h-3" />
                   </TooltipTrigger>
-                  {/* TooltipContent pozostaje bez zmian */}
+                  {/* TooltipContent remains unchanged */}
                 </Tooltip>
               </div>
               <div className="flex flex-wrap gap-2">

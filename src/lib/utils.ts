@@ -68,11 +68,11 @@ export function formatNumber(num: number): string {
 export type Noise2D = (x: number, y: number) => number;
 
 /**
- * Generator fractal noise dla efektów wizualnych
- * @param width Szerokość generowanej tekstury
- * @param height Wysokość generowanej tekstury
- * @param options Konfiguracja szumu
- * @returns Dwuwymiarowa tablica wartości szumu [0, 1]
+ * Fractal noise generator for visual effects.
+ * @param width Width of the generated texture.
+ * @param height Height of the generated texture.
+ * @param options Noise configuration options.
+ * @returns Two-dimensional array of noise values in the range [0, 1].
  */
 export const generateNoise = (
   width: number,

@@ -2,9 +2,9 @@ import { Session } from "@heroiclabs/nakama-js";
 import { client } from "./AuthContext"; // Twój klient Nakama
 
 /**
- * Aktualizuje Display Name użytkownika w Nakama.
- * @param session - aktualna sesja użytkownika
- * @param displayName - nowa nazwa wyświetlana
+ * Updates the user's Display Name in Nakama.
+ * @param session - current user session
+ * @param displayName - new display name
  */
 export async function updateDisplayName(session: Session, displayName: string) {
   if (!session) throw new Error("User not authenticated");

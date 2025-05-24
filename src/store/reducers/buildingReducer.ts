@@ -11,17 +11,17 @@ import { ResourceType } from "@/types/resource";
 import { Technology } from "@/types/technology";
 
 /**
- * Oblicza efektywność działania budynków na podstawie liczby przypisanych pracowników i dostępności zasobów.
+ * Calculates the efficiency of buildings based on the number of assigned workers and resource availability.
  *
- * - Efektywność pracownicza zależy od liczby przypisanych pracowników względem pojemności (`workerCapacity`),
- *   przy minimalnej efektywności 10%, nawet przy braku pracowników.
- * - Efektywność zasobów zależy od tego, czy wymagane zasoby (`requirements`) są dostępne w wystarczającej ilości.
- * - Budynek przestaje działać (`functioning = false`), jeśli którykolwiek wymagany zasób jest całkowicie niedostępny.
- * - Całkowita efektywność (`efficiency`) to efektywność pracownicza, o ile budynek funkcjonuje, inaczej 0.
+ * - Worker efficiency depends on the ratio of assigned workers to the worker capacity (`workerCapacity`),
+ *   with a minimum efficiency of 10%, even if there are no workers.
+ * - Resource efficiency depends on whether the required resources (`requirements`) are available in sufficient amounts.
+ * - The building stops functioning (`functioning = false`) if any required resource is completely unavailable.
+ * - Total efficiency (`efficiency`) equals the worker efficiency if the building is functioning, otherwise 0.
  *
- * @param buildings - Lista budynków do przeliczenia.
- * @param resources - Aktualny stan zasobów gracza.
- * @returns Nowa lista budynków z przeliczoną efektywnością i statusem działania.
+ * @param buildings - The list of buildings to recalculate.
+ * @param resources - The current state of the player's resources.
+ * @returns A new list of buildings with recalculated efficiency and functioning status.
  */
 export const evaluateBuildingEfficiency = (
   buildings: BuildingData[],
@@ -72,18 +72,18 @@ export const evaluateBuildingEfficiency = (
 };
 
 /**
- * Nakłada efekty aktywnych budynków na stan zasobów, modyfikując ich produkcję, konsumpcję i pojemność.
+ * Applies the effects of active buildings to the resource state, modifying their production, consumption, and capacity.
  *
- * - Resetuje produkcję, konsumpcję i pojemność wszystkich zasobów do wartości bazowych.
- * - Uwzględnia efektywność każdego budynku przy obliczaniu wpływu na zasoby.
- * - Dodaje produkcję i konsumpcję zasobów z `baseProduction` i `baseConsumption`.
- * - Zwiększa pojemność zasobów na podstawie efektów magazynowania (`calculateBuildingStorage`).
- * - Dla budynków osiągających maksymalny tier stosuje unikalne bonusy (`uniqueBonus`).
- * - Produkcja wody jest dodatkowo zwiększana o wartość 10 (na sztywno).
+ * - Resets production, consumption, and capacity of all resources to their base values.
+ * - Considers the efficiency of each building when calculating its impact on resources.
+ * - Adds production and consumption from `baseProduction` and `baseConsumption`.
+ * - Increases resource capacity based on storage effects (`calculateBuildingStorage`).
+ * - Applies unique bonuses (`uniqueBonus`) for buildings at maximum tier.
+ * - Water production is additionally increased by a fixed value of 10.
  *
- * @param buildings - Lista aktywnych budynków gracza.
- * @param resources - Aktualny stan zasobów.
- * @returns Nowy stan zasobów z uwzględnieniem wszystkich efektów budynków.
+ * @param buildings - The list of active player buildings.
+ * @param resources - The current state of resources.
+ * @returns A new resource state with all building effects applied.
  */
 export const updateResourcesByBuildings = (
   buildings: BuildingData[],
@@ -179,20 +179,20 @@ export const updateResourcesByBuildings = (
 };
 
 /**
- * Buduje nowy budynek, sprawdzając wszystkie wymagania, takie jak dostępność technologii, limity instancji i zasoby.
+ * Constructs a new building, checking all requirements such as technology availability, instance limits, and resources.
  *
- * - Sprawdza, czy istnieje szablon budynku dla podanego typu.
- * - Weryfikuje, czy technologia odblokowująca budynek jest dostępna.
- * - Sprawdza, czy nie osiągnięto maksymalnej liczby instancji danego budynku.
- * - Sprawdza, czy gracz posiada wystarczające zasoby do budowy.
- * - Jeśli warunki są spełnione, odejmuje odpowiednią liczbę zasobów, tworzy nowy budynek i dodaje go do listy budynków.
- * - W przeciwnym razie zwraca aktualny stan gry bez zmian.
+ * - Checks if a building template exists for the given type.
+ * - Verifies if the technology unlocking the building is available.
+ * - Checks if the maximum number of instances for the building has not been reached.
+ * - Checks if the player has sufficient resources for construction.
+ * - If conditions are met, subtracts the required resources, creates a new building, and adds it to the building list.
+ * - Otherwise, returns the current game state unchanged.
  *
- * @param buildings - Lista obecnych budynków gracza.
- * @param resources - Stan zasobów gracza.
- * @param buildingType - Typ budynku, który gracz chce zbudować.
- * @param technologies - Lista odblokowanych technologii.
- * @returns Obiekt zawierający zaktualizowaną listę budynków, stan zasobów oraz informację o powodzeniu operacji.
+ * @param buildings - The list of the player's current buildings.
+ * @param resources - The player's resource state.
+ * @param buildingType - The type of building the player wants to construct.
+ * @param technologies - The list of unlocked technologies.
+ * @returns An object containing the updated building list, resource state, and a success flag.
  */
 export const buildNewBuilding = (
   buildings: BuildingData[],
@@ -286,19 +286,19 @@ export const buildNewBuilding = (
 };
 
 /**
- * Ulepsza budynek, sprawdzając dostępność zasobów, maksymalny poziom ulepszenia oraz wymagane koszty.
+ * Upgrades a building by checking resource availability, maximum upgrade level, and required costs.
  *
- * - Wyszukuje budynek po jego identyfikatorze.
- * - Sprawdza, czy budynek istnieje i czy nie osiągnął maksymalnego poziomu ulepszeń.
- * - Oblicza koszt ulepszenia na podstawie obecnego poziomu budynku.
- * - Jeśli gracz ma wystarczające zasoby, odejmuje wymagane zasoby i aktualizuje poziom budynku.
- * - Jeśli budynek osiągnął 10 ulepszeń, przechodzi do wyższego tieru.
- * - Zwraca zaktualizowaną listę budynków, zasoby oraz informację o powodzeniu operacji.
+ * - Finds the building by its identifier.
+ * - Checks if the building exists and has not reached the maximum upgrade level.
+ * - Calculates the upgrade cost based on the building's current level.
+ * - If the player has sufficient resources, deducts the required resources and updates the building level.
+ * - If the building reaches 10 upgrades, it advances to a higher tier.
+ * - Returns the updated building list, resources, and a success flag.
  *
- * @param buildings - Lista budynków gracza.
- * @param resources - Aktualny stan zasobów gracza.
- * @param buildingId - Identyfikator budynku do ulepszenia.
- * @returns Obiekt zawierający zaktualizowaną listę budynków, zasoby oraz informację o powodzeniu operacji.
+ * @param buildings - The player's list of buildings.
+ * @param resources - The current state of the player's resources.
+ * @param buildingId - The identifier of the building to upgrade.
+ * @returns An object containing the updated building list, resources, and a success flag.
  */
 export const upgradeBuildingLevel = (
   buildings: BuildingData[],
@@ -356,15 +356,15 @@ export const upgradeBuildingLevel = (
 };
 
 /**
- * Sprawdza, czy gracz ma wystarczające zasoby do zbudowania budynku o danym typie.
+ * Checks if the player has sufficient resources to build a building of the given type.
  *
- * - Wyszukuje szablon budynku na podstawie podanego typu.
- * - Sprawdza, czy gracz posiada wystarczającą ilość każdego z wymaganych zasobów.
- * - Zwraca `true`, jeśli gracz ma wystarczające zasoby do zbudowania budynku, w przeciwnym razie `false`.
+ * - Finds the building template based on the provided type.
+ * - Checks if the player has enough of each required resource.
+ * - Returns `true` if the player has sufficient resources to build the building, otherwise `false`.
  *
- * @param buildingType - Typ budynku, który gracz chce zbudować.
- * @param resources - Aktualny stan zasobów gracza.
- * @returns `true`, jeśli gracz ma wystarczające zasoby, w przeciwnym razie `false`.
+ * @param buildingType - The type of building the player wants to construct.
+ * @param resources - The current state of the player's resources.
+ * @returns `true` if the player has sufficient resources, otherwise `false`.
  */
 export const canAffordBuildingCost = (
   buildingType: BuildingType,
@@ -388,16 +388,16 @@ export const canAffordBuildingCost = (
 };
 
 /**
- * Sprawdza, czy gracz ma wystarczającą ilość określonego zasobu.
+ * Checks if the player has a sufficient amount of a specified resource.
  *
- * - Wyszukuje zasób o podanym typie w stanie zasobów.
- * - Sprawdza, czy gracz ma wystarczającą ilość tego zasobu.
- * - Zwraca `true`, jeśli gracz posiada wymaganą ilość zasobu, w przeciwnym razie `false`.
+ * - Finds the resource of the given type in the resource state.
+ * - Checks if the player has enough of that resource.
+ * - Returns `true` if the player has the required amount, otherwise `false`.
  *
- * @param resources - Aktualny stan zasobów gracza.
- * @param resourceType - Typ zasobu, który ma zostać sprawdzony.
- * @param amount - Wymagana ilość zasobu.
- * @returns `true`, jeśli gracz ma wystarczającą ilość zasobu, w przeciwnym razie `false`.
+ * @param resources - The current state of the player's resources.
+ * @param resourceType - The type of resource to check.
+ * @param amount - The required amount of the resource.
+ * @returns `true` if the player has a sufficient amount of the resource, otherwise `false`.
  */
 export const canAffordResourceAmount = (
   resources: ResourcesState,
@@ -410,16 +410,16 @@ export const canAffordResourceAmount = (
 };
 
 /**
- * Sprawdza, czy gracz ma wystarczające zasoby i czy budynek może zostać ulepszony.
+ * Checks if the player has sufficient resources and if the building can be upgraded.
  *
- * - Sprawdza, czy budynek osiągnął maksymalny poziom ulepszeń (tier 5 i 10 ulepszeń).
- * - Weryfikuje, czy gracz ma wystarczającą ilość zasobów na ulepszenie budynku.
- * - Zwraca `true`, jeśli budynek może zostać ulepszony, w przeciwnym razie `false`.
+ * - Checks if the building has reached the maximum upgrade level (tier 5 and 10 upgrades).
+ * - Verifies if the player has enough resources to upgrade the building.
+ * - Returns `true` if the building can be upgraded, otherwise `false`.
  *
- * @param building - Budynek, który gracz chce ulepszyć.
- * @param resources - Aktualny stan zasobów gracza.
- * @param costs - Koszty ulepszenia budynku (wymagane zasoby).
- * @returns `true`, jeśli gracz ma wystarczające zasoby do ulepszenia budynku, w przeciwnym razie `false`.
+ * @param building - The building the player wants to upgrade.
+ * @param resources - The current state of the player's resources.
+ * @param costs - The upgrade costs (required resources).
+ * @returns `true` if the player has sufficient resources to upgrade the building, otherwise `false`.
  */
 export const checkBuildingUpgradeAffordability = (
   building: BuildingData,
@@ -433,16 +433,16 @@ export const checkBuildingUpgradeAffordability = (
 };
 
 /**
- * Oblicza produkcję zasobu przez budynek, uwzględniając różne czynniki, takie jak ulepszenia, poziom budynku, efektywność, i kryzys energetyczny.
+ * Calculates the production of a resource by a building, considering various factors such as upgrades, building level, efficiency, and energy crisis.
  *
- * - Uwzględnia podstawową wartość produkcji, mnożniki, poziom budynku, efektywność, oraz bonusy za ulepszenia i unikalne bonusy.
- * - Redukuje produkcję w przypadku kryzysu energetycznego, jeśli budynek zużywa energię.
- * - Zastosowuje funkcje logarytmiczne i pierwiastkowe w celu dostosowania produkcji, aby uniknąć zbyt dużych wartości.
+ * - Takes into account the base production value, multipliers, building level, efficiency, upgrade bonuses, and unique bonuses.
+ * - Reduces production during an energy crisis if the building consumes energy.
+ * - Applies logarithmic and square root functions to adjust production to avoid excessively large values.
  *
- * @param building - Budynek, dla którego obliczana jest produkcja.
- * @param resource - Typ zasobu, którego produkcja ma zostać obliczona.
- * @param resources - Aktualny stan zasobów w grze.
- * @returns Całkowita produkcja zasobu przez budynek uwzględniająca wszystkie czynniki.
+ * @param building - The building for which production is being calculated.
+ * @param resource - The type of resource whose production is to be calculated.
+ * @param resources - The current state of resources in the game.
+ * @returns The total resource production by the building considering all factors.
  */
 export const calculateBuildingResourceProduction = (
   building: BuildingData,
@@ -490,13 +490,13 @@ export const calculateBuildingResourceProduction = (
 };
 
 /**
- * Oblicza koszt ulepszenia budynku, uwzględniając poziom budynku, mnożnik kosztów oraz liczbę ulepszeń.
+ * Calculates the cost of upgrading a building, taking into account the building's level, cost multiplier, and number of upgrades.
  *
- * - Koszt obliczany jest na podstawie podstawowego kosztu budynku, mnożnika kosztów oraz poziomu ulepszeń.
- * - Zastosowane jest podniesienie do potęgi dla uwzględnienia progresji kosztów przy wyższych poziomach.
+ * - The cost is calculated based on the building's base cost, cost multiplier, and current upgrade level.
+ * - Exponential growth is applied to account for cost progression at higher levels.
  *
- * @param building - Budynek, dla którego obliczany jest koszt ulepszenia.
- * @returns Koszt ulepszenia budynku w postaci obiektu, gdzie kluczami są typy zasobów, a wartościami są wymagane ilości tych zasobów.
+ * @param building - The building for which the upgrade cost is being calculated.
+ * @returns The upgrade cost as an object, where keys are resource types and values are the required amounts of those resources.
  */
 export const calculateBuildingUpgradeCost = (
   building: BuildingData
@@ -516,16 +516,16 @@ export const calculateBuildingUpgradeCost = (
 };
 
 /**
- * Oblicza pojemność magazynową dla zasobu w danym budynku, uwzględniając bonusy za poziom budynku, ulepszenia i unikalne bonusy.
+ * Calculates the storage capacity for a resource in a given building, taking into account bonuses from building level, upgrades, and unique bonuses.
  *
- * - Poziom budynku dodaje 30% bonusu za każdy tier.
- * - Ulepszenia budynku dodają 6% bonusu za każde ulepszenie.
- * - Unikalne bonusy są dodawane, jeśli budynek osiągnął maksymalny poziom.
+ * - Each building tier adds a 30% bonus.
+ * - Each upgrade adds a 6% bonus.
+ * - Unique bonuses are applied if the building has reached its maximum level.
  *
- * @param building - Budynek, dla którego obliczany jest bonus magazynowy.
- * @param amount - Początkowa pojemność zasobu.
- * @param resource - Opcjonalny parametr, który pozwala na uwzględnienie bonusu dla konkretnego zasobu.
- * @returns Całkowita pojemność magazynowa uwzględniająca wszystkie bonusy.
+ * @param building - The building for which the storage bonus is being calculated.
+ * @param amount - The base storage capacity of the resource.
+ * @param resource - Optional parameter to include bonuses specific to a particular resource.
+ * @returns The total storage capacity including all applicable bonuses.
  */
 export const calculateCapacityByResource = (
   building: BuildingData,
@@ -544,14 +544,14 @@ export const calculateCapacityByResource = (
 };
 
 /**
- * Oblicza efektywność budynku na podstawie liczby przypisanych pracowników.
+ * Calculates the efficiency of a building based on the number of assigned workers.
  *
- * - Jeśli budynek ma przypisanych pracowników, efektywność jest obliczana na podstawie proporcji pracowników do pojemności.
- * - Jeśli liczba przypisanych pracowników wynosi 0, ustawiana jest minimalna efektywność na poziomie 10%.
- * - Efektywność nie może przekroczyć 100% (1).
+ * - If the building has assigned workers, efficiency is calculated as the ratio of workers to worker capacity.
+ * - If the number of assigned workers is 0, a minimum efficiency of 10% is used.
+ * - Efficiency is capped at 100% (1).
  *
- * @param building - Budynek, dla którego obliczana jest efektywność.
- * @returns Efektywność budynku w zakresie 0.1 - 1.
+ * @param building - The building for which the efficiency is being calculated.
+ * @returns The efficiency of the building, ranging from 0.1 to 1.
  */
 export const calculateWorkerEfficiency = (building: BuildingData) => {
   let workerEfficiency =
@@ -565,13 +565,13 @@ export const calculateWorkerEfficiency = (building: BuildingData) => {
 };
 
 /**
- * Oblicza bonusy magazynowania dla budynku na podstawie jego poziomu, ulepszeń i bonusów.
+ * Calculates storage bonuses for a building based on its level, upgrades, and resource-specific bonuses.
  *
- * - Bonusy magazynowania są obliczane na podstawie poziomu budynku, ulepszeń i bonusów przypisanych do poszczególnych zasobów.
- * - Bonusy są stosowane niezależnie od osiągnięcia maksymalnego poziomu budynku (T5).
+ * - Storage bonuses are derived from the building's tier level, number of upgrades, and any assigned resource-specific bonuses.
+ * - Bonuses are applied regardless of whether the building has reached the maximum tier (T5).
  *
- * @param building - Budynek, dla którego obliczane są bonusy magazynowania.
- * @returns Obiekt zawierający bonusy magazynowania dla poszczególnych zasobów.
+ * @param building - The building for which the storage bonuses are calculated.
+ * @returns An object containing storage bonuses for each resource type.
  */
 export const calculateStorageBonus = (
   building: BuildingData
@@ -594,16 +594,16 @@ export const calculateStorageBonus = (
 };
 
 /**
- * Przypisuje pracowników do budynku, uwzględniając limit pojemności budynku i dostępnych pracowników.
+ * Assigns workers to a building, considering the building's capacity and available worker pool.
  *
- * - Pracownicy są przypisywani do budynku, ale nie mogą przekroczyć pojemności budynku ani dostępnej liczby pracowników.
- * - Liczba dostępnych pracowników jest dynamicznie aktualizowana po każdej operacji przypisania.
+ * - Workers are assigned to the specified building, but the number cannot exceed the building's worker capacity or the number of available workers.
+ * - The number of available workers is dynamically updated after each assignment operation.
  *
- * @param buildings - Tablica budynków, w której pracownicy są przypisywani.
- * @param population - Obiekt zawierający całkowitą liczbę mieszkańców, dostępnych do przypisania oraz maksymalną pojemność.
- * @param buildingId - Identyfikator budynku, do którego mają zostać przypisani pracownicy.
- * @param count - Liczba pracowników do przypisania.
- * @returns Obiekt zawierający zaktualizowaną listę budynków, liczbę dostępnych pracowników oraz wynik operacji.
+ * @param buildings - Array of buildings to which workers are assigned.
+ * @param population - Object containing the total population, available workers, and maximum population capacity.
+ * @param buildingId - Identifier of the building to which workers should be assigned.
+ * @param count - Number of workers to assign.
+ * @returns An object containing the updated list of buildings, available workers, and the result of the operation.
  */
 export const assignWorkersToBuilding = (
   buildings: BuildingData[],
@@ -665,13 +665,14 @@ export const assignWorkersToBuilding = (
 };
 
 /**
- * Symuluje maksymalny możliwy poziom ulepszenia dla danego budynku, uwzględniając dostępne zasoby.
+ * Simulates the maximum possible upgrade level for a given building, based on available resources.
  *
- * Funkcja iteruje przez możliwe ulepszenia budynku, sprawdzając, czy zasoby są wystarczające do kolejnych ulepszeń, aż do osiągnięcia maksymalnego poziomu.
+ * The function iterates through potential upgrades, checking whether the resources are sufficient for each subsequent upgrade,
+ * until the building reaches its maximum level (tier 5 and 10 upgrades per tier).
  *
- * @param building - Obiekt zawierający dane budynku do ulepszenia.
- * @param resources - Obiekt zasobów dostępnych do użycia przy ulepszaniu.
- * @returns Obiekt zawierający docelowy poziom (tier) oraz liczbę ulepszeń dla budynku.
+ * @param building - The building object to simulate upgrades for.
+ * @param resources - The current resource pool available for upgrades.
+ * @returns An object containing the final achievable tier and number of upgrades for the building.
  */
 export const getBuildingMaxUpgrade = (
   building: BuildingData,
@@ -733,13 +734,14 @@ export const getBuildingMaxUpgrade = (
 };
 
 /**
- * Sprawdza, czy budynek może zostać ulepszony do następnego poziomu na podstawie aktualnych zasobów.
+ * Checks whether a building can be upgraded to the next level based on the current resources.
  *
- * Ulepszenie nie jest możliwe, jeśli budynek osiągnął maksymalny poziom (`maxTier`) i ma 10 ulepszeń.
+ * Upgrade is not possible if the building has reached the maximum tier (`maxTier`) and has 10 upgrades.
+ * Also verifies if the player has sufficient resources for the upgrade cost.
  *
- * @param building - Budynek, który chcemy ulepszyć.
- * @param resources - Dostępne zasoby gracza.
- * @returns `true`, jeśli zasoby są wystarczające do ulepszenia budynku i nie osiągnął on maksymalnego poziomu. W przeciwnym razie `false`.
+ * @param building - The building that is considered for an upgrade.
+ * @param resources - The player's currently available resources.
+ * @returns `true` if the building can be upgraded (not at max level and sufficient resources), otherwise `false`.
  */
 export const canUpgradeMax = (
   building: BuildingData,
@@ -753,15 +755,15 @@ export const canUpgradeMax = (
 };
 
 /**
- * Oblicza łączny koszt wszystkich możliwych ulepszeń budynku przy aktualnych zasobach gracza.
+ * Calculates the total cost of all possible upgrades for a building based on the player's current resources.
  *
- * Symuluje kolejne ulepszenia budynku aż do osiągnięcia limitu (maksymalny tier i 10 ulepszeń) lub wyczerpania zasobów.
+ * Simulates successive building upgrades until either the upgrade cap is reached (maximum tier and 10 upgrades)
+ * or the resources are insufficient to proceed.
  *
- * @param building - Budynek, który chcemy ulepszyć.
- * @param resources - Aktualny stan zasobów gracza.
- * @returns Obiekt zawierający skumulowane koszty dla każdego zasobu wymagane do maksymalnego możliwego ulepszenia budynku.
+ * @param building - The building to be upgraded.
+ * @param resources - The player's current resource state.
+ * @returns An object containing the cumulative costs per resource type required to reach the maximum possible upgrade.
  */
-
 export const getBuildingMaxUpgradeCost = (
   building: BuildingData,
   resources: ResourcesState
@@ -811,15 +813,16 @@ export const getBuildingMaxUpgradeCost = (
 };
 
 /**
- * Ulepsza dany budynek maksymalną możliwą liczbę razy, biorąc pod uwagę aktualny stan zasobów.
+ * Upgrades a given building as many times as possible based on the current resource state.
  *
- * Symuluje kolejne ulepszenia, akumuluje koszty, a następnie dokonuje rzeczywistej aktualizacji budynku i zasobów,
- * o ile gracza stać na wszystkie ulepszenia. Przerywa po osiągnięciu limitu tierów i ulepszeń (10 na tier).
+ * Simulates successive upgrades, accumulates the total cost, and then performs the actual upgrade operation
+ * and resource deduction if the player can afford all of them. Stops once the maximum tier and upgrade cap
+ * (10 upgrades per tier) is reached.
  *
- * @param buildings - Lista wszystkich budynków gracza.
- * @param resources - Aktualny stan zasobów gracza.
- * @param buildingId - ID budynku, który ma zostać ulepszony.
- * @returns Obiekt zawierający zaktualizowane budynki, zasoby, status sukcesu oraz liczbę zastosowanych ulepszeń.
+ * @param buildings - The list of all player's buildings.
+ * @param resources - The player's current resource state.
+ * @param buildingId - The ID of the building to be upgraded.
+ * @returns An object containing the updated buildings, resources, a success status, and the number of upgrades applied.
  */
 export const upgradeBuildingMax = (
   buildings: BuildingData[],

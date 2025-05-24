@@ -1,4 +1,3 @@
-// factionsHelpers.ts
 import {
   FactionEvent,
   FactionEventOption,
@@ -8,16 +7,40 @@ import { GameState } from "@/types/gameState";
 import { getArtifact } from "@/store/reducers/artifactsReducer";
 import { factionEventPool } from "@/data/factionEvents";
 
+/**
+ * Selects a random faction event from a predefined pool of events.
+ * It ensures that a deep copy of the selected event is returned,
+ * preventing direct modification of the original event objects in the pool.
+ *
+ * @returns A randomly selected `FactionEvent` object.
+ */
 export const generateRandomFactionEvent = (): FactionEvent => {
   const index = Math.floor(Math.random() * factionEventPool.length);
   return JSON.parse(JSON.stringify(factionEventPool[index])); // deep copy
 };
 
+/**
+ * Schedules the timestamp for the next faction event to occur.
+ * The event is scheduled to happen randomly between 1 and 3 hours from the current time.
+ * This introduces an element of unpredictability to when new faction events will appear.
+ *
+ * @returns The timestamp (in milliseconds since epoch) when the next faction event is scheduled.
+ */
 export const scheduleNextFactionEvent = (): number => {
   const nextIn = 3600 * 1000 + Math.random() * 7200 * 1000; // 1–3h
   return Date.now() + nextIn;
 };
 
+/**
+ * Applies the effects of a chosen option from a faction event to the game state.
+ * This function iterates through a list of effects associated with the chosen option
+ * and modifies the game state accordingly. After applying all effects, it clears
+ * the current faction event and schedules the next one.
+ *
+ * @param state - The current game state object.
+ * @param option - The chosen option from a faction event, containing a list of effects to apply.
+ * @returns A new game state object with the applied effects and updated event schedule.
+ */
 export const applyFactionEventOption = (
   state: GameState,
   option: FactionEventOption
@@ -79,13 +102,13 @@ export const applyFactionEventOption = (
 };
 
 /**
- * Aktualizuje lojalność frakcji w grze.
- * Zmienia lojalność frakcji o określoną wartość, zapewniając, że lojalność mieści się w dozwolonym zakresie (od 0 do maxLoyalty).
+ * Updates the loyalty of a faction in the game.
+ * Changes the faction's loyalty by a specified amount, ensuring the loyalty stays within the allowed range (0 to maxLoyalty).
  *
- * @param state - Obiekt reprezentujący aktualny stan gry.
- * @param faction - Identyfikator frakcji, której lojalność ma zostać zaktualizowana.
- * @param amount - Wartość, o którą ma zostać zmieniona lojalność (może być dodatnia lub ujemna).
- * @returns Zaktualizowany stan gry z nowymi wartościami lojalności frakcji.
+ * @param state - The object representing the current game state.
+ * @param faction - The identifier of the faction whose loyalty is to be updated.
+ * @param amount - The amount by which to change the loyalty (can be positive or negative).
+ * @returns Updated game state with new faction loyalty values.
  */
 export const updateFactionLoyalty = (
   state: GameState,
@@ -117,11 +140,11 @@ export const updateFactionLoyalty = (
 };
 
 /**
- * Zastosowuje bonusy frakcji na podstawie ich lojalności.
- * Otwiera dostęp do technologii, gdy lojalność frakcji osiągnie wymagany próg.
+ * Applies faction bonuses based on their loyalty levels.
+ * Unlocks technologies when a faction's loyalty reaches the required threshold.
  *
- * @param state - Obiekt reprezentujący aktualny stan gry.
- * @returns Zaktualizowany stan gry z zastosowanymi bonusami frakcji.
+ * @param state - The object representing the current game state.
+ * @returns Updated game state with applied faction bonuses.
  */
 export const applyFactionBonuses = (state: GameState): GameState => {
   const newState = { ...state };
@@ -169,12 +192,12 @@ export const applyFactionBonuses = (state: GameState): GameState => {
 };
 
 /**
- * Określa dominującą frakcję na podstawie ich poziomu lojalności.
- * Jeśli lojalność pierwszej i drugiej frakcji jest równa, zwraca trzecią frakcję jako domyślną.
- * W przypadku mniej niż 3 frakcji, zwraca pusty string.
+ * Determines the dominant faction based on their loyalty levels.
+ * If the loyalty of the first and second faction is equal, returns the third faction as default.
+ * If there are fewer than 3 factions, returns an empty string.
  *
- * @param state - Obiekt reprezentujący aktualny stan gry, zawierający listę frakcji.
- * @returns Identyfikator dominującej frakcji lub pusty string, jeśli nie można określić dominującej frakcji.
+ * @param state - The object representing the current game state, containing the list of factions.
+ * @returns The ID of the dominant faction or an empty string if the dominant faction cannot be determined.
  */
 export const getDominantFactionTheme = (
   state: GameState,
@@ -222,6 +245,7 @@ export const getDominantFactionTheme = (
   return result.trim();
 };
 
+// Inittial factions data
 export const initialFactions = [
   {
     id: "Technocrats" as FactionName,
@@ -309,6 +333,7 @@ export const initialFactions = [
   },
 ];
 
+//TODO move to a separate file
 interface FactionTheme {
   background: string;
   border: string;
@@ -316,7 +341,8 @@ interface FactionTheme {
   gradient: string;
   hover: string;
 }
-// Mapa stylów dla różnych frakcji
+
+//TODO move to a separate file
 const FACTION_THEMES: Record<string, FactionTheme> = {
   rebels: {
     background: "bg-sky-500",

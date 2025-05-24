@@ -5,12 +5,12 @@ import { Milestone } from "@/types/milestone";
 import { ResourceType } from "@/types/resource";
 
 /**
- * Sprawdza, które kamienie milowe mogą zostać ukończone, a następnie je odblokowuje,
- * stosując odpowiednie nagrody. Sprawdza również, czy należy cofnąć ukończone kamienie milowe,
- * jeśli ich warunki nie są już spełnione.
+ * Checks which milestones can be completed and unlocks them,
+ * applying the appropriate rewards. Also checks if any completed milestones
+ * should be reverted if their conditions are no longer met.
  *
- * @param state - Obiekt reprezentujący aktualny stan gry.
- * @returns Zaktualizowany stan gry po przetworzeniu kamieni milowych.
+ * @param state - The object representing the current game state.
+ * @returns Updated game state after processing milestones.
  */
 export const checkMilestones = (state: GameState): GameState => {
   let newState = { ...state };
@@ -91,11 +91,11 @@ export const checkMilestones = (state: GameState): GameState => {
 };
 
 /**
- * Sprawdza, czy kamień milowy ma ukończony kamień milowy, który jest wymagany jako prerequisit.
+ * Checks if the milestone has a prerequisite milestone that is completed.
  *
- * @param state - Obiekt reprezentujący aktualny stan gry.
- * @param milestone - Kamień milowy, którego wymóg prerequisitu jest sprawdzany.
- * @returns `true`, jeśli kamień milowy nie ma wymaganego prerequisitu lub jeżeli wymagany prerequisit został ukończony; `false` w przeciwnym przypadku.
+ * @param state - The object representing the current game state.
+ * @param milestone - The milestone whose prerequisite requirement is being checked.
+ * @returns `true` if the milestone has no prerequisite or if the required prerequisite milestone is completed; `false` otherwise.
  */
 const isPrerequisiteComplete = (
   state: GameState,
@@ -109,31 +109,31 @@ const isPrerequisiteComplete = (
 };
 
 /**
- * Zwraca liczbę budynków danego typu w grze.
+ * Returns the number of buildings of a given type in the game.
  *
- * @param state - Obiekt reprezentujący aktualny stan gry.
- * @param type - Typ budynku, którego liczba ma zostać obliczona.
- * @returns Liczba budynków określonego typu w stanie gry.
+ * @param state - The object representing the current game state.
+ * @param type - The building type for which the count should be calculated.
+ * @returns The number of buildings of the specified type in the game state.
  */
 export const getBuildingCount = (state: GameState, type: BuildingType) =>
   state.buildings.filter((b) => b.type === type).length;
 
 /**
- * Zwraca ilość zasobu o podanym typie w grze.
+ * Returns the amount of a resource of the given type in the game.
  *
- * @param state - Obiekt reprezentujący aktualny stan gry.
- * @param resource - Typ zasobu, którego ilość ma zostać pobrana.
- * @returns Ilość zasobu określonego typu w stanie gry.
+ * @param state - The object representing the current game state.
+ * @param resource - The type of resource whose amount should be retrieved.
+ * @returns The amount of the specified resource type in the game state.
  */
 export const getResourceAmount = (state: GameState, resource: ResourceType) =>
   state.resources[resource].amount;
 
 /**
- * Sprawdza, czy technologia o podanym identyfikatorze została zbadana.
+ * Checks if the technology with the given ID has been researched.
  *
- * @param state - Obiekt reprezentujący aktualny stan gry.
- * @param techId - Identyfikator technologii, którą sprawdzamy.
- * @returns `true` jeśli technologia została zbadana, w przeciwnym razie `false`.
+ * @param state - The object representing the current game state.
+ * @param techId - The ID of the technology to check.
+ * @returns `true` if the technology has been researched, otherwise `false`.
  */
 export const isTechnologyResearched = (state: GameState, techId: string) =>
   state.technologies.some((t) => t.id === techId && t.isResearched);

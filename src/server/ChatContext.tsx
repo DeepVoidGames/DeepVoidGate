@@ -48,10 +48,10 @@ export const ChatProvider = ({ children }: { children: ReactNode }) => {
     setSocket(nakamaSocket);
 
     async function connect() {
-      // Podaj drugi argument createStatus (np. true)
+      // Add listener for session expiration
       await nakamaSocket.connect(session, true);
 
-      // Dołącz do globalnego kanału typu Room o nazwie "global"
+      // Join the global Room channel called "global"
       const joinedChannel = await nakamaSocket.joinChat(
         "global",
         1,
@@ -153,7 +153,7 @@ export const ChatProvider = ({ children }: { children: ReactNode }) => {
         } as ChatMessage;
       });
 
-      // Dodaj historię na początek listy, żeby starsze były wyżej
+      // Add a story to the top of the list so that older ones are higher up
       setMessages((prev) => [...historyMessages.reverse(), ...prev]);
 
       setNextCursor(result.next_cursor || null);
