@@ -13,7 +13,7 @@ export const ResourcesIcon = ({ resource }: { resource: string }) => {
 //!
 // Web build = /deepvoidgate/demo/
 // Android build = /
-export const IMAGE_PATH = "/deepvoidgate/demo/";
+export const IMAGE_PATH = "/";
 export const BASE_NAME = "/deepvoidgate/demo/";
 
 // https://github.com/DeepVoidGames/DeepVoidGate/tree/${BUILDID}

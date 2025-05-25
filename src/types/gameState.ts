@@ -29,10 +29,11 @@ export interface GameState {
   userID: string;
   milestones: Milestone[];
   expeditions: Expedition[];
-  playtime: number; 
+  playtime: number;
   sessionLength: number;
   artifacts: Artifact[];
   factions: Faction[];
   factionEvent?: FactionEvent;
   nextFactionEventAt?: number;
+  galacticKnowledge?: number;
 }

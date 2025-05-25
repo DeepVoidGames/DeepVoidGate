@@ -74,6 +74,7 @@ export const initialState: GameState = {
   sessionLength: 0,
   artifacts: artifactsData,
   factions: initialFactions,
+  galacticKnowledge: 0,
 };
 
 // Constants for death timer
