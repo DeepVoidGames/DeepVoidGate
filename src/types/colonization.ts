@@ -5,4 +5,5 @@ export type Planet = {
   description: string;
   traits: string[];
   bonusMultiplier: number;
+  galacticKnowledge: number;
 };

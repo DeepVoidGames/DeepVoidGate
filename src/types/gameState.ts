@@ -6,6 +6,7 @@ import { Milestone } from "@/types/milestone";
 import { Expedition } from "@/types/expedition";
 import { Artifact } from "@/types/artifacts";
 import { Faction, FactionEvent } from "@/types/factions";
+import { Planet } from "@/types/colonization";
 
 export interface GameState {
   version: string;
@@ -36,4 +37,6 @@ export interface GameState {
   factionEvent?: FactionEvent;
   nextFactionEventAt?: number;
   galacticKnowledge?: number;
+  currentPlanet?: Planet;
+  prestigeCount?: number;
 }

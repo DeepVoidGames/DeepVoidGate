@@ -53,6 +53,7 @@ import {
 } from "@/store/reducers/factionsReducer";
 import { GameState } from "@/types/gameState";
 import { ResourceType } from "@/types/resource";
+import { onColonize } from "./colonizationReducer";
 
 // Initialize the game state
 export const initialState: GameState = {
@@ -297,11 +298,11 @@ export const gameReducer = (
         action.payload.amount
       );
 
-    case "FACTION_EVENT_CHOICE": {
-      console.log("dispatch działa?", action.payload.option);
-
+    case "FACTION_EVENT_CHOICE":
       return applyFactionEventOption(state, action.payload.option);
-    }
+
+    case "PRESTIGE":
+      return onColonize(state, action.payload.selectedPlanet);
 
     case "SAVE_GAME": {
       try {
@@ -476,7 +477,7 @@ const updateResourceProduction = (state, deltaTime, initialResources) => {
     ...resetProductionCounters(state.resources),
   };
   const buildings = evaluateBuildingEfficiency(state.buildings, newResources);
-  newResources = updateResourcesByBuildings(buildings, newResources);
+  newResources = updateResourcesByBuildings(buildings, newResources, state);
   newResources = calculatePopulationConsumption(state.population, newResources);
   return { resources: newResources, buildings };
 };

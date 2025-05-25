@@ -22,7 +22,13 @@ export const PlanetaryView: React.FC = memo(() => {
 
       <div className="flex items-center justify-center">
         <div className="relative">
-          <img src={`${IMAGE_PATH}planet.gif`} />
+          <img
+            src={
+              state.currentPlanet != null
+                ? state?.currentPlanet?.image
+                : `${IMAGE_PATH}planet.gif`
+            }
+          />
         </div>
       </div>
 

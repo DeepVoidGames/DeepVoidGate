@@ -1,21 +1,22 @@
 import React, { useState, useEffect } from "react";
-import { Rocket, Globe, Star, CheckCircle, Zap } from "lucide-react";
+import {
+  Rocket,
+  Globe,
+  Star,
+  CheckCircle,
+  Zap,
+  TrendingUp,
+} from "lucide-react";
 import { useGame } from "@/context/GameContext";
 import { formatNumber } from "@/lib/utils";
 import { Progress } from "@/components/ui/progress";
 import { getDominantFactionTheme } from "@/store/reducers/factionsReducer";
 import { Planet } from "@/types/colonization";
 import { planetPool } from "@/data/planets";
+import { initialBuildings } from "@/store/initialData";
 
-type ColonizationProps = {
-  currentProgress: number;
-  maxProgress: number;
-  onColonize: (bonusMultiplier: number) => void;
-  galacticKnowledge: number;
-};
-
-const Colonization: React.FC<ColonizationProps> = ({ onColonize }) => {
-  const { state } = useGame();
+const Colonization = () => {
+  const { state, dispatch } = useGame();
   const [selectedPlanet, setSelectedPlanet] = useState<Planet | null>(null);
   const [availablePlanets, setAvailablePlanets] = useState<Planet[]>([]);
 
@@ -32,7 +33,8 @@ const Colonization: React.FC<ColonizationProps> = ({ onColonize }) => {
   }, [currentProgress, maxProgress]);
 
   useEffect(() => {
-    setMaxProgress(state.buildings.length);
+    setMaxProgress(initialBuildings.length);
+
     setCurrentProgress(
       state.buildings.reduce((acc, building) => {
         return (
@@ -49,19 +51,16 @@ const Colonization: React.FC<ColonizationProps> = ({ onColonize }) => {
 
   const handleColonize = () => {
     if (selectedPlanet) {
-      onColonize(selectedPlanet.bonusMultiplier);
+      dispatch({
+        type: "PRESTIGE",
+        payload: { selectedPlanet },
+      });
       setSelectedPlanet(null);
     }
   };
 
   const isColonyMaxed = () => {
-    return state.buildings.every((building) => {
-      return (
-        building.tier === building.maxTier &&
-        building.upgrades >= 10 &&
-        building.workerCapacity >= building.assignedWorkers
-      );
-    });
+    return currentProgress >= maxProgress && availablePlanets.length > 0;
   };
 
   return (
@@ -71,16 +70,22 @@ const Colonization: React.FC<ColonizationProps> = ({ onColonize }) => {
         { styleType: "border", opacity: 0.8 }
       )}`}
     >
-      <div className="flex items-center justify-between mb-4">
-        <h2 className="text-lg font-medium text-foreground/90 flex items-center gap-2">
-          <Globe className="h-5 w-5 text-blue-400" />
-          Galactic Expansion
-        </h2>
-        <div className="flex items-center gap-2 px-4 py-2 bg-background/50 rounded-lg">
-          <Star className="h-5 w-5 text-yellow-400" />
-          <span className="text-sm">
-            {formatNumber(state?.galacticKnowledge)} Galactic Knowledge
-          </span>
+      <div>
+        <div className="flex items-center justify-between mb-4">
+          <h2 className="text-lg font-medium text-foreground/90 flex items-center gap-2">
+            <Globe className="h-5 w-5 text-blue-400" />
+            Galactic Expansion
+          </h2>
+          <div className="flex items-center gap-2 px-4 py-2 bg-background/50 rounded-lg">
+            <Star className="h-5 w-5 text-yellow-400" />
+            <span className="text-sm">
+              {formatNumber(state?.galacticKnowledge)} Galactic Knowledge
+            </span>
+          </div>
+        </div>
+        <div className="text-xs text-muted-foreground mb-4 flex items-center">
+          <Globe className="inline mr-2 h-4 w-4" />
+          Colony Amount: {state.prestigeCount || 0}
         </div>
       </div>
 
@@ -139,8 +144,12 @@ const Colonization: React.FC<ColonizationProps> = ({ onColonize }) => {
                 <div className="flex items-center justify-between mb-3">
                   <div className="flex items-center gap-1 text-yellow-500">
                     <Star className="h-4 w-4" />
-                    <span className="text-sm">
-                      x{planet.bonusMultiplier} Bonus
+                    {formatNumber(planet.galacticKnowledge)}{" "}
+                  </div>
+                  <div>
+                    <span className="text-sm text-green-500/80">
+                      <TrendingUp className="inline h-4 w-4 mr-1" />x
+                      {planet.bonusMultiplier} Resource Gain
                     </span>
                   </div>
                 </div>
@@ -179,8 +188,10 @@ const Colonization: React.FC<ColonizationProps> = ({ onColonize }) => {
       )}
 
       <div className="text-xs text-muted-foreground text-center">
-        <Star className="inline mr-1 h-4 w-4" />
-        Each new colony permanently increases resource gains
+        <span className=" italic">
+          *<TrendingUp className="inline mr-1 h-4 w-4" /> Each new colony
+          permanently increases resource gains{" "}
+        </span>
       </div>
     </div>
   );

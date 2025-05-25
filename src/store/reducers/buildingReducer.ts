@@ -9,6 +9,7 @@ import { ResourcesState } from "./resourceReducer";
 import { BuildingData, BuildingType } from "@/types/building";
 import { ResourceType } from "@/types/resource";
 import { Technology } from "@/types/technology";
+import { GameState } from "@/types/gameState";
 
 /**
  * Calculates the efficiency of buildings based on the number of assigned workers and resource availability.
@@ -87,7 +88,8 @@ export const evaluateBuildingEfficiency = (
  */
 export const updateResourcesByBuildings = (
   buildings: BuildingData[],
-  resources: ResourcesState
+  resources: ResourcesState,
+  state: GameState
 ): ResourcesState => {
   // Inicjalizacja nowego stanu zasobów
   const newResources = Object.keys(resources).reduce(
@@ -118,7 +120,12 @@ export const updateResourcesByBuildings = (
         const resourceKey = resource as ResourceType;
 
         newResources[resourceKey].production +=
-          calculateBuildingResourceProduction(building, resource, resources);
+          calculateBuildingResourceProduction(
+            building,
+            resource,
+            resources,
+            state
+          );
       });
     }
 
@@ -447,7 +454,8 @@ export const checkBuildingUpgradeAffordability = (
 export const calculateBuildingResourceProduction = (
   building: BuildingData,
   resource: string,
-  resources: ResourcesState
+  resources: ResourcesState,
+  state: GameState
 ): number => {
   const resourceKey = resource as ResourceType;
   const baseValue = Number(building.baseProduction[resourceKey]) || 0;
@@ -457,25 +465,25 @@ export const calculateBuildingResourceProduction = (
 
   const tierBonus = (building.tier - 1) * 10 * baseValue * productionMultiplier;
 
-  // Zmniejszenie efektu ulepszeń przez zastosowanie funkcji logarytmicznej
-  // Math.log10(upgrades + 1) daje wartość 0 dla 0 ulepszeń, 1 dla 10 ulepszeń
+  //reducing the effect of the upgrade by using a logarithmic function
+  // Math.log10(upgrades + 1) gives a value of 0 for 0 upgrades, 1 for 10 upgrades
   const upgradeBonus =
     Math.log10(upgrades + 1) * 10 * baseValue * productionMultiplier;
 
-  // Całkowita produkcja bazowa
+  // Total Base Production
   let production = baseValue + tierBonus + upgradeBonus;
 
-  // Zastosowanie pierwiastka kwadratowego do całkowitej produkcji aby zredukować duże wartości
+  // Applying the square root to the total production to reduce large values
   production = Math.sqrt(production) * baseValue;
 
-  // Obliczenie bonusu za maksymalny poziom - również zredukowane
+  // Max level bonus calculation - also reduced
   let uniqueBonus = 0;
   if (building.tier === building?.maxTier && building.uniqueBonus?.production) {
     // Redukujemy wartość unikalnego bonusu o połowę
     uniqueBonus = (building.uniqueBonus?.production[resourceKey] || 0) * 0.5;
   }
 
-  // Sprawdzenie kryzysu energetycznego
+  // Energy crisis check
   const hasEnergyCrisis =
     resourceAlertThresholds.energy &&
     resources.energy?.amount < resourceAlertThresholds.energy.critical;
@@ -485,8 +493,13 @@ export const calculateBuildingResourceProduction = (
     production = production * 0.1;
   }
 
-  // Zastosowanie efektywności i dodanie bonusu za maksymalny poziom
-  return production * efficiency + uniqueBonus;
+  production = production * efficiency;
+
+  if (state?.currentPlanet?.bonusMultiplier) {
+    production = production * state.currentPlanet.bonusMultiplier;
+  }
+
+  return production + uniqueBonus;
 };
 
 /**

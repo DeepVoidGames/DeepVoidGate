@@ -1,4 +1,5 @@
 import { BuildingType } from "@/types/building";
+import { Planet } from "@/types/colonization";
 import { ExpeditionType } from "@/types/expedition";
 import { FactionEventOption, FactionName } from "@/types/factions";
 
@@ -34,6 +35,7 @@ export type GameAction =
       type: "UPDATE_LOYALTY";
       payload: { faction: FactionName; amount: number };
     }
-  | { type: "FACTION_EVENT_CHOICE"; payload: { option: FactionEventOption } };
+  | { type: "FACTION_EVENT_CHOICE"; payload: { option: FactionEventOption } }
+  | { type: "PRESTIGE"; payload: { selectedPlanet: Planet } };
 
 //

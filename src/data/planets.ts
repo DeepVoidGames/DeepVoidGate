@@ -9,6 +9,7 @@ export const planetPool: Planet[] = [
     description: "Super-Earth with rare crystalline formations",
     traits: ["Rich Minerals", "Extreme Gravity"],
     bonusMultiplier: 1.5,
+    galacticKnowledge: 10,
   },
   {
     id: "trappist-1e",
@@ -17,6 +18,7 @@ export const planetPool: Planet[] = [
     description: "Temperate ocean world with bioluminescent life",
     traits: ["Abundant Water", "Unique Biology"],
     bonusMultiplier: 2.0,
+    galacticKnowledge: 10,
   },
   {
     id: "kepler-438b",
@@ -25,6 +27,7 @@ export const planetPool: Planet[] = [
     description: "Earth-like planet with dense vegetation",
     traits: ["Habitable", "Advanced Flora"],
     bonusMultiplier: 1.8,
+    galacticKnowledge: 10,
   },
   {
     id: "proxima-b",
@@ -33,6 +36,7 @@ export const planetPool: Planet[] = [
     description: "Rocky world with exotic magnetic fields",
     traits: ["Stable Climate", "Rare Elements"],
     bonusMultiplier: 2.2,
+    galacticKnowledge: 10,
   },
   {
     id: "luyten-b",
@@ -41,5 +45,6 @@ export const planetPool: Planet[] = [
     description: "Volcanic planet with energy-rich atmosphere",
     traits: ["Geothermal Power", "Molten Resources"],
     bonusMultiplier: 1.7,
+    galacticKnowledge: 10,
   },
 ];
