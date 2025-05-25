@@ -73,7 +73,7 @@ export const GlobalChat = () => {
               <h3 className="font-semibold">Global Chat</h3>
               <div className="flex items-center gap-1 text-sm text-muted-foreground">
                 <Users className="h-4 w-4" />
-                <span>{onlineUsers.length} online</span>
+                <span>{onlineUsers.length + 1} online</span>
               </div>
             </div>
             <button
