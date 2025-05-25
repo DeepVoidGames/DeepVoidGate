@@ -19,7 +19,8 @@ import { AuthProvider } from "@/server/AuthContext";
 import { ChatProvider } from "@/server/ChatContext";
 import { GlobalChat } from "@/components/GlobalChat";
 import FactionEventModal from "@/components/FactionEventModal";
-import { BASE_NAME } from "./config";
+import { BASE_NAME } from "@/config";
+import Colonization from "@/pages/Colonization";
 
 const queryClient = new QueryClient();
 
@@ -43,6 +44,7 @@ const App = () => (
                 <Route path="/expedition" element={<ExpeditionUI />} />
                 <Route path="/artifacts" element={<ArtifactsDisplay />} />
                 <Route path="/factions" element={<FactionsDisplay />} />
+                <Route path="/colonization" element={<Colonization />} />
                 <Route path="/settings" element={<Settings />} />
                 {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
                 <Route path="*" element={<NotFound />} />

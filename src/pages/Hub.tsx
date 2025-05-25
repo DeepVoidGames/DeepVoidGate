@@ -11,7 +11,7 @@ type Feature = {
   name: string;
   description?: string;
   image: string;
-  to: string; 
+  to: string;
   requiredTechnologies?: string[];
 };
 
@@ -49,6 +49,14 @@ const Hub = () => {
       description: "",
       image: `${IMAGE_PATH}factions.png`,
       to: "/factions",
+      requiredTechnologies: [],
+    },
+    {
+      id: "colonization",
+      name: "Colonization",
+      description: "",
+      image: `${IMAGE_PATH}colonization.png`,
+      to: "/colonization",
       requiredTechnologies: [],
     },
   ];
