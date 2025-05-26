@@ -146,7 +146,9 @@ const Colonization = () => {
                   <div className="flex items-center justify-between mb-3">
                     <div className="flex items-center gap-1 text-yellow-500">
                       <Star className="h-4 w-4" />
-                      {formatNumber(planet.galacticKnowledge)}{" "}
+                      {formatNumber(
+                        planet.galacticKnowledge * (state?.prestigeCount ?? 1)
+                      )}{" "}
                     </div>
                     <div>
                       <span className="text-sm text-green-500/80">

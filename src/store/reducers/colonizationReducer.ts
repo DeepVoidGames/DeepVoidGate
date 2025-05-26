@@ -7,7 +7,8 @@ export const onColonize = (state: GameState, selectedPlanet: Planet) => {
     ...state,
     currentPlanet: selectedPlanet,
     prestigeCount: (state.prestigeCount || 0) + 1,
-    galacticKnowledge: selectedPlanet.galacticKnowledge,
+    galacticKnowledge:
+      selectedPlanet.galacticKnowledge * ((state?.prestigeCount ?? 0) + 1),
     buildings: [],
     population: {
       total: 10,
