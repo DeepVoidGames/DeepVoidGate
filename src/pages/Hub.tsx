@@ -13,6 +13,7 @@ type Feature = {
   image: string;
   to: string;
   requiredTechnologies?: string[];
+  requiredGalacticUpgrades?: string[];
 };
 
 const Hub = () => {
@@ -34,6 +35,7 @@ const Hub = () => {
       image: `${IMAGE_PATH}315246.png`,
       to: "#",
       requiredTechnologies: [],
+      requiredGalacticUpgrades: ["LOCKED"],
     },
     {
       id: "642513",
@@ -59,21 +61,48 @@ const Hub = () => {
       to: "/colonization",
       requiredTechnologies: [],
     },
+    {
+      id: "black_hole",
+      name: "Black Hole",
+      description: "",
+      image: `${IMAGE_PATH}black_hole.png`,
+      to: "/blackHole",
+      requiredTechnologies: [],
+      requiredGalacticUpgrades: ["black_hole_unknow"],
+    },
   ];
 
   useEffect(() => {
-    if (state.technologies) {
-      const unlockedTechs = state.technologies
-        .filter((tech) => tech.isResearched)
-        .map((tech) => tech.id);
-      const unlocked = features.filter((feature) =>
-        feature.requiredTechnologies?.every((reqTech) =>
-          unlockedTechs.includes(reqTech)
-        )
-      );
-      const unlockedIds = unlocked.map((feature) => feature.id);
-      setUnlockedFeatures(unlockedIds);
-    }
+    features.forEach((feature) => {
+      if (
+        feature.requiredTechnologies &&
+        feature.requiredTechnologies.length > 0
+      ) {
+        const unlockedTechs = state.technologies
+          .filter((tech) => tech.isResearched)
+          .map((tech) => tech.id);
+
+        if (
+          feature.requiredTechnologies.every((reqTech) =>
+            unlockedTechs.includes(reqTech)
+          )
+        ) {
+          setUnlockedFeatures((prev) => [...prev, feature.id]);
+        }
+      }
+      if (
+        feature.requiredGalacticUpgrades &&
+        feature.requiredGalacticUpgrades.length > 0
+      ) {
+        if (
+          state.galacticUpgrades?.includes(feature.requiredGalacticUpgrades[0])
+        ) {
+          setUnlockedFeatures((prev) => [...prev, feature.id]);
+        }
+      } else {
+        setUnlockedFeatures((prev) => [...prev, feature.id]);
+      }
+    });
   }, [state.technologies]);
 
   const isFeatureUnlocked = (featureId: string) => {
@@ -127,9 +156,7 @@ const Hub = () => {
                   {!isFeatureUnlocked(feature.id) && (
                     <div className="absolute inset-0 flex flex-col items-center justify-center bg-black/50 backdrop-blur-sm">
                       <Lock className="text-gray-300" size={28} />
-                      <span className="text-gray-300 text-sm">
-                        Locked - Complete more missions to unlock
-                      </span>
+                      <span className="text-gray-300 text-sm">Locked</span>
                     </div>
                   )}
                 </Link>
