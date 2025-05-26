@@ -14,6 +14,7 @@ import { getDominantFactionTheme } from "@/store/reducers/factionsReducer";
 import { Planet } from "@/types/colonization";
 import { planetPool } from "@/data/planets";
 import { initialBuildings } from "@/store/initialData";
+import GalacticUpgrades from "@/components/GalacticUpgrades";
 
 const Colonization = () => {
   const { state, dispatch } = useGame();
@@ -195,6 +196,8 @@ const Colonization = () => {
           </span>
         </div>
       </div>
+
+      <GalacticUpgrades />
     </div>
   );
 };

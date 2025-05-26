@@ -1,3 +1,4 @@
+import { galacticUpgrades } from "@/data/galacticUpgrades";
 import { Planet } from "@/types/colonization";
 import { GameState } from "@/types/gameState";
 
@@ -45,6 +46,37 @@ export const onColonize = (state: GameState, selectedPlanet: Planet) => {
       isResearched: tech.category === "Advanced" ? tech.isResearched : false,
       researchStartTime: undefined,
     })),
+  };
+
+  return updatedState;
+};
+
+export const onGalacticUpgradePurchase = (
+  state: GameState,
+  upgradeId: string
+) => {
+  const upgrade = galacticUpgrades.find((u) => u.id === upgradeId);
+
+  if (state.galacticUpgrades == undefined) {
+    console.warn("Galactic upgrades not initialized in state");
+    state.galacticUpgrades = [];
+  }
+
+  if (!upgrade || state.galacticUpgrades.includes(upgradeId)) {
+    return state; // Upgrade not found or already purchased
+  }
+
+  if (state.galacticKnowledge < upgrade.cost) {
+    return state; // Not enough galactic knowledge
+  }
+
+  const updatedKnowledge = state.galacticKnowledge - upgrade.cost;
+  const updatedUpgrades = [...state.galacticUpgrades, upgradeId];
+
+  const updatedState = {
+    ...state,
+    galacticKnowledge: updatedKnowledge,
+    galacticUpgrades: updatedUpgrades,
   };
 
   return updatedState;

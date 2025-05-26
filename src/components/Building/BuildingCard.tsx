@@ -272,7 +272,8 @@ const BuildingCard = ({
                 const total = calculateBuildingResourceProduction(
                   building,
                   resource,
-                  resources
+                  resources,
+                  state
                 );
                 return (
                   <div

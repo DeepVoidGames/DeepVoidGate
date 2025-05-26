@@ -53,7 +53,7 @@ import {
 } from "@/store/reducers/factionsReducer";
 import { GameState } from "@/types/gameState";
 import { ResourceType } from "@/types/resource";
-import { onColonize } from "./colonizationReducer";
+import { onColonize, onGalacticUpgradePurchase } from "./colonizationReducer";
 
 // Initialize the game state
 export const initialState: GameState = {
@@ -303,6 +303,9 @@ export const gameReducer = (
 
     case "PRESTIGE":
       return onColonize(state, action.payload.selectedPlanet);
+
+    case "PURCHASE_GALACTIC_UPGRADE":
+      return onGalacticUpgradePurchase(state, action.payload.upgradeId);
 
     case "SAVE_GAME": {
       try {

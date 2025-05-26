@@ -39,4 +39,5 @@ export interface GameState {
   galacticKnowledge?: number;
   currentPlanet?: Planet;
   prestigeCount?: number;
+  galacticUpgrades?: string[];
 }

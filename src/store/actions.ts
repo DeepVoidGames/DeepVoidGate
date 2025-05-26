@@ -36,6 +36,10 @@ export type GameAction =
       payload: { faction: FactionName; amount: number };
     }
   | { type: "FACTION_EVENT_CHOICE"; payload: { option: FactionEventOption } }
-  | { type: "PRESTIGE"; payload: { selectedPlanet: Planet } };
+  | { type: "PRESTIGE"; payload: { selectedPlanet: Planet } }
+  | {
+      type: "PURCHASE_GALACTIC_UPGRADE";
+      payload: { upgradeId: string; cost: number };
+    };
 
 //

@@ -12,7 +12,6 @@ import { BUILDID, IMAGE_PATH } from "@/config";
 import { cloudSaveGameState } from "@/server/cloudSaveGameState";
 import { useGame } from "@/context/GameContext";
 import { cloudLoadGameState } from "@/server/cloudLoadGameState";
-import { Link } from "react-router-dom";
 
 // Settings type definition
 export const defaultSettings = {
@@ -320,13 +319,6 @@ function Settings() {
             </div>
 
             <div className="flex mt-4 w-full items-center content-between  border-t-[2px] border-gray-700 pt-4">
-              <div className="w-fit">
-                <Link to="/analytics">
-                  <span className="text-xs text-gray-400 underline">
-                    Analytics
-                  </span>
-                </Link>
-              </div>
               <div className="text-xs text-gray-400 text-right w-full">
                 BuildID: {BUILDID}
               </div>

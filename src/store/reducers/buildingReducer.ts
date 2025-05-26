@@ -10,6 +10,7 @@ import { BuildingData, BuildingType } from "@/types/building";
 import { ResourceType } from "@/types/resource";
 import { Technology } from "@/types/technology";
 import { GameState } from "@/types/gameState";
+import { galacticUpgrades } from "@/data/galacticUpgrades";
 
 /**
  * Calculates the efficiency of buildings based on the number of assigned workers and resource availability.
@@ -495,11 +496,19 @@ export const calculateBuildingResourceProduction = (
 
   production = production * efficiency;
 
+  let resProdMultiplier = 1;
+
   if (state?.currentPlanet?.bonusMultiplier) {
-    production = production * state.currentPlanet.bonusMultiplier;
+    resProdMultiplier = state.currentPlanet.bonusMultiplier;
   }
 
-  return production + uniqueBonus;
+  if (state?.galacticUpgrades?.includes("quantum_production")) {
+    resProdMultiplier +=
+      galacticUpgrades.find((u) => u.id === "quantum_production").multiplier ||
+      0;
+  }
+
+  return production * resProdMultiplier + uniqueBonus;
 };
 
 /**
