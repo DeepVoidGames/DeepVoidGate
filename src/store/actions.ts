@@ -40,6 +40,9 @@ export type GameAction =
   | {
       type: "PURCHASE_GALACTIC_UPGRADE";
       payload: { upgradeId: string; cost: number };
+    }
+  | {
+      type: "CONVERT_MASS_TO_DARK_MATTER";
     };
 
 //

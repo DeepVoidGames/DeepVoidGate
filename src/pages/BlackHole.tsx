@@ -18,15 +18,16 @@ import { useGame } from "@/context/GameContext";
 import { Button } from "@/components/ui/button";
 
 const BlackHole = () => {
-  const { state } = useGame();
+  const { state, dispatch } = useGame();
   const [showAdvancedStats, setShowAdvancedStats] = useState(false);
 
   // Get black hole data from state (calculated in blackHoleTick)
   const blackHole = state?.blackHole;
 
   const convertMassToDarkMatter = () => {
-    console.log("Converting mass to dark matter...");
-    // dispatch({ type: "CONVERT_MASS_TO_DARK_MATTER" });
+    dispatch({
+      type: "CONVERT_MASS_TO_DARK_MATTER",
+    });
   };
 
   const stabilizeBlackHole = () => {
@@ -129,7 +130,7 @@ const BlackHole = () => {
           <div className="flex items-center justify-between mb-2">
             <h3 className="font-medium text-foreground/90 flex items-center gap-2">
               <AlertTriangle className={`h-5 w-5 ${getThreatColor()}`} />
-              Planetary Threat Level
+              Energy outbreak Threat Level
             </h3>
             <span className={`font-bold ${getThreatColor()}`}>
               {threatLevel.toFixed(1)}%
@@ -182,9 +183,15 @@ const BlackHole = () => {
             <p className="text-2xl font-bold text-yellow-400">
               +{formatNumber(blackHole.energyRate || 0)}/s
             </p>
-            <p className="text-xs text-muted-foreground">
-              Total: {formatNumber(blackHole.totalEnergyProduced || 0)}
-            </p>
+            <div className="flex items-center content-between w-full">
+              <div className="text-xs text-muted-foreground mb-1 w-full">
+                Total: {formatNumber(blackHole.totalEnergyProduced || 0)}
+              </div>
+              <div className="text-xs text-muted-foreground mb-1 w-full">
+                Emitted Energy: {formatNumber(blackHole.emittedEnergy || 0)}
+              </div>
+            </div>
+            <p className="text-xs text-muted-foreground"></p>
           </div>
 
           {/* Age */}
@@ -299,8 +306,8 @@ const BlackHole = () => {
             </div>
             <p className="text-sm text-red-300">
               Black hole mass is approaching critical levels! Convert mass to
-              dark matter immediately or risk planetary annihilation. Your
-              colony&apos;s survival depends on maintaining balance.
+              dark matter immediately or risk run out of infinite energy source.
+              Your colony&apos;s survival depends on maintaining balance.
             </p>
           </div>
         )}

@@ -9,6 +9,8 @@ const BLACK_HOLE_CONFIG = {
   // Dark matter parameters
   DARK_MATTER_EFFICIENCY: 0.00001, // dark matter generated per unit mass
   DARK_MATTER_DECAY_RATE: 0.999, // dark matter decay (99.9% remains)
+  //  Mass convert to dark matter rate
+  MASS_TO_DARK_MATTER_RATE: 0.5, // rate at which mass converts to dark matter
 
   // Energy parameters
   ENERGY_PER_SOLAR_MASS: 1000, // energy units per solar mass
@@ -24,9 +26,7 @@ export const blackHoleTick = (
   deltaTime: number
 ): GameState => {
   // Check if upgrade is unlocked
-  if (!state?.galacticUpgrades?.includes("black_hole_unknow")) {
-    return state;
-  }
+  if (!state?.galacticUpgrades?.includes("black_hole_unknow")) return state;
 
   // Avoid mutating original state
   const currentTime = Date.now();
@@ -34,6 +34,10 @@ export const blackHoleTick = (
 
   // Initialize default values
   const currentMass = blackHole.mass || 1;
+
+  if (currentMass >= BLACK_HOLE_CONFIG.CRITICAL_MASS_LIMIT)
+    return hitCriticalMass(state);
+
   const currentDarkMatter = blackHole.darkMatterAmount || 0;
   const formationTime = blackHole.formationTime || currentTime;
 
@@ -87,6 +91,7 @@ export const blackHoleTick = (
   return {
     ...state,
     blackHole: {
+      ...state?.blackHole,
       // Basic properties
       formationTime: formationTime, // preserve original formation time
       lastUpdate: currentTime,
@@ -120,6 +125,33 @@ export const blackHoleTick = (
           state.resources.energy.capacity || 0
         ),
       },
+    },
+  };
+};
+
+export const convertMassToDarkMatter = (state: GameState): GameState => {
+  return {
+    ...state,
+    blackHole: {
+      ...state.blackHole,
+      darkMatterAmount:
+        (state.blackHole?.darkMatterAmount || 0) +
+        (state.blackHole?.mass || 0) *
+          BLACK_HOLE_CONFIG.MASS_TO_DARK_MATTER_RATE,
+      mass: 1, // Reset mass after conversion
+      emittedEnergy:
+        (state?.blackHole?.emittedEnergy || 0) +
+        state?.blackHole?.mass * 1.79e12,
+    },
+  };
+};
+
+const hitCriticalMass = (state: GameState): GameState => {
+  return {
+    ...state,
+    blackHole: {
+      ...state?.blackHole,
+      energyRate: 0,
     },
   };
 };

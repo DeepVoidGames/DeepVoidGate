@@ -14,4 +14,5 @@ export type BlackHole = {
   currentGrowthMultiplier?: number; // Current growth multiplier based on conditions
   spin?: number; // Spin of the black hole (0-1)
   evaporationTime?: number; // Time until evaporation in seconds
+  emittedEnergy?: number;
 };
