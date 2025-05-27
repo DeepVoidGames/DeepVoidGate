@@ -15,6 +15,7 @@ import { Progress } from "@/components/ui/progress";
 import { formatNumber } from "@/lib/utils";
 import { IMAGE_PATH } from "@/config";
 import { useGame } from "@/context/GameContext";
+import { Button } from "@/components/ui/button";
 
 const BlackHole = () => {
   const { state } = useGame();
@@ -268,21 +269,25 @@ const BlackHole = () => {
 
         {/* Control Actions */}
         <div className="flex flex-col sm:flex-row gap-3">
-          <button
+          <Button
+            type="button"
             onClick={convertMassToDarkMatter}
             className="flex-1 flex items-center justify-center gap-2 px-4 py-3 bg-purple-600 hover:bg-purple-700 rounded-lg transition-colors font-medium"
+            disabled={threatLevel < 10}
           >
             <ArrowRight className="h-4 w-4" />
             Convert Mass to Dark Matter
-          </button>
+          </Button>
 
-          <button
+          <Button
+            type="button"
             onClick={stabilizeBlackHole}
             className="flex-1 flex items-center justify-center gap-2 px-4 py-3 bg-blue-600 hover:bg-blue-700 rounded-lg transition-colors font-medium"
+            disabled={threatLevel < 70}
           >
             <Shield className="h-4 w-4" />
             Stabilize Black Hole
-          </button>
+          </Button>
         </div>
 
         {/* Warning Message */}
