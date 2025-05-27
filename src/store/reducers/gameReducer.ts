@@ -54,6 +54,7 @@ import {
 import { GameState } from "@/types/gameState";
 import { ResourceType } from "@/types/resource";
 import { onColonize, onGalacticUpgradePurchase } from "./colonizationReducer";
+import { blackHoleTick } from "./blackHoleReducer";
 
 // Initialize the game state
 export const initialState: GameState = {
@@ -119,6 +120,7 @@ export const gameReducer = (
           ...newState.resources,
         },
       });
+      newState = blackHoleTick(newState, deltaTime);
 
       const now = action.payload.currentTime;
 

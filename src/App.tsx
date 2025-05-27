@@ -21,6 +21,7 @@ import { GlobalChat } from "@/components/GlobalChat";
 import FactionEventModal from "@/components/FactionEventModal";
 import { BASE_NAME } from "@/config";
 import Colonization from "@/pages/Colonization";
+import BlackHole from "@/pages/BlackHole";
 
 const queryClient = new QueryClient();
 
@@ -45,6 +46,7 @@ const App = () => (
                 <Route path="/artifacts" element={<ArtifactsDisplay />} />
                 <Route path="/factions" element={<FactionsDisplay />} />
                 <Route path="/colonization" element={<Colonization />} />
+                <Route path="/blackHole" element={<BlackHole />} />
                 <Route path="/settings" element={<Settings />} />
                 {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
                 <Route path="*" element={<NotFound />} />

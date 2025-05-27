@@ -132,18 +132,32 @@ const Hub = () => {
                 key={feature.id}
                 className="relative aspect-video rounded-lg overflow-hidden"
               >
-                <Link to={feature.to}>
+                {isFeatureUnlocked(feature.id) ? (
+                  <Link to={feature.to}>
+                    <div
+                      className={`absolute inset-0 bg-cover bg-center transition-all duration-300 hover:scale-105`}
+                      style={{ backgroundImage: `url(${feature.image})` }}
+                    >
+                      <div className="absolute inset-0 bg-black/50 flex items-center justify-center p-4">
+                        <span className="text-2xl font-bold text-center text-gray-100">
+                          {feature.name}
+                        </span>
+                      </div>
+                      {feature.description && (
+                        <div className="absolute bottom-0 left-0 right-0 p-2 bg-black/50 text-gray-300 text-sm">
+                          {feature.description}
+                        </div>
+                      )}
+                    </div>
+                  </Link>
+                ) : (
                   <div
-                    className={`absolute inset-0 bg-cover bg-center transition-all duration-300 ${
-                      !isFeatureUnlocked(feature.id)
-                        ? "blur-sm"
-                        : "hover:scale-105"
-                    }`}
+                    className="absolute inset-0 bg-cover bg-center transition-all duration-300 blur-sm"
                     style={{ backgroundImage: `url(${feature.image})` }}
                   >
                     <div className="absolute inset-0 bg-black/50 flex items-center justify-center p-4">
                       <span className="text-2xl font-bold text-center text-gray-100">
-                        <Link to={feature.to}>{feature.name}</Link>
+                        {feature.name}
                       </span>
                     </div>
                     {feature.description && (
@@ -151,15 +165,12 @@ const Hub = () => {
                         {feature.description}
                       </div>
                     )}
-                  </div>
-
-                  {!isFeatureUnlocked(feature.id) && (
                     <div className="absolute inset-0 flex flex-col items-center justify-center bg-black/50 backdrop-blur-sm">
                       <Lock className="text-gray-300" size={28} />
                       <span className="text-gray-300 text-sm">Locked</span>
                     </div>
-                  )}
-                </Link>
+                  </div>
+                )}
               </div>
             ))}
           </div>

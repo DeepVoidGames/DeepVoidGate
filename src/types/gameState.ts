@@ -7,6 +7,7 @@ import { Expedition } from "@/types/expedition";
 import { Artifact } from "@/types/artifacts";
 import { Faction, FactionEvent } from "@/types/factions";
 import { Planet } from "@/types/colonization";
+import { BlackHole } from "@/types/blackHole";
 
 export interface GameState {
   version: string;
@@ -40,4 +41,5 @@ export interface GameState {
   currentPlanet?: Planet;
   prestigeCount?: number;
   galacticUpgrades?: string[];
+  blackHole?: BlackHole;
 }
