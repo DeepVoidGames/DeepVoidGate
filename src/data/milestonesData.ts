@@ -105,6 +105,12 @@ const metalMagnateTiers: TierDefinition[] = [
     rewardAmount: 1000000,
     description: "Collect 50,000,000 metal",
   },
+  {
+    tier: 7,
+    target: 100000000,
+    rewardAmount: 10000000,
+    description: "Collect 100,000,000 metal",
+  },
 ];
 
 const oxygenTiers: TierDefinition[] = [
@@ -144,6 +150,12 @@ const oxygenTiers: TierDefinition[] = [
     rewardAmount: 1000000,
     description: "Collect 50,000,000 oxygen",
   },
+  {
+    tier: 7,
+    target: 100000000,
+    rewardAmount: 1000000,
+    description: "Collect 100,000,000 oxygen",
+  },
 ];
 
 const waterTiers: TierDefinition[] = [
@@ -176,6 +188,12 @@ const waterTiers: TierDefinition[] = [
     target: 10000000,
     rewardAmount: 500000,
     description: "Collect 10,000,000 water",
+  },
+  {
+    tier: 6,
+    target: 50000000,
+    rewardAmount: 1000000,
+    description: "Collect 50,000,000 water",
   },
 ];
 
@@ -216,6 +234,12 @@ const foodTiers: TierDefinition[] = [
     rewardAmount: 1000000,
     description: "Collect 50,000,000 food",
   },
+  {
+    tier: 7,
+    target: 100000000,
+    rewardAmount: 10000000,
+    description: "Collect 100,000,000 food",
+  },
 ];
 
 const energyTiers: TierDefinition[] = [
@@ -255,6 +279,12 @@ const energyTiers: TierDefinition[] = [
     rewardAmount: 1000000,
     description: "Collect 50,000,000 energy",
   },
+  {
+    tier: 7,
+    target: 100000000,
+    rewardAmount: 10000000,
+    description: "Collect 100,000,000 energy",
+  },
 ];
 
 const scienceTiers: TierDefinition[] = [
@@ -293,6 +323,12 @@ const scienceTiers: TierDefinition[] = [
     target: 50000000,
     rewardAmount: 1000000,
     description: "Collect 50,000,000 science",
+  },
+  {
+    tier: 7,
+    target: 100000000,
+    rewardAmount: 10000000,
+    description: "Collect 100,000,000 science",
   },
 ];
 
