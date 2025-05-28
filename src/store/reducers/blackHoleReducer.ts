@@ -23,7 +23,10 @@ export const blackHoleTick = (
   const blackHole = state.blackHole || {};
   const currentMass = blackHole.mass || 1;
 
-  if (currentMass >= BLACK_HOLE_CONFIG.CRITICAL_MASS_LIMIT)
+  if (
+    currentMass >=
+    (blackHole.criticalMass || BLACK_HOLE_CONFIG.CRITICAL_MASS_LIMIT)
+  )
     return hitCriticalMass(state);
 
   const currentDarkMatter = blackHole.darkMatterAmount || 0;
@@ -40,7 +43,7 @@ export const blackHoleTick = (
 
   const newMass = Math.min(
     currentMass + totalGrowth * deltaTime,
-    BLACK_HOLE_CONFIG.CRITICAL_MASS_LIMIT
+    blackHole.criticalMass || BLACK_HOLE_CONFIG.CRITICAL_MASS_LIMIT
   );
 
   const massIncrease = newMass - currentMass;

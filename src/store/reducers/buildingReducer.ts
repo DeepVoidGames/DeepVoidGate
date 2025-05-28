@@ -117,6 +117,13 @@ export const updateResourcesByBuildings = (
     });
   }
 
+  if (state?.blackHole?.upgrades?.find((b) => b.id === "energy_capacity")) {
+    const u = state?.blackHole?.upgrades?.find(
+      (b) => b.id === "energy_capacity"
+    );
+    newResources["energy"].capacity += u.level * 1e6;
+  }
+
   buildings.forEach((building) => {
     if (!building || building.efficiency <= 0) return;
     if ((building.type as BuildingType) == "housing") return;
