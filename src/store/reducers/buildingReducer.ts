@@ -111,6 +111,12 @@ export const updateResourcesByBuildings = (
     {} as ResourcesState
   );
 
+  if (state?.galacticUpgrades?.includes("void_storage")) {
+    Object.keys(newResources).forEach((resourceKey) => {
+      newResources[resourceKey].capacity += 1e8;
+    });
+  }
+
   buildings.forEach((building) => {
     if (!building || building.efficiency <= 0) return;
     if ((building.type as BuildingType) == "housing") return;

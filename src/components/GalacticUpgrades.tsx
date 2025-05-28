@@ -39,34 +39,36 @@ const GalacticUpgrades = () => {
           return (
             <div
               key={upgrade.id}
-              className={`p-4 rounded-lg border transition-all ${
+              className={`p-4 rounded-lg border transition-all flex flex-col justify-between min-h-[220px] ${
                 isPurchased
                   ? "border-green-500/30 bg-green-900/20"
                   : "border-muted/30 hover:border-primary/50"
               }`}
             >
-              <div className="flex items-start justify-between mb-3">
-                <div className="flex items-center gap-2">
-                  {upgrade.icon}
-                  <h3 className="font-medium">{upgrade.name}</h3>
+              <div>
+                <div className="flex items-start justify-between mb-3">
+                  <div className="flex items-center gap-2">
+                    {upgrade.icon}
+                    <h3 className="font-medium">{upgrade.name}</h3>
+                  </div>
+                  <div className="flex items-center gap-1 text-yellow-500">
+                    <Stars className="h-4 w-4" />
+                    <span className="text-sm">{upgrade.cost}</span>
+                  </div>
                 </div>
-                <div className="flex items-center gap-1 text-yellow-500">
-                  <Stars className="h-4 w-4" />
-                  <span className="text-sm">{upgrade.cost}</span>
+
+                <p className="text-sm text-muted-foreground mb-3">
+                  {upgrade.description}
+                </p>
+
+                <div className="mb-4">
+                  <span className="text-xs bg-primary/10 text-primary px-2 py-1 rounded">
+                    {upgrade.effect}
+                  </span>
                 </div>
               </div>
 
-              <p className="text-sm text-muted-foreground mb-3">
-                {upgrade.description}
-              </p>
-
-              <div className="mb-4">
-                <span className="text-xs bg-primary/10 text-primary px-2 py-1 rounded">
-                  {upgrade.effect}
-                </span>
-              </div>
-
-              <div className="flex justify-center">
+              <div className="mt-auto">
                 <button
                   onClick={() => handlePurchase(upgrade.id, upgrade.cost)}
                   disabled={isPurchased || !canAfford}

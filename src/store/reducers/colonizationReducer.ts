@@ -3,6 +3,12 @@ import { Planet } from "@/types/colonization";
 import { GameState } from "@/types/gameState";
 
 export const onColonize = (state: GameState, selectedPlanet: Planet) => {
+  const newTech = state.technologies.map((tech) => ({
+    ...tech,
+    isResearched: tech.category === "Advanced" ? tech.isResearched : false,
+    researchStartTime: undefined,
+  }));
+
   const updatedState = {
     ...state,
     currentPlanet: selectedPlanet,
@@ -42,11 +48,7 @@ export const onColonize = (state: GameState, selectedPlanet: Planet) => {
         amount: state.resources.science.amount * 0.03,
       },
     },
-    technologies: state.technologies.map((tech) => ({
-      ...tech,
-      isResearched: tech.category === "Advanced" ? tech.isResearched : false,
-      researchStartTime: undefined,
-    })),
+    technologies: newTech,
   };
 
   return updatedState;

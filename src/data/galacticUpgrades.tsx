@@ -3,6 +3,15 @@ import { Atom, Stars } from "lucide-react";
 
 export const galacticUpgrades = [
   {
+    id: "void_storage",
+    name: "Void Storage",
+    icon: <Stars className="h-6 w-6 text-black" />,
+    description: "Increase resources storage exponentially",
+    effect: "All storage +100m",
+    cost: 5,
+    multiplier: 0,
+  },
+  {
     id: "quantum_production",
     name: "Quantum Production",
     icon: <Atom className="h-6 w-6 text-purple-400" />,

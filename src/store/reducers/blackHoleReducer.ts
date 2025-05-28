@@ -155,3 +155,5 @@ const hitCriticalMass = (state: GameState): GameState => {
     },
   };
 };
+
+// TODO Black hole upgrades
