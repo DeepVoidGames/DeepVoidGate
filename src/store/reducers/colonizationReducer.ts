@@ -1,4 +1,4 @@
-import { galacticUpgrades } from "@/data/galacticUpgrades";
+import { galacticUpgrades } from "@/data/colonization/galacticUpgrades";
 import { Planet } from "@/types/colonization";
 import { GameState } from "@/types/gameState";
 

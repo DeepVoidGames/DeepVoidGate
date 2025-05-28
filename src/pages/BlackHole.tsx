@@ -16,6 +16,7 @@ import { formatNumber } from "@/lib/utils";
 import { IMAGE_PATH } from "@/config";
 import { useGame } from "@/context/GameContext";
 import { Button } from "@/components/ui/button";
+import BlackHoleUpgrades from "@/components/BlackHoleUpgrades";
 
 const BlackHole = () => {
   const { state, dispatch } = useGame();
@@ -76,7 +77,7 @@ const BlackHole = () => {
   }
 
   return (
-    <div className="max-w-7xl mx-auto p-6 bg-background/90 rounded-lg shadow-lg">
+    <div className="max-w-7xl mx-auto p-6 bg-background/90 rounded-lg shadow-lg mb-10">
       <div className="glass-panel p-6 space-y-6 animate-fade-in border-purple-800/30 mt-20">
         {/* Header */}
         <div className="flex justify-between items-center">
@@ -290,10 +291,11 @@ const BlackHole = () => {
             type="button"
             onClick={stabilizeBlackHole}
             className="flex-1 flex items-center justify-center gap-2 px-4 py-3 bg-blue-600 hover:bg-blue-700 rounded-lg transition-colors font-medium"
-            disabled={threatLevel < 70}
+            // disabled={threatLevel < 70}
+            disabled={true}
           >
             <Shield className="h-4 w-4" />
-            Stabilize Black Hole
+            Stabilize Black Hole (Not discovered)
           </Button>
         </div>
 
@@ -312,6 +314,8 @@ const BlackHole = () => {
           </div>
         )}
       </div>
+
+      <BlackHoleUpgrades />
     </div>
   );
 };

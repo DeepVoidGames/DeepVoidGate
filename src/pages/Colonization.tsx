@@ -12,7 +12,7 @@ import { formatNumber } from "@/lib/utils";
 import { Progress } from "@/components/ui/progress";
 import { getDominantFactionTheme } from "@/store/reducers/factionsReducer";
 import { Planet } from "@/types/colonization";
-import { planetPool } from "@/data/planets";
+import { planetPool } from "@/data/colonization/planets";
 import { initialBuildings } from "@/store/initialData";
 import GalacticUpgrades from "@/components/GalacticUpgrades";
 
@@ -66,7 +66,7 @@ const Colonization = () => {
 
   return (
     <div
-      className={`max-w-7xl mx-auto p-4 space-y-8 mt-20  ${getDominantFactionTheme(
+      className={`max-w-7xl mx-auto p-4 space-y-8 mt-20 mb-10  ${getDominantFactionTheme(
         state,
         { styleType: "border", opacity: 0.8 }
       )}`}

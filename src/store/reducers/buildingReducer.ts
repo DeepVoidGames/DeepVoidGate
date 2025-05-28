@@ -10,7 +10,7 @@ import { BuildingData, BuildingType } from "@/types/building";
 import { ResourceType } from "@/types/resource";
 import { Technology } from "@/types/technology";
 import { GameState } from "@/types/gameState";
-import { galacticUpgrades } from "@/data/galacticUpgrades";
+import { galacticUpgrades } from "@/data/colonization/galacticUpgrades";
 
 /**
  * Calculates the efficiency of buildings based on the number of assigned workers and resource availability.

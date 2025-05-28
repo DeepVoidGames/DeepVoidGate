@@ -43,6 +43,10 @@ export type GameAction =
     }
   | {
       type: "CONVERT_MASS_TO_DARK_MATTER";
+    }
+  | {
+      type: "PURCHASE_BLACK_HOLE_UPGRADE";
+      payload: { upgradeId: string };
     };
 
 //

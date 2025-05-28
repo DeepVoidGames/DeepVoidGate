@@ -54,7 +54,11 @@ import {
 import { GameState } from "@/types/gameState";
 import { ResourceType } from "@/types/resource";
 import { onColonize, onGalacticUpgradePurchase } from "./colonizationReducer";
-import { blackHoleTick, convertMassToDarkMatter } from "./blackHoleReducer";
+import {
+  blackHoleTick,
+  convertMassToDarkMatter,
+  onBlackHoleUpgradePurchase,
+} from "./blackHoleReducer";
 
 // Initialize the game state
 export const initialState: GameState = {
@@ -311,6 +315,9 @@ export const gameReducer = (
 
     case "CONVERT_MASS_TO_DARK_MATTER":
       return convertMassToDarkMatter(state);
+
+    case "PURCHASE_BLACK_HOLE_UPGRADE":
+      return onBlackHoleUpgradePurchase(state, action.payload.upgradeId);
 
     case "SAVE_GAME": {
       try {

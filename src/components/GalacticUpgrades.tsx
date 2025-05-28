@@ -2,7 +2,7 @@ import React from "react";
 import { Stars, Globe } from "lucide-react";
 import { useGame } from "@/context/GameContext";
 import { formatNumber } from "@/lib/utils";
-import { galacticUpgrades } from "@/data/galacticUpgrades";
+import { galacticUpgrades } from "@/data/colonization/galacticUpgrades";
 
 const GalacticUpgrades = () => {
   const { state, dispatch } = useGame();
