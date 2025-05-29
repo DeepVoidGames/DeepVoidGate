@@ -170,7 +170,7 @@ const BlackHole = () => {
               <h4 className="font-medium text-foreground/90">Dark Matter</h4>
             </div>
             <p className="text-2xl font-bold text-purple-400">
-              {(blackHole.darkMatterAmount || 0).toFixed(6)}
+              {formatNumber(blackHole.darkMatterAmount)}
             </p>
             <p className="text-xs text-muted-foreground">Dark Matter Amount</p>
           </div>

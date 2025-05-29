@@ -184,7 +184,7 @@ const applyBlackHoleUpgrades = (
       newState.blackHole.massGrowthRateBonus = level * 0.15;
       break;
     case "dark_matter_gen":
-      newState.blackHole.darkMatterRateBonus = level * 0.005;
+      newState.blackHole.darkMatterRateBonus = level * 0.05;
       break;
   }
 

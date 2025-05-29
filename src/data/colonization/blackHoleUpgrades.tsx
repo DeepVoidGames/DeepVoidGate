@@ -30,7 +30,7 @@ export const blackHoleUpgrades: BlackHoleUpgrades[] = [
     icon: <Atom className="w-8 h-8 text-purple-400" />,
     level: 0,
     baseCost: 5,
-    effect: "+0.005 Dark Matter/s",
+    effect: "+0.05 Dark Matter/s",
     maxLevel: 1500,
   },
   {
