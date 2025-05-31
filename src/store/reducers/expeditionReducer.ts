@@ -265,12 +265,14 @@ export const getReward = (
     const artifactIndex = Math.floor(Math.random() * artifacts.length);
     const artifact = artifacts[artifactIndex];
     const artifactAmount = Math.floor(Math.random() * 5) + 1;
-    foundArtifact = artifact.name;
-    newState = addArtifactCopies(artifact.name, artifactAmount, newState);
-    toast({
-      title: "Artifact Found!",
-      description: `You have found an ${artifact.name}`,
-    });
+    if (artifact && artifact.name) {
+      foundArtifact = artifact.name;
+      newState = addArtifactCopies(artifact.name, artifactAmount, newState);
+      toast({
+        title: "Artifact Found!",
+        description: `You have found an ${artifact.name}`,
+      });
+    }
   }
 
   const affectedFactions: { factionId: string; loyaltyChange: number }[] = [];
