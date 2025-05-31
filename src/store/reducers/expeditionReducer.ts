@@ -312,9 +312,13 @@ export const getReward = (
     rewards: totalRewards,
     artifact: foundArtifact,
     unlockedTechnologies:
-      unlockedTechnologies.length > 0 ? unlockedTechnologies : undefined,
+      unlockedTechnologies.length > 0
+        ? JSON.stringify(unlockedTechnologies)
+        : undefined,
     affectedFactions:
-      affectedFactions.length > 0 ? affectedFactions : undefined,
+      affectedFactions.length > 0
+        ? JSON.stringify(affectedFactions)
+        : undefined,
   });
 
   toast({

@@ -304,7 +304,7 @@ export const buildNewBuilding = (
     type: newBuilding.type,
     name: newBuilding.name,
     tier: newBuilding.tier,
-    cost: buildingTemplate.baseCost,
+    cost: JSON.stringify(buildingTemplate.baseCost),
   });
 
   return {
@@ -388,7 +388,7 @@ export const upgradeBuildingLevel = (
     fromUpgrades: building.upgrades,
     toTier: newTier,
     toUpgrades: newUpgrades,
-    cost: upgradeCosts,
+    cost: JSON.stringify(upgradeCosts),
   });
 
   return { buildings: newBuildings, resources: newResources, success: true };
@@ -948,7 +948,7 @@ export const upgradeBuildingMax = (
     toTier: simulatedBuilding.tier,
     toUpgrades: simulatedBuilding.upgrades,
     upgradesApplied,
-    cost: totalCost,
+    cost: JSON.stringify(totalCost),
   });
 
   return {

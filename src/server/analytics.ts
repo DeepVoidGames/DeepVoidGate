@@ -1,6 +1,5 @@
 import { ExpeditionType, ResourceAmount } from "@/types/expedition";
 import { FactionName } from "@/types/factions";
-import { ResourceType } from "@/types/resource";
 
 export const GA_TRACKING_ID = "G-D4HNW2XMK3";
 
@@ -49,7 +48,7 @@ type GameEvent =
         toTier: number;
         toUpgrades: number;
         upgradesApplied: number;
-        cost: Record<ResourceType, number>;
+        cost: string;
       };
     }
   | {
@@ -117,8 +116,8 @@ type GameEvent =
         tier: number;
         rewards: ResourceAmount;
         artifact?: string;
-        unlockedTechnologies?: string[];
-        affectedFactions?: { factionId: string; loyaltyChange: number }[];
+        unlockedTechnologies?: string;
+        affectedFactions?: string;
       };
     }
   | {
