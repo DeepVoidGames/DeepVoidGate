@@ -22,6 +22,7 @@ import FactionEventModal from "@/components/FactionEventModal";
 import { BASE_NAME } from "@/config";
 import Colonization from "@/pages/Colonization";
 import BlackHole from "@/pages/BlackHole";
+import Analytics from "@/components/Analytics";
 
 const queryClient = new QueryClient();
 
@@ -35,6 +36,7 @@ const App = () => (
             <Toaster />
             <Sonner />
             <BrowserRouter basename={BASE_NAME}>
+              <Analytics />
               <Navbar />
               <FactionEventModal />
               <Routes>
