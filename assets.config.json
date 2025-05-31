@@ -1,0 +1,6 @@
+{
+  "iconPath": "icon/icon.png",
+  "backgroundColor": "#ffffff",
+  "padding": "10%",
+  "platforms": ["android", "ios"]
+}

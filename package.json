@@ -6,7 +6,8 @@
   "scripts": {
     "dev": "vite --host 0.0.0.0",
     "build": "vite build --base=https://cloud.fern.fun/deepvoidgate/demo/",
-    "build:android": "vite build && npx cap sync && npx cap open android",
+    "assets": "npx @capacitor/assets generate",
+    "build:android": "npm run assets && vite build && npx cap sync && npx cap open android",
     "build:dev": "vite build --mode development",
     "lint": "eslint .",
     "preview": "vite preview"
@@ -70,6 +71,7 @@
     "zod": "^3.23.8"
   },
   "devDependencies": {
+    "@capacitor/assets": "^3.0.5",
     "@eslint/js": "^9.26.0",
     "@tailwindcss/typography": "^0.5.15",
     "@types/node": "^22.5.5",
