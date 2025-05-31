@@ -111,8 +111,7 @@ const Hub = () => {
 
   return (
     <>
-      <MobileTopNav />
-      <div className="min-h-screen bg-gradient-to-b from-background to-background/90 flex items-center justify-center p-4">
+      <div className="min-h-screen bg-gradient-to-b from-background to-background/90 flex items-center justify-center p-4 mt-12">
         <div
           className={`glass-panel p-8 max-w-[800px] w-full animate-fade-in ${getDominantFactionTheme(
             state,
