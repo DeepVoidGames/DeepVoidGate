@@ -1,4 +1,5 @@
 import { blackHoleUpgrades } from "@/data/colonization/blackHoleUpgrades";
+import { gameEvent } from "@/server/analytics";
 import { GameState } from "@/types/gameState";
 
 const BLACK_HOLE_CONFIG = {
@@ -156,6 +157,12 @@ export const onBlackHoleUpgradePurchase = (
   } else {
     updatedUpgrades.push({ id: upgradeId, level: 1 });
   }
+
+  gameEvent("black_hole_upgrade", {
+    id: upgradeId,
+    newLevel: currentLevel + 1,
+    cost,
+  });
 
   return {
     ...newState,

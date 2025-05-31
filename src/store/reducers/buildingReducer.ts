@@ -11,6 +11,7 @@ import { ResourceType } from "@/types/resource";
 import { Technology } from "@/types/technology";
 import { GameState } from "@/types/gameState";
 import { galacticUpgrades } from "@/data/colonization/galacticUpgrades";
+import { gameEvent } from "@/server/analytics";
 
 /**
  * Calculates the efficiency of buildings based on the number of assigned workers and resource availability.
@@ -299,6 +300,13 @@ export const buildNewBuilding = (
     description: `You've built a new ${newBuilding.name}!`,
   });
 
+  gameEvent("build_started", {
+    type: newBuilding.type,
+    name: newBuilding.name,
+    tier: newBuilding.tier,
+    cost: buildingTemplate.baseCost,
+  });
+
   return {
     buildings: [...buildings, newBuilding],
     resources: newResources,
@@ -372,6 +380,16 @@ export const upgradeBuildingLevel = (
     tier: newTier,
     upgrades: newUpgrades,
   };
+
+  gameEvent("build_upgraded", {
+    type: building.type,
+    name: building.name,
+    fromTier: building.tier,
+    fromUpgrades: building.upgrades,
+    toTier: newTier,
+    toUpgrades: newUpgrades,
+    cost: upgradeCosts,
+  });
 
   return { buildings: newBuildings, resources: newResources, success: true };
 };
@@ -920,6 +938,17 @@ export const upgradeBuildingMax = (
   toast({
     title: "Mass Upgrade Successful",
     description: `Applied ${upgradesApplied} upgrades to ${originalBuilding.name}`,
+  });
+
+  gameEvent("build_mass_upgraded", {
+    type: originalBuilding.type,
+    name: originalBuilding.name,
+    fromTier: originalBuilding.tier,
+    fromUpgrades: originalBuilding.upgrades,
+    toTier: simulatedBuilding.tier,
+    toUpgrades: simulatedBuilding.upgrades,
+    upgradesApplied,
+    cost: totalCost,
   });
 
   return {

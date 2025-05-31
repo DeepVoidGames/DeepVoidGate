@@ -1,4 +1,5 @@
 import { toast } from "@/components/ui/use-toast";
+import { gameEvent } from "@/server/analytics";
 import { BuildingType } from "@/types/building";
 import { GameState } from "@/types/gameState";
 import { Milestone } from "@/types/milestone";
@@ -51,6 +52,11 @@ export const checkMilestones = (state: GameState): GameState => {
           title: `Milestone Unlocked: ${baseName}${tierText}`,
           description: milestone.description,
         });
+        gameEvent("milestone_unlocked", {
+          milestoneId: milestone.id,
+          milestoneName: baseName,
+          tier: milestone.tier,
+        });
       }
     });
 
@@ -78,9 +84,13 @@ export const checkMilestones = (state: GameState): GameState => {
         newState = { ...newState, milestones: updatedMilestones };
 
         // Notification
-        // const baseName = milestone.name.replace(/\s+[IVX]+$/, "");
+        const baseName = milestone.name.replace(/\s+[IVX]+$/, "");
         // const tierText = milestone.tier ? ` (Tier ${milestone.tier})` : "";
-
+        gameEvent("milestone_revoked", {
+          milestoneId: milestone.id,
+          milestoneName: baseName,
+          tier: milestone.tier,
+        });
         revokedAny = true;
         break; // Restart loop to re-check all milestones
       }

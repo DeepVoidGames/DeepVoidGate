@@ -6,6 +6,7 @@ import {
 import { GameState } from "@/types/gameState";
 import { getArtifact } from "@/store/reducers/artifactsReducer";
 import { factionEventPool } from "@/data/factionEvents";
+import { gameEvent } from "@/server/analytics";
 
 /**
  * Selects a random faction event from a predefined pool of events.
@@ -116,27 +117,42 @@ export const updateFactionLoyalty = (
   amount: number
 ): GameState => {
   const artifact = getArtifact("Artifact of Diplomacy", state);
-  return {
+
+  let adjustedAmount = amount;
+  if (artifact && !artifact.isLocked) {
+    adjustedAmount =
+      amount * (1 + (artifact.effect[0]?.value ?? 0) * artifact.stars);
+  }
+
+  let newState = {
     ...state,
     factions: state.factions.map((f) => {
       if (f.id === faction) {
+        const newLoyalty = Math.min(
+          Math.max(f.loyalty + adjustedAmount, 0),
+          f.maxLoyalty
+        );
         return {
           ...f,
-          loyalty: artifact?.isLocked
-            ? Math.min(Math.max(f.loyalty + amount, 0), f.maxLoyalty)
-            : Math.min(
-                Math.max(
-                  f.loyalty +
-                    amount * (1 + artifact?.effect[0]?.value * artifact?.stars),
-                  0
-                ),
-                f.maxLoyalty
-              ),
+          loyalty: newLoyalty,
         };
       }
       return f;
     }),
   };
+
+  const updatedFaction = newState.factions.find((f) => f.id === faction);
+  const newLoyalty = updatedFaction ? updatedFaction.loyalty : 0;
+
+  gameEvent("faction_loyalty_updated", {
+    factionId: faction,
+    amount,
+    adjustedAmount,
+    newLoyalty,
+    artifactUsed: !!artifact && !artifact.isLocked,
+  });
+
+  return newState;
 };
 
 /**

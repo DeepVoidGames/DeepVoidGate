@@ -4,6 +4,7 @@ import { ResourcesState } from "./resourceReducer";
 import { Technology } from "@/types/technology";
 import { GameState } from "@/types/gameState";
 import { BuildingType } from "@/types/building";
+import { gameEvent } from "@/server/analytics";
 
 /**
  * Checks if all the prerequisites for a given technology have been met.
@@ -131,6 +132,14 @@ export const researchTechnology = (
   toast({
     title: "Research Started",
     description: `Started researching: ${tech.name} (Duration: ${researchDuration}s)`,
+  });
+
+  gameEvent("technology_research_started", {
+    techId: tech.id,
+    techName: tech.name,
+    researchDuration,
+    factionId: StarUnderstandingFaction?.id,
+    factionLoyalty: StarUnderstandingFaction?.loyalty,
   });
 
   return {

@@ -1,3 +1,4 @@
+import { gameEvent } from "@/server/analytics";
 import { Artifact, ArtifactEffectType } from "@/types/artifacts";
 import { GameState } from "@/types/gameState";
 
@@ -25,6 +26,15 @@ export const upgradeArtifactIfPossible = (
   const requiredCopies = Math.pow(2, artifact.stars);
 
   if (artifact.amount < requiredCopies) return state;
+
+  const newStars = artifact.stars + 1;
+
+  gameEvent("artifact_upgraded", {
+    name: artifact.name,
+    fromStars: artifact.stars,
+    toStars: newStars,
+    copiesUsed: requiredCopies,
+  });
 
   return {
     ...state,
@@ -61,6 +71,13 @@ export const addArtifactCopies = (
   const artifact = state.artifacts.find((a) => a.name === artifactName);
 
   if (!artifact) return state;
+
+  const newAmount = artifact.amount + amount;
+  gameEvent("artifact_copies_added", {
+    name: artifact.name,
+    amount,
+    newTotal: newAmount,
+  });
 
   return {
     ...state,

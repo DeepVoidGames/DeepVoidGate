@@ -1,4 +1,5 @@
 import { galacticUpgrades } from "@/data/colonization/galacticUpgrades";
+import { gameEvent } from "@/server/analytics";
 import { Planet } from "@/types/colonization";
 import { GameState } from "@/types/gameState";
 
@@ -8,6 +9,15 @@ export const onColonize = (state: GameState, selectedPlanet: Planet) => {
     isResearched: tech.category === "Advanced" ? tech.isResearched : false,
     researchStartTime: undefined,
   }));
+
+  const newPrestige = (state.prestigeCount || 0) + 1;
+  const newKnowledge = selectedPlanet.galacticKnowledge * newPrestige;
+
+  gameEvent("colonized_planet", {
+    planetName: selectedPlanet.name,
+    prestigeCount: newPrestige,
+    newKnowledge,
+  });
 
   const updatedState = {
     ...state,
@@ -81,6 +91,11 @@ export const onGalacticUpgradePurchase = (
     galacticKnowledge: updatedKnowledge,
     galacticUpgrades: updatedUpgrades,
   };
+
+  gameEvent("galactic_upgrade_purchased", {
+    id: upgradeId,
+    cost: upgrade.cost,
+  });
 
   return updatedState;
 };

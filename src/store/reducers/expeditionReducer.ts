@@ -18,6 +18,7 @@ import { FactionName } from "@/types/factions";
 import { GameState } from "@/types/gameState";
 import { ResourceType } from "@/types/resource";
 import { Technology } from "@/types/technology";
+import { gameEvent } from "@/server/analytics";
 
 // Constants for expedition calculations
 export const BASE_EXPEDITION_TIME = 15; // 15m for the first tier
@@ -197,21 +198,19 @@ export const formatRewardsForUI = (rewards: ResourceAmount) => {
  * @param state - The current game state to be updated based on the expedition rewards.
  * @returns The updated game state after applying the expedition rewards.
  */
-const getReward = (expedition: Expedition, state: GameState): GameState => {
+export const getReward = (
+  expedition: Expedition,
+  state: GameState
+): GameState => {
   let newState = { ...state };
 
-  // Sprawdź czy nagroda została już przyznana
-  if (expedition.rewardsCollected) {
-    return newState;
-  }
+  if (expedition.rewardsCollected) return newState;
 
-  // Zbierz wszystkie nagrody - zarówno bazowe jak i z eventów
   const totalRewards: ResourceAmount = calculateReward(
     expedition.type,
     expedition.tier
   );
 
-  // Połącz z nagrodami z wydarzeń (jeśli istnieją)
   if (expedition.rewards) {
     Object.entries(expedition.rewards).forEach(([resource, amount]) => {
       const resourceType = resource as ResourceType;
@@ -219,23 +218,19 @@ const getReward = (expedition: Expedition, state: GameState): GameState => {
     });
   }
 
-  // Logowanie dla debugowania
-  // console.log("Expedition rewards to add:", totalRewards);
-  // console.log("Before adding rewards:", newState.resources);
-
-  // Dodaj nagrody do stanu gry
   for (const [resource, amount] of Object.entries(totalRewards)) {
     const resourceType = resource as ResourceType;
-    if (newState.resources[resourceType]) {
-      const numAmount = Number(amount);
-      if (!isNaN(numAmount) && numAmount > 0) {
-        newState.resources[resourceType].amount += numAmount;
-        // console.log(`Adding ${numAmount} to ${resourceType}`);
-      }
+    const numAmount = Number(amount);
+    if (
+      newState.resources[resourceType] &&
+      !isNaN(numAmount) &&
+      numAmount > 0
+    ) {
+      newState.resources[resourceType].amount += numAmount;
     }
   }
 
-  // console.log("After adding rewards:", newState.resources);
+  const unlockedTechnologies: string[] = [];
 
   if (expedition.unlockedTechnologies) {
     expedition.unlockedTechnologies.forEach((techId) => {
@@ -245,14 +240,13 @@ const getReward = (expedition: Expedition, state: GameState): GameState => {
           ...newState.technologies[techIndex],
           isResearched: true,
         };
+        unlockedTechnologies.push(techId);
       }
     });
   }
 
-  // Zwróć załogantów
   newState.population.available += expedition.crew;
 
-  // Oznacz ekspedycję jako przetworzoną
   const expeditionIndex = newState.expeditions.findIndex(
     (e) => e.id === expedition.id
   );
@@ -261,50 +255,67 @@ const getReward = (expedition: Expedition, state: GameState): GameState => {
     newState.expeditions[expeditionIndex] = {
       ...expedition,
       rewards: undefined,
-      rewardsCollected: true, // dodana flaga
+      rewardsCollected: true,
     };
   }
 
-  // Artefkaty
-  if (expedition.type === "mining") {
-    const rng = Math.random();
-    // 45% szans na artefakt
+  let foundArtifact: string | undefined;
+  if (expedition.type === "mining" && Math.random() < 0.45) {
+    const artifacts = getArtifactsByExpeditionTier(newState, expedition.tier);
+    const artifactIndex = Math.floor(Math.random() * artifacts.length);
+    const artifact = artifacts[artifactIndex];
+    const artifactAmount = Math.floor(Math.random() * 5) + 1;
+    foundArtifact = artifact.name;
+    newState = addArtifactCopies(artifact.name, artifactAmount, newState);
+    toast({
+      title: "Artifact Found!",
+      description: `You have found an ${artifact.name}`,
+    });
+  }
 
-    if (rng < 0.45) {
-      const artifacts = getArtifactsByExpeditionTier(newState, expedition.tier);
+  const affectedFactions: { factionId: string; loyaltyChange: number }[] = [];
 
-      const artifactIndex = Math.floor(Math.random() * artifacts.length);
-      const artifact = artifacts[artifactIndex];
-      const artifactAmount = Math.floor(Math.random() * 5) + 1; // 1-5 sztuk
-      const artifactName = artifact.name;
-      newState = addArtifactCopies(artifactName, artifactAmount, newState);
-      toast({
-        title: "Artifact Found!",
-        description: `You have found an ${artifact.name}`,
+  if (expedition.type === "scientific") {
+    for (const id of ["StarUnderstanding", "Biogenesis"]) {
+      const faction = newState.factions.find((f) => f.id === id);
+      if (faction) {
+        affectedFactions.push({
+          factionId: faction.id,
+          loyaltyChange: 10 * (expedition.tier + 1),
+        });
+        newState = updateFactionLoyalty(
+          newState,
+          faction.id as FactionName,
+          10 * (expedition.tier + 1)
+        );
+      }
+    }
+  } else if (expedition.type === "mining") {
+    const faction = newState.factions.find((f) => f.id === "Technocrats");
+    if (faction) {
+      affectedFactions.push({
+        factionId: faction.id,
+        loyaltyChange: 10 * (expedition.tier + 1),
       });
+      newState = updateFactionLoyalty(
+        newState,
+        faction.id as FactionName,
+        10 * (expedition.tier + 1)
+      );
     }
   }
 
-  // Frakcje
-  if (expedition.type === "scientific") {
-    newState = updateFactionLoyalty(
-      newState,
-      newState.factions.find((f) => f.id == "StarUnderstanding")
-        .id as FactionName,
-      10 * (expedition.tier + 1)
-    );
-    newState = updateFactionLoyalty(
-      newState,
-      newState.factions.find((f) => f.id == "Biogenesis").id as FactionName,
-      10 * (expedition.tier + 1)
-    );
-  } else if (expedition.type === "mining") {
-    newState = updateFactionLoyalty(
-      newState,
-      newState.factions.find((f) => f.id == "Technocrats").id as FactionName,
-      10 * (expedition.tier + 1)
-    );
-  }
+  gameEvent("expedition_reward_collected", {
+    expeditionId: expedition.id,
+    type: expedition.type,
+    tier: expedition.tier,
+    rewards: totalRewards,
+    artifact: foundArtifact,
+    unlockedTechnologies:
+      unlockedTechnologies.length > 0 ? unlockedTechnologies : undefined,
+    affectedFactions:
+      affectedFactions.length > 0 ? affectedFactions : undefined,
+  });
 
   toast({
     title: "Expedition Completed",
@@ -554,6 +565,13 @@ export const startExpedition = (
     rewards: calculateReward(type, tier),
   };
 
+  gameEvent("expedition_started", {
+    type,
+    tier,
+    crew: requiredCrew,
+    duration: newExpedition.duration,
+  });
+
   // Zatwierdź ekspedycję (zmniejsz liczbę dostępnych kolonistów)
   return {
     ...state,
@@ -791,6 +809,12 @@ export const handleExpeditionEventChoice = (
   // Zaktualizuj stan
   const newExpeditions = [...newState.expeditions];
   newExpeditions[expeditionIndex] = newExpedition;
+
+  gameEvent("expedition_event_choice", {
+    expeditionId,
+    eventId: originalEvent.id,
+    optionIndex,
+  });
 
   return {
     ...newState,
