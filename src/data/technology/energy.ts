@@ -96,7 +96,7 @@ export const technology_energy: Technology[] = [
     name: "Quantum Temporal Manipulation",
     description: "Controlled exploitation of anomalies.",
     researchCost: { energy: 50000, science: 16000 },
-    prerequisites: ["temporal_engineering", "quantum_singularity"],
+    prerequisites: ["temporal_engineering"],
     unlocksBuildings: ["quantum_flux_generator"],
     researchDuration: 3450, // 57.5 min
     isResearched: false,
