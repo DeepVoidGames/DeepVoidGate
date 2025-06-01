@@ -8,13 +8,13 @@ export const technology_advanced: Technology[] = [
     description:
       "Advanced integration of the central hub systems, enabling expansion with operational modules, including expedition planning and management, and other advanced functionalities.",
     researchCost: {
-      metals: 42000,
-      science: 8500,
-      energy: 500,
+      metals: 5e4,
+      science: 8.5e4,
+      energy: 5e4,
     },
     prerequisites: [],
     unlocksBuildings: [],
-    researchDuration: 1200,
+    researchDuration: 360,
     isResearched: false,
   },
   {
@@ -24,12 +24,12 @@ export const technology_advanced: Technology[] = [
     description:
       "Integration of advanced sub-orbital and orbital transport, scanning, and logistical systems with the Operations Hub.",
     researchCost: {
-      metals: 60000,
-      science: 3000,
-      energy: 600,
+      metals: 8e4,
+      science: 1e5,
+      energy: 8e4,
     },
     prerequisites: ["advanced_hub_integration"],
-    researchDuration: 1200,
+    researchDuration: 720,
     isResearched: false,
     unlocksBuildings: [],
   },

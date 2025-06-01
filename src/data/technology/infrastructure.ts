@@ -8,15 +8,15 @@ export const technology_infrastructure: Technology[] = [
     description:
       "Automated storage management systems for bulk material handling",
     researchCost: {
-      metals: 5630,
-      oxygen: 2810,
-      energy: 1400,
-      food: 1000,
-      science: 500,
+      metals: 6000,
+      oxygen: 3000,
+      energy: 1500,
+      food: 1200,
+      science: 800,
     },
     prerequisites: ["basic_energy"],
     unlocksBuildings: ["modularStorageHub"],
-    researchDuration: 60,
+    researchDuration: 300, // 5 min
     isResearched: false,
   },
   {
@@ -24,10 +24,14 @@ export const technology_infrastructure: Technology[] = [
     name: "Composite Alloys",
     category: "Infrastructure",
     description: "Advanced metal compression and stacking techniques",
-    researchCost: { metals: 5630, energy: 1400, science: 500 },
+    researchCost: {
+      metals: 12000,
+      energy: 3000,
+      science: 1500,
+    },
     prerequisites: ["deep_core_mining"],
     unlocksBuildings: ["metallicCompactionVault"],
-    researchDuration: 75,
+    researchDuration: 600, // 10 min
     isResearched: false,
   },
   {
@@ -36,15 +40,15 @@ export const technology_infrastructure: Technology[] = [
     category: "Infrastructure",
     description: "Subatomic compression fields for mass storage solutions",
     researchCost: {
-      metals: 5630,
-      oxygen: 15100,
-      energy: 1400,
-      food: 1000,
-      science: 500,
+      metals: 18000,
+      oxygen: 8000,
+      energy: 4000,
+      food: 2500,
+      science: 3000,
     },
     prerequisites: ["quantum_computing"],
     unlocksBuildings: ["cryoUniversalDepot", "quantumCapacitor"],
-    researchDuration: 120,
+    researchDuration: 900, // 15 min
     isResearched: false,
   },
   {
@@ -52,17 +56,17 @@ export const technology_infrastructure: Technology[] = [
     name: "Hydrostatic Megastructure Theory",
     category: "Infrastructure",
     description:
-      "Revolutionary approach to stabilizing dynamic marine environments using corrosion-resistant metamaterials and kilometer-scale pressure management systems. Enables construction of permanent oceanic settlements.",
+      "Stabilizing dynamic marine environments for permanent oceanic settlements.",
     researchCost: {
-      metals: 11000,
-      energy: 4000,
-      food: 1500,
-      oxygen: 1250,
-      science: 2000,
+      metals: 30000,
+      energy: 10000,
+      food: 4000,
+      oxygen: 4000,
+      science: 7000,
     },
     prerequisites: [],
     unlocksBuildings: ["floating_habitat"],
-    researchDuration: 2400,
+    researchDuration: 1500, // 25 min
     isResearched: false,
   },
   {
@@ -70,17 +74,17 @@ export const technology_infrastructure: Technology[] = [
     name: "Myco-Structural Ecosystem Synthesis",
     category: "Infrastructure",
     description:
-      "Engineering of living mycelium networks as structural frameworks, integrating photosynthetic lichens and adaptive gas exchange membranes for self-regulating organic habitats.",
+      "Living mycelium networks integrated into organic adaptive habitats.",
     researchCost: {
-      metals: 15000,
-      energy: 6000,
-      food: 2500,
-      oxygen: 2250,
-      science: 3000,
+      metals: 45000,
+      energy: 15000,
+      food: 8000,
+      oxygen: 7000,
+      science: 11000,
     },
     prerequisites: ["hydrostatic_architecture"],
     unlocksBuildings: ["bio_caverns"],
-    researchDuration: 3200,
+    researchDuration: 1800, // 30 min
     isResearched: false,
   },
   {
@@ -88,16 +92,16 @@ export const technology_infrastructure: Technology[] = [
     name: "Neural Eco-Symbiosis",
     category: "Infrastructure",
     description:
-      "Unlocks integration of neural-responsive materials into organic housing. Enables the Neuro-Symbiotic Bio-Domes, providing highly adaptive, self-regulating living environments that enhance comfort and population well-being.",
+      "Neural-responsive materials integrated into self-regulating biodomes.",
     researchCost: {
-      science: 16000,
-      energy: 9500,
-      food: 6000,
-      oxygen: 4500,
+      science: 20000,
+      energy: 18000,
+      food: 12000,
+      oxygen: 9000,
     },
     prerequisites: ["myco_structural_engineering"],
     unlocksBuildings: ["neuro_bio_domes"],
-    researchDuration: 3800,
+    researchDuration: 2400, // 40 min
     isResearched: false,
   },
   {
@@ -105,16 +109,16 @@ export const technology_infrastructure: Technology[] = [
     name: "Aetheric Biosystems",
     category: "Infrastructure",
     description:
-      "Unlocks Aether Spires — monumental living ecosystems blending AI, organic intelligence, and vertical architecture. A pinnacle of bio-integrated habitation, supporting dense, healthy, and autonomous populations.",
+      "Aether Spires blend AI, vertical ecosystems, and organic intelligence.",
     researchCost: {
-      science: 28000,
-      energy: 16500,
-      oxygen: 9000,
-      food: 8500,
+      science: 40000,
+      energy: 30000,
+      oxygen: 20000,
+      food: 18000,
     },
     prerequisites: ["neural_ecosymbiosis"],
     unlocksBuildings: ["aether_spires"],
-    researchDuration: 28800,
+    researchDuration: 3000, // 50 min
     isResearched: false,
   },
   {
@@ -122,15 +126,15 @@ export const technology_infrastructure: Technology[] = [
     name: "Quantum Storage Field",
     category: "Infrastructure",
     description:
-      "Quantum entanglement and stasis fields allow for storing massive quantities of matter without spatial limitations.",
+      "Stasis-entangled matter allows near-infinite spatial compression.",
     researchCost: {
-      science: 3800000,
-      energy: 2100000,
-      food: 950000,
+      science: 75000,
+      energy: 55000,
+      food: 25000,
     },
     prerequisites: ["void_singularity"],
     unlocksBuildings: ["quantum_matter_repository"],
-    researchDuration: 28800,
+    researchDuration: 3600, // 1h (max)
     isResearched: false,
   },
 ];

@@ -7,14 +7,10 @@ export const technology_expedition: Technology[] = [
     category: "Production",
     description:
       "Early organic processing using native flora and microbial cultures for sustainable food and oxygen generation.",
-    researchCost: {
-      food: 1120,
-      energy: 580,
-      science: 150,
-    },
+    researchCost: { food: 1200, energy: 600, science: 200 },
     prerequisites: [],
     unlocksBuildings: ["myco_grow_chamber"],
-    researchDuration: 120, // 2 min
+    researchDuration: 300, // 5 min
     isResearched: false,
     locked: true,
     expedtionMinTier: 0,
@@ -25,31 +21,24 @@ export const technology_expedition: Technology[] = [
     category: "Production",
     description:
       "Reverse-engineered from extraterrestrial artifacts, these advanced materials offer unprecedented strength-to-weight ratios.",
-    researchCost: {
-      metals: 25000,
-      science: 1500,
-    },
-    prerequisites: [], // Wymaga badań nad obcymi
-    unlocksBuildings: [], // Specjalny budynek do produkcji
-    researchDuration: 600, // 10 minut - długa bo skomplikowana
+    researchCost: { metals: 50000, science: 5000 },
+    prerequisites: [],
+    unlocksBuildings: [],
+    researchDuration: 900, // 15 min
     isResearched: false,
-    locked: true, // Na początku zablokowane
+    locked: true,
     expedtionMinTier: 1,
   },
-
   {
     id: "quantum_metabolism",
     name: "Quantum Metabolism",
     category: "Production",
     description:
-      "Harnessing quantum uncertainty in biological systems leads to radically accelerated nutrient cycles and oxygen production.",
-    researchCost: {
-      science: 5000,
-      food: 3000,
-    },
+      "Quantum uncertainty accelerates nutrient cycles and oxygen production.",
+    researchCost: { science: 12000, food: 8000 },
     prerequisites: [],
     unlocksBuildings: ["qmet_biofarm", "qmet_oxyplant"],
-    researchDuration: 900, // 15 minut
+    researchDuration: 1200, // 20 min
     isResearched: false,
     locked: true,
     expedtionMinTier: 2,
@@ -59,14 +48,11 @@ export const technology_expedition: Technology[] = [
     name: "Harmonic Energy Matrices",
     category: "Energy",
     description:
-      "Utilizing alien harmonic fields to amplify energy generation and resource efficiency via synchronized quantum resonators.",
-    researchCost: {
-      science: 9000,
-      energy: 6000,
-    },
+      "Alien harmonic fields amplify energy generation through resonators.",
+    researchCost: { science: 20000, energy: 12000 },
     prerequisites: [],
     unlocksBuildings: ["harmonic_core_generator", "resonant_fabricator"],
-    researchDuration: 1200, // 20 minut
+    researchDuration: 1500, // 25 min
     isResearched: false,
     locked: true,
     expedtionMinTier: 3,
@@ -76,34 +62,25 @@ export const technology_expedition: Technology[] = [
     name: "Symbiotic Processing Units",
     category: "Infrastructure",
     description:
-      "Integrates bio-mechanical constructs with industrial systems to enable co-dependent, ultra-efficient resource generation.",
-    researchCost: {
-      science: 14000,
-      metals: 6000,
-      food: 5000,
-    },
+      "Bio-mechanical constructs enable co-dependent, ultra-efficient systems.",
+    researchCost: { science: 35000, metals: 16000, food: 12000 },
     prerequisites: [],
     unlocksBuildings: ["symbio_colony_hub", "symbio_resource_loop"],
-    researchDuration: 1500, // 25 minut
+    researchDuration: 1800, // 30 min
     isResearched: false,
     locked: true,
     expedtionMinTier: 4,
   },
-
   {
     id: "spatial_fabric_manipulation",
     name: "Spatial Fabric Manipulation",
     category: "Production",
     description:
-      "Control over localized space-time enables folding, compressing, and storing resources in non-Euclidean spaces, unlocking extreme production density.",
-    researchCost: {
-      metals: 60000,
-      science: 40000,
-      energy: 28000,
-    },
+      "Non-Euclidean storage and compression for extreme density production.",
+    researchCost: { metals: 120000, science: 80000, energy: 56000 },
     prerequisites: [],
     unlocksBuildings: ["dimensional_refinery", "void_storage_core"],
-    researchDuration: 2100,
+    researchDuration: 2400, // 40 min
     isResearched: false,
     locked: true,
     expedtionMinTier: 6,
@@ -113,38 +90,29 @@ export const technology_expedition: Technology[] = [
     name: "Autonomic Storage Networks",
     category: "Infrastructure",
     description:
-      "A self-regulating resource storage architecture based on neural patterns that actively optimize flow, minimize waste, and accelerate distribution.",
-    researchCost: {
-      metals: 60000,
-      science: 40000,
-      energy: 28000,
-    },
+      "Neural-patterned architecture that self-regulates storage and flow.",
+    researchCost: { metals: 140000, science: 90000, energy: 70000 },
     prerequisites: [],
     unlocksBuildings: [
       "smart_resource_matrix",
       "nutrient_reserve_cluster",
       "aeropulse_vault",
     ],
-    researchDuration: 2400, // 40 minut
+    researchDuration: 2700, // 45 min
     isResearched: false,
     locked: true,
     expedtionMinTier: 7,
   },
-
   {
     id: "adaptive_matter_engineering",
     name: "Adaptive Matter Engineering",
     category: "Production",
     description:
-      "Harnessing quantum-bound programmable matter that reshapes itself to fulfill immediate production needs.",
-    researchCost: {
-      science: 50000,
-      metals: 20000,
-      energy: 30000,
-    },
+      "Programmable quantum matter adapts to real-time production needs.",
+    researchCost: { science: 200000, metals: 90000, energy: 100000 },
     prerequisites: [],
     unlocksBuildings: ["morpho_core", "nutri_flux_hub"],
-    researchDuration: 3000,
+    researchDuration: 3000, // 50 min
     isResearched: false,
     locked: true,
     expedtionMinTier: 8,
@@ -154,15 +122,11 @@ export const technology_expedition: Technology[] = [
     name: "Temporal Acceleration",
     category: "Production",
     description:
-      "By stabilizing localized spacetime fields, production cycles are significantly accelerated without material degradation.",
-    researchCost: {
-      science: 100000,
-      metals: 60000,
-      energy: 80000,
-    },
+      "Stabilizing spacetime fields speeds up production without loss.",
+    researchCost: { science: 400000, metals: 180000, energy: 200000 },
     prerequisites: [],
     unlocksBuildings: ["chrono_forge", "biosurge_chamber"],
-    researchDuration: 4800, // 80 minut
+    researchDuration: 3600, // 1h
     isResearched: false,
     locked: true,
     expedtionMinTier: 9,
@@ -172,15 +136,15 @@ export const technology_expedition: Technology[] = [
     name: "Matter Synthesis",
     category: "Production",
     description:
-      "Unlocking zero-point field manipulation enables the direct creation of matter from energy. Resource limitations become obsolete.",
+      "Zero-point manipulation enables creation of matter from energy.",
     researchCost: {
-      science: 200000,
-      energy: 150000,
-      metals: 100000,
+      science: 800000,
+      energy: 600000,
+      metals: 400000,
     },
     prerequisites: ["temporal_acceleration"],
     unlocksBuildings: ["quantum_forge_array", "bio_reconstruction_vat"],
-    researchDuration: 7200, // 2 godziny
+    researchDuration: 7200, // 2h
     isResearched: false,
     locked: true,
     expedtionMinTier: 10,
