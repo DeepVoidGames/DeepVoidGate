@@ -25,11 +25,11 @@ export const BASE_EXPEDITION_TIME = 15; // 15m for the first tier
 export const TIME_PER_TIER = 15; // 15m for each additional tier
 export const CREW_PER_TIER = 5; //  5 crew members required for the first tier, increases by 5 for each additional tier
 export const EVENT_INTERVAL = 10; // 10 minutes between events
-export const TIER_MULTIPLIER = 1.5; //  1.5x multiplier for each tier of expedition
+export const TIER_MULTIPLIER = 1.65; //  1.5x multiplier for each tier of expedition
 
 const BASE_REWARDS: Record<ExpeditionType, ResourceAmount> = {
-  mining: { metals: 5000 },
-  scientific: { science: 5000 },
+  mining: { metals: 9e4 },
+  scientific: { science: 9e4 },
 };
 
 /**
