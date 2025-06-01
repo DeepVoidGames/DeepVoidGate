@@ -15,8 +15,8 @@ export const expeditionEvents: ExpeditionEvent[] = [
         effects: [{ type: "crew", value: -1 }],
       },
       {
-        text: "Stop to provide medical care (add 15 minutes to expedition)",
-        effects: [{ type: "time", value: 15 }],
+        text: "Stop to provide medical care (add 5 minutes to expedition)",
+        effects: [{ type: "time", value: 5 }],
       },
     ],
   },
@@ -32,8 +32,8 @@ export const expeditionEvents: ExpeditionEvent[] = [
     image: "cave_in.png",
     options: [
       {
-        text: "Attempt rescue (lose 30 minutes but save crew)",
-        effects: [{ type: "time", value: 30 }],
+        text: "Attempt rescue (lose 5 minutes but save crew)",
+        effects: [{ type: "time", value: 5 }],
       },
       {
         text: "Focus on mining (lose 2 crew members but continue)",
@@ -42,7 +42,7 @@ export const expeditionEvents: ExpeditionEvent[] = [
           {
             type: "reward",
             value: (expedition) => ({
-              metals: 200 * (1 + expedition.tier),
+              metals: 2e5 * (1 + expedition.tier),
             }),
           },
         ],
@@ -61,11 +61,11 @@ export const expeditionEvents: ExpeditionEvent[] = [
       {
         text: "Harvest as much as possible (large reward but takes time)",
         effects: [
-          { type: "time", value: 25 },
+          { type: "time", value: 5 },
           {
             type: "reward",
             value: (expedition) => ({
-              metals: 300 * (1 + expedition.tier),
+              metals: 3e4 * (1 + expedition.tier),
             }),
           },
         ],
@@ -76,7 +76,7 @@ export const expeditionEvents: ExpeditionEvent[] = [
           {
             type: "reward",
             value: (expedition) => ({
-              metals: 150 * (1 + expedition.tier),
+              metals: 1.5e4 * (1 + expedition.tier),
             }),
           },
         ],
@@ -92,8 +92,8 @@ export const expeditionEvents: ExpeditionEvent[] = [
     image: "sandstorm.png",
     options: [
       {
-        text: "Seek shelter (expedition takes 20 minutes longer)",
-        effects: [{ type: "time", value: 20 }],
+        text: "Seek shelter (expedition takes 5 minutes longer)",
+        effects: [{ type: "time", value: 5 }],
       },
       {
         text: "Try to outrun it (50% chance to save time, 50% to lose crew)",
@@ -119,8 +119,8 @@ export const expeditionEvents: ExpeditionEvent[] = [
     minTier: 1,
     options: [
       {
-        text: "Reroute power to shields (expedition takes 15 minutes longer)",
-        effects: [{ type: "time", value: 15 }],
+        text: "Reroute power to shields (expedition takes 5 minutes longer)",
+        effects: [{ type: "time", value: 5 }],
       },
       {
         text: "Risk proceeding at normal speed (50% chance to lose crew)",
@@ -142,8 +142,8 @@ export const expeditionEvents: ExpeditionEvent[] = [
     minTier: 1,
     options: [
       {
-        text: "Take evasive maneuvers (add 25 minutes to ETA)",
-        effects: [{ type: "time", value: 25 }],
+        text: "Take evasive maneuvers (add 5 minutes to ETA)",
+        effects: [{ type: "time", value: 5 }],
       },
       {
         text: "Chart risky path through debris (50% save time/50% hull breach)",
@@ -169,8 +169,8 @@ export const expeditionEvents: ExpeditionEvent[] = [
     minTier: 2,
     options: [
       {
-        text: "Divert course around storm (+30 minutes)",
-        effects: [{ type: "time", value: 30 }],
+        text: "Divert course around storm (+5 minutes)",
+        effects: [{ type: "time", value: 5 }],
       },
       {
         text: "Attempt straight path (50% faster travel/50% crew casualties)",
@@ -195,8 +195,8 @@ export const expeditionEvents: ExpeditionEvent[] = [
     image: "asteroid_field.png",
     options: [
       {
-        text: "Navigate carefully through gaps (+18 minutes)",
-        effects: [{ type: "time", value: 18 }],
+        text: "Navigate carefully through gaps (+5 minutes)",
+        effects: [{ type: "time", value: 5 }],
       },
       {
         text: "Accelerate through dangerous zone (50% gain/lose)",
@@ -222,8 +222,8 @@ export const expeditionEvents: ExpeditionEvent[] = [
     minTier: 1,
     options: [
       {
-        text: "Power down non-essential systems (+22 minutes)",
-        effects: [{ type: "time", value: 22 }],
+        text: "Power down non-essential systems (+5 minutes)",
+        effects: [{ type: "time", value: 5 }],
       },
       {
         text: "Risk system overload for speed (50% success chance)",
@@ -249,8 +249,8 @@ export const expeditionEvents: ExpeditionEvent[] = [
     minTier: 1,
     options: [
       {
-        text: "Recalibrate navigation systems (+17 minutes)",
-        effects: [{ type: "time", value: 17 }],
+        text: "Recalibrate navigation systems (+5 minutes)",
+        effects: [{ type: "time", value: 5 }],
       },
       {
         text: "Fly blind through distortion (50% time save/penalty)",
@@ -287,7 +287,7 @@ export const expeditionEvents: ExpeditionEvent[] = [
           },
           {
             type: "time",
-            value: 30, // +30 minut do czasu misji
+            value: 5, // +30 minut do czasu misji
           },
         ],
       },
@@ -296,7 +296,7 @@ export const expeditionEvents: ExpeditionEvent[] = [
         effects: [
           {
             type: "reward",
-            value: { science: 1000 },
+            value: { science: 1e4 },
           },
         ],
       },
@@ -321,7 +321,7 @@ export const expeditionEvents: ExpeditionEvent[] = [
           },
           {
             type: "time",
-            value: 10,
+            value: 7,
           },
         ],
       },
@@ -330,7 +330,7 @@ export const expeditionEvents: ExpeditionEvent[] = [
         effects: [
           {
             type: "reward",
-            value: { food: 200, oxygen: 50 },
+            value: { food: 2e5, oxygen: 5e5 },
           },
         ],
       },
@@ -355,7 +355,7 @@ export const expeditionEvents: ExpeditionEvent[] = [
           },
           {
             type: "time",
-            value: 45,
+            value: 9,
           },
         ],
       },
@@ -364,7 +364,7 @@ export const expeditionEvents: ExpeditionEvent[] = [
         effects: [
           {
             type: "reward",
-            value: { food: 2000, science: 500 },
+            value: { food: 2e5, science: 5e5 },
           },
         ],
       },
@@ -390,7 +390,7 @@ export const expeditionEvents: ExpeditionEvent[] = [
           },
           {
             type: "time",
-            value: 60,
+            value: 12,
           },
         ],
       },
@@ -399,7 +399,7 @@ export const expeditionEvents: ExpeditionEvent[] = [
         effects: [
           {
             type: "reward",
-            value: { energy: 4000, science: 800 },
+            value: { energy: 4e5, science: 8e5 },
           },
         ],
       },
@@ -424,7 +424,7 @@ export const expeditionEvents: ExpeditionEvent[] = [
           },
           {
             type: "time",
-            value: 60,
+            value: 14,
           },
         ],
       },
@@ -434,9 +434,9 @@ export const expeditionEvents: ExpeditionEvent[] = [
           {
             type: "reward",
             value: {
-              food: 3000,
-              oxygen: 1500,
-              science: 1000,
+              food: 3e5,
+              oxygen: 1.5e5,
+              science: 1e5,
             },
           },
         ],
@@ -462,7 +462,7 @@ export const expeditionEvents: ExpeditionEvent[] = [
           },
           {
             type: "time",
-            value: 90,
+            value: 16,
           },
         ],
       },
@@ -472,9 +472,9 @@ export const expeditionEvents: ExpeditionEvent[] = [
           {
             type: "reward",
             value: {
-              energy: 5000,
-              metals: 3000,
-              science: 2000,
+              energy: 5e5,
+              metals: 3e5,
+              science: 2e5,
             },
           },
         ],
@@ -501,7 +501,7 @@ export const expeditionEvents: ExpeditionEvent[] = [
           },
           {
             type: "time",
-            value: 120,
+            value: 18,
           },
         ],
       },
@@ -511,9 +511,9 @@ export const expeditionEvents: ExpeditionEvent[] = [
           {
             type: "reward",
             value: {
-              science: 4000,
-              energy: 5000,
-              metals: 3000,
+              science: 1e6,
+              energy: 1e6,
+              metals: 1e6,
             },
           },
         ],
@@ -540,7 +540,7 @@ export const expeditionEvents: ExpeditionEvent[] = [
           },
           {
             type: "time",
-            value: 150,
+            value: 20,
           },
         ],
       },
@@ -550,10 +550,10 @@ export const expeditionEvents: ExpeditionEvent[] = [
           {
             type: "reward",
             value: {
-              food: 5000,
-              water: 4000,
-              oxygen: 4000,
-              science: 3000,
+              food: 5e6,
+              water: 4e6,
+              oxygen: 4e6,
+              science: 3e6,
             },
           },
         ],
@@ -580,7 +580,7 @@ export const expeditionEvents: ExpeditionEvent[] = [
           },
           {
             type: "time",
-            value: 180,
+            value: 22,
           },
         ],
       },
@@ -590,10 +590,10 @@ export const expeditionEvents: ExpeditionEvent[] = [
           {
             type: "reward",
             value: {
-              metals: 7000,
-              energy: 5000,
-              food: 4000,
-              oxygen: 3000,
+              metals: 7e6,
+              energy: 5e6,
+              food: 4e6,
+              oxygen: 3e6,
             },
           },
         ],
@@ -620,7 +620,7 @@ export const expeditionEvents: ExpeditionEvent[] = [
           },
           {
             type: "time",
-            value: 240,
+            value: 24,
           },
         ],
       },
@@ -630,8 +630,8 @@ export const expeditionEvents: ExpeditionEvent[] = [
           {
             type: "reward",
             value: {
-              science: 20000,
-              energy: 15000,
+              science: 2e6,
+              energy: 1e6,
             },
           },
         ],
@@ -658,7 +658,7 @@ export const expeditionEvents: ExpeditionEvent[] = [
           },
           {
             type: "time",
-            value: 300,
+            value: 26,
           },
         ],
       },
@@ -668,8 +668,8 @@ export const expeditionEvents: ExpeditionEvent[] = [
           {
             type: "reward",
             value: {
-              science: 50000,
-              energy: 30000,
+              science: 5e7,
+              energy: 3e7,
             },
           },
         ],
