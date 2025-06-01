@@ -85,7 +85,7 @@ export const technology_energy: Technology[] = [
     name: "Temporal Engineering",
     category: "Energy",
     description: "Extract energy from spacetime.",
-    researchCost: { energy: 200000, science: 60000 },
+    researchCost: { energy: 20000, science: 40000 },
     prerequisites: ["fusion_energy"],
     unlocksBuildings: ["chrono_turbine_mk2"],
     researchDuration: 3300, // 55 min
@@ -95,7 +95,7 @@ export const technology_energy: Technology[] = [
     id: "quantum_temporal_manipulation",
     name: "Quantum Temporal Manipulation",
     description: "Controlled exploitation of anomalies.",
-    researchCost: { energy: 500000, science: 160000 },
+    researchCost: { energy: 50000, science: 16000 },
     prerequisites: ["temporal_engineering", "quantum_singularity"],
     unlocksBuildings: ["quantum_flux_generator"],
     researchDuration: 3450, // 57.5 min
@@ -106,7 +106,7 @@ export const technology_energy: Technology[] = [
     id: "quantum_energy_harnessing",
     name: "Quantum Energy Harnessing",
     description: "Quantum Core Reactor breakthrough.",
-    researchCost: { energy: 1500000, science: 500000 },
+    researchCost: { energy: 150000, science: 50000 },
     prerequisites: ["quantum_temporal_manipulation"],
     unlocksBuildings: ["quantum_core"],
     researchDuration: 3600, // 1h (max)
