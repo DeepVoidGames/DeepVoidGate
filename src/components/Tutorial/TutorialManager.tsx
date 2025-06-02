@@ -1,5 +1,5 @@
 import React, { createContext, useContext, useReducer, useEffect } from "react";
-import { getTutorialById, allTutorials } from "@/data/tutorialData";
+import { getTutorialById, allTutorials } from "@/data/tutorialsData";
 import { TutorialState } from "@/types/tutorials";
 import { TutorialOverlay } from "@/components/Tutorial/TutorialOverlay";
 

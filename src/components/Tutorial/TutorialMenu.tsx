@@ -8,7 +8,7 @@ import {
   ChevronRight,
 } from "lucide-react";
 import { useTutorial } from "./TutorialManager";
-import { getTutorialsByCategory, allTutorials } from "../../data/tutorialData";
+import { getTutorialsByCategory, allTutorials } from "../../data/tutorialsData";
 
 export const TutorialMenu: React.FC = () => {
   const { state, startTutorial, isAvailable } = useTutorial();

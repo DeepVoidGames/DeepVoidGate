@@ -1,5 +1,4 @@
-
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap");
 
 @tailwind base;
 @tailwind components;
@@ -92,19 +91,19 @@
   .resource-badge-oxygen {
     @apply bg-cyan-950/70 text-cyan-200 border border-cyan-800/50;
   }
-  
+
   .resource-badge-food {
     @apply bg-green-950/70 text-green-200 border border-green-800/50;
   }
-  
+
   .resource-badge-energy {
     @apply bg-yellow-950/70 text-yellow-200 border border-yellow-800/50;
   }
-  
+
   .resource-badge-metals {
     @apply bg-zinc-950/70 text-zinc-200 border border-zinc-800/50;
   }
-  
+
   .resource-badge-science {
     @apply bg-purple-950/70 text-purple-200 border border-purple-800/50;
   }
@@ -130,7 +129,7 @@
   }
 
   .button-primary::after {
-    content: '';
+    content: "";
     @apply absolute inset-0 bg-gradient-to-r from-primary/0 via-primary/20 to-primary/0 
            opacity-0 hover:opacity-100 transition-opacity duration-700;
   }
@@ -146,4 +145,54 @@
   .text-balance {
     text-wrap: balance;
   }
+}
+
+.tutorial-highlight {
+  position: relative;
+  z-index: 1000;
+  box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.5),
+    0 0 0 6px rgba(59, 130, 246, 0.2);
+  border-radius: 6px;
+  animation: tutorial-pulse 3s infinite;
+}
+
+@keyframes tutorial-pulse {
+  0%,
+  100% {
+    box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.5),
+      0 0 0 6px rgba(59, 130, 246, 0.2);
+    transform: scale(1);
+  }
+  50% {
+    box-shadow: 0 0 0 6px rgba(59, 130, 246, 0.7),
+      0 0 0 8px rgba(59, 130, 246, 0.3);
+    transform: scale(1.05);
+  }
+}
+
+.tutorial-backdrop {
+  backdrop-filter: blur(1px);
+}
+
+.tutorial-panel {
+  animation: tutorial-fade-in 0.3s ease-out;
+}
+
+@keyframes tutorial-fade-in {
+  from {
+    opacity: 0.5;
+    transform: scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+.tutorial-target {
+  transition: all 0.3s ease;
+}
+
+.tutorial-target:hover {
+  transform: translateY(-1px);
 }

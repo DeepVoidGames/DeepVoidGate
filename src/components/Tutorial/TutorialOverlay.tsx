@@ -126,7 +126,7 @@ export const TutorialOverlay: React.FC<TutorialOverlayProps> = ({
   return (
     <>
       <div
-        className="fixed inset-0 bg-black bg-opacity-60 z-40"
+        className="fixed inset-0 bg-black bg-opacity-30 z-40"
         onClick={(e) => {
           if (step.target) {
             const targetElement = document.querySelector(step.target);
