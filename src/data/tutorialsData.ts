@@ -159,7 +159,7 @@ export const buildingTutorials: Tutorial[] = [
         id: "assigning-workers",
         title: "Assigning Workers",
         content:
-          "Click the + and - buttons next to buildings to assign or remove workers. More workers generally mean higher production.",
+          "Click the + (Arrow UP) and - (Arrow Down) buttons next to buildings to assign or remove workers. More workers generally mean higher production.",
         target: ".worker-controls",
         position: "top",
         allowNext: true,

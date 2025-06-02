@@ -27,10 +27,8 @@ export const TutorialButton: React.FC<TutorialButtonProps> = ({
 
   const variantClasses = {
     primary: "bg-blue-500 hover:bg-blue-600 text-white",
-    secondary:
-      "bg-gray-200 hover:bg-gray-300 text-gray-700 dark:bg-gray-700 dark:hover:bg-gray-600 dark:text-gray-300",
-    ghost:
-      "hover:bg-gray-100 dark:hover:bg-gray-800 text-gray-600 dark:text-gray-400",
+    secondary: "",
+    ghost: "hover:bg-primary/80 hover:text-black text-gray-500 ",
   };
 
   const iconSizes = {
