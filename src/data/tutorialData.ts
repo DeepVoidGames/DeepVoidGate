@@ -19,7 +19,7 @@ export const buildingTutorials: Tutorial[] = [
         title: "Building Categories",
         content:
           "Buildings are organized into categories: Production (generates resources), Research (unlocks technologies), Housing (accommodates colonists), and Storage (increases capacity).",
-        target: ".building-categories",
+        target: ".existing-buildings",
         position: "bottom",
         allowNext: true,
       },
@@ -38,7 +38,7 @@ export const buildingTutorials: Tutorial[] = [
         content:
           "Most buildings require workers to operate. You can see your available workers in the top-right corner. Assign workers to maximize efficiency.",
         target: ".worker-counter",
-        position: "bottom",
+        position: "left",
         allowNext: true,
       },
       {

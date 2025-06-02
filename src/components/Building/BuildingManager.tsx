@@ -205,7 +205,7 @@ export const BuildingManager: React.FC = () => {
                 </h2>
                 <TutorialButton
                   tutorialId="buildings-basics"
-                  size="sm"
+                  size="md"
                   variant="ghost"
                 />
               </div>
@@ -267,32 +267,6 @@ export const BuildingManager: React.FC = () => {
             </button>
           </div>
 
-          {/* Building Categories Navigation */}
-          <TutorialHighlight
-            tutorialId="buildings-basics"
-            stepId="building-categories"
-          >
-            <div className="building-categories mb-4">
-              <div className="flex flex-wrap gap-2">
-                {categories.map((category) => (
-                  <button
-                    key={category.id}
-                    onClick={() => setActiveTab(category.id)}
-                    className={`flex items-center gap-2 px-4 py-2 rounded-lg transition-colors ${
-                      activeTab === category.id
-                        ? "bg-blue-500 text-white"
-                        : " bg-background/40"
-                    }`}
-                    data-category={category.id}
-                  >
-                    {category.icon}
-                    <span>{category.name}</span>
-                  </button>
-                ))}
-              </div>
-            </div>
-          </TutorialHighlight>
-
           {/* Existing buildings */}
           <TutorialHighlight
             tutorialId="buildings-basics"
@@ -331,7 +305,7 @@ export const BuildingManager: React.FC = () => {
                 </h3>
                 <TutorialButton
                   tutorialId="production-buildings"
-                  size="sm"
+                  size="md"
                   variant="ghost"
                 />
               </div>
