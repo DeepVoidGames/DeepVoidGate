@@ -1,3 +1,4 @@
+// Updated BuildingManager.tsx with Tutorial Integration
 import React, { useCallback, useMemo, useState } from "react";
 import {
   Home,
@@ -31,6 +32,9 @@ import {
 } from "@/types/building";
 import { ResourceType } from "@/types/resource";
 import { getDominantFactionTheme } from "@/store/reducers/factionsReducer";
+import { useTutorialIntegration } from "@/hooks/useTutorialIntegration";
+import { TutorialHighlight } from "@/components/Tutorial/TutorialHighlight";
+import { TutorialButton } from "@/components/Tutorial/TutorialButton";
 
 const categories: BuildingCategories[] = [
   {
@@ -62,6 +66,9 @@ export const BuildingManager: React.FC = () => {
   const [activeTab, setActiveTab] = useState<string>("production");
   const [searchQuery, setSearchQuery] = useState("");
   const [showMaxed, setShowMaxed] = useState(false);
+
+  // Tutorial integration
+  const { isInTutorial, currentTutorial } = useTutorialIntegration();
 
   // Handlers
   const constructBuilding = useCallback(
@@ -184,96 +191,169 @@ export const BuildingManager: React.FC = () => {
   return (
     <div className={`space-y-6 animate-fade-in`}>
       {/* Existing Buildings Section */}
-      <div
-        className={`glass-panel p-4 w-full ${getDominantFactionTheme(state, {
-          styleType: "border",
-        })}`}
-      >
-        <div className="flex flex-col md:flex-row justify-between mb-4 gap-4 w-full">
-          <div className="grid grid-cols-2 w-full">
-            <h2 className="text-lg font-medium text-foreground/90">
-              Colony Buildings
-            </h2>
-            <div className="flex items-center justify-endm., space-x-2 text-xs md:text-sm">
-              <Users className="h-5 w-5 md:h-4 md:w-4 text-blue-400" />
-              <span>
-                {population.available} / {population.maxCapacity}{" "}
-                <span>workers available</span>
-              </span>
-              {population.deathTimer && (
-                <div className="flex items-center text-red-400 ml-2">
-                  <Clock className="h-4 w-4 mr-1" />
+      <TutorialHighlight tutorialId="buildings-basics" className="w-full">
+        <div
+          className={`glass-panel p-4 w-full ${getDominantFactionTheme(state, {
+            styleType: "border",
+          })}`}
+        >
+          <div className="flex flex-col md:flex-row justify-between mb-4 gap-4 w-full">
+            <div className="grid grid-cols-2 w-full">
+              <div className="flex items-center gap-2">
+                <h2 className="text-lg font-medium text-foreground/90">
+                  Colony Buildings
+                </h2>
+                <TutorialButton
+                  tutorialId="buildings-basics"
+                  size="sm"
+                  variant="ghost"
+                />
+              </div>
+
+              <TutorialHighlight
+                tutorialId="buildings-basics"
+                stepId="worker-assignment"
+              >
+                <div className="flex items-center justify-end space-x-2 text-xs md:text-sm worker-counter">
+                  <Users className="h-5 w-5 md:h-4 md:w-4 text-blue-400" />
                   <span>
-                    Oxygen depletion in: {Math.floor(population.deathTimer)}s
+                    {population.available} / {population.maxCapacity}{" "}
+                    <span>workers available</span>
                   </span>
+                  {population.deathTimer && (
+                    <div className="flex items-center text-red-400 ml-2 oxygen-timer">
+                      <Clock className="h-4 w-4 mr-1" />
+                      <span>
+                        Oxygen depletion in: {Math.floor(population.deathTimer)}
+                        s
+                      </span>
+                    </div>
+                  )}
                 </div>
-              )}
+              </TutorialHighlight>
             </div>
           </div>
-        </div>
 
-        {/* Search input */}
-        <div className="relative max-w-md w-full mb-4">
-          <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
-          <input
-            type="text"
-            placeholder="Search buildings..."
-            className="w-full pl-10 pr-4 py-2 bg-background/90 rounded-lg border focus:outline-none focus:ring-2 focus:ring-primary"
-            value={searchQuery}
-            onChange={(e) => setSearchQuery(e.target.value)}
-          />
-        </div>
-
-        <div className="flex items-center justify-end mb-4 w-full">
-          <button
-            onClick={() => setShowMaxed((prev) => !prev)}
-            className={`flex items-center gap-2 px-4 py-2 rounded-lg transition-colors`}
+          {/* Search input */}
+          <TutorialHighlight
+            tutorialId="buildings-basics"
+            stepId="search-buildings"
           >
-            {showMaxed ? (
-              <Eye className="h-4 w-4 text-muted-foreground" />
-            ) : (
-              <EyeOff className="h-4 w-4 text-muted-foreground" />
-            )}
-            <span className="text-muted-foreground text-sm">
-              {showMaxed ? "Hide Maxed" : "Show Maxed"}
-            </span>
-          </button>
+            <div className="relative max-w-md w-full mb-4">
+              <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+              <input
+                type="text"
+                placeholder="Search buildings..."
+                className="w-full pl-10 pr-4 py-2 bg-background/90 rounded-lg border focus:outline-none focus:ring-2 focus:ring-primary"
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+              />
+            </div>
+          </TutorialHighlight>
+
+          <div className="flex items-center justify-end mb-4 w-full">
+            <button
+              onClick={() => setShowMaxed((prev) => !prev)}
+              className={`flex items-center gap-2 px-4 py-2 rounded-lg transition-colors`}
+            >
+              {showMaxed ? (
+                <Eye className="h-4 w-4 text-muted-foreground" />
+              ) : (
+                <EyeOff className="h-4 w-4 text-muted-foreground" />
+              )}
+              <span className="text-muted-foreground text-sm">
+                {showMaxed ? "Hide Maxed" : "Show Maxed"}
+              </span>
+            </button>
+          </div>
+
+          {/* Building Categories Navigation */}
+          <TutorialHighlight
+            tutorialId="buildings-basics"
+            stepId="building-categories"
+          >
+            <div className="building-categories mb-4">
+              <div className="flex flex-wrap gap-2">
+                {categories.map((category) => (
+                  <button
+                    key={category.id}
+                    onClick={() => setActiveTab(category.id)}
+                    className={`flex items-center gap-2 px-4 py-2 rounded-lg transition-colors ${
+                      activeTab === category.id
+                        ? "bg-blue-500 text-white"
+                        : " bg-background/40"
+                    }`}
+                    data-category={category.id}
+                  >
+                    {category.icon}
+                    <span>{category.name}</span>
+                  </button>
+                ))}
+              </div>
+            </div>
+          </TutorialHighlight>
+
+          {/* Existing buildings */}
+          <TutorialHighlight
+            tutorialId="buildings-basics"
+            stepId="existing-buildings"
+          >
+            <div className="existing-buildings">
+              <ExistingBuildings
+                activeTab={activeTab}
+                setActiveTab={setActiveTab}
+                categories={categories}
+                filteredBuildings={filteredBuildings}
+                buildingConfig={buildingConfig}
+                expandedBuilding={expandedBuilding}
+                upgradeBuilding={upgradeBuilding}
+                adjustWorkers={adjustWorkers}
+                setExpandedBuilding={setExpandedBuilding}
+                resources={resources}
+                formatNumber={formatNumber}
+                ResourcesIcon={ResourcesIcon}
+                getUpgradeData={getUpgradeData}
+                showMaxed={showMaxed}
+                upgradeBuildingMax={upgradeBuildingMax}
+              />
+            </div>
+          </TutorialHighlight>
+
+          {/* Construction Section */}
+          <TutorialHighlight
+            tutorialId="buildings-basics"
+            stepId="construction-new"
+          >
+            <div className="construction-section mt-4">
+              <div className="flex items-center gap-2 mb-4">
+                <h3 className="text-lg font-medium text-foreground/90">
+                  Construction
+                </h3>
+                <TutorialButton
+                  tutorialId="production-buildings"
+                  size="sm"
+                  variant="ghost"
+                />
+              </div>
+
+              <ConstructionSection
+                categories={categories}
+                buildingConfig={buildingConfig}
+                initialBuildings={initialBuildings}
+                buildings={buildings}
+                ResourcesIcon={ResourcesIcon}
+                formatNumber={formatNumber}
+                resources={resources}
+                constructBuilding={constructBuilding}
+                canAffordBuilding={canAffordBuildingCost}
+                technologies={state.technologies}
+              />
+            </div>
+          </TutorialHighlight>
         </div>
-
-        {/* Existing buildings */}
-        <ExistingBuildings
-          activeTab={activeTab}
-          setActiveTab={setActiveTab}
-          categories={categories}
-          filteredBuildings={filteredBuildings}
-          buildingConfig={buildingConfig}
-          expandedBuilding={expandedBuilding}
-          upgradeBuilding={upgradeBuilding}
-          adjustWorkers={adjustWorkers}
-          setExpandedBuilding={setExpandedBuilding}
-          resources={resources}
-          formatNumber={formatNumber}
-          ResourcesIcon={ResourcesIcon}
-          getUpgradeData={getUpgradeData}
-          showMaxed={showMaxed}
-          upgradeBuildingMax={upgradeBuildingMax}
-        />
-
-        {/* Construction Section */}
-        <ConstructionSection
-          categories={categories}
-          buildingConfig={buildingConfig}
-          initialBuildings={initialBuildings}
-          buildings={buildings}
-          ResourcesIcon={ResourcesIcon}
-          formatNumber={formatNumber}
-          resources={resources}
-          constructBuilding={constructBuilding}
-          canAffordBuilding={canAffordBuildingCost}
-          technologies={state.technologies}
-        />
-      </div>
+      </TutorialHighlight>
     </div>
   );
 };
+
 export { buildingConfig };

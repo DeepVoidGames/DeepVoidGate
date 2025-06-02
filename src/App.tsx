@@ -23,6 +23,7 @@ import { BASE_NAME } from "@/config";
 import Colonization from "@/pages/Colonization";
 import BlackHole from "@/pages/BlackHole";
 import Analytics from "@/components/Analytics";
+import { TutorialProvider } from "@/components/Tutorial/TutorialManager";
 
 const queryClient = new QueryClient();
 
@@ -32,29 +33,31 @@ const App = () => (
       <ChatProvider>
         <GlobalChat />
         <GameProvider>
-          <TooltipProvider>
-            <Toaster />
-            <Sonner />
-            <BrowserRouter basename={BASE_NAME}>
-              <Analytics />
-              <Navbar />
-              <FactionEventModal />
-              <Routes>
-                <Route path="/" element={<Index />} />
-                <Route path="/tech" element={<Technologies />} />
-                <Route path="/milestones" element={<Milestones />} />
-                <Route path="/hub" element={<Hub />} />
-                <Route path="/expedition" element={<ExpeditionUI />} />
-                <Route path="/artifacts" element={<ArtifactsDisplay />} />
-                <Route path="/factions" element={<FactionsDisplay />} />
-                <Route path="/colonization" element={<Colonization />} />
-                <Route path="/blackHole" element={<BlackHole />} />
-                <Route path="/settings" element={<Settings />} />
-                {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
-                <Route path="*" element={<NotFound />} />
-              </Routes>
-            </BrowserRouter>
-          </TooltipProvider>
+          <TutorialProvider>
+            <TooltipProvider>
+              <Toaster />
+              <Sonner />
+              <BrowserRouter basename={BASE_NAME}>
+                <Analytics />
+                <Navbar />
+                <FactionEventModal />
+                <Routes>
+                  <Route path="/" element={<Index />} />
+                  <Route path="/tech" element={<Technologies />} />
+                  <Route path="/milestones" element={<Milestones />} />
+                  <Route path="/hub" element={<Hub />} />
+                  <Route path="/expedition" element={<ExpeditionUI />} />
+                  <Route path="/artifacts" element={<ArtifactsDisplay />} />
+                  <Route path="/factions" element={<FactionsDisplay />} />
+                  <Route path="/colonization" element={<Colonization />} />
+                  <Route path="/blackHole" element={<BlackHole />} />
+                  <Route path="/settings" element={<Settings />} />
+                  {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
+                  <Route path="*" element={<NotFound />} />
+                </Routes>
+              </BrowserRouter>
+            </TooltipProvider>
+          </TutorialProvider>
         </GameProvider>
       </ChatProvider>
     </AuthProvider>
