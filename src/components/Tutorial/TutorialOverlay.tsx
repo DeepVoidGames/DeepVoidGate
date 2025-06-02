@@ -140,7 +140,7 @@ export const TutorialOverlay: React.FC<TutorialOverlayProps> = ({
 
       <div
         ref={overlayRef}
-        className="fixed z-50 bg-gray-900 text-gray-100 border border-gray-700 rounded-lg shadow-2xl max-w-sm w-full"
+        className="fixed z-50 bg-gray-900 text-gray-100 border border-gray-700 rounded-lg shadow-2xl max-w-sm w-full m-2"
         style={{
           left: `${position.x}px`,
           top: `${position.y}px`,
