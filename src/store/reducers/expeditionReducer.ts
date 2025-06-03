@@ -19,6 +19,7 @@ import { GameState } from "@/types/gameState";
 import { ResourceType } from "@/types/resource";
 import { Technology } from "@/types/technology";
 import { gameEvent } from "@/server/analytics";
+import { galacticUpgrades } from "@/data/colonization/galacticUpgrades";
 
 // Constants for expedition calculations
 export const BASE_EXPEDITION_TIME = 15; // 15m for the first tier
@@ -43,14 +44,18 @@ const BASE_REWARDS: Record<ExpeditionType, ResourceAmount> = {
  */
 export const getBaseExpeditionReward = (
   type: ExpeditionType,
-  tier: number
+  tier: number,
+  state: GameState
 ): ResourceAmount => {
   const baseRewards = BASE_REWARDS[type];
   const multipliedRewards: ResourceAmount = {};
+  const bonus = state?.galacticUpgrades?.includes("quantum_disproportion")
+    ? galacticUpgrades.find((g) => g.id === "quantum_disproportion").multiplier
+    : 1;
 
   for (const [resource, amount] of Object.entries(baseRewards)) {
     multipliedRewards[resource as ResourceType] = Math.round(
-      amount * Math.pow(TIER_MULTIPLIER, tier)
+      amount * Math.pow(TIER_MULTIPLIER, tier) * bonus
     );
   }
 
@@ -71,9 +76,10 @@ export const getBaseExpeditionReward = (
  */
 export const getExpectedExpeditionRewards = (
   type: ExpeditionType,
-  tier: number
+  tier: number,
+  state: GameState
 ) => {
-  const base = getBaseExpeditionReward(type, tier);
+  const base = getBaseExpeditionReward(type, tier, state);
   return {
     base: base,
     min: Object.fromEntries(
@@ -95,10 +101,11 @@ export const getExpectedExpeditionRewards = (
  * @returns The total rewards (base + modified) as a resource map.
  */
 export const getCurrentExpeditionRewards = (
-  expedition: Expedition
+  expedition: Expedition,
+  state: GameState
 ): ResourceAmount => {
   return {
-    ...getBaseExpeditionReward(expedition.type, expedition.tier),
+    ...getBaseExpeditionReward(expedition.type, expedition.tier, state),
     ...expedition.rewards,
   };
 };
@@ -147,9 +154,10 @@ export const getPossibleTechnologies = (
  */
 export const calculateReward = (
   type: ExpeditionType,
-  tier: number
+  tier: number,
+  state: GameState
 ): ResourceAmount => {
-  const base = getBaseExpeditionReward(type, tier);
+  const base = getBaseExpeditionReward(type, tier, state);
   const rewards: ResourceAmount = {};
 
   for (const [resource, amount] of Object.entries(base)) {
@@ -208,7 +216,8 @@ export const getReward = (
 
   const totalRewards: ResourceAmount = calculateReward(
     expedition.type,
-    expedition.tier
+    expedition.tier,
+    state
   );
 
   if (expedition.rewards) {
@@ -346,13 +355,17 @@ export const calculateExpeditionDuration = (
   tier: number,
   state: GameState
 ): number => {
+  let time = BASE_EXPEDITION_TIME + tier * TIME_PER_TIER;
   const artifact = getArtifact("Time Crystal", state);
 
   if (!artifact?.isLocked) {
-    const time = BASE_EXPEDITION_TIME + tier * TIME_PER_TIER;
-    return time - time * (0.05 * (artifact?.stars + 1));
+    time = BASE_EXPEDITION_TIME + tier * TIME_PER_TIER;
+    time = time - time * (0.05 * (artifact?.stars + 1));
   }
-  return BASE_EXPEDITION_TIME + tier * TIME_PER_TIER;
+
+  if (state?.galacticUpgrades?.includes("quantum_travel")) time = time / 2;
+
+  return time;
 };
 
 /**
@@ -568,7 +581,7 @@ export const startExpedition = (
     status: "in_progress",
     events: [],
     nextEventTime: EVENT_INTERVAL, // pierwsze zdarzenie po 10 minutach
-    rewards: calculateReward(type, tier),
+    rewards: calculateReward(type, tier, state),
   };
 
   gameEvent("expedition_started", {

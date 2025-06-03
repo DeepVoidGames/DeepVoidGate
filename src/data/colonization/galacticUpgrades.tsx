@@ -21,6 +21,26 @@ export const galacticUpgrades = [
     multiplier: 1.8,
   },
   {
+    id: "quantum_travel",
+    name: "Quantum time collapse",
+    icon: <Atom className="h-6 w-6 text-white" />,
+    description:
+      "Quantum time refraction distorts time in the eye which causes time dilation relative to the observer.",
+    effect: "Reduce expedition duration time by half",
+    cost: 5,
+    multiplier: 2,
+  },
+  {
+    id: "quantum_disproportion",
+    name: "Quantum disproportion",
+    icon: <Atom className="h-6 w-6 text-blue-500" />,
+    description:
+      "Quantum disproportion, multiplies the resources acquired from the expedition",
+    effect: "Expedtion reward x2.5",
+    cost: 5,
+    multiplier: 2.5,
+  },
+  {
     id: "black_hole_unknow",
     name: "Black Hole",
     icon: <Stars className="h-6 w-6 text-yellow-400" />,

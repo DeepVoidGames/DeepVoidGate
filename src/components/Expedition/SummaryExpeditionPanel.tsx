@@ -85,7 +85,7 @@ function SummaryExpeditionPanel({
               </div>
               <div className="flex flex-wrap gap-2">
                 {Object.entries(
-                  getBaseExpeditionReward(selectedType, selectedTier)
+                  getBaseExpeditionReward(selectedType, selectedTier, state)
                 ).map(([resource, amount]) => (
                   <span
                     key={resource}
