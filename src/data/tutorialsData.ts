@@ -445,11 +445,127 @@ export const hubTutorials: Tutorial[] = [
   },
 ];
 
+export const expeditionTutorials: Tutorial[] = [
+  {
+    id: "expedition-basics",
+    name: "Expedition System",
+    description:
+      "Learn how to launch expeditions to explore new frontiers, gather resources, and discover technologies for your colony",
+    category: "exploration",
+    steps: [
+      {
+        id: "intro",
+        title: "Welcome to Expeditions",
+        content:
+          "Expeditions allow you to send crew members on dangerous missions to explore unknown territories, gather resources, artifacts and discover new technologies. These missions require careful planning and resource management, but offer valuable rewards for your colony's growth.",
+        allowNext: true,
+      },
+      {
+        id: "expedition-overview",
+        title: "Expedition Management Hub",
+        content:
+          "This is your expedition command center where you can plan new missions and monitor active ones.",
+        target: ".expedition-header",
+        position: "bottom",
+        allowNext: true,
+      },
+      {
+        id: "expedition-types",
+        title: "Mission Types",
+        content:
+          "There are different types of expeditions available: Scientific expeditions focus on discovering new technologies while Mining expeditions focus on rare artifacts. Each type offers unique rewards and challenges.",
+        target: ".expedition-types",
+        position: "right",
+        allowNext: true,
+      },
+      {
+        id: "expedition-tiers",
+        title: "Mission Difficulty Tiers",
+        content:
+          "Expeditions come in different difficulty tiers. Higher tiers require more crew members but offer better rewards and longer durations. Choose your tier based on your available population and desired risk level.",
+        target: ".expedition-tiers",
+        position: "left",
+        allowNext: true,
+      },
+      {
+        id: "mission-summary",
+        title: "Mission Planning",
+        content:
+          "The mission summary shows all details about your planned expedition: duration, crew requirements, expected rewards. Review this information carefully before launching.",
+        target: ".mission-summary",
+        position: "bottom",
+        allowNext: true,
+      },
+      {
+        id: "crew-requirements",
+        title: "Crew Management",
+        content:
+          "Each expedition requires a specific number of crew members based on the tier selected. Make sure you have enough available population before launching a mission. Crew members will be unavailable for other tasks during the expedition.",
+        target: ".crew-requirements",
+        position: "bottom",
+        allowNext: true,
+      },
+      {
+        id: "active-missions",
+        title: "Monitoring Active Expeditions",
+        content:
+          "The Active Missions panel shows all your ongoing expeditions. Each card displays the mission type, progress, remaining time, and current status. You can track multiple expeditions simultaneously.",
+        target: ".active-missions",
+        position: "top",
+        allowNext: true,
+      },
+      {
+        id: "expedition-progress",
+        title: "Mission Progress Tracking",
+        content:
+          "Each active expedition shows a progress bar and countdown timer. The mission will automatically complete when the timer reaches zero, and you'll receive your rewards based on the expedition's success.",
+        target: ".expedition-progress",
+        position: "bottom",
+        allowNext: true,
+      },
+      {
+        id: "expedition-events",
+        title: "Random Events",
+        content:
+          "During expeditions, random events may occur that can affect the outcome. These events can provide bonus rewards, present challenges, or offer choices that impact your mission's success rate.",
+        target: ".expedition-events",
+        position: "top",
+        allowNext: true,
+      },
+      {
+        id: "mission-completion",
+        title: "Completing Expeditions",
+        content:
+          "When an expedition completes, you'll receive rewards such as resources, technologies, or artifacts. Successful missions return all crew members safely, while failed missions may result in casualties.",
+        target: ".mission-completion",
+        position: "top",
+        allowNext: true,
+      },
+      {
+        id: "expedition-strategy",
+        title: "Strategic Planning",
+        content:
+          "Plan your expeditions based on your colony's needs: launch Scientific expeditions when you need new technologies, and Mining expeditions when you need artifacts. Balance risk and reward by choosing appropriate tiers, and always ensure you have backup population for essential colony functions.",
+        allowNext: true,
+      },
+      {
+        id: "advanced-tips",
+        title: "Advanced Expedition Tips",
+        content:
+          "Keep multiple expeditions running to maximize efficiency. Higher-tier expeditions have better reward-to-time ratios but require more crew. Monitor your population carefully - don't send all your people on expeditions and leave your colony understaffed!",
+        allowNext: true,
+      },
+    ],
+    canSkip: true,
+  },
+];
+
 export const allTutorials: Tutorial[] = [
   ...buildingTutorials,
   ...technologyTutorials,
   ...milestoneTutorials,
   ...hubTutorials,
+  ...expeditionTutorials,
   // Add other tutorial categories here
 ];
 

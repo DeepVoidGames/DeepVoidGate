@@ -15,6 +15,7 @@ import { GameState } from "@/types/gameState";
 import { ExpeditionType } from "@/types/expedition";
 import { ResourceType } from "@/types/resource";
 import { getDominantFactionTheme } from "@/store/reducers/factionsReducer";
+import { TutorialHighlight } from "@/components/Tutorial/TutorialHighlight";
 
 type SummaryExpeditionPanelProps = {
   formatDuration: (minutes: number) => string;
@@ -58,13 +59,18 @@ function SummaryExpeditionPanel({
               </span>
             </div>
 
-            <div className="flex items-center gap-2">
-              <Users className="w-4 h-4" />
-              <span className="break-words">
-                Crew: {calculateRequiredCrew(selectedTier)} | Available{" "}
-                {state.population.available}
-              </span>
-            </div>
+            <TutorialHighlight
+              stepId="crew-requirements"
+              tutorialId="expedition-basics"
+            >
+              <div className="flex items-center gap-2">
+                <Users className="w-4 h-4" />
+                <span className="break-words">
+                  Crew: {calculateRequiredCrew(selectedTier)} | Available{" "}
+                  {state.population.available}
+                </span>
+              </div>
+            </TutorialHighlight>
 
             <div className="flex flex-col sm:flex-row items-start sm:items-center gap-2">
               <div className="flex items-center gap-1">

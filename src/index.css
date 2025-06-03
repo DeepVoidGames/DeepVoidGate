@@ -149,7 +149,7 @@
 
 .tutorial-highlight {
   position: relative;
-  z-index: 1000;
+
   box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.5),
     0 0 0 6px rgba(59, 130, 246, 0.2);
   border-radius: 6px;

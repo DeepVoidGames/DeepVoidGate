@@ -23,6 +23,7 @@ import { Button } from "../ui/button";
 import { Expedition, ExpeditionEvent } from "@/types/expedition";
 import { GameState } from "@/types/gameState";
 import { GameAction } from "@/store/actions";
+import { TutorialHighlight } from "../Tutorial/TutorialHighlight";
 
 type ExpeditionCardProps = {
   expedition: Expedition;
@@ -141,47 +142,52 @@ function ExpeditionCard({
             if (!eventDef) return null;
 
             return (
-              <div
-                key={event.id}
-                className="p-2 sm:p-4 bg-muted/10 rounded-lg mb-2 sm:mb-3"
+              <TutorialHighlight
+                stepId="expedition-events"
+                tutorialId="expedition-basics"
               >
-                <div className="flex items-center gap-2 mb-1 sm:mb-2">
-                  <AlertTriangle className="w-3 h-3 sm:w-4 sm:h-4 text-yellow-500" />
-                  <h4 className="font-medium text-sm sm:text-base">
-                    {eventDef.title}
-                  </h4>
-                </div>
+                <div
+                  key={event.id}
+                  className="p-2 sm:p-4 bg-muted/10 rounded-lg mb-2 sm:mb-3"
+                >
+                  <div className="flex items-center gap-2 mb-1 sm:mb-2">
+                    <AlertTriangle className="w-3 h-3 sm:w-4 sm:h-4 text-yellow-500" />
+                    <h4 className="font-medium text-sm sm:text-base">
+                      {eventDef.title}
+                    </h4>
+                  </div>
 
-                <p className="text-xs sm:text-sm text-muted-foreground mb-2 sm:mb-4 line-clamp-3">
-                  {eventDef.description}
-                </p>
+                  <p className="text-xs sm:text-sm text-muted-foreground mb-2 sm:mb-4 line-clamp-3">
+                    {eventDef.description}
+                  </p>
 
-                <div className="space-y-1 sm:space-y-2 max-h-[300px] overflow-y-auto">
-                  {eventDef.options.map((option, optionIndex) => (
-                    <Button
-                      key={optionIndex}
-                      variant="outline"
-                      className="w-full justify-start h-auto min-h-[40px] px-2 sm:px-4 text-xs sm:text-sm text-left break-words whitespace-normal"
-                      onClick={() => {
-                        dispatch({
-                          type: "HANDLE_EXPEDITION_EVENT",
-                          payload: {
-                            expeditionId: expedition.id,
-                            eventIndex: expedition.events.findIndex(
-                              (e) => e.id === event.id
-                            ),
-                            optionIndex: optionIndex,
-                          },
-                        });
-                      }}
-                    >
-                      <span className="line-clamp-3 sm:line-clamp-4">
-                        {option.text}
-                      </span>
-                    </Button>
-                  ))}
+                  <div className="space-y-1 sm:space-y-2 max-h-[300px] overflow-y-auto">
+                    {eventDef.options.map((option, optionIndex) => (
+                      <Button
+                        key={optionIndex}
+                        variant="outline"
+                        className="w-full justify-start h-auto min-h-[40px] px-2 sm:px-4 text-xs sm:text-sm text-left break-words whitespace-normal"
+                        onClick={() => {
+                          dispatch({
+                            type: "HANDLE_EXPEDITION_EVENT",
+                            payload: {
+                              expeditionId: expedition.id,
+                              eventIndex: expedition.events.findIndex(
+                                (e) => e.id === event.id
+                              ),
+                              optionIndex: optionIndex,
+                            },
+                          });
+                        }}
+                      >
+                        <span className="line-clamp-3 sm:line-clamp-4">
+                          {option.text}
+                        </span>
+                      </Button>
+                    ))}
+                  </div>
                 </div>
-              </div>
+              </TutorialHighlight>
             );
           })}
       </CardContent>
