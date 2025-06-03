@@ -382,10 +382,74 @@ export const milestoneTutorials: Tutorial[] = [
   },
 ];
 
+export const hubTutorials: Tutorial[] = [
+  {
+    id: "hub-basics",
+    name: "Hub Navigation",
+    description:
+      "Learn how to navigate the Hub and access different game features as they become available",
+    category: "navigation",
+    steps: [
+      {
+        id: "intro",
+        title: "Welcome to the Hub",
+        content:
+          "The Hub is your central command center where you can access all major game features. Different sections unlock as you progress through research and galactic upgrades. Let's explore what's available to you.",
+        allowNext: true,
+      },
+      {
+        id: "hub-overview",
+        title: "Hub Layout",
+        content:
+          "The Hub displays available features as interactive cards in a grid layout. Each card represents a different game system you can access, from expeditions to faction management.",
+        target: ".hub-grid",
+        position: "top",
+        allowNext: true,
+      },
+      {
+        id: "feature-cards",
+        title: "Feature Cards",
+        content:
+          "Each feature card shows a preview image, name, and sometimes a description. Click on any unlocked card to access that game system. The visual design helps you quickly identify different areas.",
+        target: ".feature-card",
+        position: "bottom",
+        allowNext: true,
+      },
+      {
+        id: "unlocked-features",
+        title: "Available Features",
+        content:
+          "Unlocked features appear bright and clear with hover effects. These are systems you can currently access. Click on any unlocked card to enter that feature area.",
+        target: ".feature-card",
+        position: "bottom",
+        allowNext: true,
+      },
+      {
+        id: "locked-features",
+        title: "Locked Content",
+        content:
+          "Locked features appear blurred with a lock icon overlay. These systems become available as you research specific technologies or achieve galactic upgrades. The lock indicates content you'll unlock later.",
+        target: ".locked-feature",
+        position: "bottom",
+        allowNext: true,
+      },
+      {
+        id: "navigation-strategy",
+        title: "Hub Strategy",
+        content:
+          "Use the Hub as your planning center. Check regularly for newly unlocked features as you progress. Early game focuses on basic systems like Factions and Colonization, while advanced features require significant technological progress.",
+        allowNext: true,
+      },
+    ],
+    canSkip: true,
+  },
+];
+
 export const allTutorials: Tutorial[] = [
   ...buildingTutorials,
   ...technologyTutorials,
   ...milestoneTutorials,
+  ...hubTutorials,
   // Add other tutorial categories here
 ];
 

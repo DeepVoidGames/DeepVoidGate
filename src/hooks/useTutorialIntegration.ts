@@ -45,6 +45,19 @@ export const useTutorialIntegration = () => {
       startTutorial("technologies-basics");
       return;
     }
+
+    if (
+      location.pathname === "/milestones" &&
+      shouldStartTutorial("milestones-basics")
+    ) {
+      startTutorial("milestones-basics");
+      return;
+    }
+
+    if (location.pathname === "/hub" && shouldStartTutorial("hub-basics")) {
+      startTutorial("hub-basics");
+      return;
+    }
   }, [
     gameState,
     tutorialState.activeTutorial,

@@ -5,6 +5,9 @@ import { MobileTopNav } from "@/components/Navbar";
 import { Link } from "react-router-dom";
 import { IMAGE_PATH } from "@/config";
 import { getDominantFactionTheme } from "@/store/reducers/factionsReducer";
+import { TutorialButton } from "@/components/Tutorial/TutorialButton";
+import { TutorialHighlight } from "@/components/Tutorial/TutorialHighlight";
+import { useTutorialIntegration } from "@/hooks/useTutorialIntegration";
 
 type Feature = {
   id: string;
@@ -19,6 +22,7 @@ type Feature = {
 const Hub = () => {
   const [unlockedFeatures, setUnlockedFeatures] = useState<string[]>([]);
   const { state } = useGame();
+  const { isInTutorial, currentTutorial } = useTutorialIntegration();
 
   const features: Feature[] = [
     {
@@ -123,57 +127,68 @@ const Hub = () => {
         >
           <div className="flex items-center mb-6">
             <h1 className="text-3xl font-bold text-gray-100">Hub</h1>
+            <TutorialButton tutorialId={"hub-basics"} />
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            {features.map((feature) => (
-              <div
-                key={feature.id}
-                className="relative aspect-video rounded-lg overflow-hidden"
-              >
-                {isFeatureUnlocked(feature.id) ? (
-                  <Link to={feature.to}>
-                    <div
-                      className={`absolute inset-0 bg-cover bg-center transition-all duration-300 hover:scale-105`}
-                      style={{ backgroundImage: `url(${feature.image})` }}
-                    >
-                      <div className="absolute inset-0 bg-black/50 flex items-center justify-center p-4">
-                        <span className="text-2xl font-bold text-center text-gray-100">
-                          {feature.name}
-                        </span>
-                      </div>
-                      {feature.description && (
-                        <div className="absolute bottom-0 left-0 right-0 p-2 bg-black/50 text-gray-300 text-sm">
-                          {feature.description}
-                        </div>
-                      )}
-                    </div>
-                  </Link>
-                ) : (
+          <TutorialHighlight stepId="hub-grid" tutorialId="hub-basics">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              {features.map((feature) => (
+                <TutorialHighlight
+                  stepId={
+                    isFeatureUnlocked(feature.id)
+                      ? "feature-card"
+                      : "locked-feature"
+                  }
+                  tutorialId="hub-basics"
+                >
                   <div
-                    className="absolute inset-0 bg-cover bg-center transition-all duration-300 blur-sm"
-                    style={{ backgroundImage: `url(${feature.image})` }}
+                    key={feature.id}
+                    className="relative aspect-video rounded-lg overflow-hidden"
                   >
-                    <div className="absolute inset-0 bg-black/50 flex items-center justify-center p-4">
-                      <span className="text-2xl font-bold text-center text-gray-100">
-                        {feature.name}
-                      </span>
-                    </div>
-                    {feature.description && (
-                      <div className="absolute bottom-0 left-0 right-0 p-2 bg-black/50 text-gray-300 text-sm">
-                        {feature.description}
+                    {isFeatureUnlocked(feature.id) ? (
+                      <Link to={feature.to}>
+                        <div
+                          className={`absolute inset-0 bg-cover bg-center transition-all duration-300 hover:scale-105`}
+                          style={{ backgroundImage: `url(${feature.image})` }}
+                        >
+                          <div className="absolute inset-0 bg-black/50 flex items-center justify-center p-4">
+                            <span className="text-2xl font-bold text-center text-gray-100">
+                              {feature.name}
+                            </span>
+                          </div>
+                          {feature.description && (
+                            <div className="absolute bottom-0 left-0 right-0 p-2 bg-black/50 text-gray-300 text-sm">
+                              {feature.description}
+                            </div>
+                          )}
+                        </div>
+                      </Link>
+                    ) : (
+                      <div
+                        className="absolute inset-0 bg-cover bg-center transition-all duration-300 blur-sm"
+                        style={{ backgroundImage: `url(${feature.image})` }}
+                      >
+                        <div className="absolute inset-0 bg-black/50 flex items-center justify-center p-4">
+                          <span className="text-2xl font-bold text-center text-gray-100">
+                            {feature.name}
+                          </span>
+                        </div>
+                        {feature.description && (
+                          <div className="absolute bottom-0 left-0 right-0 p-2 bg-black/50 text-gray-300 text-sm">
+                            {feature.description}
+                          </div>
+                        )}
+                        <div className="absolute inset-0 flex flex-col items-center justify-center bg-black/50 backdrop-blur-sm">
+                          <Lock className="text-gray-300" size={28} />
+                          <span className="text-gray-300 text-sm">Locked</span>
+                        </div>
                       </div>
                     )}
-                    <div className="absolute inset-0 flex flex-col items-center justify-center bg-black/50 backdrop-blur-sm">
-                      <Lock className="text-gray-300" size={28} />
-                      <span className="text-gray-300 text-sm">Locked</span>
-                    </div>
                   </div>
-                )}
-              </div>
-            ))}
-          </div>
-
+                </TutorialHighlight>
+              ))}
+            </div>
+          </TutorialHighlight>
           <div className="mt-6 text-center text-gray-400 text-sm">
             <p>More features coming soon...</p>
           </div>
