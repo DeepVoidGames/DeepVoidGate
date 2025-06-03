@@ -291,9 +291,101 @@ export const technologyTutorials: Tutorial[] = [
   },
 ];
 
+export const milestoneTutorials: Tutorial[] = [
+  {
+    id: "milestones-basics",
+    name: "Milestones System",
+    description:
+      "Learn how to track your colony's progress and unlock achievements through the milestones system",
+    category: "progress",
+    steps: [
+      {
+        id: "intro",
+        title: "Welcome to Milestones",
+        content:
+          "Milestones are achievements that track your colony's progress across different areas. They provide goals to work towards and often unlock rewards or new content. Let's explore how the milestone system works.",
+        allowNext: true,
+      },
+      {
+        id: "milestone-overview",
+        title: "Progress Overview",
+        content:
+          "The header shows your overall milestone completion rate and progress bar. This gives you a quick view of how many achievements you've unlocked out of the total available.",
+        target: ".milestone-overview",
+        position: "bottom",
+        allowNext: true,
+      },
+      {
+        id: "search-milestones",
+        title: "Finding Milestones",
+        content:
+          "Use the search bar to quickly find specific milestones by name or description. This is helpful when looking for particular achievements or tracking specific goals.",
+        target: ".search-milestones",
+        position: "bottom",
+        action: "input",
+        allowNext: true,
+      },
+      {
+        id: "milestone-categories",
+        title: "Milestone Categories",
+        content:
+          "Milestones are organized into six categories: Resources (production goals), Buildings (construction achievements), Population (colony growth), Technology (research progress), Expeditions (exploration goals), and Artifacts (discovery rewards).",
+        target: ".milestone-categories",
+        position: "bottom",
+        allowNext: true,
+      },
+      {
+        id: "milestone-cards",
+        title: "Individual Milestones",
+        content:
+          "Each milestone card shows its name, description, and current progress. Green cards with gold medals are completed achievements, while others show your progress towards completion.",
+        target: ".milestone-cards",
+        position: "top",
+        allowNext: true,
+      },
+      {
+        id: "progress-tracking",
+        title: "Progress Indicators",
+        content:
+          "Active milestones show a progress bar and percentage completion. The progress updates automatically as you play, so you can see how close you are to unlocking each achievement.",
+        target: ".progress-tracking",
+        position: "top",
+        allowNext: true,
+      },
+      {
+        id: "tiered-milestones",
+        title: "Tiered Achievement Groups",
+        content:
+          "Some milestones come in tiers (I, II, III, etc.) representing increasing difficulty levels. The card shows overall progress through all tiers, with the current active goal highlighted.",
+        target: ".tiered-milestones",
+        position: "top",
+        allowNext: true,
+      },
+      {
+        id: "tier-progress",
+        title: "Tier Visualization",
+        content:
+          "The colored bars at the bottom of tiered milestone cards show your progress: green for completed tiers, blue for the current active tier, and gray for future tiers.",
+        target: ".tier-progress",
+        position: "bottom",
+        allowNext: true,
+      },
+      {
+        id: "milestone-strategy",
+        title: "Achievement Strategy",
+        content:
+          "Milestones provide natural goals to guide your colony development. Focus on categories that align with your current priorities - early game might emphasize Resources and Buildings, while late game might focus on Technology and Artifacts.",
+        allowNext: true,
+      },
+    ],
+    canSkip: true,
+  },
+];
+
 export const allTutorials: Tutorial[] = [
   ...buildingTutorials,
   ...technologyTutorials,
+  ...milestoneTutorials,
   // Add other tutorial categories here
 ];
 

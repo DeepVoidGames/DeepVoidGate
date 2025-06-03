@@ -15,6 +15,9 @@ import { useGame } from "@/context/GameContext";
 import { Progress } from "@/components/ui/progress";
 import { Milestone } from "@/types/milestone";
 import { getDominantFactionTheme } from "@/store/reducers/factionsReducer";
+import { useTutorialIntegration } from "@/hooks/useTutorialIntegration";
+import { TutorialHighlight } from "@/components/Tutorial/TutorialHighlight";
+import { TutorialButton } from "@/components/Tutorial/TutorialButton";
 
 const milestoneCategories = [
   {
@@ -71,6 +74,7 @@ const groupMilestonesByBase = (milestones) => {
 
 const MilestonesManager = () => {
   const { state } = useGame();
+  const { isInTutorial, currentTutorial } = useTutorialIntegration();
   const [activeTab, setActiveTab] = useState("resources");
   const [searchQuery, setSearchQuery] = useState("");
 
@@ -126,226 +130,283 @@ const MilestonesManager = () => {
     >
       {/* Header and Statistics */}
       <div className="flex flex-col md:flex-row justify-between gap-4 mb-4">
-        <div className="space-y-2">
-          <h2 className="text-lg font-medium text-foreground/90 flex items-center gap-2">
-            <Trophy className="h-5 w-5 text-amber-400" />
-            Milestones
-          </h2>
-          <div className="text-sm text-muted-foreground">
-            Completed: {stats.completed}/{stats.total} (
-            {((stats.completed / stats.total) * 100 || 0).toFixed(1)}%)
-          </div>
-          <Progress
-            value={(stats.completed / stats.total) * 100 || 0}
-            className="h-2 w-48"
-          />
-        </div>
-
-        <div className="flex flex-col gap-2">
-          <div className="relative max-w-md w-full">
-            <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
-            <input
-              type="text"
-              placeholder="Search milestones..."
-              className="w-full pl-10 pr-4 py-2 bg-background/90 rounded-lg border focus:outline-none focus:ring-2 focus:ring-primary"
-              value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
+        <TutorialHighlight
+          tutorialId="milestones-basics"
+          stepId="milestone-overview"
+        >
+          <div className="space-y-2 milestone-overview">
+            <div className="flex items-center gap-2">
+              <h2 className="text-lg font-medium text-foreground/90 flex items-center gap-2">
+                <Trophy className="h-5 w-5 text-amber-400" />
+                Milestones
+              </h2>
+              <TutorialButton
+                tutorialId="milestones-basics"
+                size="md"
+                variant="ghost"
+              />
+            </div>
+            <div className="text-sm text-muted-foreground">
+              Completed: {stats.completed}/{stats.total} (
+              {((stats.completed / stats.total) * 100 || 0).toFixed(1)}%)
+            </div>
+            <Progress
+              value={(stats.completed / stats.total) * 100 || 0}
+              className="h-2 w-48"
             />
           </div>
-        </div>
+        </TutorialHighlight>
+
+        <TutorialHighlight
+          tutorialId="milestones-basics"
+          stepId="search-milestones"
+        >
+          <div className="flex flex-col gap-2">
+            <div className="relative max-w-md w-full search-milestones">
+              <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+              <input
+                type="text"
+                placeholder="Search milestones..."
+                className="w-full pl-10 pr-4 py-2 bg-background/90 rounded-lg border focus:outline-none focus:ring-2 focus:ring-primary"
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+              />
+            </div>
+          </div>
+        </TutorialHighlight>
       </div>
 
       {/* Categories */}
-      <div className="flex flex-wrap gap-2 mb-6">
-        {milestoneCategories.map((category) => (
-          <button
-            key={category.id}
-            onClick={() => setActiveTab(category.id)}
-            className={`flex items-center gap-2 px-4 py-2 rounded-lg transition-colors w-[150px] ${
-              activeTab === category.id
-                ? "bg-primary text-primary-foreground"
-                : "bg-background/50 hover:bg-accent"
-            }`}
-          >
-            {category.icon}
-            <span>{category.name}</span>
-          </button>
-        ))}
-      </div>
+      <TutorialHighlight
+        tutorialId="milestones-basics"
+        stepId="milestone-categories"
+      >
+        <div className="flex flex-wrap gap-2 mb-6 milestone-categories">
+          {milestoneCategories.map((category) => (
+            <button
+              key={category.id}
+              onClick={() => setActiveTab(category.id)}
+              className={`flex items-center gap-2 px-4 py-2 rounded-lg transition-colors w-[150px] ${
+                activeTab === category.id
+                  ? "bg-primary text-primary-foreground"
+                  : "bg-background/50 hover:bg-accent"
+              }`}
+            >
+              {category.icon}
+              <span>{category.name}</span>
+            </button>
+          ))}
+        </div>
+      </TutorialHighlight>
 
       {/* Milestone List */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 overflow-y-auto">
-        {Object.entries(filteredGroupedMilestones).map(
-          ([baseId, milestones]) => {
-            if (milestones.some((m) => !m.tier)) {
-              // Display milestones without tiers in a simple list
-              return milestones.map((milestone) => (
-                <div
-                  key={milestone.id}
-                  className={`p-4 rounded-lg border transition-all relative max-h-[300px] ${
-                    milestone.completed
-                      ? "bg-green-900/20 border-green-800"
-                      : "bg-background/50 border-muted/30 hover:border-primary hover:shadow-lg"
-                  }`}
-                >
-                  <div className="flex justify-between items-start mb-3">
-                    <div className="grid">
-                      <div className="h-[50px]">
-                        <h3 className="font-medium text-foreground/90 flex items-center gap-2">
-                          {milestone.completed ? (
-                            <Medal className="h-5 w-5 text-amber-400" />
-                          ) : (
-                            <Star className="h-5 w-5 text-muted-foreground" />
+      <TutorialHighlight
+        tutorialId="milestones-basics"
+        stepId="milestone-cards"
+      >
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 overflow-y-auto milestone-cards">
+          {Object.entries(filteredGroupedMilestones).map(
+            ([baseId, milestones]) => {
+              if (milestones.some((m) => !m.tier)) {
+                // Display milestones without tiers in a simple list
+                return milestones.map((milestone) => (
+                  <div
+                    key={milestone.id}
+                    className={`p-4 rounded-lg border transition-all relative max-h-[300px] ${
+                      milestone.completed
+                        ? "bg-green-900/20 border-green-800"
+                        : "bg-background/50 border-muted/30 hover:border-primary hover:shadow-lg"
+                    }`}
+                  >
+                    <div className="flex justify-between items-start mb-3">
+                      <div className="grid">
+                        <div className="h-[50px]">
+                          <h3 className="font-medium text-foreground/90 flex items-center gap-2">
+                            {milestone.completed ? (
+                              <Medal className="h-5 w-5 text-amber-400" />
+                            ) : (
+                              <Star className="h-5 w-5 text-muted-foreground" />
+                            )}
+                            {milestone.name}
+                          </h3>
+                        </div>
+                        <div className="h-[50px]">
+                          <p className="text-xs text-muted-foreground mt-1">
+                            {milestone.description}
+                          </p>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div className="space-y-3 mt-4">
+                      {!milestone.completed && (
+                        <TutorialHighlight
+                          tutorialId="milestones-basics"
+                          stepId="progress-tracking"
+                        >
+                          <div className="mt-2 progress-tracking">
+                            <div className="text-xs text-muted-foreground flex justify-between">
+                              <span>
+                                Progress:{" "}
+                                {typeof milestone?.progress === "function"
+                                  ? milestone.progress(state).toFixed(1)
+                                  : Number(milestone?.progress).toFixed(1) || 0}
+                                %
+                              </span>
+                            </div>
+                            <Progress
+                              value={
+                                typeof milestone?.progress === "function"
+                                  ? milestone.progress(state)
+                                  : Number(milestone?.progress) || 0
+                              }
+                              className="h-1.5 mt-1"
+                            />
+                          </div>
+                        </TutorialHighlight>
+                      )}
+
+                      {milestone.completed && (
+                        <TutorialHighlight
+                          tutorialId="milestones-basics"
+                          stepId="milestone-rewards"
+                        >
+                          <div className="mt-4 pt-2 border-t border-muted/30 milestone-rewards">
+                            <div className="text-xs text-green-400 flex items-center gap-2">
+                              <CheckCircle className="h-4 w-4" />
+                              <span>Reward unlocked!</span>
+                            </div>
+                            {milestone.rewardDescription && (
+                              <div className="text-xs text-muted-foreground mt-2">
+                                {milestone.rewardDescription}
+                              </div>
+                            )}
+                          </div>
+                        </TutorialHighlight>
+                      )}
+                    </div>
+                  </div>
+                ));
+              } else {
+                // Display milestones with tiers in the grouped view
+                const completedTiers = milestones.filter(
+                  (m) => m.completed
+                ).length;
+                const activeTier =
+                  milestones.find((m) => !m.completed) ||
+                  milestones[milestones.length - 1];
+                const groupName = milestones[0].name.replace(/\s+[IVX]+$/, "");
+
+                return (
+                  <TutorialHighlight
+                    key={baseId}
+                    tutorialId="milestones-basics"
+                    stepId="tiered-milestones"
+                  >
+                    <div className="p-4 rounded-lg border bg-background/50 border-muted/30 hover:border-primary hover:shadow-lg h-[300px] tiered-milestones">
+                      {/* Grouped milestone display logic */}
+                      <div className="flex justify-between items-start mb-3">
+                        <div>
+                          <h3 className="font-medium text-foreground/90 flex items-center gap-2">
+                            {completedTiers === milestones.length ? (
+                              <Medal className="h-5 w-5 text-amber-400" />
+                            ) : (
+                              <Star className="h-5 w-5 text-muted-foreground" />
+                            )}
+                            {groupName}
+                          </h3>
+                          <p className="text-xs text-muted-foreground mt-1">
+                            Progress: {completedTiers}/{milestones.length} tiers
+                          </p>
+                        </div>
+                      </div>
+
+                      <div className="mt-3 space-y-4">
+                        <Progress
+                          value={(completedTiers / milestones.length) * 100}
+                          className="h-2"
+                        />
+
+                        {activeTier &&
+                          !milestones.every((m) => m.completed) && (
+                            <div className="p-3 bg-accent/30 rounded border-l-4 border-primary">
+                              <div className="text-sm font-medium">
+                                Current Goal: {activeTier.name}
+                              </div>
+                              <div className="text-xs text-muted-foreground mt-1">
+                                {activeTier.description}
+                              </div>
+                              <TutorialHighlight
+                                tutorialId="milestones-basics"
+                                stepId="progress-tracking"
+                              >
+                                <div className="mt-2 progress-tracking">
+                                  <div className="text-xs text-muted-foreground flex justify-between">
+                                    <span>
+                                      Progress:{" "}
+                                      {typeof activeTier?.progress ===
+                                      "function"
+                                        ? activeTier.progress(state).toFixed(1)
+                                        : Number(activeTier?.progress).toFixed(
+                                            1
+                                          ) || 0}
+                                      %
+                                    </span>
+                                  </div>
+                                  <Progress
+                                    value={
+                                      typeof activeTier?.progress === "function"
+                                        ? activeTier.progress(state)
+                                        : Number(activeTier?.progress) || 0
+                                    }
+                                    className="h-1.5 mt-1"
+                                  />
+                                </div>
+                              </TutorialHighlight>
+                            </div>
                           )}
-                          {milestone.name}
-                        </h3>
-                      </div>
-                      <div className="h-[50px]">
-                        <p className="text-xs text-muted-foreground mt-1">
-                          {milestone.description}
-                        </p>
-                      </div>
-                    </div>
-                  </div>
 
-                  <div className="space-y-3 mt-4">
-                    {!milestone.completed && (
-                      <>
-                        <div className="mt-2">
-                          <div className="text-xs text-muted-foreground flex justify-between">
-                            <span>
-                              Progress:{" "}
-                              {typeof milestone?.progress === "function"
-                                ? milestone.progress(state).toFixed(1)
-                                : Number(milestone?.progress).toFixed(1) || 0}
-                              %
-                            </span>
-                          </div>
-                          <Progress
-                            value={
-                              typeof milestone?.progress === "function"
-                                ? milestone.progress(state)
-                                : Number(milestone?.progress) || 0
-                            }
-                            className="h-1.5 mt-1"
-                          />
-                        </div>
-                      </>
-                    )}
-
-                    {milestone.completed && (
-                      <div className="mt-4 pt-2 border-t border-muted/30">
-                        <div className="text-xs text-green-400 flex items-center gap-2">
-                          <CheckCircle className="h-4 w-4" />
-                          <span>Reward unlocked!</span>
-                        </div>
-                        {milestone.rewardDescription && (
-                          <div className="text-xs text-muted-foreground mt-2">
-                            {milestone.rewardDescription}
-                          </div>
+                        {completedTiers === milestones.length && (
+                          <TutorialHighlight
+                            tutorialId="milestones-basics"
+                            stepId="milestone-rewards"
+                          >
+                            <div className="text-xs text-green-400 flex items-center gap-2 mt-2 milestone-rewards">
+                              <CheckCircle className="h-4 w-4" />
+                              <span>All tiers completed!</span>
+                            </div>
+                          </TutorialHighlight>
                         )}
-                      </div>
-                    )}
-                  </div>
-                </div>
-              ));
-            } else {
-              // Display milestones with tiers in the grouped view
-              const completedTiers = milestones.filter(
-                (m) => m.completed
-              ).length;
-              const activeTier =
-                milestones.find((m) => !m.completed) ||
-                milestones[milestones.length - 1];
-              const groupName = milestones[0].name.replace(/\s+[IVX]+$/, "");
 
-              return (
-                <div
-                  key={baseId}
-                  className="p-4 rounded-lg border bg-background/50 border-muted/30 hover:border-primary hover:shadow-lg h-[300px]"
-                >
-                  {/* Grouped milestone display logic */}
-                  <div className="flex justify-between items-start mb-3">
-                    <div>
-                      <h3 className="font-medium text-foreground/90 flex items-center gap-2">
-                        {completedTiers === milestones.length ? (
-                          <Medal className="h-5 w-5 text-amber-400" />
-                        ) : (
-                          <Star className="h-5 w-5 text-muted-foreground" />
-                        )}
-                        {groupName}
-                      </h3>
-                      <p className="text-xs text-muted-foreground mt-1">
-                        Progress: {completedTiers}/{milestones.length} tiers
-                      </p>
-                    </div>
-                  </div>
-
-                  <div className="mt-3 space-y-4">
-                    <Progress
-                      value={(completedTiers / milestones.length) * 100}
-                      className="h-2"
-                    />
-
-                    {activeTier && !milestones.every((m) => m.completed) && (
-                      <div className="p-3 bg-accent/30 rounded border-l-4 border-primary">
-                        <div className="text-sm font-medium">
-                          Current Goal: {activeTier.name}
-                        </div>
-                        <div className="text-xs text-muted-foreground mt-1">
-                          {activeTier.description}
-                        </div>
-                        <div className="mt-2">
-                          <div className="text-xs text-muted-foreground flex justify-between">
-                            <span>
-                              Progress:{" "}
-                              {typeof activeTier?.progress === "function"
-                                ? activeTier.progress(state).toFixed(1)
-                                : Number(activeTier?.progress).toFixed(1) || 0}
-                              %
-                            </span>
+                        <TutorialHighlight
+                          tutorialId="milestones-basics"
+                          stepId="tier-progress"
+                        >
+                          <div className="grid grid-cols-5 gap-1 mt-2 tier-progress">
+                            {milestones.map((m, index) => (
+                              <div
+                                key={m.id}
+                                className={`h-2 rounded ${
+                                  m.completed
+                                    ? "bg-green-500"
+                                    : index === completedTiers
+                                    ? "bg-blue-500"
+                                    : "bg-gray-800/80"
+                                }`}
+                                title={`Tier ${m.tier}: ${m.description}`}
+                              ></div>
+                            ))}
                           </div>
-                          <Progress
-                            value={
-                              typeof activeTier?.progress === "function"
-                                ? activeTier.progress(state)
-                                : Number(activeTier?.progress) || 0
-                            }
-                            className="h-1.5 mt-1"
-                          />
-                        </div>
+                        </TutorialHighlight>
                       </div>
-                    )}
-
-                    {completedTiers === milestones.length && (
-                      <div className="text-xs text-green-400 flex items-center gap-2 mt-2">
-                        <CheckCircle className="h-4 w-4" />
-                        <span>All tiers completed!</span>
-                      </div>
-                    )}
-
-                    <div className="grid grid-cols-5 gap-1 mt-2">
-                      {milestones.map((m, index) => (
-                        <div
-                          key={m.id}
-                          className={`h-2 rounded ${
-                            m.completed
-                              ? "bg-green-500"
-                              : index === completedTiers
-                              ? "bg-blue-500 animate-pulse"
-                              : "bg-gray-300"
-                          }`}
-                          title={`Tier ${m.tier}: ${m.description}`}
-                        ></div>
-                      ))}
                     </div>
-                  </div>
-                </div>
-              );
+                  </TutorialHighlight>
+                );
+              }
             }
-          }
-        )}
-      </div>
+          )}
+        </div>
+      </TutorialHighlight>
     </div>
   );
 };
