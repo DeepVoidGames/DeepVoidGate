@@ -1,10 +1,12 @@
 import { useEffect } from "react";
-import { useTutorial } from "../components/Tutorial/TutorialManager";
-import { useGame } from "../context/GameContext";
+import { useTutorial } from "@/components/Tutorial/TutorialManager";
+import { useGame } from "@/context/GameContext";
+import { useLocation } from "react-router-dom";
 
 export const useTutorialIntegration = () => {
   const { state: gameState } = useGame();
   const { startTutorial, state: tutorialState, isAvailable } = useTutorial();
+  const location = useLocation();
 
   // Helper function to check if tutorial should start
   const shouldStartTutorial = (tutorialId: string) => {
@@ -33,6 +35,14 @@ export const useTutorialIntegration = () => {
       shouldStartTutorial("worker-management")
     ) {
       startTutorial("worker-management");
+      return;
+    }
+
+    if (
+      location.pathname === "/tech" &&
+      shouldStartTutorial("technologies-basics")
+    ) {
+      startTutorial("technologies-basics");
       return;
     }
   }, [

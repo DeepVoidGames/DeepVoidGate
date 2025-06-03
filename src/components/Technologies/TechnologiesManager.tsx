@@ -17,6 +17,10 @@ import { formatNumber } from "@/lib/utils";
 import { Progress } from "@/components/ui/progress";
 import { Technology } from "@/types/technology";
 import { getDominantFactionTheme } from "@/store/reducers/factionsReducer";
+import { useTutorialIntegration } from "@/hooks/useTutorialIntegration";
+import { TutorialHighlight } from "@/components/Tutorial/TutorialHighlight";
+import { TutorialButton } from "@/components/Tutorial/TutorialButton";
+import { ResourcesIcon } from "@/config";
 
 const techCategories = [
   {
@@ -46,19 +50,9 @@ const techCategories = [
   },
 ];
 
-const ResourcesIcon = ({ resource }) => {
-  const icons = {
-    oxygen: "O₂",
-    food: "🌱",
-    energy: "⚡",
-    metals: "⛏️",
-    science: "🔬",
-  };
-  return icons[resource] || "?";
-};
-
 const TechnologiesManager: React.FC = () => {
   const { state, dispatch } = useGame();
+  const { isInTutorial, currentTutorial } = useTutorialIntegration();
   const { resources, technologies } = state;
   const [activeTab, setActiveTab] = useState<string>("Infrastructure");
   const [searchQuery, setSearchQuery] = useState("");
@@ -177,13 +171,23 @@ const TechnologiesManager: React.FC = () => {
         { styleType: "border", opacity: 0.8 }
       )}`}
     >
+      {/* Header */}
       <div className="flex flex-col md:flex-row justify-between gap-4 mb-4">
-        <h2 className="text-lg font-medium text-foreground/90">
-          Technology Tree
-        </h2>
-
-        <div className="relative max-w-md w-full">
-          <div>
+        <div className="flex items-center gap-2">
+          <h2 className="text-lg font-medium text-foreground/90">
+            Technology Tree
+          </h2>
+          <TutorialButton
+            tutorialId="technologies-basics"
+            size="md"
+            variant="ghost"
+          />
+        </div>
+        <TutorialHighlight
+          tutorialId="technologies-basics"
+          stepId="search-technologies"
+        >
+          <div className="relative max-w-md w-full">
             <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
             <input
               type="text"
@@ -193,157 +197,181 @@ const TechnologiesManager: React.FC = () => {
               onChange={(e) => setSearchQuery(e.target.value)}
             />
           </div>
-        </div>
+        </TutorialHighlight>
       </div>
 
-      <div className="flex items-center justify-end mb-4 w-full">
-        <button
-          onClick={() => setShowResearched((prev) => !prev)}
-          className={`flex items-center gap-2 px-4 py-2 rounded-lg transition-colors`}
-        >
-          {showResearched ? (
-            <Eye className="h-4 w-4 text-muted-foreground" />
-          ) : (
-            <EyeOff className="h-4 w-4 text-muted-foreground" />
-          )}
-          <span className="text-muted-foreground text-sm">
-            {showResearched ? "Hide Researched" : "Show Researched"}
-          </span>
-        </button>
-      </div>
-
-      <div className="flex flex-wrap gap-2 mb-6 w-full">
-        {techCategories.map((category) => (
+      {/* Hide/Show */}
+      <TutorialHighlight
+        tutorialId="technologies-basics"
+        stepId="completed-research"
+      >
+        <div className="flex items-center justify-end mb-4 w-full">
           <button
-            key={category.id}
-            onClick={() => setActiveTab(category.id)}
-            className={`flex items-center min-w-0 justify-center gap-1 sm:gap-2 px-2 sm:px-4 py-2 rounded-lg transition-colors flex-1 basis-[calc(50%-4px)] sm:basis-auto sm:w-full md:w-fit ${
-              activeTab === category.id
-                ? "bg-primary text-primary-foreground"
-                : "bg-background/50 hover:bg-accent"
-            }`}
+            onClick={() => setShowResearched((prev) => !prev)}
+            className={`flex items-center gap-2 px-4 py-2 rounded-lg transition-colors`}
           >
-            <div className="flex-shrink-0 text-xl sm:text-base">
-              {category.icon}
-            </div>
-            <span className="min-w-0 overflow-hidden whitespace-nowrap text-ellipsis text-sm sm:text-base">
-              {category.name}
+            {showResearched ? (
+              <Eye className="h-4 w-4 text-muted-foreground" />
+            ) : (
+              <EyeOff className="h-4 w-4 text-muted-foreground" />
+            )}
+            <span className="text-muted-foreground text-sm">
+              {showResearched ? "Hide Researched" : "Show Researched"}
             </span>
           </button>
-        ))}
-      </div>
+        </div>
+      </TutorialHighlight>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 h-[450px]overflow-y-auto">
-        {filteredTechnologies.map((tech) => {
-          const isResearched = tech.isResearched;
-          const canResearch = canResearchTech(tech);
-          const progressInfo = getResearchProgress(tech);
-          const isInProgress = !!progressInfo;
-
-          if (!showResearched && isResearched) return null;
-
-          return (
-            <div
-              key={tech.id}
-              className={`p-4 rounded-lg border transition-all duration-200 h-[350px] relative ${
-                isResearched
-                  ? "bg-green-900/20 border-green-800"
-                  : `bg-background/50 border-muted/30 ${
-                      canResearch ? "hover:border-primary hover:shadow-lg" : ""
-                    }`
-              } `}
+      {/* Categories */}
+      <TutorialHighlight
+        tutorialId="technologies-basics"
+        stepId="tech-categories"
+      >
+        <div className="flex flex-wrap gap-2 mb-6 w-full">
+          {techCategories.map((category) => (
+            <button
+              key={category.id}
+              onClick={() => setActiveTab(category.id)}
+              className={`flex items-center min-w-0 justify-center gap-1 sm:gap-2 px-2 sm:px-4 py-2 rounded-lg transition-colors flex-1 basis-[calc(50%-4px)] sm:basis-auto sm:w-full md:w-fit ${
+                activeTab === category.id
+                  ? "bg-primary text-primary-foreground"
+                  : "bg-background/50 hover:bg-accent"
+              }`}
             >
-              {tech?.locked ? (
-                <div className="absolute inset-0 bg-black/90 rounded-lg backdrop-blur-sm">
-                  <div className="absolute inset-0 flex items-center justify-center text-white text-lg font-bold">
-                    <Lock className="w-8" />
-                  </div>
-                </div>
-              ) : null}
-
-              <div className="flex justify-between items-start mb-3">
-                <div>
-                  <h3 className="font-medium text-foreground/90 text-sm">
-                    {tech.name}
-                  </h3>
-                  <p className="text-xs text-muted-foreground">
-                    {tech.description}
-                  </p>
-                </div>
+              <div className="flex-shrink-0 text-xl sm:text-base">
+                {category.icon}
               </div>
+              <span className="min-w-0 overflow-hidden whitespace-nowrap text-ellipsis text-sm sm:text-base">
+                {category.name}
+              </span>
+            </button>
+          ))}
+        </div>
+      </TutorialHighlight>
 
-              {!isResearched ? (
-                <div className="flex flex-wrap gap-2 mb-3">
-                  {Object.entries(tech.researchCost).map(([resource, cost]) => {
-                    const hasEnough =
-                      resources[resource as keyof typeof resources].amount >=
-                      cost;
-                    return (
-                      <div
-                        key={resource}
-                        className="flex items-center gap-1 px-2 py-1 bg-background rounded text-sm"
-                      >
-                        <ResourcesIcon resource={resource} />
-                        <span
-                          className={
-                            hasEnough ? "text-green-400" : "text-red-400"
-                          }
-                        >
-                          {formatNumber(cost)}
-                        </span>
-                      </div>
-                    );
-                  })}
-                </div>
-              ) : null}
+      {/* Technology Grid */}
+      <TutorialHighlight tutorialId="technologies-basics" stepId="tech-cards">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 h-[450px]overflow-y-auto">
+          {filteredTechnologies.map((tech) => {
+            const isResearched = tech.isResearched;
+            const canResearch = canResearchTech(tech);
+            const progressInfo = getResearchProgress(tech);
+            const isInProgress = !!progressInfo;
 
+            if (!showResearched && isResearched) return null;
+
+            return (
               <div
-                className={`bottom-0 left-0 right-0 absolute p-4 rounded-b-lg ${
-                  tech?.locked ? "hidden" : ""
-                }`}
+                key={tech.id}
+                className={`p-4 rounded-lg border transition-all duration-200 h-[350px] relative ${
+                  isResearched
+                    ? "bg-green-900/20 border-green-800"
+                    : `bg-background/50 border-muted/30 ${
+                        canResearch
+                          ? "hover:border-primary hover:shadow-lg"
+                          : ""
+                      }`
+                } `}
               >
-                {tech.prerequisites.length > 0 && (
-                  <div className="text-xs text-[10px] text-muted-foreground mb-3">
-                    <Lock className="inline mr-1 h-3 w-3" />
-                    Requires: {getPrerequisiteNames(tech)}
-                  </div>
-                )}
-
-                {isInProgress ? (
-                  <div className="space-y-2">
-                    <Progress value={progressInfo.progress} className="h-2" />
-                    <div className="flex items-center gap-2 text-xs text-muted-foreground">
-                      <Clock className="h-4 w-4" />
-                      <span>Remaining: {progressInfo.remaining}</span>
+                {tech?.locked ? (
+                  <div className="absolute inset-0 bg-black/90 rounded-lg backdrop-blur-sm">
+                    <div className="absolute inset-0 flex items-center justify-center text-white text-lg font-bold">
+                      <Lock className="w-8" />
                     </div>
                   </div>
-                ) : (
-                  <button
-                    onClick={() => researchTech(tech.id)}
-                    disabled={!canResearch || isResearched}
-                    className={`w-full py-2 rounded-lg transition-colors justify-end ${
-                      isResearched
-                        ? "bg-green-800/50 cursor-default"
-                        : canResearch
-                        ? "bg-primary hover:bg-primary/90"
-                        : "bg-muted cursor-not-allowed"
-                    }`}
+                ) : null}
+
+                <div className="flex justify-between items-start mb-3">
+                  <div>
+                    <h3 className="font-medium text-foreground/90 text-sm">
+                      {tech.name}
+                    </h3>
+                    <p className="text-xs text-muted-foreground">
+                      {tech.description}
+                    </p>
+                  </div>
+                </div>
+
+                {!isResearched ? (
+                  <TutorialHighlight
+                    tutorialId="technologies-basics"
+                    stepId="research-costs"
                   >
-                    {isResearched ? (
-                      <div className="flex items-center justify-center gap-2">
-                        <CheckCircle className="h-4 w-4" />
-                        Researched
+                    <div className="flex flex-wrap gap-2 mb-3">
+                      {Object.entries(tech.researchCost).map(
+                        ([resource, cost]) => {
+                          const hasEnough =
+                            resources[resource as keyof typeof resources]
+                              .amount >= cost;
+                          return (
+                            <div
+                              key={resource}
+                              className="flex items-center gap-1 px-2 py-1 bg-background rounded text-sm"
+                            >
+                              <ResourcesIcon resource={resource} />
+                              <span
+                                className={
+                                  hasEnough ? "text-green-400" : "text-red-400"
+                                }
+                              >
+                                {formatNumber(cost)}
+                              </span>
+                            </div>
+                          );
+                        }
+                      )}
+                    </div>
+                  </TutorialHighlight>
+                ) : null}
+
+                <div
+                  className={`bottom-0 left-0 right-0 absolute p-4 rounded-b-lg ${
+                    tech?.locked ? "hidden" : ""
+                  }`}
+                >
+                  {tech.prerequisites.length > 0 && (
+                    <div className="text-xs text-[10px] text-muted-foreground mb-3">
+                      <Lock className="inline mr-1 h-3 w-3" />
+                      Requires: {getPrerequisiteNames(tech)}
+                    </div>
+                  )}
+
+                  {isInProgress ? (
+                    <div className="space-y-2">
+                      <Progress value={progressInfo.progress} className="h-2" />
+                      <div className="flex items-center gap-2 text-xs text-muted-foreground">
+                        <Clock className="h-4 w-4" />
+                        <span>Remaining: {progressInfo.remaining}</span>
                       </div>
-                    ) : (
-                      "Start Research"
-                    )}
-                  </button>
-                )}
+                    </div>
+                  ) : (
+                    <button
+                      onClick={() => researchTech(tech.id)}
+                      disabled={!canResearch || isResearched}
+                      className={`w-full py-2 rounded-lg transition-colors justify-end ${
+                        isResearched
+                          ? "bg-green-800/50 cursor-default"
+                          : canResearch
+                          ? "bg-primary hover:bg-primary/90"
+                          : "bg-muted cursor-not-allowed"
+                      }`}
+                    >
+                      {isResearched ? (
+                        <div className="flex items-center justify-center gap-2">
+                          <CheckCircle className="h-4 w-4" />
+                          Researched
+                        </div>
+                      ) : (
+                        "Start Research"
+                      )}
+                    </button>
+                  )}
+                </div>
               </div>
-            </div>
-          );
-        })}
-      </div>
+            );
+          })}
+        </div>
+      </TutorialHighlight>
     </div>
   );
 };

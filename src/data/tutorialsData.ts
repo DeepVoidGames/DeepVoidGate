@@ -194,8 +194,106 @@ export const buildingTutorials: Tutorial[] = [
   },
 ];
 
+export const technologyTutorials: Tutorial[] = [
+  {
+    id: "technologies-basics",
+    name: "Technology Research",
+    description:
+      "Learn how to research technologies and advance your colony's capabilities",
+    category: "research",
+    steps: [
+      {
+        id: "intro",
+        title: "Welcome to Technology Research",
+        content:
+          "Technology research is crucial for advancing your colony. New technologies unlock better buildings, improved efficiency, and advanced capabilities. Let's explore how the research system works.",
+        allowNext: true,
+      },
+      {
+        id: "tech-categories",
+        title: "Technology Categories",
+        content:
+          "Technologies are organized into five categories: Infrastructure (storage and more), Energy (power systems), Production (resource generation), Research (scientific advancement), and Advanced (more features).",
+        target: ".tech-categories",
+        position: "bottom",
+        allowNext: true,
+      },
+      {
+        id: "search-technologies",
+        title: "Finding Technologies",
+        content:
+          "Use the search bar to quickly find specific technologies by name or description. This is helpful when looking for particular upgrades.",
+        target: ".search-technologies",
+        position: "bottom",
+        action: "input",
+        allowNext: true,
+      },
+      {
+        id: "tech-cards",
+        title: "Technology Cards",
+        content:
+          "Each technology card shows its name, description, research costs, and prerequisites. Green cards are already researched, while others are available or locked.",
+        target: ".tech-cards",
+        position: "top",
+        allowNext: true,
+      },
+      {
+        id: "research-costs",
+        title: "Research Requirements",
+        content:
+          "Before researching a technology, check its resource costs. You need sufficient resources to start research. Red numbers indicate insufficient resources.",
+        target: ".research-costs",
+        position: "top",
+        allowNext: true,
+      },
+      {
+        id: "prerequisites",
+        title: "Technology Prerequisites",
+        content:
+          "Some technologies require others to be researched first. Look for the lock icon and 'Requires:' text to see what you need to unlock first.",
+        position: "top",
+        allowNext: true,
+      },
+      {
+        id: "starting-research",
+        title: "Starting Research",
+        content:
+          "Click 'Start Research' on any available technology to begin. Only one technology can be researched at a time, so choose wisely based on your colony's needs.",
+        position: "top",
+        action: "click",
+        allowNext: true,
+      },
+      {
+        id: "research-progress",
+        title: "Tracking Progress",
+        content:
+          "Once research begins, you'll see a progress bar and remaining time. Research continues automatically - no need to babysit the process.",
+        position: "top",
+        allowNext: true,
+      },
+      {
+        id: "completed-research",
+        title: "Completed Technologies",
+        content:
+          "Researched technologies are marked with a green background and checkmark. Use the show/hide toggle to manage your view of completed research.",
+        position: "left",
+        allowNext: true,
+      },
+      {
+        id: "research-strategy",
+        title: "Research Strategy Tips",
+        content:
+          "Focus on technologies that support your colony's immediate needs. Infrastructure and Energy techs are often good early choices, while Advanced techs provide powerful late-game benefits.",
+        allowNext: true,
+      },
+    ],
+    canSkip: true,
+  },
+];
+
 export const allTutorials: Tutorial[] = [
   ...buildingTutorials,
+  ...technologyTutorials,
   // Add other tutorial categories here
 ];
 
