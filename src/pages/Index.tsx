@@ -51,7 +51,8 @@ const Index = () => {
                   <ResourceDisplay />
                 </div>
               ) : null}
-              {settings?.compactUI &&
+
+              {(settings?.compactUI || true) &&
                 !settings?.compactUIOptions?.showPlanetaryView && (
                   <PlanetaryView />
                 )}
