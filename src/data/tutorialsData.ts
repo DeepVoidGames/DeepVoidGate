@@ -857,6 +857,160 @@ export const colonizationTutorials: Tutorial[] = [
   },
 ];
 
+export const blackHoleTutorials: Tutorial[] = [
+  {
+    id: "black-hole-basics",
+    name: "Black Hole Management System",
+    description:
+      "Master the art of black hole manipulation to harness unlimited energy while managing catastrophic risks. Learn to balance mass growth, energy production, and dark matter conversion.",
+    category: "advanced",
+    steps: [
+      {
+        id: "intro",
+        title: "Welcome to Black Hole Physics",
+        content:
+          "You've unlocked one of the universe's most powerful phenomena - your very own black hole, Sagittarius A*-2. This cosmic engine can provide unlimited energy for your colony, but mismanagement could lead to catastrophic consequences. Understanding its behavior is crucial for your civilization's survival and advancement.",
+        allowNext: true,
+      },
+      {
+        id: "black-hole-header",
+        title: "Black Hole Identification",
+        content:
+          "This is your black hole control panel header, showing the designation 'Sagittarius A*-2' - your artificially created stellar mass black hole. The visualization toggle allows you to switch between basic and advanced physics data depending on your expertise level.",
+        position: "bottom",
+        allowNext: true,
+      },
+      {
+        id: "visualization",
+        title: "Black Hole Visualization",
+        content:
+          "The central visualization shows your black hole in action. This animated representation helps you monitor its current state and activity. Below it, you can see the black hole's age in millions of years, tracking how long this cosmic phenomenon has existed under your control.",
+        target: ".flex.justify-center.mb-6",
+        position: "bottom",
+        allowNext: true,
+      },
+      {
+        id: "threat-level",
+        title: "Critical Threat Assessment",
+        content:
+          "This is your most important monitoring system. The threat level indicates how close your black hole is to critical mass. Green means safe, yellow requires caution, and red demands immediate action. When threat levels are high, you must convert mass to dark matter to prevent catastrophic energy outbreaks.",
+        target: ".p-4.rounded-lg.border-2",
+        position: "top",
+        allowNext: true,
+      },
+      {
+        id: "mass-tracking",
+        title: "Mass Monitoring",
+        content:
+          "Black hole mass is measured in solar masses (M☉). This panel shows your current mass and growth rate per second. As mass increases, so does energy output, but also the risk of reaching critical mass. Monitor this carefully to maintain optimal balance.",
+        target: ".grid.grid-cols-1.md\\:grid-cols-2.gap-4 > div:first-child",
+        position: "right",
+        allowNext: true,
+      },
+      {
+        id: "dark-matter",
+        title: "Dark Matter Production",
+        content:
+          "Dark matter is a valuable resource produced by your black hole and used for advanced technologies. The amount shown here represents your current dark matter reserves, which can be increased by converting excess black hole mass when threat levels become dangerous.",
+        target: ".grid.grid-cols-1.md\\:grid-cols-2.gap-4 > div:nth-child(2)",
+        position: "left",
+        allowNext: true,
+      },
+      {
+        id: "energy-output",
+        title: "Energy Generation System",
+        content:
+          "Your black hole generates massive amounts of energy per second, shown here along with total cumulative energy produced and emitted energy. This energy powers your entire colony's advanced systems and can support unlimited growth when properly managed.",
+        target: ".grid.grid-cols-1.md\\:grid-cols-2.gap-4 > div:nth-child(3)",
+        position: "right",
+        allowNext: true,
+      },
+      {
+        id: "age-tracking",
+        title: "Cosmic Age Measurement",
+        content:
+          "Track how long your black hole has existed in millions of years. Older black holes may have different characteristics and behavior patterns. Age affects various physics calculations and can influence optimal management strategies.",
+        target: ".grid.grid-cols-1.md\\:grid-cols-2.gap-4 > div:nth-child(4)",
+        position: "left",
+        allowNext: true,
+      },
+      {
+        id: "advanced-stats",
+        title: "Advanced Physics Panel",
+        content:
+          "Toggle this view to access detailed physics data including Schwarzschild radius, Hawking temperature, estimated lifetime, growth multipliers, and critical mass thresholds. This information is essential for expert-level black hole management and optimization.",
+        target: ".advanced-stats",
+        position: "left",
+        allowNext: true,
+      },
+      {
+        id: "schwarzschild-radius",
+        title: "Event Horizon Size",
+        content:
+          "The Schwarzschild radius defines your black hole's event horizon - the point of no return. This measurement in kilometers helps you understand the physical scale of your cosmic phenomenon and its gravitational influence zone.",
+        target: ".grid.grid-cols-1.md\\:grid-cols-3.gap-4 > div:first-child",
+        position: "bottom",
+        allowNext: true,
+      },
+      {
+        id: "hawking-temperature",
+        title: "Quantum Temperature",
+        content:
+          "Hawking temperature represents the theoretical temperature of radiation emitted by your black hole due to quantum effects. Smaller black holes have higher temperatures, affecting energy output and evaporation rates in advanced physics calculations.",
+        target: ".grid.grid-cols-1.md\\:grid-cols-3.gap-4 > div:nth-child(2)",
+        position: "bottom",
+        allowNext: true,
+      },
+      {
+        id: "estimated-lifetime",
+        title: "Cosmic Longevity",
+        content:
+          "This shows the estimated lifespan of your black hole in years. While this number may seem impossibly large, it represents the theoretical time until complete evaporation through Hawking radiation, assuming no additional mass input.",
+        target: ".grid.grid-cols-1.md\\:grid-cols-3.gap-4 > div:nth-child(3)",
+        position: "bottom",
+        allowNext: true,
+      },
+      {
+        id: "mass-conversion",
+        title: "Emergency Mass Conversion",
+        content:
+          "When your threat level reaches dangerous levels (above 10%), use this button to convert excess black hole mass into dark matter. This critical safety mechanism prevents catastrophic energy outbreaks while providing valuable resources for your colony.",
+        target: ".flex.flex-col.sm\\:flex-row.gap-3 > button:first-child",
+        position: "right",
+        allowNext: true,
+      },
+      {
+        id: "stabilization",
+        title: "Advanced Stabilization (Future Technology)",
+        content:
+          "This future technology will allow direct black hole stabilization without mass conversion. Currently undiscovered, this represents an advanced research goal that could revolutionize black hole management and safety protocols.",
+        target: ".flex.flex-col.sm\\:flex-row.gap-3 > button:nth-child(2)",
+        position: "top",
+        allowNext: true,
+      },
+      {
+        id: "critical-warning",
+        title: "Crisis Management Protocol",
+        content:
+          "When threat levels exceed 70%, this critical warning system activates. The pulsing red alert indicates immediate danger of energy outbreak. You must act quickly to convert mass to dark matter or risk losing your infinite energy source and potentially your entire colony.",
+        target: ".p-4.rounded-lg.bg-red-900\\/20.border-2.border-red-800",
+        position: "top",
+        allowNext: true,
+      },
+      {
+        id: "upgrades-system",
+        title: "Black Hole Enhancement System",
+        content:
+          "Access specialized black hole upgrades to improve efficiency, safety, and output. These upgrades can enhance mass growth rates, improve energy conversion efficiency, increase dark matter production, and provide better control mechanisms for optimal black hole management.",
+        target: ".upgrades-system",
+        position: "bottom",
+        allowNext: true,
+      },
+    ],
+    canSkip: true,
+  },
+];
+
 export const allTutorials: Tutorial[] = [
   ...buildingTutorials,
   ...technologyTutorials,
@@ -866,6 +1020,7 @@ export const allTutorials: Tutorial[] = [
   ...artifactsTutorials,
   ...factionsTutorials,
   ...colonizationTutorials,
+  ...blackHoleTutorials,
   // Add other tutorial categories here
 ];
 

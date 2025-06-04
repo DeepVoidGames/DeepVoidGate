@@ -92,6 +92,14 @@ export const useTutorialIntegration = () => {
       startTutorial("colonization-basics");
       return;
     }
+
+    if (
+      location.pathname === "/blackHole" &&
+      shouldStartTutorial("black-hole-basics")
+    ) {
+      startTutorial("black-hole-basics");
+      return;
+    }
   }, [
     gameState,
     tutorialState.activeTutorial,

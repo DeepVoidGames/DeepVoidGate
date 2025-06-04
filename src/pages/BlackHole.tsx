@@ -17,10 +17,14 @@ import { IMAGE_PATH } from "@/config";
 import { useGame } from "@/context/GameContext";
 import { Button } from "@/components/ui/button";
 import BlackHoleUpgrades from "@/components/BlackHoleUpgrades";
+import { TutorialButton } from "@/components/Tutorial/TutorialButton";
+import { TutorialHighlight } from "@/components/Tutorial/TutorialHighlight";
+import { useTutorialIntegration } from "@/hooks/useTutorialIntegration";
 
 const BlackHole = () => {
   const { state, dispatch } = useGame();
-  const [showAdvancedStats, setShowAdvancedStats] = useState(false);
+  const [showAdvancedStats, setShowAdvancedStats] = useState(true);
+  const { isInTutorial, currentTutorial } = useTutorialIntegration();
 
   // Get black hole data from state (calculated in blackHoleTick)
   const blackHole = state?.blackHole;
@@ -86,21 +90,27 @@ const BlackHole = () => {
               <div className="w-4 h-4 bg-black rounded-full border-2 border-purple-400"></div>
             </div>
             Sagittarius A*-2
+            <TutorialButton tutorialId={"black-hole-basics"} />
           </h2>
 
-          <button
-            onClick={() => setShowAdvancedStats(!showAdvancedStats)}
-            className="flex items-center gap-2 px-3 py-1 rounded-lg  transition-colors"
+          <TutorialHighlight
+            stepId="advanced-stats"
+            tutorialId="black-hole-basics"
           >
-            {showAdvancedStats ? (
-              <EyeOff className="h-4 w-4 text-muted-foreground" />
-            ) : (
-              <Eye className="h-4 w-4 text-muted-foreground" />
-            )}
-            <span className="text-sm text-muted-foreground">
-              {showAdvancedStats ? "Basic" : "Advanced"}
-            </span>
-          </button>
+            <button
+              onClick={() => setShowAdvancedStats(!showAdvancedStats)}
+              className="flex items-center gap-2 px-3 py-1 rounded-lg  transition-colors"
+            >
+              {showAdvancedStats ? (
+                <EyeOff className="h-4 w-4 text-muted-foreground" />
+              ) : (
+                <Eye className="h-4 w-4 text-muted-foreground" />
+              )}
+              <span className="text-sm text-muted-foreground">
+                {showAdvancedStats ? "Basic" : "Advanced"}
+              </span>
+            </button>
+          </TutorialHighlight>
         </div>
 
         {/* Black Hole Visualization */}
@@ -315,7 +325,12 @@ const BlackHole = () => {
         )}
       </div>
 
-      <BlackHoleUpgrades />
+      <TutorialHighlight
+        stepId="upgrades-system"
+        tutorialId="black-hole-basics"
+      >
+        <BlackHoleUpgrades />
+      </TutorialHighlight>
     </div>
   );
 };
