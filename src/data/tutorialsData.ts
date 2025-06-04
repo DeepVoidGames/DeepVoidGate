@@ -560,12 +560,110 @@ export const expeditionTutorials: Tutorial[] = [
   },
 ];
 
+export const artifactsTutorials: Tutorial[] = [
+  {
+    id: "artifacts-basics",
+    name: "Ancient Relics System",
+    description:
+      "Learn how to manage and upgrade ancient artifacts to enhance your colony's capabilities and unlock powerful bonuses",
+    category: "artifacts",
+    steps: [
+      {
+        id: "intro",
+        title: "Welcome to Ancient Relics",
+        content:
+          "Ancient artifacts are powerful relics discovered during expeditions that provide permanent bonuses to your colony. These mysterious objects can be upgraded through a star system, with each upgrade tier providing enhanced effects. Collecting and upgrading artifacts is key to advancing your civilization.",
+        allowNext: true,
+      },
+      {
+        id: "artifacts-archive",
+        title: "Ancient Relics Archive",
+        content:
+          "This is your artifact collection hub where you can view all discovered relics, check their current upgrade levels, and manage your collection. Each artifact tells a story of ancient civilizations and holds tremendous power.",
+        position: "bottom",
+        allowNext: true,
+      },
+      {
+        id: "artifact-cards",
+        title: "Artifact Information Cards",
+        content:
+          "Each artifact is displayed as a detailed card showing its name, star rating, description, visual representation, and current effects. These cards contain all the information you need to understand each relic's power and potential.",
+        target: ".artifact-cards",
+        position: "right",
+        allowNext: true,
+      },
+      {
+        id: "star-system",
+        title: "Star Rating System",
+        content:
+          "Artifacts use a 5-star upgrade system. Each star represents a tier of power, with higher tiers providing significantly stronger effects. You can see the current star level next to each artifact's name, displayed as golden stars.",
+        target: ".flex.gap-1",
+        position: "right",
+        allowNext: true,
+      },
+      {
+        id: "artifact-copies",
+        title: "Artifact Collection Counter",
+        content:
+          "The number badge shows how many copies of each artifact you currently possess. You'll need multiple copies of the same artifact to upgrade it to higher star levels. Collect duplicates through expeditions and other exploration activities.",
+        target: ".flex.items-center.gap-1.px-2.py-1",
+        position: "left",
+        allowNext: true,
+      },
+      {
+        id: "artifact-effects",
+        title: "Artifact Effects and Bonuses",
+        content:
+          "Each artifact provides specific bonuses to your colony, such as increased resource production, enhanced research speed, or improved expedition success rates. The effects scale with the artifact's star level, becoming more powerful with each upgrade.",
+        target: ".space-y-1:has(.flex.items-start.gap-1)",
+        position: "bottom",
+        allowNext: true,
+      },
+      {
+        id: "upgrade-requirements",
+        title: "Upgrade Requirements",
+        content:
+          "To upgrade an artifact, you need a specific number of copies: 2 copies for 1→2 stars, 4 copies for 2→3 stars, 8 copies for 3→4 stars, and 16 copies for 4→5 stars. The progress bar shows how close you are to the next upgrade.",
+        target:
+          ".space-y-1.sm\\:space-y-2:has(.flex.justify-between.items-center)",
+        position: "right",
+        allowNext: true,
+      },
+      {
+        id: "upgrade-process",
+        title: "Upgrading Artifacts",
+        content:
+          "When you have enough copies, click the Upgrade button to increase the artifact's star level. Upgrading consumes the required copies but permanently enhances the artifact's effects. The upgrade button shows the required number of copies needed.",
+        target: ".w-full.h-10",
+        position: "bottom",
+        allowNext: true,
+      },
+      {
+        id: "locked-artifacts",
+        title: "Locked Artifacts",
+        content:
+          "Some artifacts appear locked and grayed out until you meet specific requirements, such as completing certain expeditions or reaching particular milestones. Locked artifacts show a lock icon and cannot be upgraded until unlocked.",
+        allowNext: true,
+      },
+      {
+        id: "max-level-artifacts",
+        title: "Maximum Level Artifacts",
+        content:
+          "Artifacts at 5 stars have reached their maximum power level and cannot be upgraded further. These artifacts display 'MAX' instead of upgrade requirements and provide the strongest possible bonuses to your colony.",
+        allowNext: true,
+      },
+    ],
+    canSkip: true,
+  },
+];
+
 export const allTutorials: Tutorial[] = [
   ...buildingTutorials,
   ...technologyTutorials,
   ...milestoneTutorials,
   ...hubTutorials,
   ...expeditionTutorials,
+  ...artifactsTutorials,
   // Add other tutorial categories here
 ];
 

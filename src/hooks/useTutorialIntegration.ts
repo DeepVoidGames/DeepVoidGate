@@ -66,6 +66,14 @@ export const useTutorialIntegration = () => {
       startTutorial("expedition-basics");
       return;
     }
+
+    if (
+      location.pathname === "/artifacts" &&
+      shouldStartTutorial("artifacts-basics")
+    ) {
+      startTutorial("artifacts-basics");
+      return;
+    }
   }, [
     gameState,
     tutorialState.activeTutorial,
