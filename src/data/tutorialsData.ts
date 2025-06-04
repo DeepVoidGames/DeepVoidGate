@@ -740,6 +740,123 @@ export const factionsTutorials: Tutorial[] = [
   },
 ];
 
+export const colonizationTutorials: Tutorial[] = [
+  {
+    id: "colonization-basics",
+    name: "Galactic Expansion System",
+    description:
+      "Learn how to maximize your colony, unlock new planetary systems, and establish galactic colonies to gain permanent bonuses and Galactic Knowledge",
+    category: "expansion",
+    steps: [
+      {
+        id: "intro",
+        title: "Welcome to Galactic Expansion",
+        content:
+          "Once your colony reaches its full potential, you can expand beyond your home planet to colonize new worlds across the galaxy. This process, known as Prestige, allows you to start fresh on a new planet while retaining powerful permanent bonuses and gaining Galactic Knowledge that enhances all future colonies.",
+        allowNext: true,
+      },
+      {
+        id: "expansion-hub",
+        title: "Galactic Expansion Hub",
+        content:
+          "This is your command center for interstellar expansion. Here you can monitor your current colony's progress toward maximum development, track your Galactic Knowledge reserves, and manage the colonization of new worlds when you're ready to expand.",
+        target: ".glass-panel.max-w-7xl",
+        position: "bottom",
+        allowNext: true,
+      },
+      {
+        id: "galactic-knowledge",
+        title: "Galactic Knowledge Currency",
+        content:
+          "Galactic Knowledge is a precious resource earned through colonization that persists across all your colonies. This knowledge can be spent on permanent upgrades that benefit every current and future colony, making each new settlement more powerful than the last.",
+        target: ".flex.items-center.gap-2.px-4.py-2",
+        position: "bottom",
+        allowNext: true,
+      },
+      {
+        id: "colony-counter",
+        title: "Colony Count Tracking",
+        content:
+          "Your colony count shows how many worlds you've successfully colonized. Each new colony you establish increases your total count.",
+        target: ".text-xs.text-muted-foreground.mb-4",
+        position: "bottom",
+        allowNext: true,
+      },
+      {
+        id: "progress-tracking",
+        title: "Colony Progress Monitoring",
+        content:
+          "The progress bar shows how close your current colony is to maximum development. To unlock new colonization opportunities, you must fully maximize your current colony by upgrading all buildings to their highest tiers with maximum upgrades and maxium worker assignments.",
+        target: ".space-y-4:has(.flex.items-center.justify-between.text-sm)",
+        position: "top",
+        allowNext: true,
+      },
+      {
+        id: "colony-completed",
+        title: "Colony Maximization Achievement",
+        content:
+          "When your colony reaches maximum development, you'll see this success indicator. This unlocks your ability to choose from available planets for your next colonization venture, marking a major milestone in your galactic expansion journey.",
+        target: ".bg-green-900\\/20.border.border-green-800",
+        position: "bottom",
+        allowNext: true,
+      },
+      {
+        id: "planet-selection",
+        title: "Planetary Selection System",
+        content:
+          "When ready to colonize, you'll be presented with a selection of available planets. Each planet offers different characteristics, bonus multipliers, and Galactic Knowledge rewards. Choose carefully, as each planet will provide different advantages for your expanding empire.",
+        target: "",
+        position: "top",
+        allowNext: true,
+      },
+      {
+        id: "planet-information",
+        title: "Planet Details and Characteristics",
+        content:
+          "Each planet card shows detailed information including its appearance, name, Galactic Knowledge reward, resource bonus multiplier, description, and unique traits. These factors will influence how your new colony develops and what advantages it provides.",
+        target: ".group.p-4.rounded-lg.border",
+        position: "right",
+        allowNext: true,
+      },
+      {
+        id: "galactic-knowledge-rewards",
+        title: "Galactic Knowledge Calculation",
+        content:
+          "The Galactic Knowledge reward shown for each planet increases based on your total colony count. The more colonies you've established, the more knowledge you'll gain from each new colonization, creating a powerful progression system.",
+        position: "bottom",
+        allowNext: true,
+      },
+      {
+        id: "planet-traits",
+        title: "Unique Planet Traits",
+        content:
+          "Every planet has unique traits that provide special characteristics or bonuses. These traits can affect everything from resource production to building efficiency, making each colonization choice strategically important for your long-term goals.",
+        target: ".flex.flex-wrap.gap-2",
+        position: "top",
+        allowNext: true,
+      },
+      {
+        id: "colonization-process",
+        title: "The Colonization Process",
+        content:
+          "Once you've selected your target planet, use the colonization button to begin the process. This will reset your current colony but transfer you to the new world with all your Galactic Knowledge intact and permanent bonuses active.",
+        target: ".w-full.py-3.rounded-lg",
+        position: "top",
+        allowNext: true,
+      },
+      {
+        id: "galactic-upgrades",
+        title: "Galactic Upgrades",
+        content:
+          "Your Galactic Knowledge can be spent on permanent upgrades that benefit. These upgrades persist through colonization, creating a progression system that rewards expansion.",
+        target: ".galactic-upgrades",
+        allowNext: true,
+      },
+    ],
+    canSkip: true,
+  },
+];
+
 export const allTutorials: Tutorial[] = [
   ...buildingTutorials,
   ...technologyTutorials,
@@ -748,6 +865,7 @@ export const allTutorials: Tutorial[] = [
   ...expeditionTutorials,
   ...artifactsTutorials,
   ...factionsTutorials,
+  ...colonizationTutorials,
   // Add other tutorial categories here
 ];
 

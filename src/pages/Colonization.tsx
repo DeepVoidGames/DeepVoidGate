@@ -15,9 +15,14 @@ import { Planet } from "@/types/colonization";
 import { planetPool } from "@/data/colonization/planets";
 import { initialBuildings } from "@/store/initialData";
 import GalacticUpgrades from "@/components/GalacticUpgrades";
+import { TutorialButton } from "@/components/Tutorial/TutorialButton";
+import { TutorialHighlight } from "@/components/Tutorial/TutorialHighlight";
+import { useTutorialIntegration } from "@/hooks/useTutorialIntegration";
 
 const Colonization = () => {
   const { state, dispatch } = useGame();
+  const { isInTutorial, currentTutorial } = useTutorialIntegration();
+
   const [selectedPlanet, setSelectedPlanet] = useState<Planet | null>(null);
   const [availablePlanets, setAvailablePlanets] = useState<Planet[]>([]);
 
@@ -77,6 +82,7 @@ const Colonization = () => {
             <h2 className="text-lg font-medium text-foreground/90 flex items-center gap-2">
               <Globe className="h-5 w-5 text-blue-400" />
               Galactic Expansion
+              <TutorialButton tutorialId={"colonization-basics"} />
             </h2>
             <div className="flex items-center gap-2 px-4 py-2 bg-background/50 rounded-lg">
               <Star className="h-5 w-5 text-yellow-400" />
@@ -199,7 +205,12 @@ const Colonization = () => {
         </div>
       </div>
 
-      <GalacticUpgrades />
+      <TutorialHighlight
+        stepId="galactic-upgrades"
+        tutorialId="colonization-basics"
+      >
+        <GalacticUpgrades />
+      </TutorialHighlight>
     </div>
   );
 };

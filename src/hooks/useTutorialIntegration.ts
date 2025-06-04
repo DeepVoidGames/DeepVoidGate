@@ -84,6 +84,14 @@ export const useTutorialIntegration = () => {
       startTutorial("factions-basics");
       return;
     }
+
+    if (
+      location.pathname === "/colonization" &&
+      shouldStartTutorial("colonization-basics")
+    ) {
+      startTutorial("colonization-basics");
+      return;
+    }
   }, [
     gameState,
     tutorialState.activeTutorial,
