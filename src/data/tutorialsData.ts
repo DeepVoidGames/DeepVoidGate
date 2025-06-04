@@ -657,6 +657,89 @@ export const artifactsTutorials: Tutorial[] = [
   },
 ];
 
+export const factionsTutorials: Tutorial[] = [
+  {
+    id: "factions-basics",
+    name: "Galactic Factions System",
+    description:
+      "Learn how to manage relationships with galactic factions, build loyalty, manage hostility, and unlock powerful faction bonuses",
+    category: "diplomacy",
+    steps: [
+      {
+        id: "intro",
+        title: "Welcome to Galactic Diplomacy",
+        content:
+          "The galaxy is filled with powerful factions, each with their own agendas, technologies, and resources. Building relationships with these factions through loyalty while managing hostility is crucial for your colony's survival and growth. Each faction offers unique bonuses that can dramatically enhance your capabilities.",
+        allowNext: true,
+      },
+      {
+        id: "factions-overview",
+        title: "Galactic Factions Hub",
+        content:
+          "This is your diplomatic command center where you can monitor relationships with all known galactic factions. Here you'll track loyalty levels, hostility ratings, available bonuses, and upcoming faction events that may affect your relations.",
+        position: "bottom",
+        allowNext: true,
+      },
+      {
+        id: "faction-cards",
+        title: "Faction Information Cards",
+        content:
+          "Each faction is represented by a detailed card showing their emblem, name, description, and current relationship status. These cards provide all the essential information you need to understand each faction's role in the galaxy and your standing with them.",
+        target: ".grid.grid-cols-1.md\\:grid-cols-3",
+        position: "top",
+        allowNext: true,
+      },
+      {
+        id: "faction-identity",
+        title: "Faction Identity and Lore",
+        content:
+          "Each faction has a unique emblem, name. Understanding their motivations and goals will help you make better diplomatic decisions and predict their reactions to your actions.",
+        target: ".relative.w-12.h-12",
+        position: "right",
+        allowNext: true,
+      },
+      {
+        id: "loyalty-system",
+        title: "Loyalty Levels",
+        content:
+          "Loyalty represents how much each faction trusts and supports your colony. Higher loyalty levels unlock more powerful bonuses and better diplomatic relations. You can increase loyalty through successful expeditions.",
+        target: ".loyalty-system",
+        position: "bottom",
+        allowNext: true,
+      },
+      {
+        id: "hostility-system",
+        title: "Hostility Management",
+        content:
+          "Hostility measures how antagonistic each faction feels toward your colony. High hostility can lead to attacks, trade restrictions, and blocked access to faction bonuses. Monitor hostility levels carefully and take diplomatic actions to reduce tensions when necessary.",
+        target: ".hostility-system",
+        position: "bottom",
+        allowNext: true,
+      },
+      {
+        id: "faction-bonuses",
+        title: "Faction Bonuses and Rewards",
+        content:
+          "Each faction offers unique bonuses that activate when you reach specific loyalty thresholds. These bonuses can enhance resource production, improve expedition success rates, unlock new technologies, or provide other strategic advantages. The higher your loyalty, the more bonuses become available.",
+        target: ".faction-bonuses",
+        position: "right",
+        allowNext: true,
+      },
+
+      {
+        id: "faction-events",
+        title: "Faction Events",
+        content:
+          "Special faction events occur periodically that can dramatically impact your relationships. These events may offer opportunities to gain loyalty, present challenges that could increase hostility, or provide unique rewards. The timer shows when the next event will occur.",
+        target: ".text-xs.text-gray-400.gap-1",
+        position: "right",
+        allowNext: true,
+      },
+    ],
+    canSkip: true,
+  },
+];
+
 export const allTutorials: Tutorial[] = [
   ...buildingTutorials,
   ...technologyTutorials,
@@ -664,6 +747,7 @@ export const allTutorials: Tutorial[] = [
   ...hubTutorials,
   ...expeditionTutorials,
   ...artifactsTutorials,
+  ...factionsTutorials,
   // Add other tutorial categories here
 ];
 

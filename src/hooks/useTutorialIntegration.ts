@@ -22,6 +22,7 @@ export const useTutorialIntegration = () => {
 
     // Start building basics tutorial if player has no buildings
     if (
+      location.pathname === "/" &&
       gameState.buildings.length === 0 &&
       shouldStartTutorial("buildings-basics")
     ) {
@@ -31,6 +32,7 @@ export const useTutorialIntegration = () => {
 
     // Start production tutorial if player has basic buildings but low resources
     if (
+      location.pathname === "/" &&
       gameState.buildings.length >= 1 &&
       shouldStartTutorial("worker-management")
     ) {
@@ -72,6 +74,14 @@ export const useTutorialIntegration = () => {
       shouldStartTutorial("artifacts-basics")
     ) {
       startTutorial("artifacts-basics");
+      return;
+    }
+
+    if (
+      location.pathname === "/factions" &&
+      shouldStartTutorial("factions-basics")
+    ) {
+      startTutorial("factions-basics");
       return;
     }
   }, [
