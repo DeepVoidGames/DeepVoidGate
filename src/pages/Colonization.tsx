@@ -41,18 +41,18 @@ const Colonization = () => {
   useEffect(() => {
     setMaxProgress(initialBuildings.length);
 
-    setCurrentProgress(
-      state.buildings.reduce((acc, building) => {
-        return (
-          acc +
-          (building.tier === building.maxTier &&
-          building.upgrades >= 10 &&
-          building.workerCapacity >= building.assignedWorkers
-            ? 1
-            : 0)
-        );
-      }, 0)
-    );
+    setCurrentProgress(() => {
+      let progress = 0;
+      state.buildings.forEach((b) => {
+        if (
+          b.tier === b.maxTier &&
+          b.upgrades >= 10 &&
+          b.assignedWorkers >= b.workerCapacity
+        )
+          progress += 1;
+      });
+      return progress;
+    });
   }, [state.buildings]);
 
   const handleColonize = () => {
