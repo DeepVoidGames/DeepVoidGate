@@ -14,8 +14,8 @@ export const ResourcesIcon = ({ resource }: { resource: string }) => {
 // Web build = /deepvoidgate/demo/
 // Android build = /
 export const IMAGE_PATH = "/";
-export const BASE_NAME = "/deepvoidgate/demo/";
+export const BASE_NAME = "/";
 
 // https://github.com/DeepVoidGames/DeepVoidGate/tree/${BUILDID}
-export const BUILDID = "215c0a5d44f6318ad7e7c94bbf7956650c9138a4";
-// Last Build ID = 6d5659b8c17635f43151b4ae24c872a1e9d61cf6
+export const BUILDID = "b0807075bd1f9e51c1d96a1366296419a7aa92ad;";
+// Last Build ID = 0f307c6d1ec59211b714fb6c99ad295c53b70782

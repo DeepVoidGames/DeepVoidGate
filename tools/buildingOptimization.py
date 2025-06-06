@@ -287,7 +287,7 @@ class BuildingAnalyzer:
                 print(f"{r}: {v:.2f}")
 
 if __name__ == "__main__":
-    building_config = json.loads(open("buildings/p_food.json").read())
+    building_config = json.loads(open("src/data/buildings/p_food.json").read())
     
     analyzer = BuildingAnalyzer(building_config)
     analyzer.generate_data()

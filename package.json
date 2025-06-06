@@ -6,7 +6,7 @@
   "scripts": {
     "dev": "vite --host 0.0.0.0",
     "build": "vite build --base=https://cloud.fern.fun/deepvoidgate/demo/",
-    "assets": "npx @capacitor/assets generate",
+    "assets": "npx @capacitor/assets generate --android",
     "build:android": "npm run assets && vite build && npx cap sync && npx cap open android",
     "build:dev": "vite build --mode development",
     "lint": "eslint .",
