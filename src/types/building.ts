@@ -91,7 +91,8 @@ export type BuildingType =
   | "aether_spires"
   | "multiversal_collider"
   | "fractal_thought_engine"
-  | "quantum_matter_repository";
+  | "quantum_matter_repository"
+  | "celestial_hive_nexus";
 
 export interface BuildingData {
   id?: string;

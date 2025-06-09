@@ -676,4 +676,41 @@ export const expeditionEvents: ExpeditionEvent[] = [
       },
     ],
   },
+  {
+    id: "stellar_convergence",
+    title: "Stellar Convergence",
+    description:
+      "Anomalous alignment between your orbital station and a nearby pulsar produces stable zones of gravity-suppressed quantum coherence. Within them, megastructural habitation becomes theoretically feasible.",
+    type: ["scientific"],
+    minTier: 11,
+    weight: 1,
+    options: [
+      {
+        text: "Initiate orbital construction and neural imprinting routines",
+        effects: [
+          {
+            type: "technology",
+            technologyId: "celestial_neuro_architecture",
+            value: 0,
+          },
+          {
+            type: "time",
+            value: 26, // minutes until fully analyzed
+          },
+        ],
+      },
+      {
+        text: "Too unstable. Record data and redirect energy elsewhere",
+        effects: [
+          {
+            type: "reward",
+            value: {
+              science: 6e7,
+              energy: 4e7,
+            },
+          },
+        ],
+      },
+    ],
+  },
 ];

@@ -149,4 +149,23 @@ export const technology_expedition: Technology[] = [
     locked: true,
     expedtionMinTier: 10,
   },
+  {
+    id: "celestial_neuro_architecture",
+    name: "Celestial Neuro Architecture",
+    category: "Infrastructure",
+    description:
+      "Advanced architectural systems integrating cosmic radiation shielding, adaptive gravity, and neural comfort matrices enable unprecedented habitation densities.",
+    researchCost: {
+      science: 180000,
+      energy: 120000,
+      oxygen: 90000,
+      food: 80000,
+    },
+    prerequisites: ["aetheric_biosystems"],
+    unlocksBuildings: ["celestial_hive_nexus"],
+    researchDuration: 7200, // 2h
+    isResearched: false,
+    locked: true,
+    expedtionMinTier: 11,
+  },
 ];

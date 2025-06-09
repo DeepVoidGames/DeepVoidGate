@@ -179,5 +179,40 @@
     },
     "tag": "habitation",
     "housingCapacityMultiplier": 3
+  },
+  {
+    "type": "celestial_hive_nexus",
+    "category": "housing",
+    "name": "Celestial Hive Nexus",
+    "description": "A sprawling, self-organizing megastructure orbiting a star, housing entire populations in layered bio-neural habitats. The Nexus harmonizes cosmic radiation, artificial gravity, and neurofeedback loops for ultimate wellbeing.",
+    "workerCapacity": 0,
+    "baseCost": {
+      "metals": 11600,
+      "energy": 64200,
+      "food": 3800,
+      "oxygen": 2300
+    },
+    "baseProduction": {},
+    "baseConsumption": {
+      "oxygen": 3.5,
+      "energy": 7.2,
+      "water": 4.8,
+      "food": 3.2
+    },
+    "requirements": {},
+    "requiredTechnology": "celestial_neuro_architecture",
+    "costMultiplier": 2.2,
+    "productionMultiplier": 1,
+    "maxInstances": 1,
+    "tier": 6,
+    "maxTier": 6,
+    "upgrades": 0,
+    "uniqueBonus": {
+      "stability": 0.18,
+      "happiness": 0.35,
+      "efficiency": 0.1
+    },
+    "tag": "habitation",
+    "housingCapacityMultiplier": 4
   }
 ]

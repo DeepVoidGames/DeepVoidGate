@@ -2,7 +2,7 @@ This analize was made by [claude.ai](https://claude.ai/) for brainstorms and wor
 
 # DeepvoidGate Game Mechanics Analysis
 
-DeepvoidGate appears to be a space colony management simulation game with multiple interconnected systems. Based on the screenshots provided, here's an analysis of the main game mechanics:
+DeepvoidGate appears to be a space colony management simulation/idle game with multiple interconnected systems. Based on the screenshots provided, here's an analysis of the main game mechanics:
 
 ## Core Management Systems
 
@@ -60,6 +60,20 @@ DeepvoidGate appears to be a space colony management simulation game with multip
 - **Power Scaling**: Artifacts can be upgraded through tiers.
 - **Bonus Effects**: Each provides unique bonuses (e.g., "Increases production of all resources by 60%").
 - **Acquisition Method**: Can be found during expeditions.
+
+### Colonization System
+
+- **Prestige Mechanic**: Allows resetting the current colony (removes buildings) in exchange for **Galactic Knowledge**.
+- **Progression Unlocks**: Galactic Knowledge is used to unlock new game mechanics and purchase global upgrades.
+- **Planet Selection**: After each reset, you choose a new planet to colonize, each with unique traits and **bonus modifiers**.
+- **Replay Variety**: Encourages experimentation and strategic colony development through varied planetary conditions.
+
+### Black Hole System
+
+- **Energy Extraction**: A controlled black hole provides massive energy output as a late-game power source.
+- **Upgrade Path**: Can be enhanced with research and materials to boost energy generation over time.
+- **Stability Management**: Accumulating too much mass requires intervention to prevent collapse and balance energy gain.
+- **Risk-Reward Dynamics**: Higher mass yields better output but increases instability risk, demanding careful tuning.
 
 ## Gameplay Mechanics
 
