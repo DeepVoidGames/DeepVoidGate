@@ -9,16 +9,16 @@ export interface ExpeditionEvent {
   description: string;
   image?: string;
   options: ExpeditionEventOption[];
-  weight?: number; 
-  type?: ExpeditionType[]; 
-  minTier?: number; 
-  maxTier?: number; 
+  weight?: number;
+  type?: ExpeditionType[];
+  minTier?: number;
+  maxTier?: number;
 }
 
 export interface ExpeditionEventOption {
   text: string;
   effects: ExpeditionEventEffect[];
-  weight?: number; 
+  weight?: number;
 }
 
 export interface ExpeditionEventEffect {
@@ -35,22 +35,22 @@ export interface Expedition {
   id: string;
   type: ExpeditionType;
   tier: number;
-  duration: number; 
+  duration: number;
   elapsed: number;
-  crew: number; 
+  crew: number;
   status: "preparing" | "in_progress" | "completed" | "failed";
-  events: ExpeditionEventLog[]; 
+  events: ExpeditionEventLog[];
   nextEventTime: number;
-  rewards?: ResourceAmount; 
+  rewards?: ResourceAmount;
   unlockedTechnologies?: string[];
-  rewardsCollected?: boolean; 
+  rewardsCollected?: boolean;
 }
 
 export interface ExpeditionEventLog {
-  id?: string; 
+  id?: string;
   eventId: string;
   chosenOptionIndex: number;
-  time: number; 
+  time: number;
 }
 
 export interface ResourceAmount {
@@ -63,4 +63,5 @@ export interface ExpeditionTypes {
   icon: ReactNode;
   color: string;
   desc: string;
+  isSpecial?: boolean;
 }

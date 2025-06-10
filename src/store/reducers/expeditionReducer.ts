@@ -31,6 +31,7 @@ export const TIER_MULTIPLIER = 1.65; //  1.5x multiplier for each tier of expedi
 const BASE_REWARDS: Record<ExpeditionType, ResourceAmount> = {
   mining: { metals: 9e4 },
   scientific: { science: 9e4 },
+  void: {},
 };
 
 /**

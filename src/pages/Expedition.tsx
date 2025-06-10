@@ -2,15 +2,14 @@ import React, { useState } from "react";
 import { useGame } from "@/context/GameContext";
 import { ExpeditionType, ExpeditionTypes } from "@/types/expedition";
 import { expeditionEvents } from "@/data/expeditionEvents";
-
-import { Rocket, FlaskConical, Pickaxe } from "lucide-react";
+import { Rocket, FlaskConical, Pickaxe, Zap } from "lucide-react";
 import { MobileTopNav } from "@/components/Navbar";
 import {
   CREW_PER_TIER,
   isExpedtionUnlocked,
 } from "@/store/reducers/expeditionReducer";
-
 import { formatNumber } from "@/lib/utils";
+import { motion, AnimatePresence } from "framer-motion";
 
 import NewExpeditionPanel from "@/components/Expedition/NewExpeditionPanel";
 import SummaryExpeditionPanel from "@/components/Expedition/SummaryExpeditionPanel";
@@ -19,6 +18,7 @@ import { getDominantFactionTheme } from "@/store/reducers/factionsReducer";
 import { TutorialButton } from "@/components/Tutorial/TutorialButton";
 import { TutorialHighlight } from "@/components/Tutorial/TutorialHighlight";
 import { useTutorialIntegration } from "@/hooks/useTutorialIntegration";
+import VoidDimensionInterface from "@/components/VoidDimensionInterface";
 
 const Expedition = () => {
   const { state, dispatch } = useGame();
@@ -28,6 +28,9 @@ const Expedition = () => {
   const [selectedTier, setSelectedTier] = useState(0);
   const [error, setError] = useState("");
   const [showCompleted] = useState(false);
+
+  const [isVoidDiving, setIsVoidDiving] = useState(false);
+  const [animationPhase, setAnimationPhase] = useState(0);
 
   if (!isExpedtionUnlocked(state)) return;
 
@@ -46,6 +49,14 @@ const Expedition = () => {
       color: "bg-amber-500",
       desc: "Gather rare minerals and raw materials",
     },
+    // {
+    //   type: "void",
+    //   label: "Void Dive",
+    //   icon: <Zap className="w-5 h-5" />,
+    //   color: "bg-gradient-to-r from-purple-600 to-pink-600",
+    //   desc: "Breach dimensional barriers to explore the void realm",
+    //   isSpecial: true,
+    // },
   ];
 
   const handleStartExpedition = () => {
@@ -76,14 +87,86 @@ const Expedition = () => {
     return `${pad(hours)}:${pad(mins)}:${pad(secs)}`;
   };
 
-  // const toggleCompleted = () => {
-  //   setShowCompleted(!showCompleted);
-  // };
+  // Run aniamtion
+  const handleVoidDiveAnimation = () => {
+    console.log("Animation start");
+    setIsVoidDiving(true);
+    setAnimationPhase(1);
+
+    // Sekwencja animacji
+    setTimeout(() => setAnimationPhase(2), 100);
+    setTimeout(() => setAnimationPhase(3), 1600);
+    setTimeout(() => setAnimationPhase(4), 2400);
+  };
+  // Efekty animacji
+  const voidHoleVariants = {
+    phase1: {
+      scale: 1,
+      opacity: 0,
+    },
+    phase2: {
+      scale: 1.5,
+      opacity: 0.7,
+    },
+    phase3: {
+      scale: 30,
+      opacity: 1,
+    },
+    phase4: {
+      scale: 100,
+      opacity: 0,
+    },
+  };
+
+  const contentDistortion = {
+    phase0: { filter: "blur(0px) brightness(1)" },
+    phase1: { filter: "blur(1px) brightness(1.1)" },
+    phase2: { filter: "blur(3px) brightness(1.3)" },
+    phase3: { filter: "blur(10px) brightness(2)", opacity: 0.5 },
+    phase4: { filter: "blur(20px) brightness(3)", opacity: 0 },
+  };
 
   return (
     <>
-      <MobileTopNav />
+      <AnimatePresence>
+        {isVoidDiving && (
+          <>
+            {/* Overlay z efektem wciągania */}
+            <motion.div
+              key="void-hole"
+              className="fixed inset-0 z-40 pointer-events-none"
+              initial="phase1"
+              animate={`phase${animationPhase}`}
+              variants={voidHoleVariants}
+              transition={{ type: "spring", damping: 20 }}
+            >
+              <div className="absolute inset-0 rounded-full bg-black m-auto w-64 h-64" />
+            </motion.div>
+
+            {/* Zniekształcenie zawartości */}
+            <motion.div
+              key="content-distortion"
+              className="fixed inset-0 z-30 pointer-events-none"
+              initial="phase0"
+              animate={`phase${animationPhase}`}
+              variants={contentDistortion}
+            />
+
+            {/* Nowy interfejs Void */}
+            {animationPhase >= 4 && (
+              <VoidDimensionInterface
+                onReturn={() => {
+                  setIsVoidDiving(false);
+                  setAnimationPhase(0);
+                }}
+              />
+            )}
+          </>
+        )}
+      </AnimatePresence>
+
       <div className="max-w-6xl mx-auto p-4 space-y-8 mb-24 mt-32">
+        {!isVoidDiving && <MobileTopNav />}
         {/* Header Section */}
         <div className="text-center space-y-2">
           <h1 className="text-4xl font-bold flex items-center justify-center gap-3">
@@ -102,6 +185,7 @@ const Expedition = () => {
           setSelectedTier={setSelectedTier}
           selectedType={selectedType}
           selectedTier={selectedTier}
+          handleVoidDiveAnimation={handleVoidDiveAnimation}
         />
 
         <TutorialHighlight
@@ -132,12 +216,6 @@ const Expedition = () => {
           >
             <div className="flex items-center justify-between mb-4 w-full">
               <h2 className="text-2xl font-bold">Active Missions</h2>
-              {/* <button
-            className="text-sm text-muted-foreground hover:text-primary"
-            onClick={toggleCompleted}
-          >
-            {showCompleted ? "Hide Completed" : "Show Completed"}
-          </button> */}
             </div>
 
             <div className="grid md:grid-cols-2 gap-4 w-full">
@@ -150,11 +228,11 @@ const Expedition = () => {
                 )
                 .map((expedition) => (
                   <TutorialHighlight
+                    key={expedition?.id}
                     stepId="expedition-progress"
                     tutorialId="expedition-basics"
                   >
                     <ExpeditionCard
-                      key={expedition?.id}
                       expedition={expedition}
                       formatDuration={formatDuration}
                       state={state}

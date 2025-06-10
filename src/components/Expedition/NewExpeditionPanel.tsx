@@ -11,6 +11,7 @@ type NewExpeditionPanelProps = {
   setSelectedTier: (number) => void;
   selectedType: ExpeditionType;
   selectedTier: number;
+  handleVoidDiveAnimation: () => void;
 };
 
 function NewExpeditionPanel({
@@ -19,6 +20,7 @@ function NewExpeditionPanel({
   setSelectedTier,
   selectedType,
   selectedTier,
+  handleVoidDiveAnimation,
 }: NewExpeditionPanelProps) {
   const { state } = useGame();
 
@@ -39,30 +41,69 @@ function NewExpeditionPanel({
             <CardTitle className="text-xl">1. Select Mission Type</CardTitle>
           </CardHeader>
           <CardContent className="p-0 space-y-4">
-            {expeditionTypes.map(({ type, label, icon, color, desc }) => (
-              <button
-                key={type}
-                onClick={() => setSelectedType(type)}
-                className={`w-full p-4 rounded-xl border-2 transition-all flex items-start gap-4 ${
-                  // selectedType === type
-                  //   ? `${getDominantFactionTheme(state, {
-                  //       styleType: "background",
-                  //     })}`
-                  //   : "border-muted hover:border-primary/30"
-                  selectedType === type
-                    ? "border-primary bg-primary/10"
-                    : "border-muted hover:border-primary/30"
-                }`}
-              >
-                <div className={`p-3 rounded-lg ${color} text-background`}>
-                  {icon}
-                </div>
-                <div className="text-left">
-                  <h3 className="font-semibold text-lg">{label}</h3>
-                  <p className="text-sm text-muted-foreground">{desc}</p>
-                </div>
-              </button>
-            ))}
+            {expeditionTypes.map(
+              ({ type, label, icon, color, desc, isSpecial }) => (
+                <button
+                  key={type}
+                  onClick={
+                    isSpecial
+                      ? () => handleVoidDiveAnimation()
+                      : () => setSelectedType(type)
+                  }
+                  className={`w-full p-4 rounded-xl border-2 transition-all flex items-start gap-4 relative overflow-hidden ${
+                    selectedType === type
+                      ? "border-primary bg-primary/10"
+                      : "border-muted hover:border-primary/30"
+                  } ${isSpecial ? "animate-pulse hover:animate-none" : ""}`}
+                >
+                  {/* Special void effect overlay */}
+                  {isSpecial && (
+                    <div className="absolute inset-0 bg-gradient-to-r from-purple-600/10 via-transparent to-pink-600/10 pointer-events-none" />
+                  )}
+
+                  <div
+                    className={`p-3 rounded-lg text-background relative z-10 ${
+                      isSpecial ? color : color
+                    }`}
+                  >
+                    {icon}
+                  </div>
+                  <div className="text-left relative z-10">
+                    <h3
+                      className={`font-semibold text-lg flex items-center gap-2 ${
+                        isSpecial
+                          ? "text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-pink-400"
+                          : ""
+                      }`}
+                    >
+                      {label}
+                      {isSpecial && (
+                        <span className="text-xs bg-purple-500/20 text-purple-300 px-2 py-1 rounded-full border border-purple-500/30 animate-pulse">
+                          EXPERIMENTAL
+                        </span>
+                      )}
+                    </h3>
+                    <p
+                      className={`text-sm ${
+                        isSpecial ? "text-purple-200" : "text-muted-foreground"
+                      }`}
+                    >
+                      {desc}
+                    </p>
+                    {isSpecial && (
+                      <div className="mt-2 text-xs text-purple-300 animate-pulse">
+                        ⚠️ High-risk dimensional breach required
+                      </div>
+                    )}
+                  </div>
+
+                  {/* Animated border for special expedition */}
+                  {isSpecial && selectedType === type && (
+                    <div className="absolute inset-0 rounded-xl border-2 border-transparent bg-gradient-to-r from-purple-500 via-pink-500 to-purple-500 animate-gradient-x opacity-30 pointer-events-none" />
+                  )}
+                </button>
+              )
+            )}
           </CardContent>
         </Card>
       </TutorialHighlight>
@@ -88,16 +129,15 @@ function NewExpeditionPanel({
                   <button
                     key={tier}
                     onClick={() => setSelectedTier(tier)}
-                    className={`aspect-square flex flex-col items-center justify-center rounded-lg border-2 transition-all ${
+                    className={`aspect-square flex flex-col items-center justify-center rounded-lg border-2 transition-all relative overflow-hidden ${
                       selectedTier === tier
                         ? "border-primary bg-primary/10"
                         : "border-muted hover:border-primary/30"
                     }`}
                   >
-                    <span className="font-bold text-lg">{tier}</span>
-                    {/* <span className="text-xs text-muted-foreground">
-                      {requiredCrew} <Users className="inline w-3 h-3" />
-                    </span> */}
+                    <span className={`font-bold text-lg relative z-10`}>
+                      {tier}
+                    </span>
                   </button>
                 );
               })}
