@@ -1485,8 +1485,8 @@ export const initialMilestones: Milestone[] = [
 
   {
     id: "black_hole_upgrade_2",
-    name: "Gravitational Amplifier Upgrade",
-    description: "Max Black hole Gravitational Amplifier Upgrade",
+    name: "Hawking Accelerator Upgrade",
+    description: "Max Black hole Hawking Accelerator Upgrade",
     condition: function (state: GameState): boolean {
       return state?.blackHole?.upgrades?.find((u) => u.id == "growth_rate")
         ?.level >= blackHoleUpgrades.find((u) => u.id == "growth_rate").maxLevel
@@ -1507,8 +1507,8 @@ export const initialMilestones: Milestone[] = [
 
   {
     id: "black_hole_upgrade_3",
-    name: "Gravitational Amplifier Upgrade",
-    description: "Max Black hole Gravitational Amplifier Upgrade",
+    name: "Dark Matter Synthesizer Upgrade",
+    description: "Max Black hole Dark Matter Synthesizer Upgrade",
     condition: function (state: GameState): boolean {
       return state?.blackHole?.upgrades?.find((u) => u.id == "dark_matter_gen")
         ?.level >=
@@ -1531,8 +1531,8 @@ export const initialMilestones: Milestone[] = [
 
   {
     id: "black_hole_upgrade_4",
-    name: "Gravitational Amplifier Upgrade",
-    description: "Max Black hole Gravitational Amplifier Upgrade",
+    name: "Quantum Battery Upgrade",
+    description: "Max Black hole Quantum Battery Upgrade",
     condition: function (state: GameState): boolean {
       return state?.blackHole?.upgrades?.find((u) => u.id == "energy_capacity")
         ?.level >=
