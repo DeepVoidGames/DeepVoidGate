@@ -10,6 +10,8 @@ import {
   User,
   Microscope,
   FlaskConical,
+  Globe,
+  Sparkle,
 } from "lucide-react";
 import { useGame } from "@/context/GameContext";
 import { Progress } from "@/components/ui/progress";
@@ -49,6 +51,16 @@ const milestoneCategories = [
     id: "artifacts",
     name: "Artifacts",
     icon: <Trophy className="h-4 w-4 text-pink-400" />,
+  },
+  {
+    id: "colonization",
+    name: "Colonization",
+    icon: <Globe className="h-4 w-4 text-blue-400" />,
+  },
+  {
+    id: "black_hole",
+    name: "Black Hole",
+    icon: <Sparkle className="h-4 w-4 text-orange-400" />,
   },
 ];
 

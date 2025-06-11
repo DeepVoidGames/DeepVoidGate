@@ -1373,6 +1373,78 @@ export const initialMilestones: Milestone[] = [
     completed: false,
     category: "artifacts",
   },
+
+  {
+    id: "ascension_nexus_upgrade_1",
+    name: "Void Storage",
+    description: "Unlock Void Storage ascension nexus upgrade",
+    condition: function (state: GameState): boolean {
+      return state?.galacticUpgrades?.includes("void_storage");
+    },
+    progress: function (state: GameState): number {
+      return state?.galacticUpgrades?.includes("void_storage") ? 100 : 0;
+    },
+    completed: false,
+    category: "colonization",
+  },
+
+  {
+    id: "ascension_nexus_upgrade_2",
+    name: "Quantum Production",
+    description: "Unlock Quantum Production ascension nexus upgrade",
+    condition: function (state: GameState): boolean {
+      return state?.galacticUpgrades?.includes("quantum_production");
+    },
+    progress: function (state: GameState): number {
+      return state?.galacticUpgrades?.includes("quantum_production") ? 100 : 0;
+    },
+    completed: false,
+    category: "colonization",
+  },
+
+  {
+    id: "ascension_nexus_upgrade_3",
+    name: "Quantum time collapse",
+    description: "Unlock Quantum time collapse ascension nexus upgrade",
+    condition: function (state: GameState): boolean {
+      return state?.galacticUpgrades?.includes("quantum_travel");
+    },
+    progress: function (state: GameState): number {
+      return state?.galacticUpgrades?.includes("quantum_travel") ? 100 : 0;
+    },
+    completed: false,
+    category: "colonization",
+  },
+
+  {
+    id: "ascension_nexus_upgrade_4",
+    name: "Quantum disproportion",
+    description: "Unlock Quantum disproportion ascension nexus upgrade",
+    condition: function (state: GameState): boolean {
+      return state?.galacticUpgrades?.includes("quantum_disproportion");
+    },
+    progress: function (state: GameState): number {
+      return state?.galacticUpgrades?.includes("quantum_disproportion")
+        ? 100
+        : 0;
+    },
+    completed: false,
+    category: "colonization",
+  },
+
+  {
+    id: "ascension_nexus_upgrade_5",
+    name: "Black Hole",
+    description: "Unlock Black Hole ascension nexus upgrade",
+    condition: function (state: GameState): boolean {
+      return state?.galacticUpgrades?.includes("black_hole_unknow");
+    },
+    progress: function (state: GameState): number {
+      return state?.galacticUpgrades?.includes("black_hole_unknow") ? 100 : 0;
+    },
+    completed: false,
+    category: "colonization",
+  },
 ];
 
 // Export the tier definitions for reuse in other parts of the code
