@@ -286,6 +286,18 @@ const energyTiers: TierDefinition[] = [
     rewardAmount: 10000000,
     description: "Collect 100,000,000 energy",
   },
+  {
+    tier: 8,
+    target: 500000000,
+    rewardAmount: 50000000,
+    description: "Collect 500,000,000 energy",
+  },
+  {
+    tier: 9,
+    target: 1000000000,
+    rewardAmount: 50000000,
+    description: "Collect 1,000,000,000 energy",
+  },
 ];
 
 const scienceTiers: TierDefinition[] = [
