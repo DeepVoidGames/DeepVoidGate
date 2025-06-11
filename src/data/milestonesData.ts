@@ -2,6 +2,7 @@ import { initialBuildings } from "@/store/initialData";
 import { GameState } from "@/types/gameState";
 import { Milestone } from "@/types/milestone";
 import { TechnologyCategory } from "@/types/technology";
+import { blackHoleUpgrades } from "@/data/colonization/blackHoleUpgrades";
 
 // Define a new type for tiered milestones
 export interface TierDefinition {
@@ -1444,6 +1445,100 @@ export const initialMilestones: Milestone[] = [
     },
     completed: false,
     category: "colonization",
+  },
+
+  {
+    id: "black_hole_upgrade_1",
+    name: "Gravitational Amplifier Upgrade",
+    description: "Max Black hole Gravitational Amplifier Upgrade",
+    condition: function (state: GameState): boolean {
+      return state?.blackHole?.upgrades?.find((u) => u.id == "mass_capacity")
+        ?.level >=
+        blackHoleUpgrades.find((u) => u.id == "mass_capacity").maxLevel
+        ? true
+        : false;
+    },
+    progress: function (state: GameState): number {
+      return Math.min(
+        (state?.blackHole?.upgrades?.find((u) => u.id == "mass_capacity")
+          ?.level /
+          blackHoleUpgrades.find((u) => u.id == "mass_capacity").maxLevel) *
+          100,
+        100
+      );
+    },
+    completed: false,
+    category: "black_hole",
+  },
+
+  {
+    id: "black_hole_upgrade_2",
+    name: "Gravitational Amplifier Upgrade",
+    description: "Max Black hole Gravitational Amplifier Upgrade",
+    condition: function (state: GameState): boolean {
+      return state?.blackHole?.upgrades?.find((u) => u.id == "growth_rate")
+        ?.level >= blackHoleUpgrades.find((u) => u.id == "growth_rate").maxLevel
+        ? true
+        : false;
+    },
+    progress: function (state: GameState): number {
+      return Math.min(
+        (state?.blackHole?.upgrades?.find((u) => u.id == "growth_rate")?.level /
+          blackHoleUpgrades.find((u) => u.id == "growth_rate").maxLevel) *
+          100,
+        100
+      );
+    },
+    completed: false,
+    category: "black_hole",
+  },
+
+  {
+    id: "black_hole_upgrade_3",
+    name: "Gravitational Amplifier Upgrade",
+    description: "Max Black hole Gravitational Amplifier Upgrade",
+    condition: function (state: GameState): boolean {
+      return state?.blackHole?.upgrades?.find((u) => u.id == "dark_matter_gen")
+        ?.level >=
+        blackHoleUpgrades.find((u) => u.id == "dark_matter_gen").maxLevel
+        ? true
+        : false;
+    },
+    progress: function (state: GameState): number {
+      return Math.min(
+        (state?.blackHole?.upgrades?.find((u) => u.id == "dark_matter_gen")
+          ?.level /
+          blackHoleUpgrades.find((u) => u.id == "dark_matter_gen").maxLevel) *
+          100,
+        100
+      );
+    },
+    completed: false,
+    category: "black_hole",
+  },
+
+  {
+    id: "black_hole_upgrade_4",
+    name: "Gravitational Amplifier Upgrade",
+    description: "Max Black hole Gravitational Amplifier Upgrade",
+    condition: function (state: GameState): boolean {
+      return state?.blackHole?.upgrades?.find((u) => u.id == "energy_capacity")
+        ?.level >=
+        blackHoleUpgrades.find((u) => u.id == "energy_capacity").maxLevel
+        ? true
+        : false;
+    },
+    progress: function (state: GameState): number {
+      return Math.min(
+        (state?.blackHole?.upgrades?.find((u) => u.id == "energy_capacity")
+          ?.level /
+          blackHoleUpgrades.find((u) => u.id == "energy_capacity").maxLevel) *
+          100,
+        100
+      );
+    },
+    completed: false,
+    category: "black_hole",
   },
 ];
 
