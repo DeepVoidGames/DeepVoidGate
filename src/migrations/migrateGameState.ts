@@ -277,6 +277,8 @@ const migrateTechnologiesStats = (savedTechnologies: any[]): any[] => {
       ...tech,
       name: template.name || tech.name,
       description: template.description || tech.description,
+      category: template.category,
+      subCategory: template?.subCategory,
       researchCost: template.researchCost || tech.researchCost,
       prerequisites: template.prerequisites || tech.prerequisites,
       unlocksBuildings: template.unlocksBuildings || tech.unlocksBuildings,

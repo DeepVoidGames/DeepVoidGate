@@ -47,7 +47,7 @@ export const technology_research: Technology[] = [
       energy: 4000,
       oxygen: 2000,
     },
-    prerequisites: [],
+    prerequisites: ["ai_development"],
     unlocksBuildings: ["astral_scriptorium"],
     researchDuration: 1800, // 30 min
     isResearched: false,

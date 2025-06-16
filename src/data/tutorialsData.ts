@@ -232,7 +232,7 @@ export const technologyTutorials: Tutorial[] = [
         id: "tech-cards",
         title: "Technology Cards",
         content:
-          "Each technology card shows its name, description, research costs, and prerequisites. Green cards are already researched, while others are available or locked.",
+          "Each technology card shows its name, description, research costs, and prerequisites. Green cards are already researched, while others are available or locked. Card with purple colors are a technologie obtaining from expeditions.",
         target: ".tech-cards",
         position: "top",
         allowNext: true,

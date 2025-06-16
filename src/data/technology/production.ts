@@ -5,6 +5,7 @@ export const technology_production: Technology[] = [
     id: "deep_core_mining",
     name: "Deep Core Mining",
     category: "Production",
+    subCategory: "metals",
     description: "Enables access to 深层 metal deposits with advanced drills.",
     researchCost: { energy: 280, metals: 900, science: 200 },
     prerequisites: ["basic_energy"],
@@ -17,6 +18,7 @@ export const technology_production: Technology[] = [
     name: "Seismic Ore Mapping",
     description: "Detects high-density ore clusters using resonance waves.",
     category: "Production",
+    subCategory: "metals",
     researchCost: { energy: 460, metals: 1700, science: 400 },
     prerequisites: ["deep_core_mining"],
     unlocksBuildings: ["highYieldMetalFracturer"],
@@ -27,6 +29,7 @@ export const technology_production: Technology[] = [
     id: "plasma_refining",
     name: "Plasma Refining",
     category: "Production",
+    subCategory: "metals",
     description: "Harnesses plasma to break down ores at the atomic level.",
     researchCost: { energy: 750, science: 600, metals: 2400 },
     prerequisites: ["seismic_ore_mapping"],
@@ -40,6 +43,7 @@ export const technology_production: Technology[] = [
     description:
       "Enables large-scale separation of compounds through electrical current.",
     category: "Production",
+    subCategory: "oxygen",
     researchCost: { oxygen: 480, energy: 250, science: 200 },
     prerequisites: ["basic_energy"],
     unlocksBuildings: ["electrolyticOxygenPlant"],
@@ -52,6 +56,7 @@ export const technology_production: Technology[] = [
     description:
       "Unlocks foundational food production systems for colony sustainability.",
     category: "Production",
+    subCategory: "food",
     researchCost: { food: 150, energy: 80, science: 20 },
     prerequisites: [],
     unlocksBuildings: ["fungalFarm"],
@@ -64,6 +69,7 @@ export const technology_production: Technology[] = [
     description:
       "Enables space-efficient stacked growing systems with automated nutrient delivery.",
     category: "Production",
+    subCategory: "food",
     researchCost: { food: 1200, energy: 600, science: 150 },
     prerequisites: ["basic_agriculture"],
     unlocksBuildings: ["hydroponicTower"],
@@ -76,6 +82,7 @@ export const technology_production: Technology[] = [
     description:
       "Advanced microbial cultivation and synthetic nutrition technologies.",
     category: "Production",
+    subCategory: "food",
     researchCost: { food: 4500, energy: 2500, science: 300 },
     prerequisites: ["vertical_farming"],
     unlocksBuildings: ["proteinSynthesizer"],
@@ -88,6 +95,7 @@ export const technology_production: Technology[] = [
     description:
       "Quantum tunneling manipulation to extract metals from quantum vacuum.",
     category: "Production",
+    subCategory: "metals",
     researchCost: { energy: 1000, metals: 3200, science: 400 },
     prerequisites: ["plasma_refining"],
     unlocksBuildings: ["quantumFluxMetalForge"],
@@ -99,6 +107,7 @@ export const technology_production: Technology[] = [
     name: "MHD Fusion Confinement",
     description: "Plasma stabilization for the synthesis of metallic isotopes.",
     category: "Production",
+    subCategory: "metals",
     researchCost: { energy: 1100, metals: 3600, science: 600 },
     prerequisites: ["quantum_tunneling_synthesis"],
     unlocksBuildings: ["fusionEdgeMetallizer"],
@@ -110,6 +119,7 @@ export const technology_production: Technology[] = [
     name: "Nanoscale Dismantling",
     description: "Nanobot swarms to deconstruct matter at the atomic level.",
     category: "Production",
+    subCategory: "metals",
     researchCost: { energy: 1400, metals: 4000, science: 1000 },
     prerequisites: ["mhd_fusion_confinement"],
     unlocksBuildings: ["nanoDismantlerFoundry"],
@@ -122,12 +132,13 @@ export const technology_production: Technology[] = [
     description:
       "Fabricates efficient biospheres for food/oxygen/population growth.",
     category: "Production",
+    subCategory: "food",
     researchCost: {
       science: 90000,
       energy: 40000,
       oxygen: 30000,
     },
-    prerequisites: [],
+    prerequisites: ["biotech_engineering"],
     unlocksBuildings: ["genetic_ecosynth_laboratory"],
     researchDuration: 3600,
     isResearched: false,
@@ -139,6 +150,7 @@ export const technology_production: Technology[] = [
     description:
       "Neural lattice agriculture evolves into intelligent ecosystems.",
     category: "Production",
+    subCategory: "food",
     researchCost: {
       science: 120000,
       energy: 60000,
@@ -156,12 +168,13 @@ export const technology_production: Technology[] = [
     description:
       "Allows manipulation of artificial singularities for matter synthesis.",
     category: "Production",
+    subCategory: "metals",
     researchCost: {
       science: 150000,
       energy: 80000,
       oxygen: 50000,
     },
-    prerequisites: [],
+    prerequisites: ["nano_scale_dismantling"],
     unlocksBuildings: ["singularity_core"],
     researchDuration: 3600,
     isResearched: false,
@@ -173,13 +186,14 @@ export const technology_production: Technology[] = [
     description:
       "Quantum algae strains boost oxygen and self-replicate biomass.",
     category: "Production",
+    subCategory: "oxygen",
     researchCost: {
       oxygen: 10000,
       energy: 3000,
       food: 1500,
       science: 800,
     },
-    prerequisites: ["plasma_refining"],
+    prerequisites: ["electrolytic_processing"],
     unlocksBuildings: ["photo_reactor"],
     researchDuration: 2400,
     isResearched: false,
@@ -189,6 +203,7 @@ export const technology_production: Technology[] = [
     name: "Atmospheric Compression Algorithms",
     description: "Extracts oxygen from thin atmospheres with minimal energy.",
     category: "Production",
+    subCategory: "oxygen",
     researchCost: {
       oxygen: 14000,
       energy: 5000,
@@ -205,13 +220,14 @@ export const technology_production: Technology[] = [
     name: "Stratospheric Processing",
     description: "Orbital harvesting of gases from upper atmosphere layers.",
     category: "Production",
+    subCategory: "oxygen",
     researchCost: {
       oxygen: 16000,
       energy: 5500,
       food: 2600,
       science: 1600,
     },
-    prerequisites: ["algal_quantum_symbiosis"],
+    prerequisites: ["atmospheric_compression"],
     unlocksBuildings: ["strato_extractor"],
     researchDuration: 3300,
     isResearched: false,
@@ -223,6 +239,7 @@ export const technology_production: Technology[] = [
     description:
       "Enables mining of deep crust metal veins using reinforced systems.",
     category: "Production",
+    subCategory: "metals",
     researchCost: {
       science: 180000,
       energy: 90000,
