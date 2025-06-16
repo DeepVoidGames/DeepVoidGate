@@ -5,6 +5,7 @@ export const technology_infrastructure: Technology[] = [
     id: "industrial_automation",
     name: "Industrial Automation",
     category: "Infrastructure",
+    subCategory: "Storage",
     description:
       "Automated storage management systems for bulk material handling",
     researchCost: {
@@ -22,6 +23,7 @@ export const technology_infrastructure: Technology[] = [
   {
     id: "composite_alloys",
     name: "Composite Alloys",
+    subCategory: "Storage",
     category: "Infrastructure",
     description: "Advanced metal compression and stacking techniques",
     researchCost: {
@@ -29,7 +31,7 @@ export const technology_infrastructure: Technology[] = [
       energy: 3000,
       science: 1500,
     },
-    prerequisites: ["deep_core_mining"],
+    prerequisites: ["industrial_automation"],
     unlocksBuildings: ["metallicCompactionVault"],
     researchDuration: 600, // 10 min
     isResearched: false,
@@ -38,6 +40,7 @@ export const technology_infrastructure: Technology[] = [
     id: "quantum_storage",
     name: "Quantum Storage",
     category: "Infrastructure",
+    subCategory: "Storage",
     description: "Subatomic compression fields for mass storage solutions",
     researchCost: {
       metals: 18000,
@@ -46,7 +49,7 @@ export const technology_infrastructure: Technology[] = [
       food: 2500,
       science: 3000,
     },
-    prerequisites: ["quantum_computing"],
+    prerequisites: ["composite_alloys"],
     unlocksBuildings: ["cryoUniversalDepot", "quantumCapacitor"],
     researchDuration: 900, // 15 min
     isResearched: false,
@@ -55,6 +58,7 @@ export const technology_infrastructure: Technology[] = [
     id: "hydrostatic_architecture",
     name: "Hydrostatic Megastructure Theory",
     category: "Infrastructure",
+    subCategory: "Housing",
     description:
       "Stabilizing dynamic marine environments for permanent oceanic settlements.",
     researchCost: {
@@ -73,6 +77,7 @@ export const technology_infrastructure: Technology[] = [
     id: "myco_structural_engineering",
     name: "Myco-Structural Ecosystem Synthesis",
     category: "Infrastructure",
+    subCategory: "Housing",
     description:
       "Living mycelium networks integrated into organic adaptive habitats.",
     researchCost: {
@@ -91,6 +96,7 @@ export const technology_infrastructure: Technology[] = [
     id: "neural_ecosymbiosis",
     name: "Neural Eco-Symbiosis",
     category: "Infrastructure",
+    subCategory: "Housing",
     description:
       "Neural-responsive materials integrated into self-regulating biodomes.",
     researchCost: {
@@ -108,6 +114,7 @@ export const technology_infrastructure: Technology[] = [
     id: "aetheric_biosystems",
     name: "Aetheric Biosystems",
     category: "Infrastructure",
+    subCategory: "Housing",
     description:
       "Aether Spires blend AI, vertical ecosystems, and organic intelligence.",
     researchCost: {
@@ -125,6 +132,7 @@ export const technology_infrastructure: Technology[] = [
     id: "quantum_storage_field",
     name: "Quantum Storage Field",
     category: "Infrastructure",
+    subCategory: "Storage",
     description:
       "Stasis-entangled matter allows near-infinite spatial compression.",
     researchCost: {
@@ -132,7 +140,7 @@ export const technology_infrastructure: Technology[] = [
       energy: 55000,
       food: 25000,
     },
-    prerequisites: ["void_singularity"],
+    prerequisites: ["quantum_storage"],
     unlocksBuildings: ["quantum_matter_repository"],
     researchDuration: 3600, // 1h (max)
     isResearched: false,
