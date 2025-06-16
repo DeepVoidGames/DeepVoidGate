@@ -5,6 +5,7 @@ export const technology_expedition: Technology[] = [
     id: "primitive_bioreactor",
     name: "Primitive Bioreactor",
     category: "Production",
+    subCategory: "food",
     description:
       "Early organic processing using native flora and microbial cultures for sustainable food and oxygen generation.",
     researchCost: { food: 1200, energy: 600, science: 200 },
@@ -19,11 +20,16 @@ export const technology_expedition: Technology[] = [
     id: "alien_alloys",
     name: "Alien Alloys",
     category: "Production",
+    subCategory: "metals",
     description:
       "Reverse-engineered from extraterrestrial artifacts, these advanced materials offer unprecedented strength-to-weight ratios.",
     researchCost: { metals: 50000, science: 5000 },
     prerequisites: [],
-    unlocksBuildings: [],
+    unlocksBuildings: [
+      "xeno_carbon_agro_complex",
+      "exoforge_foundry",
+      "quantum_alloy_energy_core",
+    ],
     researchDuration: 900, // 15 min
     isResearched: false,
     locked: true,
@@ -33,6 +39,7 @@ export const technology_expedition: Technology[] = [
     id: "quantum_metabolism",
     name: "Quantum Metabolism",
     category: "Production",
+    subCategory: "food",
     description:
       "Quantum uncertainty accelerates nutrient cycles and oxygen production.",
     researchCost: { science: 12000, food: 8000 },
@@ -47,6 +54,7 @@ export const technology_expedition: Technology[] = [
     id: "harmonic_energy_matrices",
     name: "Harmonic Energy Matrices",
     category: "Energy",
+    subCategory: "ProductionEnergy",
     description:
       "Alien harmonic fields amplify energy generation through resonators.",
     researchCost: { science: 20000, energy: 12000 },
@@ -61,6 +69,7 @@ export const technology_expedition: Technology[] = [
     id: "symbiotic_processing_units",
     name: "Symbiotic Processing Units",
     category: "Infrastructure",
+    subCategory: "Housing",
     description:
       "Bio-mechanical constructs enable co-dependent, ultra-efficient systems.",
     researchCost: { science: 35000, metals: 16000, food: 12000 },
@@ -75,6 +84,7 @@ export const technology_expedition: Technology[] = [
     id: "spatial_fabric_manipulation",
     name: "Spatial Fabric Manipulation",
     category: "Production",
+    subCategory: "metals",
     description:
       "Non-Euclidean storage and compression for extreme density production.",
     researchCost: { metals: 120000, science: 80000, energy: 56000 },
@@ -89,6 +99,7 @@ export const technology_expedition: Technology[] = [
     id: "autonomic_storage_networks",
     name: "Autonomic Storage Networks",
     category: "Infrastructure",
+    subCategory: "Storage",
     description:
       "Neural-patterned architecture that self-regulates storage and flow.",
     researchCost: { metals: 140000, science: 90000, energy: 70000 },
@@ -107,6 +118,7 @@ export const technology_expedition: Technology[] = [
     id: "adaptive_matter_engineering",
     name: "Adaptive Matter Engineering",
     category: "Production",
+    subCategory: "metals",
     description:
       "Programmable quantum matter adapts to real-time production needs.",
     researchCost: { science: 200000, metals: 90000, energy: 100000 },
@@ -121,6 +133,7 @@ export const technology_expedition: Technology[] = [
     id: "temporal_acceleration",
     name: "Temporal Acceleration",
     category: "Production",
+    subCategory: "metals",
     description:
       "Stabilizing spacetime fields speeds up production without loss.",
     researchCost: { science: 400000, metals: 180000, energy: 200000 },
@@ -135,6 +148,7 @@ export const technology_expedition: Technology[] = [
     id: "matter_synthesis",
     name: "Matter Synthesis",
     category: "Production",
+    subCategory: "metals",
     description:
       "Zero-point manipulation enables creation of matter from energy.",
     researchCost: {
@@ -153,6 +167,7 @@ export const technology_expedition: Technology[] = [
     id: "celestial_neuro_architecture",
     name: "Celestial Neuro Architecture",
     category: "Infrastructure",
+    subCategory: "Housing",
     description:
       "Advanced architectural systems integrating cosmic radiation shielding, adaptive gravity, and neural comfort matrices enable unprecedented habitation densities.",
     researchCost: {

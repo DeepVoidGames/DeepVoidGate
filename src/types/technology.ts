@@ -12,7 +12,11 @@ export type SubTechnologyCategory =
   | "Storage"
   | "Housing"
   | "StorageEnergy"
-  | "ProductionEnergy";
+  | "ProductionEnergy"
+  | "oxygen"
+  | "water"
+  | "food"
+  | "metals";
 
 export interface Technology {
   id: string;

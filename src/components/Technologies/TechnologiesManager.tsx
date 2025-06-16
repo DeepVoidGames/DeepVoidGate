@@ -24,6 +24,9 @@ import { TutorialHighlight } from "@/components/Tutorial/TutorialHighlight";
 import { TutorialButton } from "@/components/Tutorial/TutorialButton";
 import { ResourcesIcon } from "@/config";
 import { AnimatePresence, motion } from "framer-motion";
+import { Resource } from "@/types/resource";
+import { initialTechnologies } from "@/store/initialData";
+import { stat } from "fs";
 
 const techCategories = [
   {
@@ -65,6 +68,42 @@ const subCategories = [
     categoriesId: "Infrastructure",
     name: "Housing",
     icon: <House className="h-4 w-4 text-white" />,
+  },
+  {
+    id: "StorageEnergy",
+    categoriesId: "Energy",
+    name: "Storage",
+    icon: <Package className="h-4 w-4 text-yellow-500" />,
+  },
+  {
+    id: "ProductionEnergy",
+    categoriesId: "Energy",
+    name: "Production",
+    icon: <FlaskConical className="h-4 w-4 text-yellow-500" />,
+  },
+  {
+    id: "oxygen",
+    categoriesId: "Production",
+    name: "Oxygen",
+    icon: <ResourcesIcon resource={"oxygen"} />,
+  },
+  {
+    id: "water",
+    categoriesId: "Production",
+    name: "Water",
+    icon: <ResourcesIcon resource={"water"} />,
+  },
+  {
+    id: "food",
+    categoriesId: "Production",
+    name: "Food",
+    icon: <ResourcesIcon resource={"food"} />,
+  },
+  {
+    id: "metals",
+    categoriesId: "Production",
+    name: "Metals",
+    icon: <ResourcesIcon resource={"metals"} />,
   },
 ];
 
@@ -125,7 +164,8 @@ const TechnologiesManager: React.FC = () => {
       if (
         prereqTech.subCategory &&
         (prereqTech.category === "Infrastructure" ||
-          prereqTech.category === "Production")
+          prereqTech.category === "Production" ||
+          prereqTech.category === "Energy")
       ) {
         setActiveSubTab(prereqTech.subCategory);
       }
@@ -200,6 +240,27 @@ const TechnologiesManager: React.FC = () => {
     };
   };
 
+  function getTechDepth(techId, technologies, visited = new Set()) {
+    if (visited.has(techId)) {
+      return 0;
+    }
+
+    visited.add(techId);
+
+    const tech = technologies.find((t) => t.id === techId);
+    if (!tech || !tech.prerequisites || tech.prerequisites.length === 0) {
+      return 0;
+    }
+
+    const maxPrereqDepth = Math.max(
+      ...tech.prerequisites.map((prereqId) =>
+        getTechDepth(prereqId, technologies, new Set(visited))
+      )
+    );
+
+    return maxPrereqDepth + 1;
+  }
+
   const filteredTechnologies = technologies
     .filter((tech) => {
       return tech.category === activeTab;
@@ -207,10 +268,16 @@ const TechnologiesManager: React.FC = () => {
     .filter((tech) => {
       if (
         tech?.subCategory &&
-        (activeTab === "Infrastructure" || activeTab === "Production")
+        (activeTab === "Infrastructure" ||
+          activeTab === "Production" ||
+          activeTab === "Energy")
       )
         return tech.subCategory === subActiveTab;
-      else if (activeTab !== "Infrastructure" && activeTab !== "Production")
+      else if (
+        activeTab !== "Infrastructure" &&
+        activeTab !== "Production" &&
+        activeTab !== "Energy"
+      )
         return true;
       else return false;
     })
@@ -222,18 +289,27 @@ const TechnologiesManager: React.FC = () => {
       );
     })
     .sort((a, b) => {
-      const aIsPrerequisite = technologies.some((tech) =>
-        tech.prerequisites.includes(a.id)
-      );
-      const bIsPrerequisite = technologies.some((tech) =>
-        tech.prerequisites.includes(b.id)
-      );
+      const depthA = getTechDepth(a.id, technologies);
+      const depthB = getTechDepth(b.id, technologies);
 
-      if (aIsPrerequisite && !bIsPrerequisite) return -1;
-      if (!aIsPrerequisite && bIsPrerequisite) return 1;
+      if (depthA !== depthB) {
+        return depthA - depthB;
+      }
 
       return a.researchCost.science - b.researchCost.science;
     });
+
+  const handleToogleTap = (category): void => {
+    setActiveTab(category.id);
+
+    if (category.id === "Infrastructure") {
+      setActiveSubTab("Storage");
+    } else if (category.id === "Energy") {
+      setActiveSubTab("StorageEnergy");
+    } else if (category.id === "Production") {
+      setActiveSubTab("oxygen");
+    }
+  };
 
   return (
     <div
@@ -247,6 +323,10 @@ const TechnologiesManager: React.FC = () => {
         <div className="flex items-center gap-2">
           <h2 className="text-lg font-medium text-foreground/90">
             Technology Tree
+            <div className=" text-xs text-gray-500">
+              {state.technologies.filter((t) => t.isResearched == true).length}/
+              {initialTechnologies.length}
+            </div>
           </h2>
           <TutorialButton
             tutorialId="technologies-basics"
@@ -302,7 +382,7 @@ const TechnologiesManager: React.FC = () => {
           {techCategories.map((category) => (
             <button
               key={category.id}
-              onClick={() => setActiveTab(category.id)}
+              onClick={() => handleToogleTap(category)}
               className={`flex items-center min-w-0 justify-center gap-1 sm:gap-2 px-2 sm:px-4 py-2 rounded-lg transition-colors flex-1 basis-[calc(50%-4px)] sm:basis-auto sm:w-full md:w-fit ${
                 activeTab === category.id
                   ? "bg-primary/60 text-primary-foreground"
@@ -320,12 +400,16 @@ const TechnologiesManager: React.FC = () => {
         </div>
         <div
           className={
-            activeTab === "Infrastructure" || activeTab === "Production"
+            activeTab === "Infrastructure" ||
+            activeTab === "Production" ||
+            activeTab === "Energy"
               ? "glass-panel p-2 flex flex-wrap gap-2 mb-6 w-full"
               : null
           }
         >
-          {activeTab === "Infrastructure" || activeTab === "Production"
+          {activeTab === "Infrastructure" ||
+          activeTab === "Production" ||
+          activeTab === "Energy"
             ? subCategories.map((sub) => {
                 if (sub.categoriesId === activeTab)
                   return (
