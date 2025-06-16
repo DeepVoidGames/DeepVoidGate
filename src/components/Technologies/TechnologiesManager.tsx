@@ -467,6 +467,11 @@ const TechnologiesManager: React.FC = () => {
                             ? "hover:border-primary hover:shadow-lg"
                             : ""
                         }`
+                  } 
+                  ${
+                    tech?.expedtionMinTier
+                      ? "bg-gradient-to-r from-purple-600/20 to-pink-600/20 rounded-full border border-purple-500/30"
+                      : null
                   }`}
                 >
                   {tech?.locked ? (
@@ -567,10 +572,17 @@ const TechnologiesManager: React.FC = () => {
                             : canResearch
                             ? "bg-primary hover:bg-primary/90"
                             : "bg-muted cursor-not-allowed"
+                        } 
+                        ${
+                          tech?.expedtionMinTier
+                            ? "bg-gradient-to-r from-purple-600/20 to-pink-600/20"
+                            : null
                         }`}
                       >
                         {isResearched ? (
-                          <div className="flex items-center justify-center gap-2">
+                          <div
+                            className={`flex items-center justify-center gap-2`}
+                          >
                             <CheckCircle className="h-4 w-4" />
                             Researched
                           </div>
