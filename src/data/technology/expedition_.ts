@@ -9,7 +9,7 @@ export const technology_expedition: Technology[] = [
     description:
       "Early organic processing using native flora and microbial cultures for sustainable food and oxygen generation.",
     researchCost: { food: 1200, energy: 600, science: 200 },
-    prerequisites: [],
+    prerequisites: ["basic_agriculture"],
     unlocksBuildings: ["myco_grow_chamber"],
     researchDuration: 300, // 5 min
     isResearched: false,
@@ -24,7 +24,7 @@ export const technology_expedition: Technology[] = [
     description:
       "Reverse-engineered from extraterrestrial artifacts, these advanced materials offer unprecedented strength-to-weight ratios.",
     researchCost: { metals: 50000, science: 5000 },
-    prerequisites: [],
+    prerequisites: ["nano_scale_dismantling"],
     unlocksBuildings: [
       "xeno_carbon_agro_complex",
       "exoforge_foundry",
@@ -43,7 +43,7 @@ export const technology_expedition: Technology[] = [
     description:
       "Quantum uncertainty accelerates nutrient cycles and oxygen production.",
     researchCost: { science: 12000, food: 8000 },
-    prerequisites: [],
+    prerequisites: ["biotech_engineering"],
     unlocksBuildings: ["qmet_biofarm", "qmet_oxyplant"],
     researchDuration: 1200, // 20 min
     isResearched: false,
@@ -58,7 +58,7 @@ export const technology_expedition: Technology[] = [
     description:
       "Alien harmonic fields amplify energy generation through resonators.",
     researchCost: { science: 20000, energy: 12000 },
-    prerequisites: [],
+    prerequisites: ["fusion_energy"],
     unlocksBuildings: ["harmonic_core_generator", "resonant_fabricator"],
     researchDuration: 1500, // 25 min
     isResearched: false,
@@ -73,7 +73,7 @@ export const technology_expedition: Technology[] = [
     description:
       "Bio-mechanical constructs enable co-dependent, ultra-efficient systems.",
     researchCost: { science: 35000, metals: 16000, food: 12000 },
-    prerequisites: [],
+    prerequisites: ["neural_ecosymbiosis"],
     unlocksBuildings: ["symbio_colony_hub", "symbio_resource_loop"],
     researchDuration: 1800, // 30 min
     isResearched: false,
@@ -88,7 +88,7 @@ export const technology_expedition: Technology[] = [
     description:
       "Non-Euclidean storage and compression for extreme density production.",
     researchCost: { metals: 120000, science: 80000, energy: 56000 },
-    prerequisites: [],
+    prerequisites: ["singularity_engineering"],
     unlocksBuildings: ["dimensional_refinery", "void_storage_core"],
     researchDuration: 2400, // 40 min
     isResearched: false,
@@ -103,7 +103,7 @@ export const technology_expedition: Technology[] = [
     description:
       "Neural-patterned architecture that self-regulates storage and flow.",
     researchCost: { metals: 140000, science: 90000, energy: 70000 },
-    prerequisites: [],
+    prerequisites: ["quantum_storage_field"],
     unlocksBuildings: [
       "smart_resource_matrix",
       "nutrient_reserve_cluster",
@@ -122,7 +122,7 @@ export const technology_expedition: Technology[] = [
     description:
       "Programmable quantum matter adapts to real-time production needs.",
     researchCost: { science: 200000, metals: 90000, energy: 100000 },
-    prerequisites: [],
+    prerequisites: ["core_drilling_tech"],
     unlocksBuildings: ["morpho_core", "nutri_flux_hub"],
     researchDuration: 3000, // 50 min
     isResearched: false,
@@ -137,7 +137,7 @@ export const technology_expedition: Technology[] = [
     description:
       "Stabilizing spacetime fields speeds up production without loss.",
     researchCost: { science: 400000, metals: 180000, energy: 200000 },
-    prerequisites: [],
+    prerequisites: ["core_drilling_tech"],
     unlocksBuildings: ["chrono_forge", "biosurge_chamber"],
     researchDuration: 3600, // 1h
     isResearched: false,
@@ -156,7 +156,7 @@ export const technology_expedition: Technology[] = [
       energy: 600000,
       metals: 400000,
     },
-    prerequisites: ["temporal_acceleration"],
+    prerequisites: ["core_drilling_tech"],
     unlocksBuildings: ["quantum_forge_array", "bio_reconstruction_vat"],
     researchDuration: 7200, // 2h
     isResearched: false,

@@ -469,7 +469,7 @@ const TechnologiesManager: React.FC = () => {
                         }`
                   } 
                   ${
-                    tech?.expedtionMinTier
+                    tech?.expedtionMinTier !== undefined
                       ? "bg-gradient-to-r from-purple-600/20 to-pink-600/20 rounded-full border border-purple-500/30"
                       : null
                   }`}
@@ -574,7 +574,7 @@ const TechnologiesManager: React.FC = () => {
                             : "bg-muted cursor-not-allowed"
                         } 
                         ${
-                          tech?.expedtionMinTier
+                          tech?.expedtionMinTier !== undefined
                             ? "bg-gradient-to-r from-purple-600/20 to-pink-600/20"
                             : null
                         }`}
