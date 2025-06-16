@@ -8,7 +8,11 @@ export type TechnologyCategory =
   | "Research"
   | "Advanced";
 
-export type SubTechnologyCategory = "Storage" | "Housing";
+export type SubTechnologyCategory =
+  | "Storage"
+  | "Housing"
+  | "StorageEnergy"
+  | "ProductionEnergy";
 
 export interface Technology {
   id: string;
