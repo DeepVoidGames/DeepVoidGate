@@ -5,6 +5,7 @@ import { Technology } from "@/types/technology";
 import { GameState } from "@/types/gameState";
 import { BuildingType } from "@/types/building";
 import { gameEvent } from "@/server/analytics";
+import { stat } from "fs";
 
 /**
  * Checks if all the prerequisites for a given technology have been met.
@@ -114,10 +115,14 @@ export const researchTechnology = (
   const loyaltyReq =
     StarUnderstandingFaction?.bonuses?.[1]?.loyaltyReq ?? 1000000000;
 
-  const researchDuration =
+  let researchDuration =
     StarUnderstandingFaction?.loyalty ?? 0 >= loyaltyReq
       ? tech.researchDuration * 0.5
       : tech.researchDuration;
+
+  if (state?.galacticUpgrades?.includes("quantum_time_refraction")) {
+    researchDuration /= 2;
+  }
 
   const newTechs = technologies.map((t) =>
     t.id === techId
