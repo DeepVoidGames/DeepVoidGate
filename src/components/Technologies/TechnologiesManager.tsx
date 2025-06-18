@@ -324,6 +324,7 @@ const TechnologiesManager: React.FC = () => {
           <h2 className="text-lg font-medium text-foreground/90">
             Technology Tree
             <div className=" text-xs text-gray-500">
+              Availables:{" "}
               {state.technologies.filter((t) => t.isResearched == true).length}/
               {initialTechnologies.length}
             </div>

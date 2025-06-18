@@ -41,6 +41,16 @@ export const galacticUpgrades = [
     multiplier: 2.5,
   },
   {
+    id: "quantum_time_refraction",
+    name: "Quantum time refraction",
+    icon: <Atom className="h-6 w-6 text-blue-200" />,
+    description:
+      "Quantum time refraction distorts time in the eye which causes time dilation relative to the observer.",
+    effect: "Reduce resarch time by half",
+    cost: 5,
+    multiplier: 2,
+  },
+  {
     id: "black_hole_unknow",
     name: "Black Hole",
     icon: <Stars className="h-6 w-6 text-yellow-400" />,
