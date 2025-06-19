@@ -24,9 +24,9 @@ const FactionEventModal = () => {
         aria-describedby={undefined}
       >
         <DialogTitle></DialogTitle>
-        <div className="space-y-2">
+        <div className="space-y-1 min-[800px]:space-y-2">
           <div className="flex items-center justify-between">
-            <h2 className="text-2xl font-bold">{event.title}</h2>
+            <h2 className="min-[800px]:text-2xl font-bold">{event.title}</h2>
             <div className="flex space-x-2">
               {extractFactions(event).map((faction: string) => (
                 <div key={faction} className="relative group">
@@ -42,23 +42,25 @@ const FactionEventModal = () => {
               ))}
             </div>
           </div>
-          <p className="text-gray-400 text-sm">{event.description}</p>
+          <span className="text-gray-400 text-xs min-[800px]:text-sm">
+            {event.description}
+          </span>
         </div>
 
-        <div className="space-y-4 mt-4">
+        <div className="space-y-1 min-[800px]:space-y-4 min-[800px]:mt-4 min-[1280px]:max-h-[600px] max-h-[400px] overflow-y-auto">
           {event.options.map((option, idx) => (
             <div
               key={idx}
-              className="p-4 bg-muted/10 rounded-lg hover:bg-muted/20 transition-all border border-muted/30"
+              className="p-2 min-[800px]:p-4 bg-muted/10 rounded-lg hover:bg-muted/20 transition-all border border-muted/30"
             >
-              <p className="text-sm text-gray-200 mb-3 font-medium">
+              <p className="text-sm text-gray-200 mb-1 min-[800px]:mb-3 font-medium">
                 {option.label}
               </p>
-              <div className="space-y-2">
+              <div className="space-y-1 min-[800px]:space-y-2">
                 {option.effects.map((effect, i) => (
                   <div
                     key={i}
-                    className="text-xs text-gray-400 flex items-center gap-2"
+                    className="text-xs text-gray-400 flex items-center gap-1 min-[800px]:gap-2"
                   >
                     {getEffectIcon(effect)}
                     {renderEffect(effect)}
@@ -66,9 +68,8 @@ const FactionEventModal = () => {
                 ))}
               </div>
               <Button
-                className="mt-4 w-full"
+                className="mt-4 w-full bg-background/50 hover:bg-primary/40"
                 size="sm"
-                variant="outline"
                 onClick={() => handleOptionClick(option)}
               >
                 Choose
