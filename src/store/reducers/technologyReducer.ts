@@ -112,17 +112,7 @@ export const researchTechnology = (
     (faction) => faction.id === "StarUnderstanding"
   );
 
-  const loyaltyReq =
-    StarUnderstandingFaction?.bonuses?.[1]?.loyaltyReq ?? 1000000000;
-
-  let researchDuration =
-    StarUnderstandingFaction?.loyalty ?? 0 >= loyaltyReq
-      ? tech.researchDuration * 0.5
-      : tech.researchDuration;
-
-  if (state?.galacticUpgrades?.includes("quantum_time_refraction")) {
-    researchDuration /= 2;
-  }
+  const researchDuration = getTechnologyResearchTime(tech, state);
 
   const newTechs = technologies.map((t) =>
     t.id === techId
@@ -220,4 +210,27 @@ export const isTechnologyUnlocked = (
   return state.technologies.some(
     (tech) => tech.id === technologieId && tech.isResearched
   );
+};
+
+export const getTechnologyResearchTime = (
+  tech: Technology,
+  state: GameState
+) => {
+  const StarUnderstandingFaction = state?.factions?.find(
+    (faction) => faction.id === "StarUnderstanding"
+  );
+
+  const loyaltyReq =
+    StarUnderstandingFaction?.bonuses?.[1]?.loyaltyReq ?? 1000000000;
+
+  let researchDuration =
+    StarUnderstandingFaction?.loyalty ?? 0 >= loyaltyReq
+      ? tech.researchDuration * 0.5
+      : tech.researchDuration;
+
+  if (state?.galacticUpgrades?.includes("quantum_time_refraction")) {
+    researchDuration /= 2;
+  }
+
+  return researchDuration;
 };

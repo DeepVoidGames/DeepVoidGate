@@ -15,7 +15,7 @@ import {
   House,
 } from "lucide-react";
 import { useGame } from "@/context/GameContext";
-import { formatNumber } from "@/lib/utils";
+import { formatNumber, formatTime } from "@/lib/utils";
 import { Progress } from "@/components/ui/progress";
 import { Technology } from "@/types/technology";
 import { getDominantFactionTheme } from "@/store/reducers/factionsReducer";
@@ -27,6 +27,7 @@ import { AnimatePresence, motion } from "framer-motion";
 import { Resource } from "@/types/resource";
 import { initialTechnologies } from "@/store/initialData";
 import { stat } from "fs";
+import { getTechnologyResearchTime } from "@/store/reducers/technologyReducer";
 
 const techCategories = [
   {
@@ -533,6 +534,14 @@ const TechnologiesManager: React.FC = () => {
                       tech?.locked ? "hidden" : ""
                     }`}
                   >
+                    {!tech.isResearched ? (
+                      <div className="text-xs text-[10px] text-muted-foreground mb-3 flex items-center gap-1">
+                        <Clock className="inline mr-1 h-3 w-3" />
+                        <span>Research Time: </span>
+                        {formatTime(getTechnologyResearchTime(tech, state))}
+                      </div>
+                    ) : null}
+
                     {tech.prerequisites.length > 0 && (
                       <div className="text-xs text-[10px] text-muted-foreground mb-3">
                         <Lock className="inline mr-1 h-3 w-3" />
