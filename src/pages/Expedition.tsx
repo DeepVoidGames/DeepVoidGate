@@ -128,43 +128,6 @@ const Expedition = () => {
 
   return (
     <>
-      <AnimatePresence>
-        {isVoidDiving && (
-          <>
-            {/* Overlay z efektem wciągania */}
-            <motion.div
-              key="void-hole"
-              className="fixed inset-0 z-40 pointer-events-none"
-              initial="phase1"
-              animate={`phase${animationPhase}`}
-              variants={voidHoleVariants}
-              transition={{ type: "spring", damping: 20 }}
-            >
-              <div className="absolute inset-0 rounded-full bg-black m-auto w-64 h-64" />
-            </motion.div>
-
-            {/* Zniekształcenie zawartości */}
-            <motion.div
-              key="content-distortion"
-              className="fixed inset-0 z-30 pointer-events-none"
-              initial="phase0"
-              animate={`phase${animationPhase}`}
-              variants={contentDistortion}
-            />
-
-            {/* Nowy interfejs Void */}
-            {animationPhase >= 4 && (
-              <VoidDimensionInterface
-                onReturn={() => {
-                  setIsVoidDiving(false);
-                  setAnimationPhase(0);
-                }}
-              />
-            )}
-          </>
-        )}
-      </AnimatePresence>
-
       <div className="max-w-6xl mx-auto p-4 space-y-8 mb-24 mt-32">
         {!isVoidDiving && <MobileTopNav />}
         {/* Header Section */}

@@ -50,11 +50,16 @@ function NewExpeditionPanel({
                       ? () => handleVoidDiveAnimation()
                       : () => setSelectedType(type)
                   }
-                  className={`w-full p-4 rounded-xl border-2 transition-all flex items-start gap-4 relative overflow-hidden ${
+                  className={`w-full p-4 rounded-xl border-2 transition-all flex items-start gap-4 relative overflow-hidden point ${
                     selectedType === type
                       ? "border-primary bg-primary/10"
                       : "border-muted hover:border-primary/30"
-                  } ${isSpecial ? "animate-pulse hover:animate-none" : ""}`}
+                  } ${
+                    isSpecial
+                      ? "xanimate-pulse hover:animate-none cursor-not-allowed"
+                      : ""
+                  }`}
+                  disabled={isSpecial}
                 >
                   {/* Special void effect overlay */}
                   {isSpecial && (
