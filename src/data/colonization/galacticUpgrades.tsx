@@ -51,6 +51,16 @@ export const galacticUpgrades = [
     multiplier: 2,
   },
   {
+    id: "quantum_cloning",
+    name: "Quantum cloning",
+    icon: <Atom className="h-6 w-6 text-blue-500" />,
+    description:
+      "Quantum cloning provides an increase in human power by cloning an object and giving it a new identity independent of the object from which it was cloned. Along with early DNA modification, it provides two independent entities. But is it ethical? Who is God?",
+    effect: "Gives 2 colonists per cycle",
+    cost: 5,
+    multiplier: 2,
+  },
+  {
     id: "black_hole_unknow",
     name: "Black Hole",
     icon: <Stars className="h-6 w-6 text-yellow-400" />,

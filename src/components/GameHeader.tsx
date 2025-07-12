@@ -38,9 +38,9 @@ export const GameHeader: React.FC = () => {
             </span>{" "}
           </span>
 
-          {2 * 60 - colonistProgress != 120 ? (
+          {60 - colonistProgress != 60 ? (
             <span className="text-muted-foreground">
-              New Colonists in: {(2 * 60 - colonistProgress).toFixed(0)}s
+              New Colonists in: {(60 - colonistProgress).toFixed(0)}s
             </span>
           ) : null}
         </div>

@@ -5,7 +5,6 @@ import { Technology } from "@/types/technology";
 import { GameState } from "@/types/gameState";
 import { BuildingType } from "@/types/building";
 import { gameEvent } from "@/server/analytics";
-import { stat } from "fs";
 
 /**
  * Checks if all the prerequisites for a given technology have been met.
@@ -216,6 +215,14 @@ export const getTechnologyResearchTime = (
   tech: Technology,
   state: GameState
 ) => {
+  if (!tech.researchDuration) {
+    return 0; // No research duration defined
+  }
+
+  if (tech.isResearched) {
+    return 0; // Already researched, no duration
+  }
+
   const StarUnderstandingFaction = state?.factions?.find(
     (faction) => faction.id === "StarUnderstanding"
   );

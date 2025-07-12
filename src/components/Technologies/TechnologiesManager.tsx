@@ -24,9 +24,7 @@ import { TutorialHighlight } from "@/components/Tutorial/TutorialHighlight";
 import { TutorialButton } from "@/components/Tutorial/TutorialButton";
 import { ResourcesIcon } from "@/config";
 import { AnimatePresence, motion } from "framer-motion";
-import { Resource } from "@/types/resource";
 import { initialTechnologies } from "@/store/initialData";
-import { stat } from "fs";
 import { getTechnologyResearchTime } from "@/store/reducers/technologyReducer";
 
 const techCategories = [
@@ -110,6 +108,7 @@ const subCategories = [
 
 const TechnologiesManager: React.FC = () => {
   const { state, dispatch } = useGame();
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const { isInTutorial, currentTutorial } = useTutorialIntegration();
   const { resources, technologies } = state;
   const [activeTab, setActiveTab] = useState<string>("Infrastructure");
@@ -534,15 +533,17 @@ const TechnologiesManager: React.FC = () => {
                       tech?.locked ? "hidden" : ""
                     }`}
                   >
-                    {!tech.isResearched ? (
-                      <div className="text-xs text-[10px] text-muted-foreground mb-3 flex items-center gap-1">
-                        <Clock className="inline mr-1 h-3 w-3" />
-                        <span>Research Time: </span>
-                        {formatTime(getTechnologyResearchTime(tech, state))}
-                      </div>
+                    {!isInProgress ? (
+                      !tech?.isResearched ? (
+                        <div className="text-xs text-[10px] text-muted-foreground mb-3 flex items-center gap-1">
+                          <Clock className="inline mr-1 h-3 w-3" />
+                          <span>Research Time: </span>
+                          {formatTime(getTechnologyResearchTime(tech, state))}
+                        </div>
+                      ) : null
                     ) : null}
 
-                    {tech.prerequisites.length > 0 && (
+                    {tech.prerequisites.length > 0 && !tech?.isResearched && (
                       <div className="text-xs text-[10px] text-muted-foreground mb-3">
                         <Lock className="inline mr-1 h-3 w-3" />
                         <span>Requires: </span>

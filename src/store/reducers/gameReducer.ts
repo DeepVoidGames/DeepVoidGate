@@ -515,7 +515,8 @@ const calculateHousingAndColonists = (state, deltaTime) => {
   const colonistUpdates = processColonistArrival(
     newPopulation,
     deltaTime,
-    state.colonistProgress
+    state.colonistProgress,
+    state
   );
   return {
     population: colonistUpdates.newPopulation,
@@ -598,19 +599,31 @@ const updatePopulationCapacity = (population, capacity) => ({
  * @param currentProgress - The current progress (in seconds) accumulated towards the next colonist arrival.
  * @returns An object containing `newPopulation` (updated if a colonist arrives) and `progress` (the updated progress towards the next colonist).
  */
-const processColonistArrival = (population, deltaTime, currentProgress) => {
+const processColonistArrival = (
+  population,
+  deltaTime,
+  currentProgress,
+  state: GameState
+) => {
   let progress = currentProgress || 0;
   const canAddColonist = population.total < population.maxCapacity;
 
   if (canAddColonist) progress += deltaTime;
   else progress = 0;
 
-  if (progress >= 75 && canAddColonist) {
+  const colonistPeriod = 60;
+  let colonistPerCycle = 1;
+
+  if (state?.galacticUpgrades?.includes("quantum_cloning")) {
+    colonistPerCycle = 2;
+  }
+
+  if (progress >= colonistPeriod && canAddColonist) {
     return {
       newPopulation: {
         ...population,
-        total: population.total + 1,
-        available: population.available + 1,
+        total: population.total + colonistPerCycle,
+        available: population.available + colonistPerCycle,
       },
       progress: 0,
     };
