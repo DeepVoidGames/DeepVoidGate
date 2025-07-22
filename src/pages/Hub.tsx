@@ -34,12 +34,11 @@ const Hub = () => {
     },
     {
       id: "315246",
-      name: "3-1-5-2-4-6",
-      description: "1⋆2≋1⋆4≋6⋆3≋5⋆2⊛≋2⋆2≋5⋆1≋6⋆1≋6⋆6",
-      image: `${IMAGE_PATH}315246.png`,
-      to: "#",
+      name: "Logs",
+      image: `${IMAGE_PATH}logs.png`,
+      to: "/logs",
       requiredTechnologies: [],
-      requiredGalacticUpgrades: ["LOCKED"],
+      requiredGalacticUpgrades: [],
     },
     {
       id: "642513",
