@@ -24,6 +24,7 @@ import Colonization from "@/pages/Colonization";
 import BlackHole from "@/pages/BlackHole";
 import Analytics from "@/components/Analytics";
 import { TutorialProvider } from "@/components/Tutorial/TutorialManager";
+import LogsPanel from "@/pages/LogsPanel";
 
 const queryClient = new QueryClient();
 
@@ -51,6 +52,7 @@ const App = () => (
                   <Route path="/factions" element={<FactionsDisplay />} />
                   <Route path="/colonization" element={<Colonization />} />
                   <Route path="/blackHole" element={<BlackHole />} />
+                  <Route path="/logs" element={<LogsPanel />} />
                   <Route path="/settings" element={<Settings />} />
                   {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
                   <Route path="*" element={<NotFound />} />

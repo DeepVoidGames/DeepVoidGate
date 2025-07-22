@@ -129,7 +129,7 @@ function NewExpeditionPanel({
           </CardHeader>
           <CardContent className="p-0">
             <div className="grid grid-cols-6 gap-2">
-              {[...Array(12)].map((_, tier) => {
+              {[...Array(13)].map((_, tier) => {
                 return (
                   <button
                     key={tier}
