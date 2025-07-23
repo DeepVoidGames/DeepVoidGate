@@ -78,7 +78,7 @@ const LogsPanel: React.FC = () => {
                 <div key={category} className="space-y-1">
                   <button
                     onClick={() => toggleCategory(category)}
-                    className="w-full text-left font-semibold py-1 px-2 rounded-md bg-muted/20 hover:bg-muted/30 transition items-center flex gap-2"
+                    className="w-full text-left font-semibold py-1 px-2 rounded-md bg-muted/70 hover:bg-muted/80 transition items-center flex gap-2"
                   >
                     {expandedCategories.includes(category) ? (
                       <ArrowDown className="w-4" />
