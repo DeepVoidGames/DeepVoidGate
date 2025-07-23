@@ -47,25 +47,26 @@ const LogsPanel: React.FC = () => {
   };
 
   return (
-    <div className="glass-panel p-4 animate-fade-in space-y-4 max-w-7xl m-8 mt-24">
-      <div className="flex flex-col md:flex-row gap-4">
-        {/* LEFT PANEL: Log list */}
-        <div className="md:w-1/3 space-y-4">
+    <div className="glass-panel p-4 animate-fade-in space-y-4 max-w-7xl mx-2 mt-16 mb-24">
+      <div className="flex flex-col md:flex-row gap-6 h-[calc(100vh-8rem)]">
+        <div className="md:w-1/3 space-y-4 max-h-[50vh] md:max-h-full overflow-y-auto">
           <div className="flex items-center gap-2">
             <BookOpen className="h-5 w-5" />
             <h2 className="text-lg font-semibold">Logs</h2>
           </div>
+
           <div className="relative">
             <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
             <input
               type="text"
               placeholder="Search logs..."
-              className="w-full pl-10 pr-4 py-2 bg-background/80 rounded-lg border focus:outline-none focus:ring-2 focus:ring-primary"
+              className="w-full pl-10 pr-4 py-2 bg-background/80 rounded-lg border focus:outline-none focus:ring-2 focus:ring-primary text-sm"
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
             />
           </div>
-          <div className="max-h-[400px] overflow-y-auto space-y-2">
+
+          <div className="space-y-2">
             {categories.map((category) => {
               const filteredLogs = groupedLogs[category].filter((log) =>
                 log.id.toLowerCase().includes(searchQuery.toLowerCase())
@@ -93,7 +94,7 @@ const LogsPanel: React.FC = () => {
                         <button
                           key={log.id}
                           onClick={() => setSelectedLogId(log.id)}
-                          className={`w-full text-left p-2 rounded-md transition-colors border ${
+                          className={`w-full text-left p-2 rounded-md transition-colors border text-sm ${
                             selectedLogId === log.id
                               ? "bg-primary/60 text-white"
                               : "bg-background/40 hover:bg-primary/30"
@@ -111,6 +112,7 @@ const LogsPanel: React.FC = () => {
                 </div>
               );
             })}
+
             {categories.every((cat) =>
               groupedLogs[cat].every(
                 (log) =>
@@ -122,7 +124,7 @@ const LogsPanel: React.FC = () => {
           </div>
         </div>
 
-        <div className="md:w-2/3 bg-background/60 rounded-lg p-6 border overflow-y-auto max-h-[600px]">
+        <div className="md:w-2/3 bg-background/60 rounded-lg p-4 border overflow-y-auto max-h-[50vh] md:max-h-full">
           {selectedLog ? (
             <div className="space-y-4">
               <h3 className="text-xl font-bold">{selectedLog.id}</h3>
