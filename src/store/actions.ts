@@ -23,7 +23,6 @@ export type GameAction =
       type: "HANDLE_EXPEDITION_EVENT";
       payload: {
         expeditionId: string;
-        eventIndex: number;
         optionIndex: number;
       };
     }

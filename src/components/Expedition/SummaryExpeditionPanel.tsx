@@ -2,7 +2,6 @@ import React from "react";
 import { Card } from "../ui/card";
 import { AlertTriangle, Book, Clock, Info, Package, Users } from "lucide-react";
 import {
-  calculateExpeditionDuration,
   calculateRequiredCrew,
   getBaseExpeditionReward,
   getPossibleTechnologies,
@@ -18,7 +17,6 @@ import { getDominantFactionTheme } from "@/store/reducers/factionsReducer";
 import { TutorialHighlight } from "@/components/Tutorial/TutorialHighlight";
 
 type SummaryExpeditionPanelProps = {
-  formatDuration: (minutes: number) => string;
   formatNumber: (num: number) => string;
   state: GameState;
   selectedTier: number;
@@ -28,7 +26,6 @@ type SummaryExpeditionPanelProps = {
 };
 
 function SummaryExpeditionPanel({
-  formatDuration,
   formatNumber,
   state,
   selectedTier,
@@ -49,15 +46,7 @@ function SummaryExpeditionPanel({
             Expedition Summary
           </h3>
           <div className="flex flex-col min-[849px]:flex-row items-start sm:items-center gap-3 sm:gap-4 text-sm">
-            <div className="flex items-center gap-2">
-              <Clock className="w-4 h-4" />
-              <span className="whitespace-nowrap">
-                Duration:{" "}
-                {formatDuration(
-                  calculateExpeditionDuration(selectedTier, state)
-                )}
-              </span>
-            </div>
+
 
             <TutorialHighlight
               stepId="crew-requirements"

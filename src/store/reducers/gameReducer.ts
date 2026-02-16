@@ -33,8 +33,6 @@ import { initialMilestones } from "@/data/milestonesData";
 import { checkMilestones } from "@/store/reducers/milestonesReducer";
 import {
   startExpedition,
-  launchExpedition,
-  handleExpeditionTick,
   handleExpeditionEventChoice,
   cancelExpedition,
 } from "@/store/reducers/expeditionReducer";
@@ -278,11 +276,10 @@ export const gameReducer = (
     }
 
     case "HANDLE_EXPEDITION_EVENT": {
-      const { expeditionId, eventIndex, optionIndex } = action.payload;
+      const { expeditionId, optionIndex } = action.payload;
       return handleExpeditionEventChoice(
         state,
         expeditionId,
-        eventIndex,
         optionIndex
       );
     }
@@ -534,8 +531,7 @@ const calculateHousingAndColonists = (state, deltaTime) => {
  */
 const handleMilestonesAndExpeditions = (state, deltaTime) => {
   const withMilestones = checkMilestones(state);
-  const afterExpeditions = handleExpeditionTick(withMilestones, deltaTime);
-  return applyArtifactEffect(afterExpeditions);
+  return applyArtifactEffect(withMilestones);
 };
 
 /**

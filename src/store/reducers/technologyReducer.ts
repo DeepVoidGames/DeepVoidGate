@@ -6,6 +6,8 @@ import { GameState } from "@/types/gameState";
 import { BuildingType } from "@/types/building";
 import { gameEvent } from "@/server/analytics";
 
+export const GLOBAL_RESEARCH_TIME_MULTIPLIER = 0.5;
+
 /**
  * Checks if all the prerequisites for a given technology have been met.
  *
@@ -231,9 +233,9 @@ export const getTechnologyResearchTime = (
     StarUnderstandingFaction?.bonuses?.[1]?.loyaltyReq ?? 1000000000;
 
   let researchDuration =
-    StarUnderstandingFaction?.loyalty ?? 0 >= loyaltyReq
+    (StarUnderstandingFaction?.loyalty ?? 0 >= loyaltyReq
       ? tech.researchDuration * 0.5
-      : tech.researchDuration;
+      : tech.researchDuration) * GLOBAL_RESEARCH_TIME_MULTIPLIER;
 
   if (state?.galacticUpgrades?.includes("quantum_time_refraction")) {
     researchDuration /= 2;

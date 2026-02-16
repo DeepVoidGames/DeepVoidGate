@@ -2,6 +2,34 @@
 import { ExpeditionEvent } from "@/types/expedition";
 
 export const expeditionEvents: ExpeditionEvent[] = [
+  // New start events
+  {
+    id: "start_scientific_expedition",
+    title: "Initiate Scientific Expedition",
+    description: "Your crew embarks on a journey to uncover scientific marvels.",
+    type: ["scientific"],
+    options: [
+      {
+        text: "Begin exploration",
+        effects: [],
+        nextEventId: "alien_tech_discovery", // Chains to an existing scientific event
+      },
+    ],
+  },
+  {
+    id: "start_mining_expedition",
+    title: "Initiate Mining Expedition",
+    description: "A team sets out to gather precious resources.",
+    type: ["mining"],
+    options: [
+      {
+        text: "Commence mining operation",
+        effects: [],
+        nextEventId: "resource_bonanza", // Chains to an existing mining event
+      },
+    ],
+  },
+
   // Wspólne zdarzenia dla wszystkich typów ekspedycji
   {
     id: "crew_injury",
@@ -13,10 +41,12 @@ export const expeditionEvents: ExpeditionEvent[] = [
       {
         text: "Continue without helping (lose 1 crew member)",
         effects: [{ type: "crew", value: -1 }],
+        nextEventId: null,
       },
       {
-        text: "Stop to provide medical care (add 5 minutes to expedition)",
-        effects: [{ type: "time", value: 5 }],
+        text: "Stop to provide medical care (crew recover)",
+        effects: [],
+        nextEventId: null,
       },
     ],
   },
@@ -32,8 +62,9 @@ export const expeditionEvents: ExpeditionEvent[] = [
     image: "cave_in.png",
     options: [
       {
-        text: "Attempt rescue (lose 5 minutes but save crew)",
-        effects: [{ type: "time", value: 5 }],
+        text: "Attempt rescue (crew saved)",
+        effects: [],
+        nextEventId: null,
       },
       {
         text: "Focus on mining (lose 2 crew members but continue)",
@@ -46,6 +77,7 @@ export const expeditionEvents: ExpeditionEvent[] = [
             }),
           },
         ],
+        nextEventId: null,
       },
     ],
   },
@@ -59,9 +91,8 @@ export const expeditionEvents: ExpeditionEvent[] = [
     image: "bonanza.png",
     options: [
       {
-        text: "Harvest as much as possible (large reward but takes time)",
+        text: "Harvest as much as possible (large reward)",
         effects: [
-          { type: "time", value: 5 },
           {
             type: "reward",
             value: (expedition) => ({
@@ -69,6 +100,7 @@ export const expeditionEvents: ExpeditionEvent[] = [
             }),
           },
         ],
+        nextEventId: "cave_in",
       },
       {
         text: "Take what you can carry (small reward)",
@@ -80,6 +112,7 @@ export const expeditionEvents: ExpeditionEvent[] = [
             }),
           },
         ],
+        nextEventId: "cave_in",
       },
     ],
   },
@@ -92,21 +125,19 @@ export const expeditionEvents: ExpeditionEvent[] = [
     image: "sandstorm.png",
     options: [
       {
-        text: "Seek shelter (expedition takes 5 minutes longer)",
-        effects: [{ type: "time", value: 5 }],
+        text: "Seek shelter (safe)",
+        effects: [],
+        nextEventId: null,
       },
       {
-        text: "Try to outrun it (50% chance to save time, 50% to lose crew)",
+        text: "Try to outrun it (50% chance to lose crew)",
         effects: [
           {
             type: "crew",
             value: Math.random() > 0.5 ? 0 : -2,
           },
-          {
-            type: "time",
-            value: Math.random() > 0.5 ? -10 : 10,
-          },
         ],
+        nextEventId: null,
       },
     ],
   },
@@ -119,8 +150,9 @@ export const expeditionEvents: ExpeditionEvent[] = [
     minTier: 1,
     options: [
       {
-        text: "Reroute power to shields (expedition takes 5 minutes longer)",
-        effects: [{ type: "time", value: 5 }],
+        text: "Reroute power to shields (safe)",
+        effects: [],
+        nextEventId: null,
       },
       {
         text: "Risk proceeding at normal speed (50% chance to lose crew)",
@@ -130,6 +162,7 @@ export const expeditionEvents: ExpeditionEvent[] = [
             value: Math.random() > 0.5 ? 0 : -3,
           },
         ],
+        nextEventId: null,
       },
     ],
   },
@@ -142,21 +175,19 @@ export const expeditionEvents: ExpeditionEvent[] = [
     minTier: 1,
     options: [
       {
-        text: "Take evasive maneuvers (add 5 minutes to ETA)",
-        effects: [{ type: "time", value: 5 }],
+        text: "Take evasive maneuvers (safe)",
+        effects: [],
+        nextEventId: null,
       },
       {
-        text: "Chart risky path through debris (50% save time/50% hull breach)",
+        text: "Chart risky path through debris (50% hull breach)",
         effects: [
           {
             type: "crew",
             value: Math.random() > 0.5 ? 0 : -2,
           },
-          {
-            type: "time",
-            value: Math.random() > 0.5 ? -20 : 10,
-          },
         ],
+        nextEventId: null,
       },
     ],
   },
@@ -169,21 +200,19 @@ export const expeditionEvents: ExpeditionEvent[] = [
     minTier: 2,
     options: [
       {
-        text: "Divert course around storm (+5 minutes)",
-        effects: [{ type: "time", value: 5 }],
+        text: "Divert course around storm (safe)",
+        effects: [],
+        nextEventId: null,
       },
       {
-        text: "Attempt straight path (50% faster travel/50% crew casualties)",
+        text: "Attempt straight path (50% crew casualties)",
         effects: [
           {
             type: "crew",
             value: Math.random() > 0.5 ? 0 : -4,
           },
-          {
-            type: "time",
-            value: Math.random() > 0.5 ? -25 : 15,
-          },
         ],
+        nextEventId: null,
       },
     ],
   },
@@ -195,21 +224,19 @@ export const expeditionEvents: ExpeditionEvent[] = [
     image: "asteroid_field.png",
     options: [
       {
-        text: "Navigate carefully through gaps (+5 minutes)",
-        effects: [{ type: "time", value: 5 }],
+        text: "Navigate carefully through gaps (safe)",
+        effects: [],
+        nextEventId: null,
       },
       {
-        text: "Accelerate through dangerous zone (50% gain/lose)",
+        text: "Accelerate through dangerous zone (50% lose crew)",
         effects: [
           {
             type: "crew",
             value: Math.random() > 0.5 ? 0 : -1,
           },
-          {
-            type: "time",
-            value: Math.random() > 0.5 ? -15 : 20,
-          },
         ],
+        nextEventId: null,
       },
     ],
   },
@@ -222,21 +249,19 @@ export const expeditionEvents: ExpeditionEvent[] = [
     minTier: 1,
     options: [
       {
-        text: "Power down non-essential systems (+5 minutes)",
-        effects: [{ type: "time", value: 5 }],
+        text: "Power down non-essential systems (safe)",
+        effects: [],
+        nextEventId: null,
       },
       {
-        text: "Risk system overload for speed (50% success chance)",
+        text: "Risk system overload for speed (50% lose crew)",
         effects: [
           {
             type: "crew",
             value: Math.random() > 0.5 ? 0 : -3,
           },
-          {
-            type: "time",
-            value: Math.random() > 0.5 ? -18 : 25,
-          },
         ],
+        nextEventId: null,
       },
     ],
   },
@@ -249,21 +274,19 @@ export const expeditionEvents: ExpeditionEvent[] = [
     minTier: 1,
     options: [
       {
-        text: "Recalibrate navigation systems (+5 minutes)",
-        effects: [{ type: "time", value: 5 }],
+        text: "Recalibrate navigation systems (safe)",
+        effects: [],
+        nextEventId: null,
       },
       {
-        text: "Fly blind through distortion (50% time save/penalty)",
+        text: "Fly blind through distortion (50% lose crew)",
         effects: [
           {
             type: "crew",
             value: Math.random() > 0.5 ? 0 : -2,
           },
-          {
-            type: "time",
-            value: Math.random() > 0.5 ? -12 : 19,
-          },
         ],
+        nextEventId: null,
       },
     ],
   },
@@ -285,11 +308,8 @@ export const expeditionEvents: ExpeditionEvent[] = [
             technologyId: "alien_alloys",
             value: 0,
           },
-          {
-            type: "time",
-            value: 5, // +30 minut do czasu misji
-          },
         ],
+        nextEventId: "ancient_fungal_culture",
       },
       {
         text: "Destroy dangerous technology",
@@ -299,6 +319,7 @@ export const expeditionEvents: ExpeditionEvent[] = [
             value: { science: 1e4 },
           },
         ],
+        nextEventId: "ancient_fungal_culture",
       },
     ],
   },
@@ -319,11 +340,8 @@ export const expeditionEvents: ExpeditionEvent[] = [
             technologyId: "primitive_bioreactor",
             value: 0,
           },
-          {
-            type: "time",
-            value: 7,
-          },
         ],
+        nextEventId: null,
       },
       {
         text: "Harvest samples for immediate use",
@@ -333,6 +351,7 @@ export const expeditionEvents: ExpeditionEvent[] = [
             value: { food: 2e5, oxygen: 5e5 },
           },
         ],
+        nextEventId: null,
       },
     ],
   },
@@ -353,11 +372,8 @@ export const expeditionEvents: ExpeditionEvent[] = [
             technologyId: "quantum_metabolism",
             value: 0,
           },
-          {
-            type: "time",
-            value: 9,
-          },
         ],
+        nextEventId: null,
       },
       {
         text: "Harvest biomass",
@@ -367,6 +383,7 @@ export const expeditionEvents: ExpeditionEvent[] = [
             value: { food: 2e5, science: 5e5 },
           },
         ],
+        nextEventId: null,
       },
     ],
   },
@@ -388,11 +405,8 @@ export const expeditionEvents: ExpeditionEvent[] = [
             technologyId: "harmonic_energy_matrices",
             value: 0,
           },
-          {
-            type: "time",
-            value: 12,
-          },
         ],
+        nextEventId: null,
       },
       {
         text: "Extract energy pulses",
@@ -402,6 +416,7 @@ export const expeditionEvents: ExpeditionEvent[] = [
             value: { energy: 4e5, science: 8e5 },
           },
         ],
+        nextEventId: null,
       },
     ],
   },
@@ -422,11 +437,8 @@ export const expeditionEvents: ExpeditionEvent[] = [
             technologyId: "symbiotic_processing_units",
             value: 0,
           },
-          {
-            type: "time",
-            value: 14,
-          },
         ],
+        nextEventId: null,
       },
       {
         text: "Harvest organic material",
@@ -440,6 +452,7 @@ export const expeditionEvents: ExpeditionEvent[] = [
             },
           },
         ],
+        nextEventId: null,
       },
     ],
   },
@@ -460,11 +473,8 @@ export const expeditionEvents: ExpeditionEvent[] = [
             technologyId: "chrono_synchronization",
             value: 0,
           },
-          {
-            type: "time",
-            value: 16,
-          },
         ],
+        nextEventId: null,
       },
       {
         text: "Extract temporal energy",
@@ -478,6 +488,7 @@ export const expeditionEvents: ExpeditionEvent[] = [
             },
           },
         ],
+        nextEventId: null,
       },
     ],
   },
@@ -499,11 +510,8 @@ export const expeditionEvents: ExpeditionEvent[] = [
             technologyId: "spatial_fabric_manipulation",
             value: 0,
           },
-          {
-            type: "time",
-            value: 18,
-          },
         ],
+        nextEventId: null,
       },
       {
         text: "Extract residual resources",
@@ -517,6 +525,7 @@ export const expeditionEvents: ExpeditionEvent[] = [
             },
           },
         ],
+        nextEventId: null,
       },
     ],
   },
@@ -538,11 +547,8 @@ export const expeditionEvents: ExpeditionEvent[] = [
             technologyId: "autonomic_storage_networks",
             value: 0,
           },
-          {
-            type: "time",
-            value: 20,
-          },
         ],
+        nextEventId: null,
       },
       {
         text: "Extract the resource data",
@@ -557,6 +563,7 @@ export const expeditionEvents: ExpeditionEvent[] = [
             },
           },
         ],
+        nextEventId: null,
       },
     ],
   },
@@ -578,11 +585,8 @@ export const expeditionEvents: ExpeditionEvent[] = [
             technologyId: "adaptive_matter_engineering",
             value: 0,
           },
-          {
-            type: "time",
-            value: 22,
-          },
         ],
+        nextEventId: null,
       },
       {
         text: "Use it for immediate utility",
@@ -597,6 +601,7 @@ export const expeditionEvents: ExpeditionEvent[] = [
             },
           },
         ],
+        nextEventId: null,
       },
     ],
   },
@@ -618,11 +623,8 @@ export const expeditionEvents: ExpeditionEvent[] = [
             technologyId: "temporal_acceleration",
             value: 0,
           },
-          {
-            type: "time",
-            value: 24,
-          },
         ],
+        nextEventId: null,
       },
       {
         text: "Salvage for immediate resources",
@@ -635,6 +637,7 @@ export const expeditionEvents: ExpeditionEvent[] = [
             },
           },
         ],
+        nextEventId: null,
       },
     ],
   },
@@ -656,11 +659,8 @@ export const expeditionEvents: ExpeditionEvent[] = [
             technologyId: "matter_synthesis",
             value: 0,
           },
-          {
-            type: "time",
-            value: 26,
-          },
         ],
+        nextEventId: null,
       },
       {
         text: "Seal the breach, it's too dangerous",
@@ -673,6 +673,7 @@ export const expeditionEvents: ExpeditionEvent[] = [
             },
           },
         ],
+        nextEventId: null,
       },
     ],
   },
@@ -693,11 +694,8 @@ export const expeditionEvents: ExpeditionEvent[] = [
             technologyId: "celestial_neuro_architecture",
             value: 0,
           },
-          {
-            type: "time",
-            value: 26, // minutes until fully analyzed
-          },
         ],
+        nextEventId: null,
       },
       {
         text: "Too unstable. Record data and redirect energy elsewhere",
@@ -710,6 +708,7 @@ export const expeditionEvents: ExpeditionEvent[] = [
             },
           },
         ],
+        nextEventId: null,
       },
     ],
   },

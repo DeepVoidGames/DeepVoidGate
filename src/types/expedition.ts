@@ -18,11 +18,12 @@ export interface ExpeditionEvent {
 export interface ExpeditionEventOption {
   text: string;
   effects: ExpeditionEventEffect[];
+  nextEventId: string | null;
   weight?: number;
 }
 
 export interface ExpeditionEventEffect {
-  type: "time" | "resources" | "crew" | "reward" | "fail" | "technology";
+  type: "resources" | "crew" | "reward" | "fail" | "technology";
   value:
     | number
     | ResourceAmount
@@ -35,22 +36,18 @@ export interface Expedition {
   id: string;
   type: ExpeditionType;
   tier: number;
-  duration: number;
-  elapsed: number;
-  crew: number;
-  status: "preparing" | "in_progress" | "completed" | "failed";
-  events: ExpeditionEventLog[];
-  nextEventTime: number;
+  status: "preparing" | "awaiting_action" | "completed" | "failed";
+  currentEventId: string | null;
+  eventChain: string[];
+  eventHistory: ExpeditionEventLog[];
   rewards?: ResourceAmount;
   unlockedTechnologies?: string[];
   rewardsCollected?: boolean;
 }
 
 export interface ExpeditionEventLog {
-  id?: string;
   eventId: string;
   chosenOptionIndex: number;
-  time: number;
 }
 
 export interface ResourceAmount {

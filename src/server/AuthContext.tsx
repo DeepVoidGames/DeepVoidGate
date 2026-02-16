@@ -7,7 +7,9 @@ import React, {
 } from "react";
 import { Client, Session } from "@heroiclabs/nakama-js";
 import { v4 as uuidv4 } from "uuid";
-import { API_KEY } from "@/key";
+// import { API_KEY } from "@/key";
+
+const API_KEY = "";
 
 export const client = new Client(API_KEY, "api.deepvoid.dev", "443", true);
 

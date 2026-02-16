@@ -458,7 +458,7 @@ const TechnologiesManager: React.FC = () => {
               return (
                 <div
                   key={tech.id}
-                  className={`p-4 rounded-lg border transition-all duration-500 h-[350px] relative ${
+                  className={`p-4 rounded-lg border transition-all duration-500 min-h-[350px] flex flex-col relative ${
                     isHighlighted
                       ? "bg-primary/30 border-primary shadow-lg ring-2 ring-primary/50 animate-pulse"
                       : isResearched
@@ -502,9 +502,21 @@ const TechnologiesManager: React.FC = () => {
                       <div className="flex flex-wrap gap-2 mb-3">
                         {Object.entries(tech.researchCost).map(
                           ([resource, cost]) => {
-                            const hasEnough =
+                            const currentAmount =
                               resources[resource as keyof typeof resources]
-                                .amount >= cost;
+                                .amount || 0;
+                            const hasEnough = currentAmount >= cost;
+
+                            const missingAmount = cost - currentAmount;
+                            const netProduction =
+                              state.resources[resource]?.production -
+                              state.resources[resource]?.consumption;
+
+                            let timeToAcquire = Infinity;
+                            if (missingAmount > 0 && netProduction > 0) {
+                              timeToAcquire = missingAmount / netProduction;
+                            }
+
                             return (
                               <div
                                 key={resource}
@@ -520,6 +532,11 @@ const TechnologiesManager: React.FC = () => {
                                 >
                                   {formatNumber(cost)}
                                 </span>
+                                {!hasEnough && netProduction > 0 && (
+                                  <span className="text-gray-400 text-xs">
+                                    ({formatTime(timeToAcquire)})
+                                  </span>
+                                )}
                               </div>
                             );
                           }
@@ -529,38 +546,40 @@ const TechnologiesManager: React.FC = () => {
                   ) : null}
 
                   <div
-                    className={`bottom-0 left-0 right-0 absolute p-4 rounded-b-lg ${
+                    className={`mt-auto p-4 rounded-b-lg ${
                       tech?.locked ? "hidden" : ""
                     }`}
                   >
-                    {!isInProgress ? (
-                      !tech?.isResearched ? (
-                        <div className="text-xs text-[10px] text-muted-foreground mb-3 flex items-center gap-1">
-                          <Clock className="inline mr-1 h-3 w-3" />
-                          <span>Research Time: </span>
-                          {formatTime(getTechnologyResearchTime(tech, state))}
-                        </div>
-                      ) : null
-                    ) : null}
+                    <div className="space-y-3 mb-3">
+                      {!isInProgress ? (
+                        !tech?.isResearched ? (
+                          <div className="text-xs text-[10px] text-muted-foreground flex items-center gap-1">
+                            <Clock className="inline mr-1 h-3 w-3" />
+                            <span>Research Time: </span>
+                            {formatTime(getTechnologyResearchTime(tech, state))}
+                          </div>
+                        ) : null
+                      ) : null}
 
-                    {tech.prerequisites.length > 0 && !tech?.isResearched && (
-                      <div className="text-xs text-[10px] text-muted-foreground mb-3">
-                        <Lock className="inline mr-1 h-3 w-3" />
-                        <span>Requires: </span>
-                        {getPrerequisiteNames(tech).map((prereq, index) => (
-                          <span key={prereq.id}>
-                            <button
-                              onClick={() => handlePrerequisiteClick(prereq.id)}
-                              className="text-primary hover:text-primary/80 underline cursor-pointer transition-colors"
-                              title="Click to navigate to this technology"
-                            >
-                              {prereq.name}
-                            </button>
-                            {index < tech.prerequisites.length - 1 && ", "}
-                          </span>
-                        ))}
-                      </div>
-                    )}
+                      {tech.prerequisites.length > 0 && !tech?.isResearched && (
+                        <div className="text-xs text-[10px] text-muted-foreground">
+                          <Lock className="inline mr-1 h-3 w-3" />
+                          <span>Requires: </span>
+                          {getPrerequisiteNames(tech).map((prereq, index) => (
+                            <span key={prereq.id}>
+                              <button
+                                onClick={() => handlePrerequisiteClick(prereq.id)}
+                                className="text-primary hover:text-primary/80 underline cursor-pointer transition-colors"
+                                title="Click to navigate to this technology"
+                              >
+                                {prereq.name}
+                              </button>
+                              {index < tech.prerequisites.length - 1 && ", "}
+                            </span>
+                          ))}
+                        </div>
+                      )}
+                    </div>
 
                     {isInProgress ? (
                       <div className="space-y-2">

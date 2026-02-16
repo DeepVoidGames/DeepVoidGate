@@ -24,20 +24,17 @@ import { Expedition, ExpeditionEvent } from "@/types/expedition";
 import { GameState } from "@/types/gameState";
 import { GameAction } from "@/store/actions";
 import { TutorialHighlight } from "../Tutorial/TutorialHighlight";
+import { expeditionEvents } from "@/data/expeditionEvents";
 
 type ExpeditionCardProps = {
   expedition: Expedition;
-  formatDuration: (minutes: number) => string;
   state: GameState;
-  expeditionEvents: ExpeditionEvent[];
   dispatch: React.Dispatch<GameAction>;
 };
 
 function ExpeditionCard({
   expedition,
-  formatDuration,
   state,
-  expeditionEvents,
   dispatch,
 }: ExpeditionCardProps) {
   return (
@@ -68,24 +65,7 @@ function ExpeditionCard({
       </CardHeader>
 
       <CardContent className="space-y-3 sm:space-y-4 px-3 sm:px-6">
-        {/* Progress Section */}
-        <div className="space-y-0.5 w-full max-w-[95%] mx-auto">
-          <div className="flex justify-between items-center text-[10px] sm:text-xs gap-1">
-            <span className="flex items-center gap-0.5 truncate">
-              <Clock className="w-2.5 h-2.5 sm:w-3 sm:h-3 flex-shrink-0" />
-              <span className="truncate">
-                {formatDuration(expedition.elapsed)}
-              </span>
-            </span>
-            <span className="truncate">
-              {formatDuration(expedition.duration)}
-            </span>
-          </div>
-          <Progress
-            value={(expedition.elapsed / expedition.duration) * 100}
-            className="h-0.5 sm:h-1.5 w-full"
-          />
-        </div>
+
 
         {/* Awards */}
         {expedition.rewards && Object.keys(expedition.rewards).length > 0 && (
@@ -133,36 +113,32 @@ function ExpeditionCard({
           )}
 
         {/* Events */}
-        {expedition.events
-          .filter((event) => event.chosenOptionIndex === -1)
-          .map((event) => {
-            const eventDef = expeditionEvents.find(
-              (e) => e.id === event.eventId
-            );
-            if (!eventDef) return null;
+        {expedition.currentEventId && (
+          <TutorialHighlight
+            stepId="expedition-events"
+            tutorialId="expedition-basics"
+          >
+            {(() => {
+              const currentEvent = expeditionEvents.find(
+                (e) => e.id === expedition.currentEventId
+              );
+              if (!currentEvent) return null;
 
-            return (
-              <TutorialHighlight
-                stepId="expedition-events"
-                tutorialId="expedition-basics"
-              >
-                <div
-                  key={event.id}
-                  className="p-2 sm:p-4 bg-muted/10 rounded-lg mb-2 sm:mb-3"
-                >
+              return (
+                <div className="p-2 sm:p-4 bg-muted/10 rounded-lg mb-2 sm:mb-3">
                   <div className="flex items-center gap-2 mb-1 sm:mb-2">
                     <AlertTriangle className="w-3 h-3 sm:w-4 sm:h-4 text-yellow-500" />
                     <h4 className="font-medium text-sm sm:text-base">
-                      {eventDef.title}
+                      {currentEvent.title}
                     </h4>
                   </div>
 
                   <p className="text-xs sm:text-sm text-muted-foreground mb-2 sm:mb-4 line-clamp-3">
-                    {eventDef.description}
+                    {currentEvent.description}
                   </p>
 
                   <div className="space-y-1 sm:space-y-2 max-h-[300px] overflow-y-auto">
-                    {eventDef.options.map((option, optionIndex) => (
+                    {currentEvent.options.map((option, optionIndex) => (
                       <Button
                         key={optionIndex}
                         variant="outline"
@@ -172,9 +148,6 @@ function ExpeditionCard({
                             type: "HANDLE_EXPEDITION_EVENT",
                             payload: {
                               expeditionId: expedition.id,
-                              eventIndex: expedition.events.findIndex(
-                                (e) => e.id === event.id
-                              ),
                               optionIndex: optionIndex,
                             },
                           });
@@ -187,26 +160,14 @@ function ExpeditionCard({
                     ))}
                   </div>
                 </div>
-              </TutorialHighlight>
-            );
-          })}
+              );
+            })()}
+          </TutorialHighlight>
+        )}
       </CardContent>
 
-      {/* Action buttons */}
-      {expedition.status === "preparing" && (
+      {expedition.status === "awaiting_action" && (
         <CardFooter className="flex flex-col sm:flex-row gap-2 pt-2 sm:pt-4 px-3 sm:px-6">
-          <Button
-            variant="default"
-            className="w-full sm:flex-1 h-9 sm:h-10 text-sm"
-            onClick={() =>
-              dispatch({
-                type: "LAUNCH_EXPEDITION",
-                payload: { expeditionId: expedition.id },
-              })
-            }
-          >
-            Launch Now
-          </Button>
           <Button
             variant="destructive"
             className="w-full sm:flex-1 h-9 sm:h-10 text-sm"
@@ -217,13 +178,18 @@ function ExpeditionCard({
               })
             }
           >
-            Cancel
+            Cancel Expedition
           </Button>
         </CardFooter>
       )}
 
       {/* Status Badge */}
       <div className="absolute top-2 right-2 sm:top-4 sm:right-4">
+        {expedition.status === "awaiting_action" && (
+          <div className="flex items-center gap-1 bg-blue-500/90 text-blue-100 px-2 py-0.5 sm:px-3 sm:py-1 rounded-full text-xs sm:text-sm">
+            <Clock className="w-3 h-3 sm:w-4 sm:h-4" /> Awaiting Action
+          </div>
+        )}
         {expedition.status === "completed" && (
           <div className="flex items-center gap-1 bg-green-500/90 text-green-100 px-2 py-0.5 sm:px-3 sm:py-1 rounded-full text-xs sm:text-sm">
             <CheckCircle2 className="w-3 h-3 sm:w-4 sm:h-4" /> Completed

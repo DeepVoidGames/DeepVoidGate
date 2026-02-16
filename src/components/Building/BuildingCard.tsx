@@ -75,6 +75,23 @@ const BuildingCard = ({
     setMaxUpgrade(a);
   };
 
+const formatTime = (seconds: number): string => {
+    if (!isFinite(seconds) || seconds < 0) return "∞";
+    if (seconds === 0) return "0s";
+
+    const hours = Math.floor(seconds / 3600);
+    const minutes = Math.floor((seconds % 3600) / 60);
+    const remainingSeconds = Math.round(seconds % 60);
+
+    let parts: string[] = [];
+    if (hours > 0) parts.push(`${hours}h`);
+    if (minutes > 0) parts.push(`${minutes}m`);
+    if (remainingSeconds > 0 || parts.length === 0)
+      parts.push(`${remainingSeconds}s`);
+
+    return parts.join(" ");
+  };
+
   React.useEffect(() => {
     getUpgrademaxData();
   }, [building, resources]);
@@ -366,20 +383,38 @@ const BuildingCard = ({
                 </h4>
                 <div className="grid grid-cols-2 gap-2 mt-2 text-xs">
                   {Object.entries(calculateBuildingUpgradeCost(building)).map(
-                    ([resource, cost]) => (
-                      <div
-                        key={resource}
-                        className={`flex items-center space-x-1 ${
-                          resources[resource]?.amount < Number(cost)
-                            ? "text-red-400"
-                            : "text-foreground/70"
-                        }`}
-                      >
-                        <span>{ResourcesIcon({ resource })}</span>
-                        <span>{resource}</span>
-                        <span>{formatNumber(Number(cost))}</span>
-                      </div>
-                    )
+                    ([resource, cost]) => {
+                      const currentAmount = resources[resource]?.amount || 0;
+                      const missingAmount = Number(cost) - currentAmount;
+                      const netProduction =
+                        state.resources[resource]?.production -
+                        state.resources[resource]?.consumption;
+
+                      let timeToAcquire = Infinity;
+                      if (missingAmount > 0 && netProduction > 0) {
+                        timeToAcquire = missingAmount / netProduction;
+                      }
+
+                      const insufficient = currentAmount < Number(cost);
+
+                      return (
+                        <div
+                          key={resource}
+                          className={`flex items-center space-x-1 ${
+                            insufficient ? "text-red-400" : "text-foreground/70"
+                          }`}
+                        >
+                          <span>{ResourcesIcon({ resource })}</span>
+                          <span>{resource}</span>
+                          <span>{formatNumber(Number(cost))}</span>
+                          {insufficient && netProduction > 0 && (
+                            <span className="text-gray-400 text-xs">
+                              ({formatTime(timeToAcquire)})
+                            </span>
+                          )}
+                        </div>
+                      );
+                    }
                   )}
                 </div>
               </div>

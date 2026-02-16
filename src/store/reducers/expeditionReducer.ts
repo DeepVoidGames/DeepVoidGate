@@ -22,10 +22,7 @@ import { gameEvent } from "@/server/analytics";
 import { galacticUpgrades } from "@/data/colonization/galacticUpgrades";
 
 // Constants for expedition calculations
-export const BASE_EXPEDITION_TIME = 15; // 15m for the first tier
-export const TIME_PER_TIER = 15; // 15m for each additional tier
 export const CREW_PER_TIER = 5; //  5 crew members required for the first tier, increases by 5 for each additional tier
-export const EVENT_INTERVAL = 10; // 10 minutes between events
 export const TIER_MULTIPLIER = 1.65; //  1.5x multiplier for each tier of expedition
 
 const BASE_REWARDS: Record<ExpeditionType, ResourceAmount> = {
@@ -337,33 +334,7 @@ export const getReward = (
   return newState;
 };
 
-/**
- * Calculates the duration of an expedition based on its tier and the game state.
- *
- * The expedition duration depends on the expedition tier and artifacts that may reduce this time,
- * such as the "Time Crystal." If the "Time Crystal" artifact is unlocked, the duration is decreased
- * by a certain percentage based on the number of stars the artifact has.
- *
- * @param tier - The expedition tier affecting the duration.
- * @param state - The current game state containing information about artifacts.
- * @returns The duration of the expedition in time units (e.g., seconds).
- */
-export const calculateExpeditionDuration = (
-  tier: number,
-  state: GameState
-): number => {
-  let time = BASE_EXPEDITION_TIME + tier * TIME_PER_TIER;
-  const artifact = getArtifact("Time Crystal", state);
 
-  if (!artifact?.isLocked) {
-    time = BASE_EXPEDITION_TIME + tier * TIME_PER_TIER;
-    time = time - time * (0.05 * (artifact?.stars + 1));
-  }
-
-  if (state?.galacticUpgrades?.includes("quantum_travel")) time = time / 2;
-
-  return time;
-};
 
 /**
  * Calculates the required number of crew members based on the expedition tier.
@@ -379,50 +350,7 @@ export const calculateRequiredCrew = (tier: number): number => {
   return CREW_PER_TIER + tier * CREW_PER_TIER;
 };
 
-/**
- * Selects a random event for an expedition considering its type, tier, and event weights.
- *
- * Filters available events based on the expedition type and tier,
- * then selects one event randomly with weighted probability.
- * The selection depends on the expedition’s type, tier, and
- * the weight assigned to each event.
- *
- * @param expedition - The expedition object for which the event is generated
- * (includes expedition type and tier).
- * @returns A randomly selected event matching the filters, chosen based on weights.
- */
-const getRandomEvent = (expedition: Expedition): ExpeditionEvent => {
-  const possibleEvents = expeditionEvents.filter((event) => {
-    // Filtruj po typie ekspedycji jeśli określono
-    if (event.type && !event.type.includes(expedition.type)) return false;
 
-    // Filtruj po tierze jeśli określono
-    if (event.minTier !== undefined && expedition.tier < event.minTier)
-      return false;
-    if (event.maxTier !== undefined && expedition.tier > event.maxTier)
-      return false;
-
-    return true;
-  });
-
-  // Ważone losowanie
-  const totalWeight = possibleEvents.reduce(
-    (sum, event) => sum + (event.weight || 1),
-    0
-  );
-  let random = Math.random() * totalWeight;
-  let selectedEvent: ExpeditionEvent = possibleEvents[0];
-
-  for (const event of possibleEvents) {
-    random -= event.weight || 1;
-    if (random <= 0) {
-      selectedEvent = event;
-      break;
-    }
-  }
-
-  return selectedEvent;
-};
 
 /**
  * Applies event effects to the expedition and game state.
@@ -452,9 +380,7 @@ const applyEventEffects = (
         : effect.value;
 
     switch (effect.type) {
-      case "time":
-        newExpedition.duration += value as number;
-        break;
+
 
       case "resources": {
         const resourceType = effect.resourceType as ResourceType;
@@ -572,12 +498,16 @@ export const startExpedition = (
     id: generateId(),
     type,
     tier,
-    duration: calculateExpeditionDuration(tier, state),
-    elapsed: 0,
     crew: requiredCrew,
-    status: "in_progress",
-    events: [],
-    nextEventTime: EVENT_INTERVAL, // pierwsze zdarzenie po 10 minutach
+    status: "awaiting_action",
+    eventHistory: [],
+    currentEventId:
+      type === "scientific"
+        ? "start_scientific_expedition"
+        : type === "mining"
+          ? "start_mining_expedition"
+          : null, // Assuming 'void' might have a different start or dynamically assigned
+    eventChain: [], // Initialize as empty, will be populated by event choices
     rewards: calculateReward(type, tier, state),
   };
 
@@ -585,7 +515,6 @@ export const startExpedition = (
     type,
     tier,
     crew: requiredCrew,
-    duration: newExpedition.duration,
   });
 
   // Zatwierdź ekspedycję (zmniejsz liczbę dostępnych kolonistów)
@@ -599,167 +528,9 @@ export const startExpedition = (
   };
 };
 
-/**
- * Starts an expedition by changing its status to "in_progress" if it is currently "preparing".
- * If the expedition is not in the "preparing" state, the function makes no changes.
- *
- * The function performs the following operations:
- * - Checks if the expedition with the given ID exists in the game state.
- * - If the expedition is not in "preparing" state, no changes are made.
- * - Changes the expedition status to "in_progress".
- * - Updates the expedition list in the game state.
- * - Displays a message about the expedition start.
- *
- * @param state - The object representing the current game state.
- * @param expeditionId - The ID of the expedition the player wants to start.
- * @returns The updated game state with the expedition started.
- */
-export const launchExpedition = (
-  state: GameState,
-  expeditionId: string
-): GameState => {
-  const expeditionIndex = state.expeditions.findIndex(
-    (e) => e.id === expeditionId
-  );
-  if (expeditionIndex === -1) return state;
 
-  const expedition = state.expeditions[expeditionIndex];
-  if (expedition.status !== "preparing") return state;
 
-  const updatedExpedition: Expedition = {
-    ...expedition,
-    status: "in_progress",
-  };
 
-  const newExpeditions = [...state.expeditions];
-  newExpeditions[expeditionIndex] = updatedExpedition;
-
-  toast({
-    title: "Expedition Launched",
-    description: `Your ${expedition.type} expedition has begun!`,
-  });
-
-  return {
-    ...state,
-    expeditions: newExpeditions,
-  };
-};
-
-/**
- * Updates the state of expeditions in the game based on elapsed time (deltaTime).
- * Handles updating expedition duration, event processing, and completed expeditions.
- *
- * The function performs the following operations:
- * - Iterates through all active expeditions, updating their state.
- * - For expeditions in "in_progress" status, updates elapsed time and checks for new events.
- * - Checks if the expedition has reached its full duration and changes its status to "completed".
- * - Adds new events to expeditions when required time has passed.
- * - Processes completed expeditions by awarding rewards if not yet granted.
- * - Removes completed expeditions from the list after one minute for visual effect.
- *
- * @param state - The object representing the current game state.
- * @param deltaTime - Time elapsed since the last update, expressed in seconds.
- * @returns The updated game state after processing all expeditions.
- */
-export const handleExpeditionTick = (
-  state: GameState,
-  deltaTime: number // w sekundach
-): GameState => {
-  if (state.expeditions.length === 0) return state;
-
-  const deltaMinutes = deltaTime / 60;
-  let newState = { ...state };
-  const updatedExpeditions = [...state.expeditions];
-  const expeditionsToProcess = [];
-
-  // Najpierw aktualizujemy stan wszystkich ekspedycji
-  for (let i = 0; i < updatedExpeditions.length; i++) {
-    const expedition = updatedExpeditions[i];
-
-    // Pomijaj nieaktywne ekspedycje
-    if (expedition.status !== "in_progress") continue;
-
-    const newExpedition = { ...expedition };
-
-    // Sprawdź czy są nierozwiązane zdarzenia
-    const hasPendingEvents = newExpedition.events.some(
-      (e) => e.chosenOptionIndex === -1
-    );
-
-    // Aktualizuj czas TYLKO jeśli nie ma oczekujących zdarzeń
-    if (!hasPendingEvents) {
-      newExpedition.elapsed += deltaMinutes;
-      newExpedition.nextEventTime -= deltaMinutes;
-
-      if (newExpedition.nextEventTime <= 0) {
-        const event = getRandomEvent(newExpedition);
-        newExpedition.events.push({
-          id: generateId(), // Dodajemy unikalne ID dla każdego wydarzenia
-          eventId: event.id,
-          chosenOptionIndex: -1, // oznacza wymagającą akcji gracza
-          time: newExpedition.elapsed,
-        });
-        newExpedition.nextEventTime = EVENT_INTERVAL; // reset timer
-
-        // Zatrzymaj ekspedycję do czasu reakcji gracza
-        toast({
-          title: "Expedition Event!",
-          description: "New event requires your attention",
-        });
-      }
-    } else {
-      newExpedition.events = newExpedition.events.map((event) => {
-        if (!event.id) {
-          return { ...event, id: generateId() };
-        }
-        return event;
-      });
-    }
-
-    // Sprawdź czy ekspedycja się zakończyła
-    if (
-      newExpedition.elapsed >= newExpedition.duration &&
-      newExpedition.status === "in_progress"
-    ) {
-      newExpedition.status = "completed";
-      // Dodaj do listy ekspedycji do przetworzenia
-      expeditionsToProcess.push(newExpedition);
-    }
-
-    updatedExpeditions[i] = newExpedition;
-  }
-
-  // Zaktualizuj ekspedycje w stanie
-  newState = {
-    ...newState,
-    expeditions: updatedExpeditions,
-  };
-
-  // Teraz przetwórz zakończone ekspedycje
-  for (const expedition of expeditionsToProcess) {
-    if (!expedition.rewardsCollected) {
-      newState = getReward(expedition, newState);
-    }
-  }
-
-  // Usuń zakończone ekspedycje po minucie (dla efektu wizualnego)
-  if (state.lastUpdate % 60 === 0) {
-    const newExpeditions = newState.expeditions.filter(
-      (e) =>
-        e.status === "preparing" ||
-        e.status === "in_progress" ||
-        (e.status === "completed" && e.elapsed - e.duration < 1) ||
-        (e.status === "failed" && e.elapsed - e.duration < 1)
-    );
-
-    newState = {
-      ...newState,
-      expeditions: newExpeditions,
-    };
-  }
-
-  return newState;
-};
 
 /**
  * Handles the player's choice of option in an expedition event.
@@ -782,54 +553,79 @@ export const handleExpeditionTick = (
 export const handleExpeditionEventChoice = (
   state: GameState,
   expeditionId: string,
-  eventIndex: number,
   optionIndex: number
 ): GameState => {
   const expeditionIndex = state.expeditions.findIndex(
     (e) => e.id === expeditionId
   );
   if (expeditionIndex === -1) return state;
-  // console.log("Expedition index:", expeditionIndex);
-  // console.log("Event index:", eventIndex);
 
-  const expedition = state.expeditions[expeditionIndex];
-  if (eventIndex >= expedition.events.length) return state;
-
-  // Znajdź oryginalne zdarzenie z definicji
-  const eventLog = expedition.events[eventIndex];
-  const originalEvent = expeditionEvents.find((e) => e.id === eventLog.eventId);
-  if (!originalEvent || optionIndex >= originalEvent.options.length)
-    return state;
-
-  const chosenOption = originalEvent.options[optionIndex];
-
-  // Zastosuj efekty wybranej opcji
-  let newExpedition = { ...expedition };
+  let expedition = { ...state.expeditions[expeditionIndex] };
   let newState = { ...state };
 
+  if (expedition.status !== "awaiting_action" || !expedition.currentEventId) {
+    console.warn(
+      `Expedition ${expeditionId} not awaiting action or no current event.`
+    );
+    return state;
+  }
+
+  const currentEvent = expeditionEvents.find(
+    (e) => e.id === expedition.currentEventId
+  );
+  if (!currentEvent || optionIndex >= currentEvent.options.length) {
+    console.error(
+      `Invalid current event (${expedition.currentEventId}) or option index (${optionIndex}) for expedition ${expeditionId}.`
+    );
+    return state;
+  }
+
+  const chosenOption = currentEvent.options[optionIndex];
+  if (!chosenOption) {
+    console.error(`chosenOption is undefined for expedition ${expeditionId}, event ${expedition.currentEventId}, option ${optionIndex}.`);
+    return state;
+  }
+
+  // Apply effects of the chosen option
   const result = applyEventEffects(
     chosenOption.effects,
-    newExpedition,
+    expedition,
     newState
   );
-  newExpedition = result.expedition;
+  expedition = result.expedition;
   newState = result.state;
 
-  // Zaktualizuj log zdarzenia
-  newExpedition.events = [...newExpedition.events];
-  newExpedition.events[eventIndex] = {
-    ...newExpedition.events[eventIndex],
-    chosenOptionIndex: optionIndex,
-  };
+  // Record the event and choice in history
+  expedition.eventHistory = [
+    ...expedition.eventHistory,
+    {
+      eventId: currentEvent.id,
+      chosenOptionIndex: optionIndex,
+      time: Date.now(), // Use current timestamp for event resolution
+    },
+  ];
 
-  // Zaktualizuj stan
+  // Determine the next event or complete the expedition
+  if (chosenOption.nextEventId) {
+    expedition.currentEventId = chosenOption.nextEventId;
+    // Keep status as awaiting_action for the next event
+  } else {
+    // No next event, expedition completed
+    expedition.status = "completed";
+    expedition.currentEventId = null;
+    newState = getReward(expedition, newState); // Process rewards upon completion
+  }
+
+  // Update the expedition in the state
   const newExpeditions = [...newState.expeditions];
-  newExpeditions[expeditionIndex] = newExpedition;
+  newExpeditions[expeditionIndex] = expedition;
 
   gameEvent("expedition_event_choice", {
     expeditionId,
-    eventId: originalEvent.id,
+    eventId: currentEvent.id,
     optionIndex,
+    nextEventId: chosenOption.nextEventId,
+    expeditionStatus: expedition.status,
   });
 
   return {
@@ -862,7 +658,8 @@ export const cancelExpedition = (
   if (expeditionIndex === -1) return state;
 
   const expedition = state.expeditions[expeditionIndex];
-  if (expedition.status !== "preparing") return state;
+  if (expedition.status === "completed" || expedition.status === "failed")
+    return state;
 
   // Zwróć załogantów
   const newPopulation = {

@@ -27,12 +27,11 @@ const Expedition = () => {
     useState<ExpeditionType>("scientific");
   const [selectedTier, setSelectedTier] = useState(0);
   const [error, setError] = useState("");
-  const [showCompleted] = useState(false);
 
   const [isVoidDiving, setIsVoidDiving] = useState(false);
   const [animationPhase, setAnimationPhase] = useState(0);
 
-  if (!isExpedtionUnlocked(state)) return;
+  // if (!isExpedtionUnlocked(state)) return;
 
   const expeditionTypes: ExpeditionTypes[] = [
     {
@@ -77,15 +76,7 @@ const Expedition = () => {
     setError("");
   };
 
-  const formatDuration = (minutes: number) => {
-    const totalSeconds = Math.floor(minutes * 60);
-    const hours = Math.floor(totalSeconds / 3600);
-    const mins = Math.floor((totalSeconds % 3600) / 60);
-    const secs = totalSeconds % 60;
 
-    const pad = (n: number) => n.toString().padStart(2, "0");
-    return `${pad(hours)}:${pad(mins)}:${pad(secs)}`;
-  };
 
   // Run aniamtion
   const handleVoidDiveAnimation = () => {
@@ -156,7 +147,6 @@ const Expedition = () => {
           tutorialId="expedition-basics"
         >
           <SummaryExpeditionPanel
-            formatDuration={formatDuration}
             formatNumber={formatNumber}
             state={state}
             selectedTier={selectedTier}
@@ -185,9 +175,7 @@ const Expedition = () => {
               {state.expeditions
                 .filter(
                   (expedition) =>
-                    showCompleted ||
-                    (expedition.status !== "completed" &&
-                      expedition.status !== "failed")
+                    expedition.status === "awaiting_action"
                 )
                 .map((expedition) => (
                   <TutorialHighlight
@@ -197,7 +185,6 @@ const Expedition = () => {
                   >
                     <ExpeditionCard
                       expedition={expedition}
-                      formatDuration={formatDuration}
                       state={state}
                       expeditionEvents={expeditionEvents}
                       dispatch={dispatch}
